@@ -12,6 +12,7 @@ function getSupabaseHostname(): string {
 
 const nextConfig: NextConfig = {
   images: {
+    unoptimized: true,
     qualities: [75, 82],
     remotePatterns: [
       {
