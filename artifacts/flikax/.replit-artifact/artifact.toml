@@ -1,0 +1,21 @@
+kind = "web"
+previewPath = "/"
+title = "Flikax"
+version = "1.0.0"
+id = "artifacts/flikax"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18157
+
+[services.development]
+run = "pnpm --filter @workspace/flikax run dev"
+
+[services.production]
+run = "pnpm --filter @workspace/flikax run start"
+
+[services.env]
+PORT = "18157"
+BASE_PATH = "/"

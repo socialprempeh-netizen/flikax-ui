@@ -1,0 +1,13 @@
+// Plain CommonJS + Node builtins only: this runs before any dependencies
+// (including this workspace's own tsx/typescript) are installed.
+const fs = require("node:fs");
+
+for (const file of ["package-lock.json", "yarn.lock"]) {
+  fs.rmSync(file, { force: true });
+}
+
+const userAgent = process.env.npm_config_user_agent || "";
+if (!userAgent.startsWith("pnpm/")) {
+  console.error("Use pnpm instead");
+  process.exit(1);
+}

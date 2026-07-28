@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  /* Site-wide page background -- a visible light grey (Jiji-style) rather
+     than flat white, so cards/panels read as sitting on a surface instead
+     of blending into the page. Single source of truth: every page-root
+     wrapper uses bg-background instead of hardcoding a neutral-* shade. */
+  --background: #eef0f2;
+  --foreground: #171717;
+  --brand: #f97316;
+  --brand-dark: #ea580c;
+  --brand-light: #fff7ed;
+  /* Light cream tint used behind product photos in listing cards and behind
+     the mobile category icon strip (Temu-style) -- kept warm enough to read
+     as a deliberate tint, not just an off-white. */
+  --cream: #f7ecd6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-light: var(--brand-light);
+  --color-cream: var(--cream);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif;
+  --font-logo: var(--font-baloo-2);
+
+  /* Between Tailwind's defaults and flat: the previous values (0.03-0.07
+     opacity) were tuned down from harsh dark boxes but ended up reading as
+     no shadow at all on our light neutral-50 background. */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.07);
+  --shadow-md: 0 4px 8px -1px rgb(0 0 0 / 0.09), 0 2px 5px -2px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 8px 14px -3px rgb(0 0 0 / 0.1), 0 4px 7px -4px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 14px 20px -5px rgb(0 0 0 / 0.12), 0 6px 8px -6px rgb(0 0 0 / 0.09);
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.hero-slide-enter {
+  animation: hero-fade-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+html {
+  /* Matches body -- without this, mobile Safari/Chrome's overscroll-bounce
+     at the top/bottom of the page reveals html's own unstyled canvas instead
+     of our grey, since the bounce briefly scrolls past body into it. There's
+     deliberately no @media (prefers-color-scheme: dark) override anywhere in
+     this file: the site has no dark-mode-aware component styling (every card
+     is a hardcoded bg-white), so a device with system dark mode on would
+     otherwise flip *only* this background near-black while every card/button
+     stayed styled for light mode -- exactly the "black background bleeding
+     through" bug this was built to prevent. */
+  background: var(--background);
+}
+
+body {
+  background: var(--background);
+  color: rgb(49, 49, 49);
+  font-size: 16px;
+  font-weight: 400;
+}
