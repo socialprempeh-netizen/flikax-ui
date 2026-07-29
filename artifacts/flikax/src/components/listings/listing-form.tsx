@@ -76,9 +76,11 @@ const NEGOTIABLE_OPTIONS = [
 // Layered on top of the shadcn Input/Textarea/select base classes -- rounder
 // and roomier than the shadcn default (h-9/rounded-md) to match this form's
 // larger, card-based visual language; h-auto lets padding drive height
-// instead of the default's fixed h-9.
+// instead of the default's fixed h-9. border-slate-300 (rather than the
+// neutral-200 this used to be) is deliberately a shade deeper -- input edges
+// need to read as crisp/tactile, not just barely-there.
 const INPUT =
-  "h-auto w-full rounded-xl border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
+  "h-auto w-full rounded-xl border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
 const SELECT = INPUT + " appearance-none";
 
 // ─── Section header ───────────────────────────────────────────────────────────
@@ -88,7 +90,7 @@ function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }
       <span className="flex size-7 items-center justify-center rounded-lg bg-brand-light text-brand">
         {icon}
       </span>
-      <span className="text-sm font-bold uppercase tracking-wide text-neutral-500">{label}</span>
+      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{label}</span>
     </div>
   );
 }
@@ -100,13 +102,13 @@ function StepBar({ step }: { step: 1 | 2 }) {
     { n: 2, label: "Photos & Title" },
   ];
   return (
-    <div className="flex items-center gap-0">
+    <div className="mx-auto flex w-full max-w-xs items-center gap-0">
       {steps.map((s, i) => {
         const done = step > s.n;
         const active = step === s.n;
         return (
           <div key={s.n} className="flex flex-1 items-center">
-            <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center gap-1.5">
               <div
                 className={`flex size-8 items-center justify-center rounded-full text-sm font-bold transition-colors ${
                   done
@@ -432,7 +434,7 @@ export function ListingForm({
   // ─── Success screen ──────────────────────────────────────────────────────────
   if (posted) {
     return (
-      <div className="overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
         {/* Top accent strip */}
         <div className="h-1.5 w-full bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
         <div className="flex flex-col items-center px-8 py-12 text-center">
@@ -465,9 +467,9 @@ export function ListingForm({
 
   // ─── Main form ───────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-5">
+    <div className="space-y-7">
       {/* Page title + step bar */}
-      <div>
+      <div className="text-center sm:text-left">
         <h1 className="text-xl font-extrabold text-neutral-900">
           {isEditing ? "Edit listing" : "Post a free ad"}
         </h1>
@@ -476,11 +478,13 @@ export function ListingForm({
         </p>
       </div>
 
-      <StepBar step={step} />
+      <div className="py-1">
+        <StepBar step={step} />
+      </div>
 
       {/* ── STEP 1 ── */}
       {step === 1 && (
-        <form onSubmit={handleNext} className="space-y-0 overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+        <form onSubmit={handleNext} className="space-y-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
           {/* Card header accent */}
           <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
 
@@ -534,14 +538,14 @@ export function ListingForm({
 
             {/* ── Dynamic / vehicle fields ── */}
             {isVehicles && categoryId && (
-              <section className="border-t border-neutral-100 pt-7">
+              <section className="border-t border-slate-200 pt-7">
                 <SectionHeader icon={<Tag className="size-3.5" />} label="Vehicle details" />
                 <VehicleSpecFields attributes={attributes} setAttribute={setAttribute} />
               </section>
             )}
 
             {genericFields.length > 0 && categoryId && (
-              <section className="border-t border-neutral-100 pt-7">
+              <section className="border-t border-slate-200 pt-7">
                 <SectionHeader icon={<Tag className="size-3.5" />} label="Item details" />
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {genericFields.map((field) => {
@@ -629,7 +633,7 @@ export function ListingForm({
                                   className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
                                     isSelected
                                       ? "border-brand bg-brand text-white"
-                                      : "border-neutral-200 bg-neutral-50 text-neutral-600 hover:border-brand/40 hover:text-brand"
+                                      : "border-slate-300 bg-neutral-50 text-neutral-600 hover:border-brand/40 hover:text-brand"
                                   }`}
                                 >
                                   {opt}
@@ -646,7 +650,7 @@ export function ListingForm({
             )}
 
             {/* ── Description ── */}
-            <section className="border-t border-neutral-100 pt-7">
+            <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<FileText className="size-3.5" />} label="Description" />
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 What are you selling?
@@ -658,13 +662,13 @@ export function ListingForm({
                 placeholder="Describe the condition, key features, reason for selling, included accessories…"
                 className={`${INPUT} resize-none`}
               />
-              <p className="mt-1.5 text-xs text-neutral-400">
+              <p className="mt-1.5 text-xs text-slate-500">
                 A detailed description gets 3× more enquiries.
               </p>
             </section>
 
             {/* ── Pricing ── */}
-            <section className="border-t border-neutral-100 pt-7">
+            <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<DollarSign className="size-3.5" />} label="Pricing" />
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
@@ -698,7 +702,7 @@ export function ListingForm({
                         className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-3 py-2.5 text-xs font-semibold transition-colors ${
                           negotiable === opt.value
                             ? "border-brand bg-brand text-white"
-                            : "border-neutral-200 bg-neutral-50 text-neutral-600 hover:border-brand/40"
+                            : "border-slate-300 bg-neutral-50 text-neutral-600 hover:border-brand/40"
                         }`}
                       >
                         <input
@@ -718,13 +722,13 @@ export function ListingForm({
             </section>
 
             {/* ── Contact ── */}
-            <section className="border-t border-neutral-100 pt-7">
+            <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<Phone className="size-3.5" />} label="Contact" />
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 Contact phone number <span className="text-red-500">*</span>
               </label>
-              <div className="flex overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
-                <span className="flex items-center border-r border-neutral-200 bg-neutral-100 px-3.5 text-sm font-semibold text-neutral-500">
+              <div className="flex overflow-hidden rounded-xl border border-slate-300 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
+                <span className="flex items-center border-r border-slate-300 bg-neutral-100 px-3.5 text-sm font-semibold text-neutral-500">
                   +233
                 </span>
                 <input
@@ -737,15 +741,15 @@ export function ListingForm({
                   className="min-w-0 flex-1 bg-transparent px-3.5 py-2.5 text-sm text-neutral-800 outline-none"
                 />
               </div>
-              <p className="mt-1.5 text-xs text-neutral-400">
+              <p className="mt-1.5 text-xs text-slate-500">
                 Buyers see this when they tap &ldquo;Contact Seller.&rdquo; Can differ from your account phone.
               </p>
               {posterName && (
-                <div className="mt-4 flex items-center gap-2.5 rounded-xl border border-neutral-100 bg-neutral-50 px-4 py-3">
+                <div className="mt-4 flex items-center gap-2.5 rounded-xl border border-slate-200 bg-neutral-50 px-4 py-3">
                   <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-white">
                     {posterName.charAt(0).toUpperCase()}
                   </div>
-                  <p className="text-xs text-neutral-500">
+                  <p className="text-xs text-slate-500">
                     Posting as{" "}
                     <span className="font-semibold text-neutral-800">{posterName}</span>. Your
                     phone number stays hidden until a buyer starts a chat.
@@ -773,7 +777,7 @@ export function ListingForm({
       {step === 2 && (
         <form
           onSubmit={handleSubmit}
-          className="space-y-0 overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
+          className="space-y-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
         >
           <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
 
@@ -795,7 +799,7 @@ export function ListingForm({
                     placeholder="e.g. iPhone 13 Pro 256GB – Excellent condition"
                     className={INPUT}
                   />
-                  <p className="mt-1.5 text-xs text-neutral-400">
+                  <p className="mt-1.5 text-xs text-slate-500">
                     Be specific — include model, size, colour, or condition.
                   </p>
                 </div>
@@ -807,7 +811,7 @@ export function ListingForm({
                   <button
                     type="button"
                     onClick={() => setLocationPickerOpen(true)}
-                    className="flex w-full items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
+                    className="flex w-full items-center justify-between rounded-xl border border-slate-300 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
                   >
                     <span className="flex items-center gap-2">
                       <MapPin className="size-4 text-brand" />
@@ -822,7 +826,7 @@ export function ListingForm({
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Category
                   </label>
-                  <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm">
+                  <div className="flex items-center justify-between rounded-xl border border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm">
                     <span className="text-neutral-700">
                       {parentCategory?.name}
                       {selectedCategory ? ` › ${selectedCategory.name}` : ""}
@@ -836,23 +840,23 @@ export function ListingForm({
             </section>
 
             {/* ── Photos ── */}
-            <section className="border-t border-neutral-100 pt-7">
+            <section className="border-t border-slate-200 pt-7">
               <div className="mb-3 flex items-center justify-between">
                 <SectionHeader icon={<ImageIcon className="size-3.5" />} label="Photos" />
-                <span className="text-xs text-neutral-400">
+                <span className="text-xs text-slate-500">
                   {images.length}/{MAX_IMAGES} photos
                 </span>
               </div>
 
               {/* Drop zone (shown when no images yet) */}
               {images.length === 0 && (
-                <label className="mb-4 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50 py-10 text-center transition-colors hover:border-brand/40 hover:bg-brand/5 cursor-pointer">
+                <label className="mb-4 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-300 bg-neutral-50 py-10 text-center transition-colors hover:border-brand/40 hover:bg-brand/5 cursor-pointer">
                   <div className="flex size-12 items-center justify-center rounded-full bg-neutral-100">
                     <ImagePlus className="size-6 text-neutral-400" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-neutral-700">Upload photos</p>
-                    <p className="mt-0.5 text-xs text-neutral-400">
+                    <p className="mt-0.5 text-xs text-slate-500">
                       JPEG, PNG or WebP · up to {MAX_IMAGES} photos · auto-watermarked
                     </p>
                   </div>
@@ -875,7 +879,7 @@ export function ListingForm({
                   {images.map((img, i) => (
                     <div
                       key={img.id}
-                      className="relative aspect-square overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100"
+                      className="relative aspect-square overflow-hidden rounded-xl border border-slate-300 bg-neutral-100"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={img.previewUrl} alt="" className="size-full object-cover" />
@@ -908,7 +912,7 @@ export function ListingForm({
                   ))}
 
                   {images.length < MAX_IMAGES && (
-                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand">
+                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-300 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand">
                       <ImagePlus className="size-5" />
                       <span className="text-xs font-medium">Add more</span>
                       <input
@@ -925,7 +929,7 @@ export function ListingForm({
             </section>
 
             {/* ── Video link ── */}
-            <section className="border-t border-neutral-100 pt-7">
+            <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<Video className="size-3.5" />} label="Video (optional)" />
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 YouTube or video link
@@ -937,7 +941,7 @@ export function ListingForm({
                 placeholder="https://youtube.com/watch?v=…"
                 className={INPUT}
               />
-              <p className="mt-1.5 text-xs text-neutral-400">
+              <p className="mt-1.5 text-xs text-slate-500">
                 A short demo video can significantly increase buyer interest.
               </p>
             </section>
