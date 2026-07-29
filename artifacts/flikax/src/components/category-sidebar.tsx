@@ -55,7 +55,7 @@ export function CategorySidebar({
 
   if (!activeParent) {
     return (
-      <div className="flex w-full shrink-0 flex-col gap-3 lg:w-72 lg:sticky lg:top-[60px] lg:self-start lg:z-10">
+      <div className="flex w-full shrink-0 flex-col gap-3 lg:w-72 lg:sticky lg:top-16 lg:z-10 lg:max-h-[calc(100vh-5rem)] lg:self-start lg:overflow-y-auto">
         <div className="hidden lg:block">
           <CategoryNav parents={parents} categories={categories} counts={counts} filters={filters} />
         </div>
@@ -85,7 +85,7 @@ export function CategorySidebar({
   const children = categories.filter((c) => c.parent_id === activeParent.id);
 
   return (
-    <div className="flex w-full shrink-0 flex-col gap-3 lg:w-72 lg:sticky lg:top-[60px] lg:self-start lg:z-10">
+    <div className="flex w-full shrink-0 flex-col gap-3 lg:w-72 lg:sticky lg:top-16 lg:z-10 lg:max-h-[calc(100vh-5rem)] lg:self-start lg:overflow-y-auto">
       <div className="hidden lg:block rounded-xl border border-neutral-300 bg-white p-3 shadow-md">
         <h3 className="mb-2 text-sm font-bold text-neutral-800">Categories</h3>
         <Link
@@ -95,14 +95,14 @@ export function CategorySidebar({
           All categories
         </Link>
         <p className="mb-2 truncate text-sm font-semibold text-brand">{activeParent.name}</p>
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col divide-y divide-neutral-200">
           {children.map((child) => {
             const isActive = child.slug === selectedSlug;
             return (
               <Link
                 key={child.id}
                 href={`/${child.slug}`}
-                className={`flex items-center gap-2 rounded-md px-2 py-1 text-sm ${
+                className={`flex items-center gap-2 px-2 py-1.5 text-sm ${
                   isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-neutral-50"
                 }`}
               >

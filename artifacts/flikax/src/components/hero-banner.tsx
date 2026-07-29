@@ -8,7 +8,6 @@ import { SearchBar } from "@/components/search-bar";
 type HeroSlide = {
   badge: string;
   headline: string;
-  subheadline: string;
   cta: { label: string; href: string };
   ctaSecondary?: { label: string; href: string };
   gradient: string;
@@ -19,7 +18,6 @@ const SLIDES: HeroSlide[] = [
   {
     badge: "🇬🇭 Live in Ghana · 100k+ active ads",
     headline: "Find Anything in Ghana",
-    subheadline: "Thousands of verified listings from trusted sellers across every city and town.",
     cta: { label: "Explore Deals →", href: "/" },
     ctaSecondary: { label: "How it works", href: "/how-it-works" },
     gradient: "from-[#0B1B33] via-[#124F9E] to-brand",
@@ -52,7 +50,6 @@ const SLIDES: HeroSlide[] = [
   {
     badge: "⚡ Post in under 2 minutes",
     headline: "Sell Your Items Fast",
-    subheadline: "Reach thousands of buyers near you. Listing is always free — no hidden fees.",
     cta: { label: "Post a Free Ad →", href: "/sell" },
     ctaSecondary: { label: "Browse Listings", href: "/" },
     gradient: "from-brand via-[#1868DB] to-[#3C8CE7]",
@@ -65,9 +62,6 @@ const SLIDES: HeroSlide[] = [
         {/* Sound waves */}
         <path d="M192 78 C204 82 210 87 210 90 C210 93 204 98 192 102" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeOpacity="0.6" />
         <path d="M198 70 C218 76 228 83 228 90 C228 97 218 104 198 110" stroke="white" strokeWidth="2" strokeLinecap="round" strokeOpacity="0.35" />
-        {/* Free badge */}
-        <rect x="70" y="125" width="58" height="26" rx="13" fill="white" fillOpacity="0.95" />
-        <text x="84" y="142" fontFamily="system-ui" fontSize="11" fontWeight="800" fill="#1868DB">FREE</text>
         {/* Sparkles */}
         <circle cx="40" cy="55" r="5" fill="white" fillOpacity="0.5" />
         <circle cx="220" cy="50" r="4" fill="white" fillOpacity="0.4" />
@@ -78,7 +72,6 @@ const SLIDES: HeroSlide[] = [
   {
     badge: "🚗 Largest auto classifieds in Ghana",
     headline: "Drive Your Dream Car",
-    subheadline: "Ghana's biggest selection of cars, trucks, and motorbikes — at every price point.",
     cta: { label: "Browse Vehicles →", href: "/?category=vehicles" },
     gradient: "from-neutral-900 via-neutral-800 to-[#124F9E]",
     illustration: (
@@ -154,44 +147,45 @@ export function HeroBanner() {
               legible regardless of how bright the gradient is at that spot. */}
           <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-black/35 via-black/10 to-transparent sm:w-2/3" />
 
-          <div className="relative mx-auto flex max-w-7xl items-center gap-6 px-4 py-8 sm:px-6 sm:py-10 lg:py-14">
+          {/* Bottom padding here is deliberately generous -- it's not empty
+              space, it's the room the absolutely-positioned search bar below
+              needs so it can overlap the tail end of this gradient instead of
+              living in its own separate strip underneath. */}
+          <div className="relative mx-auto flex max-w-7xl items-center gap-4 px-4 pt-4 pb-20 sm:px-6 sm:pt-5 sm:pb-24 lg:pt-6 lg:pb-24">
             {/* Text content */}
             <div className="min-w-0 flex-1">
-              <div className="mb-3 inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white ring-1 ring-white/25 backdrop-blur-sm">
+              <div className="mb-2 inline-flex items-center rounded-full bg-white/15 px-2.5 py-0.5 text-[11px] font-semibold text-white ring-1 ring-white/25 backdrop-blur-sm">
                 {slide.badge}
               </div>
-              <h1 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl lg:text-4xl xl:text-5xl">
+              <h1 className="text-lg font-extrabold leading-tight text-white sm:text-xl lg:text-2xl xl:text-3xl">
                 {slide.headline}
               </h1>
-              <p className="mt-2.5 max-w-md text-sm text-white/90 sm:text-base">
-                {slide.subheadline}
-              </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <Link
                   href={slide.cta.href}
-                  className="rounded-full bg-white px-6 py-2.5 text-sm font-bold text-brand shadow-md transition hover:bg-brand-light hover:shadow-lg"
+                  className="rounded-full bg-white px-4 py-1.5 text-xs font-bold text-brand shadow-md transition hover:bg-brand-light hover:shadow-lg sm:text-sm"
                 >
                   {slide.cta.label}
                 </Link>
                 {slide.ctaSecondary && (
                   <Link
                     href={slide.ctaSecondary.href}
-                    className="rounded-full border border-white/40 bg-white/10 px-6 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+                    className="rounded-full border border-white/40 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-white/20 sm:text-sm"
                   >
                     {slide.ctaSecondary.label}
                   </Link>
                 )}
               </div>
               {/* Dot nav */}
-              <div className="mt-7 flex items-center gap-2">
+              <div className="mt-3 flex items-center gap-1.5">
                 {SLIDES.map((_, i) => (
                   <button
                     key={i}
                     type="button"
                     onClick={() => goTo(i)}
                     aria-label={`Go to slide ${i + 1}`}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      i === index ? "w-7 bg-white" : "w-1.5 bg-white/45 hover:bg-white/65"
+                    className={`h-1 rounded-full transition-all duration-300 ${
+                      i === index ? "w-6 bg-white" : "w-1 bg-white/45 hover:bg-white/65"
                     }`}
                   />
                 ))}
@@ -199,22 +193,22 @@ export function HeroBanner() {
             </div>
 
             {/* Illustration */}
-            <div className="hidden w-56 shrink-0 sm:block lg:w-72 xl:w-80" aria-hidden>
+            <div className="hidden w-36 shrink-0 sm:block lg:w-48 xl:w-56" aria-hidden>
               {slide.illustration}
             </div>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Persistent search band -- unlike the promo content above, this does
-          NOT live inside the per-slide motion.div, so it never unmounts (and
-          never loses focus/typed input) as slides rotate underneath it. */}
-      <div className="relative mx-auto w-full max-w-7xl px-4 pb-7 sm:px-6 sm:pb-9 lg:pb-11">
-        <SearchBar />
+      {/* Centered search bar overlapping the tail end of the gradient --
+          intentionally a sibling of AnimatePresence, not inside the
+          per-slide motion.div, so it never unmounts (and never loses
+          in-progress focus/typing) as slides rotate underneath it. */}
+      <div className="absolute inset-x-0 bottom-3 z-20 px-4 sm:bottom-4 sm:px-6 lg:bottom-5">
+        <div className="mx-auto w-full max-w-2xl">
+          <SearchBar />
+        </div>
       </div>
-
-      {/* Subtle bottom fade for separation from the content below */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-black/15 to-transparent" />
     </div>
   );
 }
