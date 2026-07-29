@@ -1,3 +1,6 @@
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+
 export function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 48 48" {...props}>
@@ -21,34 +24,38 @@ export function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
+type BrandIconProps = {
+  className?: string;
+};
+
+// The four platform logos below are the user's real brand assets (fixed
+// full-color artwork), not recolorable currentColor glyphs like GoogleIcon
+// above -- so they're rendered via next/image rather than inline <svg>.
+// object-contain guards TikTok's non-square source canvas from distorting.
+function BrandIcon({ src, alt, className }: BrandIconProps & { src: string; alt: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.77l-.44 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94z" />
-    </svg>
+    <Image
+      src={src}
+      alt={alt}
+      width={48}
+      height={48}
+      className={cn("size-4 object-contain", className)}
+    />
   );
 }
 
-export function XIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M18.24 2H21.5l-7.3 8.34L22.8 22h-6.74l-5.28-6.9L4.7 22H1.44l7.8-8.92L1 2h6.9l4.77 6.3L18.24 2zm-1.18 18h1.8L7.03 4H5.1l11.96 16z" />
-    </svg>
-  );
+export function FacebookIcon({ className }: BrandIconProps) {
+  return <BrandIcon src="/images/social/facebook.png" alt="Facebook" className={className} />;
 }
 
-export function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.98A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.2 8.2 0 0 1 2.4 5.83c0 4.53-3.69 8.22-8.22 8.22a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.25-4.36c0-4.53 3.7-8.23 8.25-8.23zm-4.53 4.6c-.16 0-.43.06-.65.31-.22.25-.86.84-.86 2.04 0 1.2.88 2.37 1 2.53.13.17 1.75 2.8 4.31 3.81 2.13.85 2.57.68 3.03.64.47-.04 1.5-.61 1.72-1.2.21-.59.21-1.09.15-1.2-.06-.11-.23-.17-.48-.3-.25-.13-1.5-.74-1.73-.82-.23-.09-.4-.13-.57.13-.17.25-.65.82-.8.99-.15.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.66-1.25-1.48-1.4-1.73-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.17.04-.31-.02-.44-.06-.13-.57-1.4-.79-1.91-.2-.5-.42-.43-.57-.44-.15-.01-.31-.01-.47-.01z" />
-    </svg>
-  );
+export function XIcon({ className }: BrandIconProps) {
+  return <BrandIcon src="/images/social/x.png" alt="X" className={className} />;
 }
 
-export function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M16.6 5.82c-.87-.96-1.34-2.2-1.33-3.48h-3.02v13.44c0 1.5-1.22 2.72-2.72 2.72a2.72 2.72 0 0 1-2.72-2.72 2.72 2.72 0 0 1 2.72-2.72c.28 0 .55.04.8.12v-3.09a5.8 5.8 0 0 0-.8-.06A5.76 5.76 0 0 0 3.77 15.8a5.76 5.76 0 0 0 5.76 5.76 5.76 5.76 0 0 0 5.76-5.76V9.01a7.5 7.5 0 0 0 4.4 1.42V7.4a4.85 4.85 0 0 1-3.09-1.58z" />
-    </svg>
-  );
+export function WhatsAppIcon({ className }: BrandIconProps) {
+  return <BrandIcon src="/images/social/whatsapp.png" alt="WhatsApp" className={className} />;
+}
+
+export function TikTokIcon({ className }: BrandIconProps) {
+  return <BrandIcon src="/images/social/tiktok.png" alt="TikTok" className={className} />;
 }

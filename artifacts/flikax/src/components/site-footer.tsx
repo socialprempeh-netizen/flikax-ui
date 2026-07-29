@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { PencilLine } from "lucide-react";
 import { FlikaxLogo } from "@/components/flikax-logo";
-import { FaXTwitter, FaFacebookF, FaInstagram, FaTiktok, FaLinkedinIn, FaApple, FaGooglePlay } from "react-icons/fa6";
+import { FaInstagram, FaLinkedinIn, FaApple, FaGooglePlay } from "react-icons/fa6";
+import { FacebookIcon, XIcon, TikTokIcon } from "@/components/icons/social-icons";
 import { SellCta } from "@/components/cta/sell-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 
@@ -36,12 +37,14 @@ const legalLinks = [
 ];
 
 // No real social accounts exist yet -- these render as plain icons (not
-// links to profiles that don't exist).
+// links to profiles that don't exist). X, Facebook, and TikTok use the
+// real brand logo assets; Instagram/LinkedIn have no asset yet and keep
+// their react-icons glyphs.
 const socialIcons = [
-  { label: "X", icon: FaXTwitter },
-  { label: "Facebook", icon: FaFacebookF },
+  { label: "X", icon: XIcon },
+  { label: "Facebook", icon: FacebookIcon },
   { label: "Instagram", icon: FaInstagram },
-  { label: "TikTok", icon: FaTiktok },
+  { label: "TikTok", icon: TikTokIcon },
   { label: "LinkedIn", icon: FaLinkedinIn },
 ];
 
@@ -67,7 +70,7 @@ export function SiteFooter() {
                 aria-label={label}
                 className="flex size-7 items-center justify-center rounded-full bg-white/10 text-white/80"
               >
-                <Icon className="size-3.5" />
+                <Icon className="size-4" />
               </span>
             ))}
           </div>

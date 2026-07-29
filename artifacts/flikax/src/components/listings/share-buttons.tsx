@@ -28,36 +28,51 @@ export function ShareButtons({ title, priceLabel }: { title: string; priceLabel:
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-sm font-medium text-neutral-500">Share:</span>
 
-      <Button asChild variant="outline" size="icon" className="rounded-full hover:bg-brand-light hover:text-brand">
+      <Button
+        asChild
+        variant="outline"
+        size="icon"
+        className="rounded-full transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+      >
         <a
           href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Share on Facebook"
         >
-          <FacebookIcon className="size-4" />
+          <FacebookIcon className="size-5" />
         </a>
       </Button>
 
-      <Button asChild variant="outline" size="icon" className="rounded-full hover:bg-brand-light hover:text-brand">
+      <Button
+        asChild
+        variant="outline"
+        size="icon"
+        className="rounded-full transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+      >
         <a
           href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${url}`)}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Share on WhatsApp"
         >
-          <WhatsAppIcon className="size-4" />
+          <WhatsAppIcon className="size-5" />
         </a>
       </Button>
 
-      <Button asChild variant="outline" size="icon" className="rounded-full hover:bg-brand-light hover:text-brand">
+      <Button
+        asChild
+        variant="outline"
+        size="icon"
+        className="rounded-full transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+      >
         <a
           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Share on X"
         >
-          <XIcon className="size-4" />
+          <XIcon className="size-5" />
         </a>
       </Button>
 
@@ -68,9 +83,9 @@ export function ShareButtons({ title, priceLabel }: { title: string; priceLabel:
         title="TikTok doesn't support pre-filled link sharing — this copies the listing details instead"
         variant="outline"
         size="icon"
-        className={`rounded-full ${copied ? "border-green-300 bg-green-100 text-green-600 hover:bg-green-100" : "hover:bg-brand-light hover:text-brand"}`}
+        className={`rounded-full transition-all ${copied ? "border-green-300 bg-green-100 text-green-600 hover:bg-green-100" : "hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"}`}
       >
-        {copied ? <Check className="size-4" /> : <TikTokIcon className="size-4" />}
+        {copied ? <Check className="size-4" /> : <TikTokIcon className="size-5" />}
       </Button>
 
       {copied && (
