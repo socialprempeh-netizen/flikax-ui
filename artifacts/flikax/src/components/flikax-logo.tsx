@@ -14,7 +14,7 @@ type FlikaxLogoProps = {
 };
 
 /**
- * Flikax brand logo: orange rounded-square icon containing a white "F",
+ * Flikax brand logo: brand-blue rounded-square icon containing a white "F",
  * followed by the "flikax" wordmark.
  *
  * Use wordmarkColor="text-brand" on light/white backgrounds.

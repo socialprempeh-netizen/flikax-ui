@@ -1,19 +1,90 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 :root {
-  /* Site-wide page background -- a visible light grey (Jiji-style) rather
-     than flat white, so cards/panels read as sitting on a surface instead
-     of blending into the page. Single source of truth: every page-root
-     wrapper uses bg-background instead of hardcoding a neutral-* shade. */
-  --background: #eef0f2;
+  /* Site-wide page background -- a very light, cool neutral (not flat white)
+     so cards/panels still read as sitting on a surface instead of blending
+     into the page. Single source of truth: every page-root wrapper uses
+     bg-background instead of hardcoding a neutral-* shade. */
+  --background: #f7f8fa;
   --foreground: #171717;
-  --brand: #f97316;
-  --brand-dark: #ea580c;
-  --brand-light: #fff7ed;
+  /* Single-brand-color system: one deep corporate blue drives every
+     interactive element site-wide (buttons, links, active states,
+     highlights, focus rings) via these three tokens -- nothing else should
+     introduce a second accent color. */
+  --brand: #1868db;
+  --brand-dark: #124f9e;
+  --brand-light: #eaf2fe;
+  /* Deep navy shell reserved for the header bar -- same blue family as
+     --brand but dark enough that the brand-blue logo mark and CTA button
+     still read as distinct accents against it (a flat --brand header would
+     make them disappear into the bar). */
+  --header-bg: #0b1b33;
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
      as a deliberate tint, not just an off-white. */
   --cream: #f7ecd6;
+
+  /* shadcn/ui base theme (new-york, neutral). Brand color doubles as the
+     shadcn "primary" so Button/Card/Dialog/DropdownMenu/Input match the
+     existing --brand orange instead of shadcn's default. */
+  --radius: 0.625rem;
+  --card: #ffffff;
+  --card-foreground: var(--foreground);
+  --popover: #ffffff;
+  --popover-foreground: var(--foreground);
+  --primary: var(--brand);
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: var(--brand-light);
+  --accent-foreground: var(--brand-dark);
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: var(--brand);
+
+  /* Glassmorphism surfaces: frosted panels for headers, modals, overlays.
+     Kept as tokens (not ad-hoc bg-white/60 backdrop-blur scattered around)
+     so the "glass" look stays consistent everywhere it's used. */
+  --glass-bg: rgb(255 255 255 / 0.7);
+  --glass-border: rgb(255 255 255 / 0.4);
+  --glass-shadow: 0 8px 32px 0 rgb(0 0 0 / 0.1);
+}
+
+.dark {
+  /* Infra-only for now: no toggle is wired up yet and nothing renders this
+     class today (see next-themes ThemeProvider in layout.tsx, defaultTheme
+     "light"). Values are filled in so flipping the class on later doesn't
+     require rediscovering the palette -- see the note above in :root about
+     why dark mode was previously skipped entirely: existing components
+     still hardcode bg-white/neutral-* and will need per-component work
+     before dark mode is actually safe to enable. */
+  --background: #121212;
+  --foreground: #f5f5f5;
+  --card: #1c1c1c;
+  --card-foreground: #f5f5f5;
+  --popover: #1c1c1c;
+  --popover-foreground: #f5f5f5;
+  --primary: var(--brand);
+  --primary-foreground: #ffffff;
+  --secondary: #262626;
+  --secondary-foreground: #f5f5f5;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --accent: #2a2118;
+  --accent-foreground: var(--brand-light);
+  --destructive: #f87171;
+  --destructive-foreground: #1c1c1c;
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.15);
+  --ring: var(--brand);
+  --glass-bg: rgb(28 28 28 / 0.7);
+  --glass-border: rgb(255 255 255 / 0.08);
+  --glass-shadow: 0 8px 32px 0 rgb(0 0 0 / 0.4);
 }
 
 @theme inline {
@@ -22,9 +93,10 @@
   --color-brand: var(--brand);
   --color-brand-dark: var(--brand-dark);
   --color-brand-light: var(--brand-light);
+  --color-header-bg: var(--header-bg);
   --color-cream: var(--cream);
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    "Noto Sans", sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-logo: var(--font-baloo-2);
 
   /* Between Tailwind's defaults and flat: the previous values (0.03-0.07
@@ -34,14 +106,32 @@
   --shadow-md: 0 4px 8px -1px rgb(0 0 0 / 0.09), 0 2px 5px -2px rgb(0 0 0 / 0.07);
   --shadow-lg: 0 8px 14px -3px rgb(0 0 0 / 0.1), 0 4px 7px -4px rgb(0 0 0 / 0.08);
   --shadow-xl: 0 14px 20px -5px rgb(0 0 0 / 0.12), 0 6px 8px -6px rgb(0 0 0 / 0.09);
-}
 
-@keyframes hero-fade-in {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-.hero-slide-enter {
-  animation: hero-fade-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  /* shadcn/ui component tokens */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --color-glass-shadow: var(--glass-shadow);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 html {
@@ -62,4 +152,18 @@ body {
   color: rgb(49, 49, 49);
   font-size: 16px;
   font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Frosted-glass surface: headers, sticky bars, modal chrome. Use alongside
+   a backdrop, not as a full-page background -- needs something behind it
+   to actually read as "glass". */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }

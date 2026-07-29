@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { getCategories } from "@/lib/categories";
 import { MobileNavDrawer } from "@/components/mobile-nav-drawer";
 import { HeaderUserActions } from "@/components/header-user-actions";
-import { SearchLocationField } from "@/components/search-location-field";
 import { FlikaxLogo } from "@/components/flikax-logo";
 import type { Category } from "@/components/category-sidebar";
 
@@ -20,42 +18,22 @@ export async function SiteHeader({ categories: categoriesProp }: { categories?: 
   const categories = categoriesProp ?? (await getCategories());
 
   return (
-    <header className="sticky top-0 z-50 bg-black shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2 sm:gap-4 sm:py-2.5 sm:px-6">
-        {/* Left: hamburger + logo + nav */}
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <MobileNavDrawer categories={categories} />
-          <FlikaxLogo iconSize="size-7 sm:size-8" wordmarkSize="text-xl sm:text-2xl" />
+    <header className="sticky top-0 z-50 bg-header-bg shadow-lg">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6">
+        {/* Left: hamburger + logo + nav -- search now lives in the hero band
+            below instead of here, so this stays a clean identity + nav bar. */}
+        <div className="flex shrink-0 items-center gap-5">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <MobileNavDrawer categories={categories} />
+            <FlikaxLogo iconSize="size-7 sm:size-8" wordmarkSize="text-xl sm:text-2xl" />
+          </div>
+
+          <nav className="hidden shrink-0 items-center gap-5 text-sm font-medium text-white/70 lg:flex">
+            <Link href="/" className="transition-colors hover:text-white">Browse</Link>
+            <Link href="/?category=vehicles" className="transition-colors hover:text-white">Vehicles</Link>
+            <Link href="/?category=property" className="transition-colors hover:text-white">Property</Link>
+          </nav>
         </div>
-
-        <nav className="hidden shrink-0 items-center gap-5 text-sm font-medium text-white/80 lg:flex">
-          <Link href="/" className="hover:text-white">Browse</Link>
-          <Link href="/?category=vehicles" className="hover:text-white">Vehicles</Link>
-          <Link href="/?category=property" className="hover:text-white">Property</Link>
-        </nav>
-
-        {/* Center: search pill with location picker */}
-        <form
-          action="/"
-          method="get"
-          className="hidden flex-1 items-center rounded-full bg-white shadow-inner lg:flex"
-        >
-          <SearchLocationField />
-          <span className="h-5 w-px shrink-0 bg-neutral-200" />
-          <input
-            name="q"
-            type="search"
-            placeholder="Search phones, cars, houses, jobs…"
-            className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-neutral-800 outline-none placeholder:text-neutral-400"
-          />
-          <button
-            type="submit"
-            aria-label="Search"
-            className="mr-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-white hover:bg-brand-dark"
-          >
-            <Search className="size-4" />
-          </button>
-        </form>
 
         {/* Right: icons + CTA */}
         <HeaderUserActions />

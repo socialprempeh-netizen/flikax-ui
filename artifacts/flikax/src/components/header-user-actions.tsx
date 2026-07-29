@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MessageSquare, Bell, Gem, ClipboardList, UserRound, UserPlus, Plus } from "lucide-react";
 import { useSessionSummary } from "@/lib/use-session-summary";
+import { Button } from "@/components/ui/button";
 
 // Split out of SiteHeader so the auth-dependent icons (which need cookies())
 // don't force every page that renders the header into dynamic rendering --
@@ -102,13 +103,12 @@ export function HeaderUserActions() {
           )}
         </Link>
 
-        <Link
-          href="/sell"
-          className="flex items-center gap-1.5 rounded-full bg-brand px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-dark sm:px-5 sm:py-2 sm:text-sm"
-        >
-          Post Ad
-          <Plus className="size-3.5 sm:size-4" />
-        </Link>
+        <Button asChild size="lg" className="rounded-full px-5 font-bold shadow-sm">
+          <Link href="/sell">
+            <Plus className="size-4" />
+            Post Ad
+          </Link>
+        </Button>
       </div>
     </>
   );

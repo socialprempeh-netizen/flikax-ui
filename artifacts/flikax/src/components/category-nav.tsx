@@ -115,18 +115,20 @@ export function CategoryNav({
           >
             <Link
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`flex items-center gap-2.5 px-3 py-2 hover:bg-brand-light ${
+              className={`group flex items-center gap-2.5 px-3 py-2 transition-colors duration-150 hover:bg-brand-light ${
                 isHovered ? "bg-brand-light" : ""
               }`}
             >
-              <CategoryThumb category={cat} size="size-8" iconSize="size-4" sizes="32px" />
+              <span className="transition-transform duration-150 group-hover:scale-110">
+                <CategoryThumb category={cat} size="size-8" iconSize="size-4" sizes="32px" />
+              </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-neutral-800">
+                <span className="block truncate text-sm font-semibold text-neutral-800 transition-colors group-hover:text-brand">
                   {cat.name}
                 </span>
                 <span className="block text-xs text-neutral-500">{totalFor(cat)} ads</span>
               </span>
-              <ChevronRight className="size-4 shrink-0 text-neutral-600" />
+              <ChevronRight className="size-4 shrink-0 text-neutral-400 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-brand" />
             </Link>
 
             {isHovered && children.length > 0 && flyoutPos && (

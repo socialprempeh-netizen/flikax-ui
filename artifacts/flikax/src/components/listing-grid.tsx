@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ImageOff, Star, TrendingUp } from "lucide-react";
+import { ImageOff, Star, TrendingUp, MapPin, Clock } from "lucide-react";
 import { formatRelativeTime } from "@/lib/format-time";
 import { CompactSaveButton } from "@/components/listings/compact-save-button";
+import { Card, CardContent } from "@/components/ui/card";
 
 export type ListingCard = {
   id: string;
@@ -61,84 +62,92 @@ export function ListingGrid({
 
   return (
     <section className="flex-1">
-      <div className={isHome ? "columns-2 gap-3 sm:columns-3 lg:columns-4" : "columns-2 gap-3 sm:columns-2 lg:columns-3"}>
+      <div
+        className={
+          isHome
+            ? "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+            : "grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        }
+      >
         {listings.map((listing) => {
           const hasNaturalAspect = Boolean(listing.imageWidth && listing.imageHeight);
 
           return (
-            <Link
-              key={listing.id}
-              href={listing.href}
-              className={`mb-3 block break-inside-avoid overflow-hidden rounded-xl border border-brand bg-white ${
-                isHome ? "shadow-md hover:shadow-lg" : "shadow-lg hover:shadow-xl"
-              }`}
-            >
-              <div
-                className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
-                  hasNaturalAspect ? "" : isHome ? "aspect-[2/1]" : "aspect-video"
-                }`}
-                style={
-                  hasNaturalAspect
-                    ? { aspectRatio: `${listing.imageWidth} / ${listing.imageHeight}`, maxHeight: MAX_IMAGE_HEIGHT }
-                    : undefined
-                }
-              >
-                {listing.imageUrl ? (
-                  <Image
-                    src={listing.imageUrl}
-                    alt={listing.title}
-                    fill
-                    sizes={
-                      isHome
-                        ? "(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
-                        : "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 45vw"
-                    }
-                    quality={82}
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex size-full items-center justify-center">
-                    <ImageOff className="size-8" />
-                  </div>
-                )}
-                {(listing.isFeatured || listing.isBumped) && (
-                  <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
-                    {listing.isFeatured && (
-                      <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 shadow-sm">
-                        <Star className="size-3 fill-amber-500 text-amber-500" />
-                        Featured
+            <Link key={listing.id} href={listing.href} className="group block">
+              <Card className="gap-0 overflow-hidden border-neutral-200 p-0 shadow-sm transition-all duration-200 group-hover:-translate-y-1 group-hover:border-brand/30 group-hover:shadow-xl">
+                <div
+                  className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
+                    hasNaturalAspect ? "" : isHome ? "aspect-[2/1]" : "aspect-video"
+                  }`}
+                  style={
+                    hasNaturalAspect
+                      ? { aspectRatio: `${listing.imageWidth} / ${listing.imageHeight}`, maxHeight: MAX_IMAGE_HEIGHT }
+                      : undefined
+                  }
+                >
+                  {listing.imageUrl ? (
+                    <Image
+                      src={listing.imageUrl}
+                      alt={listing.title}
+                      fill
+                      sizes={
+                        isHome
+                          ? "(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
+                          : "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 45vw"
+                      }
+                      quality={82}
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex size-full items-center justify-center">
+                      <ImageOff className="size-8" />
+                    </div>
+                  )}
+                  {(listing.isFeatured || listing.isBumped) && (
+                    <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
+                      {listing.isFeatured && (
+                        <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 shadow-sm">
+                          <Star className="size-3 fill-amber-500 text-amber-500" />
+                          Featured
+                        </span>
+                      )}
+                      {listing.isBumped && (
+                        <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 shadow-sm">
+                          <TrendingUp className="size-3 text-blue-600" />
+                          Bumped
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <CompactSaveButton listingId={listing.id} />
+                </div>
+                <CardContent className="space-y-1 p-3">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-lg font-extrabold text-brand">{currency.format(listing.price)}</span>
+                    {listing.negotiable && (
+                      <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium text-neutral-500">
+                        Neg.
                       </span>
                     )}
-                    {listing.isBumped && (
-                      <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 shadow-sm">
-                        <TrendingUp className="size-3 text-blue-600" />
-                        Bumped
-                      </span>
-                    )}
                   </div>
-                )}
-                <CompactSaveButton listingId={listing.id} />
-              </div>
-              <div className="space-y-1 p-3">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-lg font-extrabold text-brand">{currency.format(listing.price)}</span>
-                  {listing.negotiable && (
-                    <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium text-neutral-500">
-                      Neg.
+                  <p className="line-clamp-2 text-sm font-semibold text-neutral-800">{listing.title}</p>
+                  {listing.description && (
+                    <p className="line-clamp-2 text-xs text-neutral-500">{listing.description}</p>
+                  )}
+                  <div className="flex items-center justify-between gap-2 pt-0.5 text-xs text-neutral-400">
+                    <span className="flex min-w-0 items-center gap-1 truncate">
+                      <MapPin className="size-3 shrink-0" />
+                      <span className="truncate">{listing.location}</span>
                     </span>
-                  )}
-                </div>
-                <p className="line-clamp-2 text-sm font-semibold text-neutral-800">{listing.title}</p>
-                {listing.description && (
-                  <p className="line-clamp-2 text-xs text-neutral-500">{listing.description}</p>
-                )}
-                <div className="flex items-center justify-between gap-2 pt-0.5 text-xs text-neutral-400">
-                  <span className="truncate">{listing.location}</span>
-                  {listing.createdAt && (
-                    <span className="shrink-0">{formatRelativeTime(new Date(listing.createdAt))}</span>
-                  )}
-                </div>
-              </div>
+                    {listing.createdAt && (
+                      <span className="flex shrink-0 items-center gap-1">
+                        <Clock className="size-3" />
+                        {formatRelativeTime(new Date(listing.createdAt))}
+                      </span>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </Link>
           );
         })}

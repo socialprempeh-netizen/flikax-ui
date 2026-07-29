@@ -1,9 +1,9 @@
 import { unstable_cache } from "next/cache";
 import { SiteHeader } from "@/components/site-header";
-import { SearchBar } from "@/components/search-bar";
 import { CategorySidebar } from "@/components/category-sidebar";
 import { InfiniteListingGrid } from "@/components/infinite-listing-grid";
 import { HeroBanner } from "@/components/hero-banner";
+import { HomepageQuickLinks } from "@/components/homepage-quick-links";
 import { TopSellers } from "@/components/top-sellers";
 import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
@@ -74,8 +74,13 @@ export default async function Home({ searchParams }: PageProps) {
       {/* 1. Hero promotional carousel — full width, no container constraint */}
       <HeroBanner />
 
-      {/* 2. Main content: sidebar + listing grid */}
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 pb-6 pt-4 sm:px-6 lg:flex-row lg:gap-4">
+      {/* 2. Quick links row — Post an Ad, Find a Job, Trust & Safety, Premium */}
+      <div className="mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <HomepageQuickLinks />
+      </div>
+
+      {/* 3. Main content: sidebar + listing grid */}
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 pb-10 pt-6 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">
         <CategorySidebar
           categories={categories ?? []}
           counts={counts}

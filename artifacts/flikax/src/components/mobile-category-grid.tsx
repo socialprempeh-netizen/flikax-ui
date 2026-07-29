@@ -17,7 +17,7 @@ export function MobileCategoryGrid({
         href="/sell"
         className="flex min-h-16 flex-col items-center justify-start gap-1.5 text-center"
       >
-        <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-orange-500 text-white">
+        <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand text-white">
           <Plus className="size-6" />
         </span>
         <span className="line-clamp-2 text-[13px] font-semibold leading-tight text-neutral-800">
