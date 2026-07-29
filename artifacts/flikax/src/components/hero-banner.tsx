@@ -1,25 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { SearchBar } from "@/components/search-bar";
 
 type HeroSlide = {
-  badge: string;
   headline: string;
-  cta: { label: string; href: string };
-  ctaSecondary?: { label: string; href: string };
   gradient: string;
   illustration: ReactNode;
 };
 
 const SLIDES: HeroSlide[] = [
   {
-    badge: "🇬🇭 Live in Ghana · 100k+ active ads",
     headline: "Find Anything in Ghana",
-    cta: { label: "Explore Deals →", href: "/" },
-    ctaSecondary: { label: "How it works", href: "/how-it-works" },
     gradient: "from-[#0B1B33] via-[#124F9E] to-brand",
     illustration: (
       <svg viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
@@ -48,10 +41,7 @@ const SLIDES: HeroSlide[] = [
     ),
   },
   {
-    badge: "⚡ Post in under 2 minutes",
     headline: "Sell Your Items Fast",
-    cta: { label: "Post a Free Ad →", href: "/sell" },
-    ctaSecondary: { label: "Browse Listings", href: "/" },
     gradient: "from-brand via-[#1868DB] to-[#3C8CE7]",
     illustration: (
       <svg viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
@@ -70,9 +60,7 @@ const SLIDES: HeroSlide[] = [
     ),
   },
   {
-    badge: "🚗 Largest auto classifieds in Ghana",
     headline: "Drive Your Dream Car",
-    cta: { label: "Browse Vehicles →", href: "/?category=vehicles" },
     gradient: "from-neutral-900 via-neutral-800 to-[#124F9E]",
     illustration: (
       <svg viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
@@ -152,32 +140,14 @@ export function HeroBanner() {
               needs so it can overlap the tail end of this gradient instead of
               living in its own separate strip underneath. */}
           <div className="relative mx-auto flex max-w-7xl items-center gap-4 px-4 pt-4 pb-20 sm:px-6 sm:pt-5 sm:pb-24 lg:pt-6 lg:pb-24">
-            {/* Text content */}
+            {/* Text content -- headline only, per the minimalist hero brief;
+                no badge/CTA clutter competing with the search bar below. */}
             <div className="min-w-0 flex-1">
-              <div className="mb-2 inline-flex items-center rounded-full bg-white/15 px-2.5 py-0.5 text-[11px] font-semibold text-white ring-1 ring-white/25 backdrop-blur-sm">
-                {slide.badge}
-              </div>
-              <h1 className="text-lg font-extrabold leading-tight text-white sm:text-xl lg:text-2xl xl:text-3xl">
+              <h1 className="text-xl font-extrabold leading-tight text-white drop-shadow-sm sm:text-2xl lg:text-3xl xl:text-4xl">
                 {slide.headline}
               </h1>
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <Link
-                  href={slide.cta.href}
-                  className="rounded-full bg-white px-4 py-1.5 text-xs font-bold text-brand shadow-md transition hover:bg-brand-light hover:shadow-lg sm:text-sm"
-                >
-                  {slide.cta.label}
-                </Link>
-                {slide.ctaSecondary && (
-                  <Link
-                    href={slide.ctaSecondary.href}
-                    className="rounded-full border border-white/40 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-white/20 sm:text-sm"
-                  >
-                    {slide.ctaSecondary.label}
-                  </Link>
-                )}
-              </div>
               {/* Dot nav */}
-              <div className="mt-3 flex items-center gap-1.5">
+              <div className="mt-4 flex items-center gap-1.5">
                 {SLIDES.map((_, i) => (
                   <button
                     key={i}
@@ -205,7 +175,7 @@ export function HeroBanner() {
           per-slide motion.div, so it never unmounts (and never loses
           in-progress focus/typing) as slides rotate underneath it. */}
       <div className="absolute inset-x-0 bottom-3 z-20 px-4 sm:bottom-4 sm:px-6 lg:bottom-5">
-        <div className="mx-auto w-full max-w-2xl">
+        <div className="mx-auto w-full max-w-xl">
           <SearchBar />
         </div>
       </div>

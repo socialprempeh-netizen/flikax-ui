@@ -14,20 +14,20 @@ export function SearchBar({
       role="search"
       action="/"
       method="get"
-      className="mx-auto flex w-full max-w-3xl items-center gap-2 rounded-full border border-transparent bg-white p-2 text-base shadow-xl transition-shadow focus-within:border-brand/30 focus-within:shadow-2xl"
+      className="mx-auto flex w-full items-center gap-1.5 rounded-full border border-transparent bg-white p-1.5 text-sm shadow-xl transition-shadow focus-within:border-brand/30 focus-within:shadow-2xl"
     >
       <SearchLocationField defaultLocation={defaultLocation} />
 
-      <span className="h-6 w-px shrink-0 bg-neutral-200" />
+      <span className="h-5 w-px shrink-0 bg-neutral-200" />
 
       <SearchQueryField defaultQuery={defaultQuery} />
 
       <button
         type="submit"
         aria-label="Search"
-        className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-dark"
+        className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-dark"
       >
-        <Search className="size-5" />
+        <Search className="size-4" />
       </button>
     </form>
   );

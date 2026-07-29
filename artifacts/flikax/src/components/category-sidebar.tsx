@@ -102,11 +102,12 @@ export function CategorySidebar({
               <Link
                 key={child.id}
                 href={`/${child.slug}`}
-                className={`flex items-center gap-2 px-2 py-1.5 text-sm ${
+                className={`flex items-center gap-3 px-3 py-2 text-sm ${
                   isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-neutral-50"
                 }`}
               >
                 <CategoryThumb category={child} size="size-6" iconSize="size-3.5" rounded="rounded-md" sizes="24px" />
+                <span className="h-5 w-px shrink-0 bg-neutral-200" />
                 <span className="min-w-0 flex-1 truncate">{child.name}</span>
                 <span className="ml-2 shrink-0 text-xs text-neutral-400">{counts.get(child.id) ?? 0}</span>
               </Link>

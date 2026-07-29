@@ -19,7 +19,7 @@ export async function SiteHeader({ categories: categoriesProp }: { categories?: 
 
   return (
     <header className="sticky top-0 z-50 bg-header-bg shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:gap-4 sm:px-6">
         {/* Left: hamburger + logo + nav -- search now lives in the hero band
             below instead of here, so this stays a clean identity + nav bar. */}
         <div className="flex shrink-0 items-center gap-5">

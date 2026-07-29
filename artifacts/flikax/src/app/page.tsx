@@ -80,7 +80,7 @@ export default async function Home({ searchParams }: PageProps) {
       </div>
 
       {/* 3. Main content: sidebar + listing grid */}
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 pb-10 pt-6 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 pb-10 pt-6 sm:px-6 lg:flex-row lg:gap-8 lg:px-8">
         <CategorySidebar
           categories={categories ?? []}
           counts={counts}
