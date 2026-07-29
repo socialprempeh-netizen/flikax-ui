@@ -3,6 +3,11 @@
 import { useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRegions } from "@/lib/use-regions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
+const SELECT_CLASS = "w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand";
 
 type Profile = {
   full_name: string | null;
@@ -70,11 +75,11 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
 
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">Name</span>
-        <input
+        <Input
           type="text"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
-          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+          className={FIELD_CLASS}
         />
       </label>
 
@@ -83,7 +88,7 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
         <select
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+          className={SELECT_CLASS}
         >
           <option value="">Select location</option>
           {regions.map((region) => (
@@ -101,11 +106,11 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
       <div className="grid grid-cols-2 gap-4">
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-neutral-700">Birthday</span>
-          <input
+          <Input
             type="date"
             value={dateOfBirth}
             onChange={(e) => setDateOfBirth(e.target.value)}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className={FIELD_CLASS}
           />
         </label>
 
@@ -114,7 +119,7 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
           <select
             value={sex}
             onChange={(e) => setSex(e.target.value)}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className={SELECT_CLASS}
           >
             <option value="" disabled>
               Select
@@ -128,13 +133,9 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={saving}
-        className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-      >
+      <Button type="submit" disabled={saving}>
         {saving ? "Saving..." : "Save"}
-      </button>
+      </Button>
     </form>
   );
 }

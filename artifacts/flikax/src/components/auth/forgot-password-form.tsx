@@ -3,6 +3,8 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function ForgotPasswordForm() {
   const [supabase] = useState(() => createClient());
@@ -38,12 +40,9 @@ export function ForgotPasswordForm() {
           If an account exists for <span className="font-medium text-neutral-700">{email}</span>, we&apos;ve
           sent a link to reset your password.
         </p>
-        <Link
-          href="/auth/login"
-          className="mt-4 block w-full rounded-lg border border-neutral-200 py-2.5 text-center text-sm font-bold text-neutral-700 hover:bg-neutral-50"
-        >
-          Back to login
-        </Link>
+        <Button asChild variant="outline" className="mt-4 w-full">
+          <Link href="/auth/login">Back to login</Link>
+        </Button>
       </div>
     );
   }
@@ -62,7 +61,7 @@ export function ForgotPasswordForm() {
 
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">Email</span>
-        <input
+        <Input
           type="email"
           autoComplete="email"
           autoFocus
@@ -70,17 +69,13 @@ export function ForgotPasswordForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+          className="h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand"
         />
       </label>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-lg bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-      >
+      <Button type="submit" disabled={loading} className="w-full">
         {loading ? "Sending..." : "Send reset link"}
-      </button>
+      </Button>
 
       <Link href="/auth/login" className="block text-center text-sm font-medium text-brand hover:underline">
         Back to login

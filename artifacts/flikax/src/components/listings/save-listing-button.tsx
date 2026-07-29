@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { Bookmark } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { toggleSavedListingAction } from "@/app/listings/actions";
 import { withAuthRetry } from "@/lib/auth-retry";
 import { useSavedListingIds } from "@/lib/use-saved-listing-ids";
@@ -32,23 +33,25 @@ export function SaveListingButton({ listingId }: { listingId: string }) {
   }
 
   return (
-    <button
+    <Button
       type="button"
       onClick={toggle}
       disabled={isPending}
       aria-label={saved ? "Remove from saved" : "Save listing"}
       aria-pressed={saved}
       title={error ?? undefined}
-      className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-bold disabled:opacity-60 ${
+      variant="outline"
+      size="sm"
+      className={`rounded-full ${
         error
-          ? "border-red-200 text-red-500"
+          ? "border-red-200 text-red-500 hover:bg-red-50"
           : saved
-            ? "border-brand bg-brand-light text-brand"
-            : "border-neutral-200 text-neutral-700 hover:bg-neutral-50"
+            ? "border-brand bg-brand-light text-brand hover:bg-brand-light"
+            : "text-neutral-700"
       }`}
     >
       <Bookmark className={`size-4 ${saved ? "fill-brand" : ""}`} />
       {saved ? "Saved" : "Save"}
-    </button>
+    </Button>
   );
 }

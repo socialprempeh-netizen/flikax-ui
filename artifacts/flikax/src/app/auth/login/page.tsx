@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FlikaxLogo } from "@/components/flikax-logo";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/supabase/server";

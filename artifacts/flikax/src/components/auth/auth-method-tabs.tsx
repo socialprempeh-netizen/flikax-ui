@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { EmailAuthForm } from "@/components/auth/email-auth-form";
 import { PhoneAuthForm } from "@/components/auth/phone-auth-form";
 
@@ -18,24 +19,26 @@ export function AuthMethodTabs({ redirectTo }: { redirectTo?: string }) {
       </div>
 
       <div className="flex justify-center gap-6 text-base font-bold">
-        <button
+        <Button
           type="button"
           onClick={() => setMethod("email")}
-          className={`border-b-2 pb-1 ${
-            method === "email" ? "border-brand text-brand" : "border-transparent text-neutral-400"
+          variant="ghost"
+          className={`h-auto rounded-none border-b-2 p-0 pb-1 hover:bg-transparent ${
+            method === "email" ? "border-brand text-brand hover:text-brand" : "border-transparent text-neutral-400"
           }`}
         >
           Email
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={() => setMethod("phone")}
-          className={`border-b-2 pb-1 ${
-            method === "phone" ? "border-brand text-brand" : "border-transparent text-neutral-400"
+          variant="ghost"
+          className={`h-auto rounded-none border-b-2 p-0 pb-1 hover:bg-transparent ${
+            method === "phone" ? "border-brand text-brand hover:text-brand" : "border-transparent text-neutral-400"
           }`}
         >
           Phone
-        </button>
+        </Button>
       </div>
 
       {method === "email" ? (

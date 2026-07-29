@@ -5,6 +5,8 @@ import { Phone, Send, Tag } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { revealPhoneAction } from "@/app/messages/actions";
 import { formatRelativeTime } from "@/lib/format-time";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Message = {
   id: string;
@@ -169,15 +171,10 @@ export function ChatThread({
             Waiting for {otherPartyName} to share their number too...
           </p>
         ) : currentUserPhone ? (
-          <button
-            type="button"
-            onClick={handleReveal}
-            disabled={isRevealing}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-200 px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-          >
+          <Button type="button" onClick={handleReveal} disabled={isRevealing} variant="outline" className="w-full">
             <Phone className="size-4" />
             {isRevealing ? "Sharing..." : "Share my phone number"}
-          </button>
+          </Button>
         ) : (
           <p className="text-center text-xs text-neutral-400">
             Add a phone number in Settings to share contact info in chat.
@@ -228,65 +225,67 @@ export function ChatThread({
                 className="w-full min-w-0 bg-transparent outline-none placeholder:text-neutral-400"
               />
             </span>
-            <button
-              type="submit"
-              disabled={isSending || !offerAmount.trim()}
-              className="rounded-full bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-50"
-            >
+            <Button type="submit" disabled={isSending || !offerAmount.trim()} className="rounded-full">
               Send
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={() => {
                 setOfferOpen(false);
                 setOfferAmount("");
               }}
-              className="text-sm font-medium text-neutral-400 hover:text-neutral-600"
+              variant="ghost"
+              className="text-neutral-400 hover:text-neutral-600"
             >
               Cancel
-            </button>
+            </Button>
           </form>
         ) : (
           <div className="mb-2 flex gap-2 overflow-x-auto pb-1">
-            <button
+            <Button
               type="button"
               onClick={() => setOfferOpen(true)}
               disabled={isSending}
-              className="flex shrink-0 items-center gap-1 rounded-full border border-brand/30 bg-brand-light px-3 py-1.5 text-xs font-semibold text-brand hover:bg-brand/10 disabled:opacity-50"
+              variant="outline"
+              size="sm"
+              className="shrink-0 rounded-full border-brand/30 bg-brand-light text-brand hover:bg-brand/10 hover:text-brand"
             >
               <Tag className="size-3" />
               Make an offer
-            </button>
+            </Button>
             {QUICK_REPLIES.map((text) => (
-              <button
+              <Button
                 key={text}
                 type="button"
                 onClick={() => handleQuickReply(text)}
                 disabled={isSending}
-                className="shrink-0 rounded-full border border-neutral-200 px-3 py-1.5 text-xs font-medium text-neutral-600 hover:border-brand/40 hover:bg-brand-light hover:text-brand disabled:opacity-50"
+                variant="outline"
+                size="sm"
+                className="shrink-0 rounded-full text-neutral-600 hover:border-brand/40 hover:bg-brand-light hover:text-brand"
               >
                 {text}
-              </button>
+              </Button>
             ))}
           </div>
         )}
 
         <form onSubmit={handleSend} className="flex items-center gap-2">
-          <input
+          <Input
             type="text"
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
             placeholder="Type a message..."
             maxLength={2000}
-            className="flex-1 rounded-full border border-neutral-200 px-4 py-2 text-sm outline-none focus:border-brand"
+            className="h-auto flex-1 rounded-full border-neutral-200 px-4 py-2 text-sm focus-visible:border-brand"
           />
-          <button
+          <Button
             type="submit"
             disabled={isSending || !draft.trim()}
-            className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-sm transition-all hover:bg-brand-dark hover:shadow-md active:scale-95 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:shadow-none disabled:active:scale-100"
+            size="icon"
+            className="size-11 shrink-0 rounded-full shadow-sm hover:shadow-md active:scale-95 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:shadow-none"
           >
             <Send className="size-4.5" />
-          </button>
+          </Button>
         </form>
         {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
       </div>

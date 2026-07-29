@@ -7,6 +7,7 @@ import { getListingPath } from "@/lib/listing-url";
 import { PAYMENTS_ENABLED } from "@/lib/payments/config";
 import { getEnabledPlans, LISTING_SCOPED_PLAN_TYPES } from "@/lib/premium-plans";
 import { DashboardListingsList, type DashboardListingRow } from "@/components/dashboard/dashboard-listings-list";
+import { Button } from "@/components/ui/button";
 
 type Tab = "active" | "declined" | "closed";
 
@@ -152,12 +153,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
               </option>
             ))}
           </select>
-          <button
-            type="submit"
-            className="rounded-lg bg-brand px-4 py-1.5 text-sm font-semibold text-white hover:bg-brand-dark"
-          >
+          <Button type="submit" size="sm">
             Filter
-          </button>
+          </Button>
         </form>
       </div>
 

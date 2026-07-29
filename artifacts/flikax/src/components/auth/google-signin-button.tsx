@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { GoogleIcon } from "@/components/icons/social-icons";
+import { Button } from "@/components/ui/button";
 
 export function GoogleSignInButton({ redirectTo = "/" }: { redirectTo?: string }) {
   const [loading, setLoading] = useState(false);
@@ -19,14 +20,9 @@ export function GoogleSignInButton({ redirectTo = "/" }: { redirectTo?: string }
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      disabled={loading}
-      className="flex w-full items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-white py-3.5 text-sm font-bold text-neutral-700 shadow-sm hover:bg-neutral-50 disabled:opacity-60"
-    >
+    <Button type="button" onClick={handleClick} disabled={loading} variant="outline" size="lg" className="w-full rounded-2xl shadow-sm">
       <GoogleIcon className="size-4.5" aria-hidden="true" />
       {loading ? "Redirecting..." : "Continue with Google"}
-    </button>
+    </Button>
   );
 }

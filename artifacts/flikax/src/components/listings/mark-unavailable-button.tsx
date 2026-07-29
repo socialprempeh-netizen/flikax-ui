@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { CircleOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { markListingUnavailableAction } from "@/app/listings/actions";
 import { withAuthRetry } from "@/lib/auth-retry";
 
@@ -31,15 +32,10 @@ export function MarkUnavailableButton({ listingId }: { listingId: string }) {
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={handleClick}
-        disabled={isPending}
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-200 py-2 text-sm font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-      >
+      <Button type="button" onClick={handleClick} disabled={isPending} variant="outline" className="w-full">
         <CircleOff className="size-4" />
         {isPending ? "Updating..." : "Mark unavailable"}
-      </button>
+      </Button>
       {error && <p className="mt-1 text-center text-xs text-red-600">{error}</p>}
     </div>
   );

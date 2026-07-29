@@ -4,6 +4,10 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { toGhanaE164 } from "@/lib/phone";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
 
 const RESEND_SECONDS = 30;
 
@@ -150,7 +154,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
               <span className="border-r border-neutral-200 px-3 py-2 text-sm text-neutral-500">
                 +233
               </span>
-              <input
+              <Input
                 type="tel"
                 inputMode="tel"
                 autoFocus
@@ -158,20 +162,16 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
                 value={rawPhone}
                 onChange={(e) => setRawPhone(e.target.value)}
                 placeholder="024 123 4567"
-                className="min-w-0 flex-1 rounded-r-lg px-3 py-2 text-sm text-neutral-800 outline-none placeholder:text-neutral-400"
+                className="h-auto min-w-0 flex-1 rounded-l-none border-none px-3 py-2 text-sm shadow-none focus-visible:ring-0"
               />
             </div>
           </label>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-          >
+          <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Sending code..." : "Send code"}
-          </button>
+          </Button>
         </form>
       )}
 
@@ -181,13 +181,9 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
             <h1 className="text-lg font-bold text-neutral-800">Enter the code</h1>
             <p className="mt-1 text-sm text-neutral-500">
               We sent a 6-digit code to {phone}.{" "}
-              <button
-                type="button"
-                onClick={() => setStep("phone")}
-                className="font-medium text-brand hover:underline"
-              >
+              <Button type="button" onClick={() => setStep("phone")} variant="link" className="h-auto p-0 text-sm">
                 Change
-              </button>
+              </Button>
             </p>
           </div>
 
@@ -195,7 +191,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
             <span className="mb-1 block text-sm font-medium text-neutral-700">
               Verification code
             </span>
-            <input
+            <Input
               type="text"
               inputMode="numeric"
               autoFocus
@@ -204,28 +200,25 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
               value={otp}
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
               placeholder="123456"
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-center text-lg tracking-[0.5em] text-neutral-800 outline-none focus:border-brand"
+              className={`${FIELD_CLASS} text-center text-lg tracking-[0.5em]`}
             />
           </label>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading || otp.length !== 6}
-            className="w-full rounded-lg bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-          >
+          <Button type="submit" disabled={loading || otp.length !== 6} className="w-full">
             {loading ? "Verifying..." : "Verify"}
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
             onClick={resendOtp}
             disabled={cooldown > 0 || loading}
-            className="w-full text-center text-sm text-neutral-500 disabled:opacity-60"
+            variant="ghost"
+            className="w-full text-neutral-500"
           >
             {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
-          </button>
+          </Button>
         </form>
       )}
 
@@ -240,26 +233,22 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-neutral-700">Full name</span>
-            <input
+            <Input
               type="text"
               autoFocus
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="e.g. Ama Owusu"
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+              className={FIELD_CLASS}
             />
           </label>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-          >
+          <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Saving..." : "Continue"}
-          </button>
+          </Button>
         </form>
       )}
     </div>

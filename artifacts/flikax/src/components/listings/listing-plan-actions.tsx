@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import type { PremiumPlan } from "@/lib/premium-plans";
 
 export function ListingPlanActions({
@@ -44,13 +45,14 @@ export function ListingPlanActions({
 
   if (!expanded) {
     return (
-      <button
+      <Button
         type="button"
         onClick={() => setExpanded(true)}
-        className="relative z-10 mt-2 text-sm font-medium text-brand hover:underline"
+        variant="link"
+        className="relative z-10 mt-2 h-auto p-0 text-sm"
       >
         Boost this ad
-      </button>
+      </Button>
     );
   }
 
@@ -63,22 +65,23 @@ export function ListingPlanActions({
             {plan.duration_days ? ` (${plan.duration_days}d)` : ""}
           </p>
           <div className="flex shrink-0 gap-1">
-            <button
+            <Button
               type="button"
               onClick={() => pay(plan.id, "paystack")}
               disabled={loadingKey !== null}
-              className="rounded bg-brand px-2 py-1 text-[10px] font-bold text-white hover:bg-brand-dark disabled:opacity-60"
+              size="xs"
             >
               {loadingKey === `${plan.id}-paystack` ? "..." : "Paystack"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={() => pay(plan.id, "flutterwave")}
               disabled={loadingKey !== null}
-              className="rounded border border-neutral-200 px-2 py-1 text-[10px] font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
+              variant="outline"
+              size="xs"
             >
               {loadingKey === `${plan.id}-flutterwave` ? "..." : "Flutterwave"}
-            </button>
+            </Button>
           </div>
         </div>
       ))}

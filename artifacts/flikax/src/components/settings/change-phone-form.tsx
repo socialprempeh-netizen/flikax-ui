@@ -3,6 +3,10 @@
 import { useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { toGhanaE164 } from "@/lib/phone";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const FIELD_CLASS = "h-auto w-auto rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
 
 export function ChangePhoneForm({ currentPhone }: { currentPhone: string | null }) {
   const [supabase] = useState(() => createClient());
@@ -63,27 +67,23 @@ export function ChangePhoneForm({ currentPhone }: { currentPhone: string | null 
 
       {step === "phone" && (
         <form onSubmit={requestChange} className="mt-3 flex flex-wrap items-center gap-2">
-          <input
+          <Input
             type="tel"
             required
             value={rawPhone}
             onChange={(e) => setRawPhone(e.target.value)}
             placeholder="024 123 4567"
-            className="rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className={FIELD_CLASS}
           />
-          <button
-            type="submit"
-            disabled={loading}
-            className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-          >
+          <Button type="submit" disabled={loading}>
             {loading ? "Sending..." : "Send code"}
-          </button>
+          </Button>
         </form>
       )}
 
       {step === "otp" && (
         <form onSubmit={verifyChange} className="mt-3 flex flex-wrap items-center gap-2">
-          <input
+          <Input
             type="text"
             inputMode="numeric"
             maxLength={6}
@@ -91,15 +91,11 @@ export function ChangePhoneForm({ currentPhone }: { currentPhone: string | null 
             value={otp}
             onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
             placeholder="123456"
-            className="rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className={FIELD_CLASS}
           />
-          <button
-            type="submit"
-            disabled={loading}
-            className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-          >
+          <Button type="submit" disabled={loading}>
             {loading ? "Verifying..." : "Verify"}
-          </button>
+          </Button>
         </form>
       )}
 

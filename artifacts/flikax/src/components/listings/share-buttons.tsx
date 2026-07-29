@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { FacebookIcon, XIcon, WhatsAppIcon, TikTokIcon } from "@/components/icons/social-icons";
-
-const ICON_BUTTON_CLASS =
-  "flex size-10 items-center justify-center rounded-full border border-neutral-300 bg-neutral-200 text-neutral-700 shadow-sm hover:bg-brand-light hover:text-brand";
 
 export function ShareButtons({ title, priceLabel }: { title: string; priceLabel: string }) {
   const [url, setUrl] = useState("");
@@ -30,49 +28,50 @@ export function ShareButtons({ title, priceLabel }: { title: string; priceLabel:
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-sm font-medium text-neutral-500">Share:</span>
 
-      <a
-        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on Facebook"
-        className={ICON_BUTTON_CLASS}
-      >
-        <FacebookIcon className="size-4" />
-      </a>
+      <Button asChild variant="outline" size="icon" className="rounded-full hover:bg-brand-light hover:text-brand">
+        <a
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on Facebook"
+        >
+          <FacebookIcon className="size-4" />
+        </a>
+      </Button>
 
-      <a
-        href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${url}`)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on WhatsApp"
-        className={ICON_BUTTON_CLASS}
-      >
-        <WhatsAppIcon className="size-4" />
-      </a>
+      <Button asChild variant="outline" size="icon" className="rounded-full hover:bg-brand-light hover:text-brand">
+        <a
+          href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${url}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on WhatsApp"
+        >
+          <WhatsAppIcon className="size-4" />
+        </a>
+      </Button>
 
-      <a
-        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on X"
-        className={ICON_BUTTON_CLASS}
-      >
-        <XIcon className="size-4" />
-      </a>
+      <Button asChild variant="outline" size="icon" className="rounded-full hover:bg-brand-light hover:text-brand">
+        <a
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on X"
+        >
+          <XIcon className="size-4" />
+        </a>
+      </Button>
 
-      <button
+      <Button
         type="button"
         onClick={copyForTikTok}
         aria-label="Copy link to share on TikTok"
         title="TikTok doesn't support pre-filled link sharing — this copies the listing details instead"
-        className={
-          copied
-            ? "flex size-10 items-center justify-center rounded-full border border-green-300 bg-green-100 text-green-600"
-            : ICON_BUTTON_CLASS
-        }
+        variant="outline"
+        size="icon"
+        className={`rounded-full ${copied ? "border-green-300 bg-green-100 text-green-600 hover:bg-green-100" : "hover:bg-brand-light hover:text-brand"}`}
       >
         {copied ? <Check className="size-4" /> : <TikTokIcon className="size-4" />}
-      </button>
+      </Button>
 
       {copied && (
         <span className="text-xs font-medium text-green-600">Copied! Paste it in your TikTok caption.</span>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
 
 export function LogoutButton({
   className = "rounded-full px-3 py-1.5 text-sm font-medium text-white hover:bg-white/10 disabled:opacity-60",
@@ -21,8 +22,8 @@ export function LogoutButton({
   }
 
   return (
-    <button type="button" onClick={handleLogout} disabled={loading} className={className}>
+    <Button type="button" onClick={handleLogout} disabled={loading} variant="ghost" className={className}>
       {loading ? "Logging out..." : "Log out"}
-    </button>
+    </Button>
   );
 }

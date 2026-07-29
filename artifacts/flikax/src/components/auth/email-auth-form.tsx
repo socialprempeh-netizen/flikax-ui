@@ -4,6 +4,10 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
 
 type Mode = "sign-in" | "sign-up";
 
@@ -90,13 +94,9 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           We sent a confirmation link to <span className="font-medium text-neutral-700">{email}</span>. Click
           it to activate your account, then come back and sign in.
         </p>
-        <button
-          type="button"
-          onClick={() => switchMode("sign-in")}
-          className="mt-4 w-full rounded-lg border border-neutral-200 py-2.5 text-sm font-bold text-neutral-700 hover:bg-neutral-50"
-        >
+        <Button type="button" onClick={() => switchMode("sign-in")} variant="outline" className="mt-4 w-full">
           Back to sign in
-        </button>
+        </Button>
       </div>
     );
   }
@@ -104,77 +104,79 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
   return (
     <div className="w-full max-w-sm rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm">
       <div className="mb-4 flex rounded-lg bg-neutral-100 p-1 text-sm font-bold">
-        <button
+        <Button
           type="button"
           onClick={() => switchMode("sign-in")}
-          className={`flex-1 rounded-md py-1.5 ${
-            mode === "sign-in" ? "bg-white text-neutral-800 shadow-sm" : "text-neutral-500"
+          variant="ghost"
+          className={`h-auto flex-1 rounded-md py-1.5 hover:bg-transparent ${
+            mode === "sign-in" ? "bg-white text-neutral-800 shadow-sm hover:bg-white" : "text-neutral-500"
           }`}
         >
           Sign in
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={() => switchMode("sign-up")}
-          className={`flex-1 rounded-md py-1.5 ${
-            mode === "sign-up" ? "bg-white text-neutral-800 shadow-sm" : "text-neutral-500"
+          variant="ghost"
+          className={`h-auto flex-1 rounded-md py-1.5 hover:bg-transparent ${
+            mode === "sign-up" ? "bg-white text-neutral-800 shadow-sm hover:bg-white" : "text-neutral-500"
           }`}
         >
           Sign up
-        </button>
+        </Button>
       </div>
 
       <form onSubmit={mode === "sign-in" ? handleSignIn : handleSignUp} className="space-y-4">
         {mode === "sign-up" && (
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-neutral-700">Full name</span>
-            <input
+            <Input
               type="text"
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="e.g. Ama Owusu"
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+              className={FIELD_CLASS}
             />
           </label>
         )}
 
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-neutral-700">Email</span>
-          <input
+          <Input
             type="email"
             autoComplete="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className={FIELD_CLASS}
           />
         </label>
 
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-neutral-700">Password</span>
-          <input
+          <Input
             type="password"
             autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
             required
             minLength={mode === "sign-up" ? 8 : undefined}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className={FIELD_CLASS}
           />
         </label>
 
         {mode === "sign-up" && (
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-neutral-700">Confirm password</span>
-            <input
+            <Input
               type="password"
               autoComplete="new-password"
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+              className={FIELD_CLASS}
             />
           </label>
         )}
@@ -187,13 +189,9 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-        >
+        <Button type="submit" disabled={loading} className="w-full">
           {loading ? "Please wait..." : mode === "sign-in" ? "Sign in" : "Create account"}
-        </button>
+        </Button>
       </form>
     </div>
   );

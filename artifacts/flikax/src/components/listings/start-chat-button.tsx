@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { startOrGetConversationAction } from "@/app/messages/actions";
 
 export function StartChatButton({
@@ -16,14 +17,15 @@ export function StartChatButton({
 
   return (
     <form action={action} onSubmit={() => setPending(true)}>
-      <button
+      <Button
         type="submit"
         disabled={pending}
-        className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border-2 border-brand bg-white px-3 py-2 text-sm font-bold text-brand hover:bg-brand-light disabled:opacity-60"
+        variant="outline"
+        className="flex-1 border-2 border-brand text-brand hover:bg-brand-light hover:text-brand"
       >
         <MessageCircle className="size-4" />
         {pending ? "Opening…" : "Send Message"}
-      </button>
+      </Button>
     </form>
   );
 }

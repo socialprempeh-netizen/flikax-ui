@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteAccountAction } from "@/app/settings/actions";
+import { Button } from "@/components/ui/button";
 
 export function DeleteAccountSection() {
   const router = useRouter();
@@ -33,14 +34,15 @@ export function DeleteAccountSection() {
         This removes your profile and listings. This action can&apos;t be undone.
       </p>
       {error && <p className="mt-2 text-sm text-red-700">{error}</p>}
-      <button
+      <Button
         type="button"
         onClick={handleDelete}
         disabled={loading}
-        className="mt-3 rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
+        variant="outline"
+        className="mt-3 border-red-300 text-red-700 hover:bg-red-100 hover:text-red-700"
       >
         {loading ? "Deleting..." : "Delete my account"}
-      </button>
+      </Button>
     </div>
   );
 }

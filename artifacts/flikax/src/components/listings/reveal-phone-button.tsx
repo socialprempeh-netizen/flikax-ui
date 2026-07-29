@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function RevealPhoneButton({
   phone,
@@ -19,27 +20,34 @@ export function RevealPhoneButton({
 }) {
   const [revealed, setRevealed] = useState(false);
 
-  const baseClasses = compact
-    ? "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-bold"
-    : "flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-base font-bold";
-  const variantClasses =
-    variant === "solid"
-      ? "bg-brand text-white hover:bg-brand-dark"
-      : "border border-brand/30 bg-brand-light text-brand hover:bg-brand/10";
+  const buttonVariant = variant === "solid" ? "default" : "outline";
+  // The "outline" variant here means brand-tinted-at-rest (not shadcn's
+  // generic neutral outline), so its own colors are layered on top.
+  const outlineClasses =
+    variant === "outline" ? "border-brand/30 bg-brand-light text-brand hover:bg-brand/10 hover:text-brand" : "";
+  const sizeClasses = compact ? "flex-1" : "w-full";
 
   if (revealed) {
     return (
-      <a href={`tel:${phone}`} className={`${baseClasses} ${variantClasses}`}>
-        <Phone className="size-4" />
-        {phone}
-      </a>
+      <Button asChild variant={buttonVariant} size={compact ? "default" : "lg"} className={`${sizeClasses} ${outlineClasses}`}>
+        <a href={`tel:${phone}`}>
+          <Phone className="size-4" />
+          {phone}
+        </a>
+      </Button>
     );
   }
 
   return (
-    <button type="button" onClick={() => setRevealed(true)} className={`${baseClasses} ${variantClasses}`}>
+    <Button
+      type="button"
+      onClick={() => setRevealed(true)}
+      variant={buttonVariant}
+      size={compact ? "default" : "lg"}
+      className={`${sizeClasses} ${outlineClasses}`}
+    >
       <Phone className="size-4" />
       {label}
-    </button>
+    </Button>
   );
 }

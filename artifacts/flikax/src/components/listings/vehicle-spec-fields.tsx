@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { CAR_MAKES_MODELS } from "@/lib/car-data";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const OTHER_VALUE = "__other__";
 const MAKES = Object.keys(CAR_MAKES_MODELS).sort((a, b) => a.localeCompare(b));
@@ -9,7 +11,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: CURRENT_YEAR - 1980 + 2 }, (_, i) => String(CURRENT_YEAR + 1 - i));
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand disabled:bg-neutral-50";
+  "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus-visible:border-brand disabled:bg-neutral-50";
 
 // Vehicles-only: cascading Make -> Model dropdowns sourced from the bundled
 // NHTSA car-data set, with a free-text "Other / Not listed" escape hatch for
@@ -69,7 +71,7 @@ export function VehicleSpecFields({
           </select>
         ) : (
           <div className="space-y-1">
-            <input
+            <Input
               type="text"
               required
               value={currentMake}
@@ -77,7 +79,7 @@ export function VehicleSpecFields({
               placeholder="Enter make"
               className={FIELD_CLASS}
             />
-            <button
+            <Button
               type="button"
               onClick={() => {
                 setMakeMode("select");
@@ -85,10 +87,11 @@ export function VehicleSpecFields({
                 setAttribute("model", "");
                 setModelMode("select");
               }}
-              className="text-xs font-medium text-brand hover:underline"
+              variant="link"
+              className="h-auto p-0 text-xs"
             >
               Choose from list instead
-            </button>
+            </Button>
           </div>
         )}
       </label>
@@ -122,7 +125,7 @@ export function VehicleSpecFields({
           </select>
         ) : (
           <div className="space-y-1">
-            <input
+            <Input
               type="text"
               required
               value={currentModel}
@@ -132,16 +135,17 @@ export function VehicleSpecFields({
               className={FIELD_CLASS}
             />
             {modelsForMake.length > 0 && (
-              <button
+              <Button
                 type="button"
                 onClick={() => {
                   setModelMode("select");
                   setAttribute("model", "");
                 }}
-                className="text-xs font-medium text-brand hover:underline"
+                variant="link"
+                className="h-auto p-0 text-xs"
               >
                 Choose from list instead
-              </button>
+              </Button>
             )}
           </div>
         )}
@@ -168,7 +172,7 @@ export function VehicleSpecFields({
 
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">Trim (optional)</span>
-        <input
+        <Input
           type="text"
           value={(attributes.trim as string | undefined) ?? ""}
           onChange={(e) => setAttribute("trim", e.target.value)}

@@ -23,6 +23,9 @@ import { getFieldsForCategory } from "@/lib/listing-fields";
 import { toGhanaE164, toGhanaLocal } from "@/lib/phone";
 import { VehicleSpecFields } from "@/components/listings/vehicle-spec-fields";
 import { LocationPickerModal } from "@/components/location-picker-modal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 // Rendered via the dedicated cascading VehicleSpecFields component instead of
 // the generic field loop below when the category is Vehicles.
@@ -70,15 +73,19 @@ const NEGOTIABLE_OPTIONS = [
 ];
 
 // ─── Shared input class ───────────────────────────────────────────────────────
+// Layered on top of the shadcn Input/Textarea/select base classes -- rounder
+// and roomier than the shadcn default (h-9/rounded-md) to match this form's
+// larger, card-based visual language; h-auto lets padding drive height
+// instead of the default's fixed h-9.
 const INPUT =
-  "w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus:border-brand focus:bg-white focus:ring-2 focus:ring-brand/10 disabled:opacity-50";
+  "h-auto w-full rounded-xl border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
 const SELECT = INPUT + " appearance-none";
 
 // ─── Section header ───────────────────────────────────────────────────────────
 function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex items-center gap-2 pb-3">
-      <span className="flex size-7 items-center justify-center rounded-lg bg-black text-orange-400">
+      <span className="flex size-7 items-center justify-center rounded-lg bg-brand-light text-brand">
         {icon}
       </span>
       <span className="text-sm font-bold uppercase tracking-wide text-neutral-500">{label}</span>
@@ -105,7 +112,7 @@ function StepBar({ step }: { step: 1 | 2 }) {
                   done
                     ? "bg-brand text-white"
                     : active
-                    ? "bg-black text-white ring-4 ring-brand/20"
+                    ? "border-2 border-brand bg-white text-brand ring-4 ring-brand/20"
                     : "bg-neutral-200 text-neutral-500"
                 }`}
               >
@@ -427,7 +434,7 @@ export function ListingForm({
     return (
       <div className="overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
         {/* Top accent strip */}
-        <div className="h-1.5 w-full bg-gradient-to-r from-black via-neutral-800 to-brand" />
+        <div className="h-1.5 w-full bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
         <div className="flex flex-col items-center px-8 py-12 text-center">
           <div className="flex size-16 items-center justify-center rounded-full bg-brand/10 ring-8 ring-brand/5">
             <CheckCircle2 className="size-8 text-brand" />
@@ -441,24 +448,15 @@ export function ListingForm({
               : "Your listing is live on the homepage and searchable by thousands of buyers across Ghana."}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link
-              href="/dashboard"
-              className="rounded-xl bg-black px-6 py-2.5 text-sm font-bold text-white transition hover:bg-neutral-800"
-            >
-              View my adverts
-            </Link>
-            <Link
-              href="/sell"
-              className="rounded-xl bg-brand px-6 py-2.5 text-sm font-bold text-white transition hover:bg-brand-dark"
-            >
-              Post another ad
-            </Link>
-            <Link
-              href="/"
-              className="rounded-xl border border-neutral-200 px-6 py-2.5 text-sm font-bold text-neutral-700 transition hover:border-brand hover:text-brand"
-            >
-              Back to home
-            </Link>
+            <Button asChild>
+              <Link href="/sell">Post another ad</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/dashboard">View my adverts</Link>
+            </Button>
+            <Button asChild variant="ghost">
+              <Link href="/">Back to home</Link>
+            </Button>
           </div>
         </div>
       </div>
@@ -484,7 +482,7 @@ export function ListingForm({
       {step === 1 && (
         <form onSubmit={handleNext} className="space-y-0 overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
           {/* Card header accent */}
-          <div className="h-1.5 bg-gradient-to-r from-black via-neutral-800 to-brand" />
+          <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
 
           <div className="space-y-7 p-6 sm:p-8">
 
@@ -571,7 +569,7 @@ export function ListingForm({
                         )}
 
                         {field.type === "text" && (
-                          <input
+                          <Input
                             type="text"
                             required={field.required}
                             value={scalarValue}
@@ -580,7 +578,7 @@ export function ListingForm({
                           />
                         )}
                         {field.type === "number" && (
-                          <input
+                          <Input
                             type="number"
                             required={field.required}
                             value={scalarValue}
@@ -653,12 +651,12 @@ export function ListingForm({
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 What are you selling?
               </label>
-              <textarea
+              <Textarea
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe the condition, key features, reason for selling, included accessories…"
-                className={INPUT + " resize-none"}
+                className={`${INPUT} resize-none`}
               />
               <p className="mt-1.5 text-xs text-neutral-400">
                 A detailed description gets 3× more enquiries.
@@ -677,7 +675,7 @@ export function ListingForm({
                     <span className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-sm font-bold text-neutral-400">
                       GH₵
                     </span>
-                    <input
+                    <Input
                       type="number"
                       min={0}
                       step="0.01"
@@ -685,7 +683,7 @@ export function ListingForm({
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
                       placeholder="0.00"
-                      className={INPUT + " pl-12"}
+                      className={`${INPUT} pl-12`}
                     />
                   </div>
                 </div>
@@ -744,7 +742,7 @@ export function ListingForm({
               </p>
               {posterName && (
                 <div className="mt-4 flex items-center gap-2.5 rounded-xl border border-neutral-100 bg-neutral-50 px-4 py-3">
-                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-black text-xs font-bold text-white">
+                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-white">
                     {posterName.charAt(0).toUpperCase()}
                   </div>
                   <p className="text-xs text-neutral-500">
@@ -763,13 +761,10 @@ export function ListingForm({
               </div>
             )}
 
-            <button
-              type="submit"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 text-sm font-bold text-white transition hover:bg-neutral-800 active:scale-[0.99]"
-            >
+            <Button type="submit" size="lg" className="w-full rounded-xl">
               Continue to Photos &amp; Title
               <ChevronRight className="size-4" />
-            </button>
+            </Button>
           </div>
         </form>
       )}
@@ -780,7 +775,7 @@ export function ListingForm({
           onSubmit={handleSubmit}
           className="space-y-0 overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
         >
-          <div className="h-1.5 bg-gradient-to-r from-black via-neutral-800 to-brand" />
+          <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
 
           <div className="space-y-7 p-6 sm:p-8">
 
@@ -792,7 +787,7 @@ export function ListingForm({
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Ad title <span className="text-red-500">*</span>
                   </label>
-                  <input
+                  <Input
                     type="text"
                     required
                     value={title}
@@ -832,13 +827,9 @@ export function ListingForm({
                       {parentCategory?.name}
                       {selectedCategory ? ` › ${selectedCategory.name}` : ""}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => setStep(1)}
-                      className="text-xs font-bold text-brand hover:underline"
-                    >
+                    <Button type="button" onClick={() => setStep(1)} variant="link" className="h-auto p-0 text-xs">
                       Change
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -865,7 +856,7 @@ export function ListingForm({
                       JPEG, PNG or WebP · up to {MAX_IMAGES} photos · auto-watermarked
                     </p>
                   </div>
-                  <span className="rounded-lg bg-black px-5 py-2 text-xs font-bold text-white hover:bg-neutral-800">
+                  <span className="rounded-lg bg-brand px-5 py-2 text-xs font-bold text-white hover:bg-brand-dark">
                     Choose files
                   </span>
                   <input
@@ -903,14 +894,16 @@ export function ListingForm({
                           {img.error ?? "Failed"}
                         </div>
                       )}
-                      <button
+                      <Button
                         type="button"
                         onClick={() => removeImage(img.id)}
                         aria-label="Remove photo"
-                        className="absolute right-1.5 top-1.5 flex size-5 items-center justify-center rounded-full bg-black/70 text-white hover:bg-black"
+                        variant="ghost"
+                        size="icon-xs"
+                        className="absolute right-1.5 top-1.5 rounded-full bg-black/70 text-white hover:bg-black hover:text-white"
                       >
                         <X className="size-3" />
-                      </button>
+                      </Button>
                     </div>
                   ))}
 
@@ -937,7 +930,7 @@ export function ListingForm({
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 YouTube or video link
               </label>
-              <input
+              <Input
                 type="url"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
@@ -957,18 +950,10 @@ export function ListingForm({
             )}
 
             <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="rounded-xl border border-neutral-200 px-6 py-3 text-sm font-bold text-neutral-700 transition hover:border-neutral-300 hover:bg-neutral-50"
-              >
+              <Button type="button" onClick={() => setStep(1)} variant="outline" size="lg" className="rounded-xl">
                 ← Back
-              </button>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-bold text-white transition hover:bg-brand-dark disabled:opacity-60 active:scale-[0.99]"
-              >
+              </Button>
+              <Button type="submit" disabled={submitting} size="lg" className="flex-1 rounded-xl">
                 {submitting ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
@@ -979,7 +964,7 @@ export function ListingForm({
                 ) : (
                   "Publish ad for free"
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         </form>

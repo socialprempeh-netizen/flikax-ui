@@ -6,6 +6,10 @@ import { ChevronRight } from "lucide-react";
 import { LocationPickerModal } from "@/components/location-picker-modal";
 import { useRegions } from "@/lib/use-regions";
 import type { SidebarFilterField } from "@/lib/category-filters";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const FIELD_CLASS = "h-auto w-full min-w-0 rounded-lg border-neutral-200 px-2 py-1.5 text-sm focus-visible:border-brand";
 
 export function CategorySidebarFilters({
   categorySlug,
@@ -98,35 +102,36 @@ export function CategorySidebarFilters({
       <div className="rounded-xl border border-neutral-300 bg-white p-3 shadow-md">
         <h3 className="mb-1 text-sm font-bold text-neutral-800">Filters</h3>
 
-        <button
+        <Button
           type="button"
           onClick={() => setLocationOpen(true)}
-          className="flex w-full items-center justify-between border-b border-neutral-100 py-2 text-left"
+          variant="ghost"
+          className="h-auto w-full justify-between rounded-none border-b border-neutral-100 py-2 text-left hover:bg-transparent"
         >
           <span className="text-sm font-semibold text-neutral-700">Location</span>
-          <span className="flex items-center gap-1 text-sm text-neutral-500">
+          <span className="flex items-center gap-1 text-sm font-normal text-neutral-500">
             {locationDisplayName}
             <ChevronRight className="size-4" />
           </span>
-        </button>
+        </Button>
 
         <div className="border-b border-neutral-100 py-2">
           <p className="mb-1.5 text-sm font-semibold text-neutral-700">Price, GH₵</p>
           <div className="flex items-center gap-2">
-            <input
+            <Input
               type="number"
               placeholder="min"
               value={values.minPrice}
               onChange={(e) => setValue("minPrice", e.target.value)}
-              className="w-full min-w-0 rounded-lg border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
+              className={FIELD_CLASS}
             />
             <span className="shrink-0 text-neutral-400">–</span>
-            <input
+            <Input
               type="number"
               placeholder="max"
               value={values.maxPrice}
               onChange={(e) => setValue("maxPrice", e.target.value)}
-              className="w-full min-w-0 rounded-lg border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
+              className={FIELD_CLASS}
             />
           </div>
         </div>
@@ -151,44 +156,40 @@ export function CategorySidebarFilters({
             )}
 
             {field.type === "text" && (
-              <input
+              <Input
                 type="text"
                 placeholder={`Find ${field.label.toLowerCase()}`}
                 value={values[field.key]}
                 onChange={(e) => setValue(field.key, e.target.value)}
-                className="w-full rounded-lg border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
+                className={FIELD_CLASS}
               />
             )}
 
             {field.type === "range" && (
               <div className="flex items-center gap-2">
-                <input
+                <Input
                   type="number"
                   placeholder="min"
                   value={values[`${field.key}_min`]}
                   onChange={(e) => setValue(`${field.key}_min`, e.target.value)}
-                  className="w-full min-w-0 rounded-lg border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
+                  className={FIELD_CLASS}
                 />
                 <span className="shrink-0 text-neutral-400">–</span>
-                <input
+                <Input
                   type="number"
                   placeholder="max"
                   value={values[`${field.key}_max`]}
                   onChange={(e) => setValue(`${field.key}_max`, e.target.value)}
-                  className="w-full min-w-0 rounded-lg border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
+                  className={FIELD_CLASS}
                 />
               </div>
             )}
           </div>
         ))}
 
-        <button
-          type="button"
-          onClick={applyFilters}
-          className="mt-3 w-full rounded-lg bg-brand px-3 py-2 text-sm font-bold text-white hover:bg-brand-dark"
-        >
+        <Button type="button" onClick={applyFilters} className="mt-3 w-full">
           Apply Filters
-        </button>
+        </Button>
       </div>
 
       <LocationPickerModal open={locationOpen} onClose={() => setLocationOpen(false)} onSelect={handleLocationSelect} />

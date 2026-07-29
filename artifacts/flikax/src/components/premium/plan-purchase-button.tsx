@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function PlanPurchaseButton({ planId }: { planId: string }) {
   const [loading, setLoading] = useState<"paystack" | "flutterwave" | null>(null);
@@ -29,22 +30,19 @@ export function PlanPurchaseButton({ planId }: { planId: string }) {
   return (
     <div>
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => pay("paystack")}
-          disabled={loading !== null}
-          className="flex-1 rounded-lg bg-brand px-3 py-2 text-xs font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-        >
+        <Button type="button" onClick={() => pay("paystack")} disabled={loading !== null} size="sm" className="flex-1">
           {loading === "paystack" ? "Redirecting..." : "Pay with Paystack"}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={() => pay("flutterwave")}
           disabled={loading !== null}
-          className="flex-1 rounded-lg border border-neutral-200 px-3 py-2 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
+          variant="outline"
+          size="sm"
+          className="flex-1"
         >
           {loading === "flutterwave" ? "Redirecting..." : "Pay with Flutterwave"}
-        </button>
+        </Button>
       </div>
       {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
     </div>

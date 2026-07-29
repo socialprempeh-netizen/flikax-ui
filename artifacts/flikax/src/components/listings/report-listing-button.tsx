@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { submitReportAction } from "@/app/listings/actions";
 import { withAuthRetry } from "@/lib/auth-retry";
 import { REPORT_REASONS, REPORT_REASON_LABELS, type ReportReason } from "@/lib/report-reasons";
@@ -38,90 +40,77 @@ export function ReportListingButton({ listingId }: { listingId: string }) {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="flex items-center justify-center gap-2 rounded-lg border border-red-200 py-2 text-base font-bold text-red-600 hover:bg-red-50"
-      >
+      <Button type="button" onClick={() => setOpen(true)} variant="outline" className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-600">
         <AlertTriangle className="size-4" />
         Report Abuse
-      </button>
+      </Button>
 
-      {open && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-neutral-900/70 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl">
-            {done ? (
-              <>
-                <h2 className="text-base font-bold text-neutral-800">Report submitted</h2>
-                <p className="mt-1 text-sm text-neutral-600">
-                  Thanks — our team will review this listing.
-                </p>
-                <button
-                  type="button"
-                  onClick={close}
-                  className="mt-5 w-full rounded-lg bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-dark"
-                >
-                  Close
-                </button>
-              </>
-            ) : (
-              <>
+      <Dialog open={open} onOpenChange={(next) => (next ? setOpen(true) : close())}>
+        <DialogContent>
+          {done ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Report submitted</DialogTitle>
+                <DialogDescription>Thanks — our team will review this listing.</DialogDescription>
+              </DialogHeader>
+              <Button type="button" onClick={close} className="w-full">
+                Close
+              </Button>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
                 <div className="flex items-start gap-3">
                   <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
                     <AlertTriangle className="size-5" />
                   </span>
-                  <div className="min-w-0">
-                    <h2 className="text-base font-bold text-neutral-800">Report this listing</h2>
-                    <p className="mt-1 text-sm text-neutral-600">
+                  <div className="min-w-0 text-left">
+                    <DialogTitle>Report this listing</DialogTitle>
+                    <DialogDescription>
                       Let us know what&apos;s wrong. We&apos;ll review it as soon as possible.
-                    </p>
+                    </DialogDescription>
                   </div>
                 </div>
+              </DialogHeader>
 
-                <div className="mt-4 space-y-2">
-                  {REPORT_REASONS.map((value) => (
-                    <label
-                      key={value}
-                      className="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 has-[:checked]:border-brand has-[:checked]:bg-brand-light"
-                    >
-                      <input
-                        type="radio"
-                        name="reason"
-                        value={value}
-                        checked={reason === value}
-                        onChange={() => setReason(value)}
-                        className="accent-brand"
-                      />
-                      {REPORT_REASON_LABELS[value]}
-                    </label>
-                  ))}
-                </div>
-
-                {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-
-                <div className="mt-5 flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={close}
-                    disabled={submitting}
-                    className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
+              <div className="space-y-2">
+                {REPORT_REASONS.map((value) => (
+                  <label
+                    key={value}
+                    className="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 has-[:checked]:border-brand has-[:checked]:bg-brand-light"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={submit}
-                    disabled={submitting}
-                    className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-60"
-                  >
-                    {submitting ? "Submitting..." : "Submit report"}
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+                    <input
+                      type="radio"
+                      name="reason"
+                      value={value}
+                      checked={reason === value}
+                      onChange={() => setReason(value)}
+                      className="accent-brand"
+                    />
+                    {REPORT_REASON_LABELS[value]}
+                  </label>
+                ))}
+              </div>
+
+              {error && <p className="text-sm text-red-600">{error}</p>}
+
+              <div className="flex justify-end gap-2">
+                <Button type="button" onClick={close} disabled={submitting} variant="outline">
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  onClick={submit}
+                  disabled={submitting}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  {submitting ? "Submitting..." : "Submit report"}
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

@@ -3,6 +3,10 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
 
 export function ChangePasswordForm({ redirectTo }: { redirectTo?: string } = {}) {
   const router = useRouter();
@@ -60,35 +64,31 @@ export function ChangePasswordForm({ redirectTo }: { redirectTo?: string } = {})
 
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">New password</span>
-        <input
+        <Input
           type="password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+          className={FIELD_CLASS}
         />
       </label>
 
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">Confirm password</span>
-        <input
+        <Input
           type="password"
           required
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
-          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+          className={FIELD_CLASS}
         />
       </label>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-      >
+      <Button type="submit" disabled={loading}>
         {loading ? "Saving..." : "Update password"}
-      </button>
+      </Button>
     </form>
   );
 }

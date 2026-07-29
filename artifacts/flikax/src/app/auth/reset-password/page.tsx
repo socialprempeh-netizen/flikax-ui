@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ResetPasswordGate } from "@/components/auth/reset-password-gate";
 import { FlikaxLogo } from "@/components/flikax-logo";
 

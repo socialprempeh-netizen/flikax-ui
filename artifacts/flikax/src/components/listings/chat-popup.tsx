@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { MessageCircle, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { getOrCreateConversationIdAction } from "@/app/messages/actions";
 import { createClient } from "@/lib/supabase/client";
 import { ChatThread } from "@/components/messages/chat-thread";
@@ -111,15 +112,16 @@ export function ChatPopupButton({
 
   return (
     <>
-      <button
+      <Button
         type="button"
         onClick={handleOpen}
         disabled={phase === "loading"}
-        className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border-2 border-brand bg-white px-3 py-2 text-sm font-bold text-brand hover:bg-brand-light disabled:opacity-60"
+        variant="outline"
+        className="flex-1 border-2 border-brand text-brand hover:bg-brand-light hover:text-brand"
       >
         <MessageCircle className="size-4" />
         {phase === "loading" ? "Opening…" : "Send Message"}
-      </button>
+      </Button>
 
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
 
@@ -163,14 +165,16 @@ function ChatPopupOverlay({
         </div>
 
         {/* Close */}
-        <button
+        <Button
           type="button"
           onClick={onClose}
           aria-label="Close chat"
-          className="rounded-full p-1.5 text-white/60 transition hover:bg-white/10 hover:text-white"
+          variant="ghost"
+          size="icon-sm"
+          className="rounded-full text-white/60 hover:bg-white/10 hover:text-white"
         >
           <X className="size-4" />
-        </button>
+        </Button>
       </div>
 
       {/* ── Chat thread (flex-1 so it fills remaining height) ── */}
