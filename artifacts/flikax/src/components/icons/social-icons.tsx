@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FaFacebookF, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 
 export function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -28,34 +29,67 @@ type BrandIconProps = {
   className?: string;
 };
 
-// The four platform logos below are the user's real brand assets (fixed
-// full-color artwork), not recolorable currentColor glyphs like GoogleIcon
-// above -- so they're rendered via next/image rather than inline <svg>.
-// object-contain guards TikTok's non-square source canvas from distorting.
-function BrandIcon({ src, alt, className }: BrandIconProps & { src: string; alt: string }) {
+// Every brand mark below renders as a self-contained circular badge -- the
+// component itself is the round, colored container -- so consumers just set
+// a uniform size class (e.g. size-9) and never need to nest it inside a
+// second bordered wrapper (which used to double up with the old raster
+// badges' own baked-in rounded-square backgrounds and look "boxy").
+function CircleBadge({
+  className,
+  bgClassName,
+  children,
+}: {
+  className?: string;
+  bgClassName: string;
+  children: React.ReactNode;
+}) {
   return (
-    <Image
-      src={src}
-      alt={alt}
-      width={48}
-      height={48}
-      className={cn("size-4 object-contain", className)}
-    />
+    <span
+      className={cn(
+        "flex aspect-square items-center justify-center overflow-hidden rounded-full",
+        bgClassName,
+        className,
+      )}
+    >
+      {children}
+    </span>
   );
 }
 
 export function FacebookIcon({ className }: BrandIconProps) {
-  return <BrandIcon src="/images/social/facebook.png" alt="Facebook" className={className} />;
-}
-
-export function XIcon({ className }: BrandIconProps) {
-  return <BrandIcon src="/images/social/x.png" alt="X" className={className} />;
+  return (
+    <CircleBadge className={className} bgClassName="bg-[#1877F2]">
+      <FaFacebookF className="size-[52%] text-white" aria-hidden="true" />
+    </CircleBadge>
+  );
 }
 
 export function WhatsAppIcon({ className }: BrandIconProps) {
-  return <BrandIcon src="/images/social/whatsapp.png" alt="WhatsApp" className={className} />;
+  return (
+    <CircleBadge className={className} bgClassName="bg-[#25D366]">
+      <FaWhatsapp className="size-[62%] text-white" aria-hidden="true" />
+    </CircleBadge>
+  );
+}
+
+export function XIcon({ className }: BrandIconProps) {
+  return (
+    <CircleBadge className={className} bgClassName="bg-black">
+      <FaXTwitter className="size-[50%] text-white" aria-hidden="true" />
+    </CircleBadge>
+  );
 }
 
 export function TikTokIcon({ className }: BrandIconProps) {
-  return <BrandIcon src="/images/social/tiktok.png" alt="TikTok" className={className} />;
+  return (
+    <CircleBadge className={className} bgClassName="bg-black">
+      <Image
+        src="/images/social/tiktok.png"
+        alt="TikTok"
+        width={48}
+        height={48}
+        className="size-[68%] object-contain"
+      />
+    </CircleBadge>
+  );
 }

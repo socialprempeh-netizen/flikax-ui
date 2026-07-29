@@ -5,6 +5,7 @@ import { FaInstagram, FaLinkedinIn, FaApple, FaGooglePlay } from "react-icons/fa
 import { FacebookIcon, XIcon, TikTokIcon } from "@/components/icons/social-icons";
 import { SellCta } from "@/components/cta/sell-cta";
 import { JsonLd } from "@/components/seo/json-ld";
+import { cn } from "@/lib/utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -37,15 +38,16 @@ const legalLinks = [
 ];
 
 // No real social accounts exist yet -- these render as plain icons (not
-// links to profiles that don't exist). X, Facebook, and TikTok use the
-// real brand logo assets; Instagram/LinkedIn have no asset yet and keep
-// their react-icons glyphs.
+// links to profiles that don't exist). X, Facebook, and TikTok render as
+// self-contained colored circle badges; Instagram/LinkedIn have no brand
+// badge yet and keep their monotone react-icons glyphs inside a translucent
+// pill so they stay visible against the dark footer.
 const socialIcons = [
-  { label: "X", icon: XIcon },
-  { label: "Facebook", icon: FacebookIcon },
-  { label: "Instagram", icon: FaInstagram },
-  { label: "TikTok", icon: TikTokIcon },
-  { label: "LinkedIn", icon: FaLinkedinIn },
+  { label: "X", icon: XIcon, badge: true },
+  { label: "Facebook", icon: FacebookIcon, badge: true },
+  { label: "Instagram", icon: FaInstagram, badge: false },
+  { label: "TikTok", icon: TikTokIcon, badge: true },
+  { label: "LinkedIn", icon: FaLinkedinIn, badge: false },
 ];
 
 export function SiteFooter() {
@@ -62,15 +64,18 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            {socialIcons.map(({ label, icon: Icon }) => (
+          <div className="flex items-center gap-2.5">
+            {socialIcons.map(({ label, icon: Icon, badge }) => (
               <span
                 key={label}
                 title={label}
                 aria-label={label}
-                className="flex size-7 items-center justify-center rounded-full bg-white/10 text-white/80"
+                className={cn(
+                  "flex size-8 items-center justify-center rounded-full transition-transform duration-200 hover:scale-110",
+                  !badge && "bg-white/10 text-white/80 hover:bg-white/20",
+                )}
               >
-                <Icon className="size-4" />
+                <Icon className={badge ? "size-8" : "size-4"} />
               </span>
             ))}
           </div>

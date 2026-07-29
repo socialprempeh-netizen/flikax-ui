@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { FacebookIcon, XIcon, WhatsAppIcon, TikTokIcon } from "@/components/icons/social-icons";
+
+const ICON_LINK_CLASS =
+  "flex size-9 items-center justify-center rounded-full shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2";
 
 export function ShareButtons({ title, priceLabel }: { title: string; priceLabel: string }) {
   const [url, setUrl] = useState("");
@@ -25,68 +28,54 @@ export function ShareButtons({ title, priceLabel }: { title: string; priceLabel:
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-3">
       <span className="text-sm font-medium text-neutral-500">Share:</span>
 
-      <Button
-        asChild
-        variant="outline"
-        size="icon"
-        className="rounded-full transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+      <a
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Share on Facebook"
+        className={ICON_LINK_CLASS}
       >
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on Facebook"
-        >
-          <FacebookIcon className="size-5" />
-        </a>
-      </Button>
+        <FacebookIcon className="size-9" />
+      </a>
 
-      <Button
-        asChild
-        variant="outline"
-        size="icon"
-        className="rounded-full transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+      <a
+        href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${url}`)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Share on WhatsApp"
+        className={ICON_LINK_CLASS}
       >
-        <a
-          href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${url}`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on WhatsApp"
-        >
-          <WhatsAppIcon className="size-5" />
-        </a>
-      </Button>
+        <WhatsAppIcon className="size-9" />
+      </a>
 
-      <Button
-        asChild
-        variant="outline"
-        size="icon"
-        className="rounded-full transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+      <a
+        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Share on X"
+        className={ICON_LINK_CLASS}
       >
-        <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on X"
-        >
-          <XIcon className="size-5" />
-        </a>
-      </Button>
+        <XIcon className="size-9" />
+      </a>
 
-      <Button
+      <button
         type="button"
         onClick={copyForTikTok}
         aria-label="Copy link to share on TikTok"
         title="TikTok doesn't support pre-filled link sharing — this copies the listing details instead"
-        variant="outline"
-        size="icon"
-        className={`rounded-full transition-all ${copied ? "border-green-300 bg-green-100 text-green-600 hover:bg-green-100" : "hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"}`}
+        className={cn(ICON_LINK_CLASS, copied && "ring-2 ring-green-400")}
       >
-        {copied ? <Check className="size-4" /> : <TikTokIcon className="size-5" />}
-      </Button>
+        {copied ? (
+          <span className="flex size-9 items-center justify-center rounded-full bg-green-100 text-green-600">
+            <Check className="size-4" />
+          </span>
+        ) : (
+          <TikTokIcon className="size-9" />
+        )}
+      </button>
 
       {copied && (
         <span className="text-xs font-medium text-green-600">Copied! Paste it in your TikTok caption.</span>
