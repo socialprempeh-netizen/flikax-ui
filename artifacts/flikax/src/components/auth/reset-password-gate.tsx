@@ -24,12 +24,12 @@ export function ResetPasswordGate() {
   }, [supabase]);
 
   if (status === "checking") {
-    return <p className="text-sm text-neutral-500">Checking your link...</p>;
+    return <p className="text-sm text-slate-300">Checking your link...</p>;
   }
 
   if (status === "invalid") {
     return (
-      <div className="w-full max-w-sm rounded-2xl border border-neutral-100 bg-white p-6 text-center shadow-sm">
+      <div className="w-full max-w-sm rounded-3xl border border-slate-200/80 bg-white p-8 text-center shadow-2xl">
         <p className="text-sm text-neutral-600">This reset link is invalid or has expired.</p>
         <Link
           href="/auth/forgot-password"
@@ -43,7 +43,7 @@ export function ResetPasswordGate() {
 
   return (
     <div className="w-full max-w-sm">
-      <p className="mb-3 text-center text-sm text-neutral-500">Choose a new password for your account.</p>
+      <p className="mb-3 text-center text-sm text-slate-300">Choose a new password for your account.</p>
       <ChangePasswordForm redirectTo="/dashboard" />
     </div>
   );

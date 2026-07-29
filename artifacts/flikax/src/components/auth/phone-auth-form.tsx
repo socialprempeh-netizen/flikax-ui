@@ -2,12 +2,14 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { User } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { toGhanaE164 } from "@/lib/phone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
+const FIELD_CLASS =
+  "h-auto w-full rounded-xl border-slate-300 px-4 py-3 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 const RESEND_SECONDS = 30;
 
@@ -136,7 +138,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
   }
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm">
+    <div className="w-full">
       {step === "phone" && (
         <form onSubmit={sendOtp} className="space-y-4">
           <div>
@@ -147,11 +149,11 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           </div>
 
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-neutral-700">
+            <span className="mb-1.5 block text-sm font-medium text-neutral-700">
               Phone number
             </span>
-            <div className="flex items-center rounded-lg border border-neutral-200 focus-within:border-brand">
-              <span className="border-r border-neutral-200 px-3 py-2 text-sm text-neutral-500">
+            <div className="flex items-center rounded-xl border border-slate-300 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
+              <span className="border-r border-slate-300 px-3.5 py-3 text-sm text-neutral-500">
                 +233
               </span>
               <Input
@@ -162,14 +164,18 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
                 value={rawPhone}
                 onChange={(e) => setRawPhone(e.target.value)}
                 placeholder="024 123 4567"
-                className="h-auto min-w-0 flex-1 rounded-l-none border-none px-3 py-2 text-sm shadow-none focus-visible:ring-0"
+                className="h-auto min-w-0 flex-1 rounded-l-none border-none px-4 py-3 text-sm shadow-none focus-visible:ring-0"
               />
             </div>
           </label>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <Button type="submit" disabled={loading} className="w-full">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+          >
             {loading ? "Sending code..." : "Send code"}
           </Button>
         </form>
@@ -188,7 +194,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           </div>
 
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-neutral-700">
+            <span className="mb-1.5 block text-sm font-medium text-neutral-700">
               Verification code
             </span>
             <Input
@@ -206,7 +212,11 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <Button type="submit" disabled={loading || otp.length !== 6} className="w-full">
+          <Button
+            type="submit"
+            disabled={loading || otp.length !== 6}
+            className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+          >
             {loading ? "Verifying..." : "Verify"}
           </Button>
 
@@ -232,21 +242,28 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           </div>
 
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-neutral-700">Full name</span>
-            <Input
-              type="text"
-              autoFocus
-              required
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="e.g. Ama Owusu"
-              className={FIELD_CLASS}
-            />
+            <span className="mb-1.5 block text-sm font-medium text-neutral-700">Full name</span>
+            <div className="relative">
+              <User className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+              <Input
+                type="text"
+                autoFocus
+                required
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="e.g. Ama Owusu"
+                className={`${FIELD_CLASS} pl-10`}
+              />
+            </div>
           </label>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <Button type="submit" disabled={loading} className="w-full">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+          >
             {loading ? "Saving..." : "Continue"}
           </Button>
         </form>

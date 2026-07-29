@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { Mail } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,13 +35,13 @@ export function ForgotPasswordForm() {
 
   if (sent) {
     return (
-      <div className="w-full max-w-sm rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm">
+      <div className="w-full">
         <h1 className="text-lg font-bold text-neutral-800">Check your email</h1>
         <p className="mt-1 text-sm text-neutral-500">
           If an account exists for <span className="font-medium text-neutral-700">{email}</span>, we&apos;ve
           sent a link to reset your password.
         </p>
-        <Button asChild variant="outline" className="mt-4 w-full">
+        <Button asChild variant="outline" className="mt-4 w-full rounded-xl">
           <Link href="/auth/login">Back to login</Link>
         </Button>
       </div>
@@ -48,10 +49,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-sm space-y-4 rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm"
-    >
+    <form onSubmit={handleSubmit} className="w-full space-y-4">
       <div>
         <h1 className="text-lg font-bold text-neutral-800">Reset your password</h1>
         <p className="mt-1 text-sm text-neutral-500">
@@ -60,20 +58,27 @@ export function ForgotPasswordForm() {
       </div>
 
       <label className="block">
-        <span className="mb-1 block text-sm font-medium text-neutral-700">Email</span>
-        <Input
-          type="email"
-          autoComplete="email"
-          autoFocus
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
-          className="h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand"
-        />
+        <span className="mb-1.5 block text-sm font-medium text-neutral-700">Email</span>
+        <div className="relative">
+          <Mail className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+          <Input
+            type="email"
+            autoComplete="email"
+            autoFocus
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            className="h-auto w-full rounded-xl border-slate-300 px-4 py-3 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10"
+          />
+        </div>
       </label>
 
-      <Button type="submit" disabled={loading} className="w-full">
+      <Button
+        type="submit"
+        disabled={loading}
+        className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+      >
         {loading ? "Sending..." : "Send reset link"}
       </Button>
 

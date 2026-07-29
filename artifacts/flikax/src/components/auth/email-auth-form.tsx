@@ -3,11 +3,13 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Mail, Lock, User } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
+const FIELD_CLASS =
+  "h-auto w-full rounded-xl border-slate-300 px-4 py-3 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 type Mode = "sign-in" | "sign-up";
 
@@ -88,13 +90,13 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
   if (checkEmail) {
     return (
-      <div className="w-full max-w-sm rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm">
+      <div className="w-full rounded-2xl border border-slate-200 bg-white p-5">
         <h1 className="text-lg font-bold text-neutral-800">Check your email</h1>
         <p className="mt-1 text-sm text-neutral-500">
           We sent a confirmation link to <span className="font-medium text-neutral-700">{email}</span>. Click
           it to activate your account, then come back and sign in.
         </p>
-        <Button type="button" onClick={() => switchMode("sign-in")} variant="outline" className="mt-4 w-full">
+        <Button type="button" onClick={() => switchMode("sign-in")} variant="outline" className="mt-4 w-full rounded-xl">
           Back to sign in
         </Button>
       </div>
@@ -102,14 +104,16 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
   }
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm">
-      <div className="mb-4 flex rounded-lg bg-neutral-100 p-1 text-sm font-bold">
+    <div className="w-full">
+      <div className="mb-5 flex rounded-full bg-slate-100 p-1 text-sm font-bold">
         <Button
           type="button"
           onClick={() => switchMode("sign-in")}
           variant="ghost"
-          className={`h-auto flex-1 rounded-md py-1.5 hover:bg-transparent ${
-            mode === "sign-in" ? "bg-white text-neutral-800 shadow-sm hover:bg-white" : "text-neutral-500"
+          className={`h-auto flex-1 rounded-full py-2 transition-all ${
+            mode === "sign-in"
+              ? "bg-white text-neutral-900 shadow-sm hover:bg-white"
+              : "text-neutral-500 hover:bg-transparent"
           }`}
         >
           Sign in
@@ -118,8 +122,10 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           type="button"
           onClick={() => switchMode("sign-up")}
           variant="ghost"
-          className={`h-auto flex-1 rounded-md py-1.5 hover:bg-transparent ${
-            mode === "sign-up" ? "bg-white text-neutral-800 shadow-sm hover:bg-white" : "text-neutral-500"
+          className={`h-auto flex-1 rounded-full py-2 transition-all ${
+            mode === "sign-up"
+              ? "bg-white text-neutral-900 shadow-sm hover:bg-white"
+              : "text-neutral-500 hover:bg-transparent"
           }`}
         >
           Sign up
@@ -129,55 +135,67 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
       <form onSubmit={mode === "sign-in" ? handleSignIn : handleSignUp} className="space-y-4">
         {mode === "sign-up" && (
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-neutral-700">Full name</span>
-            <Input
-              type="text"
-              required
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="e.g. Ama Owusu"
-              className={FIELD_CLASS}
-            />
+            <span className="mb-1.5 block text-sm font-medium text-neutral-700">Full name</span>
+            <div className="relative">
+              <User className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+              <Input
+                type="text"
+                required
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="e.g. Ama Owusu"
+                className={FIELD_CLASS}
+              />
+            </div>
           </label>
         )}
 
         <label className="block">
-          <span className="mb-1 block text-sm font-medium text-neutral-700">Email</span>
-          <Input
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            className={FIELD_CLASS}
-          />
+          <span className="mb-1.5 block text-sm font-medium text-neutral-700">Email</span>
+          <div className="relative">
+            <Mail className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+            <Input
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className={FIELD_CLASS}
+            />
+          </div>
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-sm font-medium text-neutral-700">Password</span>
-          <Input
-            type="password"
-            autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
-            required
-            minLength={mode === "sign-up" ? 8 : undefined}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={FIELD_CLASS}
-          />
+          <span className="mb-1.5 block text-sm font-medium text-neutral-700">Password</span>
+          <div className="relative">
+            <Lock className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+            <Input
+              type="password"
+              autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
+              required
+              minLength={mode === "sign-up" ? 8 : undefined}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={FIELD_CLASS}
+            />
+          </div>
         </label>
 
         {mode === "sign-up" && (
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-neutral-700">Confirm password</span>
-            <Input
-              type="password"
-              autoComplete="new-password"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className={FIELD_CLASS}
-            />
+            <span className="mb-1.5 block text-sm font-medium text-neutral-700">Confirm password</span>
+            <div className="relative">
+              <Lock className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+              <Input
+                type="password"
+                autoComplete="new-password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={FIELD_CLASS}
+              />
+            </div>
           </label>
         )}
 
@@ -189,7 +207,11 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
 
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+        >
           {loading ? "Please wait..." : mode === "sign-in" ? "Sign in" : "Create account"}
         </Button>
       </form>
