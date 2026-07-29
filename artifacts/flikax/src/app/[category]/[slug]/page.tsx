@@ -672,13 +672,13 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
           imageUrl={images[0] ?? null}
         />
 
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-3">
           <div className="sm:col-span-2">
             <ListingGallery images={images} title={listing.title} />
 
-            <Card className="mt-4 gap-0 p-4 shadow-sm">
+            <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
               {(isFeatured || isBumped) && (
-                <div className="mb-2 flex flex-wrap items-center gap-2">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
                   {isFeatured && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-700">
                       <Star className="size-3.5 fill-amber-500 text-amber-500" />
@@ -695,22 +695,24 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               )}
 
               <div className="flex items-start justify-between gap-3">
-                <h1 className="text-2xl font-bold text-neutral-800">{listing.title}</h1>
+                <h1 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-[1.75rem]">
+                  {listing.title}
+                </h1>
                 <SaveListingButton listingId={listing.id} />
               </div>
 
-              <div className="mt-2 flex flex-wrap items-center gap-3 text-base text-neutral-500">
+              <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-neutral-500">
                 <span>{listing.location}</span>
-                <span>·</span>
+                <span className="text-neutral-300">·</span>
                 <span>{formatRelativeTime(new Date(listing.created_at))}</span>
-                <span>·</span>
+                <span className="text-neutral-300">·</span>
                 <span className="flex items-center gap-1">
                   <Eye className="size-4" />
                   {listing.views} views
                 </span>
               </div>
 
-              <p className="mt-3 text-xl font-bold text-brand">
+              <p className="mt-4 text-2xl font-bold tracking-tight text-brand">
                 {currency.format(listing.price)}
                 {listing.negotiable === "yes" && (
                   <span className="ml-2 text-base font-medium text-neutral-500">Negotiable</span>
@@ -725,20 +727,20 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               )}
 
               {sellerPhone && (
-                <div className="mt-4 flex gap-2 sm:hidden">
+                <div className="mt-5 flex gap-2 sm:hidden">
                   <RevealPhoneButton phone={sellerPhone} label="Show contact" compact />
                   <ChatPopupButton listingId={listing.id} sellerName={sellerName} currentPath={currentPath} />
                 </div>
               )}
 
               {sellerPhone && (
-                <div className="mt-4 hidden sm:block sm:w-64">
+                <div className="mt-5 hidden sm:block sm:w-64">
                   <RevealPhoneButton phone={sellerPhone} label="Show contact" />
                 </div>
               )}
 
               {headlineSpecs.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-4 border-t border-neutral-100 pt-4">
+                <div className="mt-5 flex flex-wrap gap-4 border-t border-neutral-100 pt-5">
                   {headlineSpecs.map((spec) => {
                     const Icon = FIELD_ICONS[spec.key] ?? Sparkles;
                     return (
@@ -755,11 +757,11 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
             </Card>
 
             {specs.length > 0 && (
-              <Card className="mt-4 gap-0 p-4 shadow-sm">
-                <h2 className="mb-3 text-base font-bold text-neutral-800">Specifications</h2>
+              <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
+                <h2 className="mb-4 text-lg font-bold tracking-tight text-neutral-900">Specifications</h2>
                 <div className="grid grid-cols-2 divide-y divide-neutral-200 sm:grid-cols-3">
                   {specs.map((spec) => (
-                    <div key={spec.key} className="py-3 pr-3">
+                    <div key={spec.key} className="py-3.5 pr-4">
                       <p className="text-base font-semibold text-neutral-800">{spec.value}</p>
                       <p className="text-xs font-medium text-neutral-400">{spec.label}</p>
                     </div>
@@ -769,10 +771,10 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
             )}
 
             {tagSpecs.length > 0 && (
-              <Card className="mt-4 gap-0 p-4 shadow-sm">
+              <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
                 {tagSpecs.map((spec, index) => (
                   <div key={spec.key} className={index > 0 ? "mt-4 border-t border-neutral-200 pt-4" : ""}>
-                    <h2 className="mb-2 text-base font-bold text-neutral-800">{spec.label}</h2>
+                    <h2 className="mb-2.5 text-lg font-bold tracking-tight text-neutral-900">{spec.label}</h2>
                     <div className="flex flex-wrap gap-2">
                       {spec.values.map((value) => (
                         <span
@@ -789,19 +791,21 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
             )}
 
             {listing.description && (
-              <Card className="mt-4 gap-0 p-4 shadow-sm">
-                <h2 className="mb-2 text-base font-bold text-neutral-800">Description</h2>
-                <p className="whitespace-pre-wrap text-base text-neutral-600">{listing.description}</p>
+              <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
+                <h2 className="mb-2.5 text-lg font-bold tracking-tight text-neutral-900">Description</h2>
+                <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-neutral-600">
+                  {listing.description}
+                </p>
               </Card>
             )}
 
-            <Card className="mt-4 gap-0 p-4 shadow-sm">
+            <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
               <ShareButtons title={listing.title} priceLabel={currency.format(listing.price)} />
             </Card>
           </div>
 
-          <div className="flex flex-col gap-3 sm:col-span-1">
-            <Card className="gap-0 p-4 shadow-sm">
+          <div className="flex flex-col gap-4 sm:col-span-1">
+            <Card className="gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm">
               <div className="flex items-center gap-3">
                 <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-light text-lg font-bold text-brand">
                   {sellerName[0]?.toUpperCase() ?? "F"}
@@ -832,7 +836,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               </div>
             </Card>
 
-            <Card className="gap-2 p-3 shadow-sm">
+            <Card className="gap-2 rounded-2xl border-slate-200/80 p-4 shadow-sm">
               <Button asChild variant="outline">
                 <a href={feedbackHref}>
                   <MessageSquareWarning className="size-4" />
@@ -848,7 +852,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               <ListingOwnerActions listingId={listing.id} sellerId={listing.user_id} status={listing.status} />
             </Card>
 
-            <Card className="gap-1 border-dashed border-brand/30 bg-brand-light p-5 text-center shadow-none">
+            <Card className="gap-1 rounded-2xl border-dashed border-brand/30 bg-brand-light p-5 text-center shadow-none">
               <h3 className="text-sm font-bold text-neutral-800">Post an Ad Similar to This</h3>
               <p className="mt-1 text-xs text-neutral-500">Reach thousands of buyers across Ghana.</p>
               <Button asChild className="mt-3">
@@ -856,7 +860,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               </Button>
             </Card>
 
-            <Card className="gap-0 p-4 shadow-sm">
+            <Card className="gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm">
               <h3 className="mb-3 text-sm font-bold text-neutral-800">Safety First - Read This Before Proceeding</h3>
               <ul className="list-disc space-y-2 pl-4 marker:text-brand">
                 {SAFETY_TIPS.map((tip) => (
@@ -870,8 +874,10 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
         </div>
 
         {similarListings.length > 0 && (
-          <section className="mt-10">
-            <h2 className="mb-4 border-l-4 border-brand pl-3 text-xl font-bold text-neutral-800">Similar Ads</h2>
+          <section className="mt-12">
+            <h2 className="mb-4 border-l-4 border-brand pl-3 text-xl font-bold tracking-tight text-neutral-900">
+              Similar Ads
+            </h2>
             <ListingGrid listings={similarListings} />
           </section>
         )}

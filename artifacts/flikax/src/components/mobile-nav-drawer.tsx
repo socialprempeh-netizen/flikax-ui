@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { useAuthModal } from "@/components/auth/auth-modal-provider";
 import type { Category } from "@/components/category-sidebar";
 import { useSessionSummary } from "@/lib/use-session-summary";
 import { CategoryThumb } from "@/components/category-thumb";
@@ -30,6 +31,7 @@ const ACCOUNT_LINKS = [
 export function MobileNavDrawer({ categories }: { categories: Category[] }) {
   const [open, setOpen] = useState(false);
   const { isLoggedIn, hasUnreadMessages } = useSessionSummary();
+  const { openAuthModal } = useAuthModal();
   const parents = categories.filter((c) => c.parent_id === null);
 
   return (
@@ -71,16 +73,27 @@ export function MobileNavDrawer({ categories }: { categories: Category[] }) {
             <nav className="flex flex-col">
               {ACCOUNT_LINKS.map((item) => (
                 <SheetClose asChild key={item.href}>
-                  <Link
-                    href={isLoggedIn ? item.href : "/auth/login"}
-                    className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                  >
-                    <item.icon className="size-4.5 shrink-0 text-neutral-600" />
-                    {item.label}
-                    {item.href === "/messages" && hasUnreadMessages && (
-                      <span className="size-2 rounded-full bg-red-500" />
-                    )}
-                  </Link>
+                  {isLoggedIn ? (
+                    <Link
+                      href={item.href}
+                      className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                    >
+                      <item.icon className="size-4.5 shrink-0 text-neutral-600" />
+                      {item.label}
+                      {item.href === "/messages" && hasUnreadMessages && (
+                        <span className="size-2 rounded-full bg-red-500" />
+                      )}
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => openAuthModal(item.href)}
+                      className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                    >
+                      <item.icon className="size-4.5 shrink-0 text-neutral-600" />
+                      {item.label}
+                    </button>
+                  )}
                 </SheetClose>
               ))}
             </nav>
@@ -91,13 +104,14 @@ export function MobileNavDrawer({ categories }: { categories: Category[] }) {
               <LogoutButton className="w-full rounded-lg px-2 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50" />
             ) : (
               <SheetClose asChild>
-                <Link
-                  href="/auth/login"
-                  className="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-brand hover:bg-brand-light"
+                <button
+                  type="button"
+                  onClick={() => openAuthModal("/")}
+                  className="flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-brand hover:bg-brand-light"
                 >
                   <LogIn className="size-4.5 shrink-0" />
                   Log in
-                </Link>
+                </button>
               </SheetClose>
             )}
           </div>

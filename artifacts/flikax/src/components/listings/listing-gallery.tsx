@@ -15,7 +15,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-[4/3] items-center justify-center rounded-xl bg-cream text-brand/40">
+      <div className="flex aspect-[16/9] items-center justify-center rounded-2xl border border-slate-200/80 border-t-4 border-t-brand bg-cream text-brand/40">
         <ImageOff className="size-10" />
       </div>
     );
@@ -45,7 +45,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
   return (
     <div>
       <div
-        className="relative aspect-[4/3] w-full touch-pan-y select-none overflow-hidden rounded-xl bg-cream"
+        className="relative aspect-[16/9] w-full touch-pan-y select-none overflow-hidden rounded-2xl border border-slate-200/80 border-t-4 border-t-brand bg-cream"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {
@@ -102,20 +102,20 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
       </div>
 
       {images.length > 1 && (
-        <div className="mt-3 hidden grid-cols-5 gap-3 sm:grid">
+        <div className="mt-3 hidden grid-cols-4 gap-3 sm:grid">
           {images.map((url, index) => (
             <button
               key={url + index}
               type="button"
               onClick={() => setActiveIndex(index)}
               aria-label={`View image ${index + 1}`}
-              className={`relative aspect-square w-full overflow-hidden rounded-lg border-2 ${
+              className={`relative aspect-square w-full overflow-hidden rounded-xl border-[3px] transition-all ${
                 index === activeIndex
-                  ? "border-brand ring-2 ring-brand ring-offset-2"
-                  : "border-neutral-200 hover:border-neutral-300"
+                  ? "border-brand shadow-md"
+                  : "border-slate-200/80 hover:border-slate-300"
               }`}
             >
-              <Image src={url} alt="" fill sizes="144px" quality={82} className="object-cover" />
+              <Image src={url} alt="" fill sizes="180px" quality={82} className="object-cover" />
             </button>
           ))}
         </div>
