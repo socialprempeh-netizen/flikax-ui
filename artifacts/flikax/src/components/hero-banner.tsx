@@ -174,8 +174,8 @@ export function HeroBanner() {
           intentionally a sibling of AnimatePresence, not inside the
           per-slide motion.div, so it never unmounts (and never loses
           in-progress focus/typing) as slides rotate underneath it. */}
-      <div className="absolute inset-x-0 bottom-3 z-20 px-4 sm:bottom-4 sm:px-6 lg:bottom-5">
-        <div className="mx-auto w-full max-w-xl">
+      <div className="absolute inset-x-0 bottom-3 z-20 flex w-full justify-center px-4 sm:bottom-4 sm:px-6 lg:bottom-5">
+        <div className="w-full max-w-xl">
           <SearchBar />
         </div>
       </div>

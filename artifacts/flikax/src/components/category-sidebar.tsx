@@ -102,7 +102,7 @@ export function CategorySidebar({
               <Link
                 key={child.id}
                 href={`/${child.slug}`}
-                className={`flex items-center gap-3 px-3 py-2 text-sm ${
+                className={`flex items-center gap-3 px-3 py-1.5 text-sm ${
                   isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-neutral-50"
                 }`}
               >

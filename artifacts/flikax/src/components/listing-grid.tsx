@@ -65,8 +65,8 @@ export function ListingGrid({
       <div
         className={
           isHome
-            ? "grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 lg:grid-cols-4"
-            : "grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-3"
+            ? "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+            : "grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         }
       >
         {listings.map((listing) => {
