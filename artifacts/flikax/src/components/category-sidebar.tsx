@@ -66,7 +66,7 @@ export function CategorySidebar({
           <MobileCategoryGrid parents={parents} filters={filters} />
         </div>
 
-        <div className="hidden rounded-xl bg-brand p-4 text-white shadow-md lg:block">
+        <div className="hidden rounded-2xl bg-brand p-4 text-white shadow-sm lg:block">
           <h3 className="text-sm font-bold tracking-wide">Sell Something?</h3>
           <p className="mt-1.5 text-xs leading-relaxed text-white/80">
             Post your ad free and reach thousands of buyers across Ghana.
@@ -86,8 +86,8 @@ export function CategorySidebar({
 
   return (
     <div className="flex w-full shrink-0 flex-col gap-3 lg:w-72 lg:sticky lg:top-16 lg:z-10 lg:max-h-[calc(100vh-5rem)] lg:self-start lg:overflow-y-auto">
-      <div className="hidden lg:block rounded-xl border border-neutral-300 bg-white p-3 shadow-md">
-        <h3 className="mb-2 text-sm font-bold text-neutral-800">Categories</h3>
+      <div className="hidden lg:block rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm">
+        <h3 className="mb-2 text-sm font-bold tracking-tight text-neutral-800">Categories</h3>
         <Link
           href={buildListingsHref({ ...filters, category: undefined })}
           className="mb-1 block text-xs font-medium text-neutral-500 hover:text-brand"
@@ -95,21 +95,33 @@ export function CategorySidebar({
           All categories
         </Link>
         <p className="mb-2 truncate text-sm font-semibold text-brand">{activeParent.name}</p>
-        <div className="flex flex-col divide-y divide-neutral-200">
+        <div className="flex flex-col divide-y divide-neutral-100">
           {children.map((child) => {
             const isActive = child.slug === selectedSlug;
             return (
               <Link
                 key={child.id}
                 href={`/${child.slug}`}
-                className={`flex items-center gap-3 px-3 py-1.5 text-sm ${
-                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-neutral-50"
+                className={`group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors ${
+                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-slate-50"
                 }`}
               >
-                <CategoryThumb category={child} size="size-6" iconSize="size-3.5" rounded="rounded-md" sizes="24px" />
-                <span className="h-5 w-px shrink-0 bg-neutral-200" />
+                <CategoryThumb
+                  category={child}
+                  size="size-7"
+                  iconSize="size-3.5"
+                  rounded="rounded-lg"
+                  sizes="28px"
+                  className="ring-1 ring-slate-200/70"
+                />
                 <span className="min-w-0 flex-1 truncate">{child.name}</span>
-                <span className="ml-2 shrink-0 text-xs text-neutral-400">{counts.get(child.id) ?? 0}</span>
+                <span
+                  className={`ml-2 shrink-0 rounded-full px-1.5 py-0.5 text-[11px] font-medium ${
+                    isActive ? "bg-white/60 text-brand" : "bg-slate-100 text-neutral-500 group-hover:bg-brand-light group-hover:text-brand"
+                  }`}
+                >
+                  {counts.get(child.id) ?? 0}
+                </span>
               </Link>
             );
           })}
@@ -130,13 +142,13 @@ export function CategorySidebar({
         <MobileCategoryList categories={children} counts={counts} />
       </div>
 
-      <div className="divide-y divide-neutral-300 rounded-xl border border-neutral-300 bg-white shadow-md">
+      <div className="divide-y divide-neutral-100 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
         <LocationPicker filters={filters} />
         <ExcludeLocationPicker filters={filters} />
       </div>
 
-      <div className="rounded-xl border border-neutral-300 bg-white p-3 shadow-md">
-        <h3 className="mb-2 text-sm font-bold text-neutral-800">Price, GH₵</h3>
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm">
+        <h3 className="mb-2 text-sm font-bold tracking-tight text-neutral-800">Price, GH₵</h3>
         <form action="/" method="get" className="mb-3 flex items-center gap-2">
           <input type="hidden" name="q" value={filters.q ?? ""} />
           <input type="hidden" name="location" value={filters.location ?? ""} />
@@ -171,8 +183,8 @@ export function CategorySidebar({
               <Link
                 key={bucket.label}
                 href={buildListingsHref({ ...filters, minPrice: bucket.minPrice, maxPrice: bucket.maxPrice })}
-                className={`rounded-md px-2 py-1 text-sm ${
-                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-neutral-50"
+                className={`rounded-lg px-2 py-1 text-sm transition-colors ${
+                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-slate-50"
                 }`}
               >
                 {bucket.label}

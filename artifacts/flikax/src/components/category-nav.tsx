@@ -98,7 +98,7 @@ export function CategoryNav({
   }, [hoveredId]);
 
   return (
-    <nav className="relative w-full shrink-0 divide-y divide-neutral-300 rounded-xl border border-neutral-300 bg-white shadow-md sm:w-72">
+    <nav className="relative w-full shrink-0 divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm sm:w-72">
       {parents.map((cat) => {
         const children = categories.filter((c) => c.parent_id === cat.id);
         const isHovered = hoveredId === cat.id;
@@ -115,34 +115,43 @@ export function CategoryNav({
           >
             <Link
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`group flex items-center gap-3 px-4 py-1.5 transition-colors duration-150 hover:bg-brand-light ${
-                isHovered ? "bg-brand-light" : ""
+              className={`group relative flex items-center gap-3 py-2.5 pl-5 pr-4 transition-colors duration-150 hover:bg-slate-50 ${
+                isHovered ? "bg-slate-50" : ""
               }`}
             >
+              {/* Animated accent bar (rather than the flat full-row highlight
+                  most classifieds sites use) is the row's hover/active tell --
+                  a quieter, more deliberate cue that reads as bespoke rather
+                  than a stock list style. */}
+              <span
+                className={`absolute inset-y-2 left-0 w-1 rounded-r-full bg-brand transition-all duration-200 ${
+                  isHovered ? "opacity-100" : "opacity-0"
+                }`}
+              />
               {/* className (not a wrapping span) for the hover-scale --
                   CategoryThumb's root span needs to stay a direct flex-item
-                  child of this row for its size-8 width/height to apply at
+                  child of this row for its size-9 width/height to apply at
                   all: nested one level inside a plain (non-flex) wrapper
-                  span, "size-8" is a no-op on an inline element with no
+                  span, "size-9" is a no-op on an inline element with no
                   intrinsic size, collapsing it (and the fill image inside)
                   to 0x0. */}
               <CategoryThumb
                 category={cat}
-                size="size-8"
+                size="size-9"
                 iconSize="size-4"
-                sizes="32px"
-                className="transition-transform duration-150 group-hover:scale-110"
+                rounded="rounded-xl"
+                sizes="36px"
+                className="ring-1 ring-slate-200/70 transition-transform duration-150 group-hover:scale-105"
               />
-              {/* Vertical divider between the icon and the text list --
-                  matches the reference layout's clean icon/label separation. */}
-              <span className="h-8 w-px shrink-0 bg-neutral-200" />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-neutral-800 transition-colors group-hover:text-brand">
+                <span className="block truncate text-sm font-semibold tracking-tight text-neutral-800 transition-colors group-hover:text-brand">
                   {cat.name}
                 </span>
-                <span className="block text-xs text-neutral-500">{totalFor(cat)} ads</span>
+                <span className="mt-0.5 inline-block rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-neutral-500 transition-colors group-hover:bg-brand-light group-hover:text-brand">
+                  {totalFor(cat)} ads
+                </span>
               </span>
-              <ChevronRight className="size-4 shrink-0 text-neutral-400 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-brand" />
+              <ChevronRight className="size-4 shrink-0 text-neutral-300 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-brand" />
             </Link>
 
             {isHovered && children.length > 0 && flyoutPos && (
@@ -156,19 +165,25 @@ export function CategoryNav({
                 }}
                 onMouseEnter={() => handleEnter(cat.id)}
                 onMouseLeave={handleLeave}
-                className="z-40 overflow-y-auto rounded-xl border border-neutral-300 bg-white p-2 shadow-lg"
+                className="z-40 overflow-y-auto rounded-2xl border border-slate-200/80 bg-white p-2 shadow-lg"
               >
                 {children.map((child) => {
                   return (
                     <Link
                       key={child.id}
                       href={`/${child.slug}`}
-                      className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-neutral-50"
+                      className="group flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-50"
                     >
-                      <CategoryThumb category={child} size="size-8" iconSize="size-4" rounded="rounded-md" sizes="32px" />
-                      <span className="h-7 w-px shrink-0 bg-neutral-200" />
+                      <CategoryThumb
+                        category={child}
+                        size="size-8"
+                        iconSize="size-4"
+                        rounded="rounded-lg"
+                        sizes="32px"
+                        className="ring-1 ring-slate-200/70"
+                      />
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-medium text-neutral-800">
+                        <span className="block truncate text-sm font-medium text-neutral-800 group-hover:text-brand">
                           {child.name}
                         </span>
                         <span className="block text-xs text-neutral-400">

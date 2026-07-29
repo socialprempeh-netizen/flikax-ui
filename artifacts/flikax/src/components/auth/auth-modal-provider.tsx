@@ -45,6 +45,7 @@ export function AuthModalProvider({ children }: { children: React.ReactNode }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           showCloseButton
+          overlayClassName="bg-black/50 backdrop-blur-sm"
           className="max-w-md gap-0 rounded-3xl border border-slate-200/80 bg-white p-8 shadow-2xl sm:p-10"
         >
           <DialogTitle className="sr-only">Sign in to Flikax</DialogTitle>

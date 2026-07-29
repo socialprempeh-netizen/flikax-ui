@@ -42,7 +42,7 @@ export function ShareButtons({ title, priceLabel }: { title: string; priceLabel:
       </a>
 
       <a
-        href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${url}`)}`}
+        href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${url}`)}`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on WhatsApp"
