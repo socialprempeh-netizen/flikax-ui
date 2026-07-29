@@ -119,9 +119,20 @@ export function CategoryNav({
                 isHovered ? "bg-brand-light" : ""
               }`}
             >
-              <span className="transition-transform duration-150 group-hover:scale-110">
-                <CategoryThumb category={cat} size="size-8" iconSize="size-4" sizes="32px" />
-              </span>
+              {/* className (not a wrapping span) for the hover-scale --
+                  CategoryThumb's root span needs to stay a direct flex-item
+                  child of this row for its size-8 width/height to apply at
+                  all: nested one level inside a plain (non-flex) wrapper
+                  span, "size-8" is a no-op on an inline element with no
+                  intrinsic size, collapsing it (and the fill image inside)
+                  to 0x0. */}
+              <CategoryThumb
+                category={cat}
+                size="size-8"
+                iconSize="size-4"
+                sizes="32px"
+                className="transition-transform duration-150 group-hover:scale-110"
+              />
               {/* Vertical divider between the icon and the text list --
                   matches the reference layout's clean icon/label separation. */}
               <span className="h-8 w-px shrink-0 bg-neutral-200" />

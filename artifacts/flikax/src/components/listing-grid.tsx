@@ -13,10 +13,15 @@ export type ListingCard = {
   price: number;
   location: string;
   imageUrl: string | null;
-  // Cover image's real, stored dimensions -- present for new uploads,
-  // null/undefined for images uploaded before this was tracked. Drives
-  // rendering the card's image at its true aspect ratio instead of a
-  // forced crop; missing either one falls back to the fixed crop.
+  // Cover image's real, stored dimensions. No longer used to size the card
+  // (see aspect-square below) -- kept on the type since callers still pass
+  // it, but every card now crops to the same fixed ratio regardless of the
+  // source photo's real proportions. A per-listing natural aspect ratio in
+  // a fixed (non-masonry) grid produced a different card height per photo,
+  // which left ragged gaps under the shorter cards in every row (the grid
+  // cell stretches to the row's tallest cell, but a shorter card doesn't
+  // stretch with it) -- a uniform crop is what actually guarantees flush
+  // rows with no gaps.
   imageWidth?: number | null;
   imageHeight?: number | null;
   isFeatured?: boolean;
@@ -31,13 +36,7 @@ const currency = new Intl.NumberFormat("en-GH", {
   maximumFractionDigits: 0,
 });
 
-// Caps how tall a single card's image can get before object-cover starts
-// cropping it -- without this, an extreme portrait photo would blow out
-// its column and dominate the whole grid.
-const MAX_IMAGE_HEIGHT = 480;
-
-// "home" is the homepage grid: a wider (more horizontal) image with a
-// colored frame around it, per the brief. "default" (everywhere else --
+// "home" is the homepage grid: per the brief. "default" (everywhere else --
 // category/search results) gets a bigger card via fewer grid columns and a
 // heavier shadow/border instead.
 export function ListingGrid({
@@ -70,21 +69,10 @@ export function ListingGrid({
         }
       >
         {listings.map((listing) => {
-          const hasNaturalAspect = Boolean(listing.imageWidth && listing.imageHeight);
-
           return (
-            <Link key={listing.id} href={listing.href} className="group block">
-              <Card className="gap-0 overflow-hidden border-neutral-200 p-0 shadow-sm transition-all duration-200 group-hover:-translate-y-1 group-hover:border-brand/30 group-hover:shadow-xl">
-                <div
-                  className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
-                    hasNaturalAspect ? "" : isHome ? "aspect-[2/1]" : "aspect-video"
-                  }`}
-                  style={
-                    hasNaturalAspect
-                      ? { aspectRatio: `${listing.imageWidth} / ${listing.imageHeight}`, maxHeight: MAX_IMAGE_HEIGHT }
-                      : undefined
-                  }
-                >
+            <Link key={listing.id} href={listing.href} className="group block h-full">
+              <Card className="h-full gap-0 overflow-hidden border-neutral-200 p-0 shadow-sm transition-all duration-200 group-hover:-translate-y-1 group-hover:border-brand/30 group-hover:shadow-xl">
+                <div className="relative aspect-square w-full overflow-hidden bg-cream text-brand/40">
                   {listing.imageUrl ? (
                     <Image
                       src={listing.imageUrl}
@@ -130,10 +118,14 @@ export function ListingGrid({
                       </span>
                     )}
                   </div>
-                  <p className="line-clamp-2 text-sm font-semibold text-neutral-800">{listing.title}</p>
-                  {listing.description && (
-                    <p className="line-clamp-2 text-xs text-neutral-500">{listing.description}</p>
-                  )}
+                  {/* min-h reserves space for a full 2 lines regardless of
+                      actual title/description length -- a short one-line
+                      title next to a wrapped two-line one is the same kind
+                      of per-card height variance as the image aspect ratio
+                      was, just smaller, so it gets the same fixed-space
+                      treatment to keep every card in a row pixel-identical. */}
+                  <p className="line-clamp-2 min-h-10 text-sm font-semibold text-neutral-800">{listing.title}</p>
+                  <p className="line-clamp-2 min-h-8 text-xs text-neutral-500">{listing.description ?? ""}</p>
                   <div className="flex items-center justify-between gap-2 pt-0.5 text-xs text-neutral-400">
                     <span className="flex min-w-0 items-center gap-1 truncate">
                       <MapPin className="size-3 shrink-0" />

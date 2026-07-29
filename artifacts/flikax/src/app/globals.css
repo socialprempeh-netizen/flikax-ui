@@ -2,11 +2,12 @@
 @import "tw-animate-css";
 
 :root {
-  /* Site-wide page background -- a very light, cool neutral (not flat white)
-     so cards/panels still read as sitting on a surface instead of blending
-     into the page. Single source of truth: every page-root wrapper uses
+  /* Site-wide page background -- a deeper, muted blue-grey (Jiji-tone)
+     rather than the near-white f7f8fa this was before, so white cards read
+     as clearly sitting on a surface instead of nearly blending into the
+     page. Single source of truth: every page-root wrapper uses
      bg-background instead of hardcoding a neutral-* shade. */
-  --background: #f7f8fa;
+  --background: #e4e7eb;
   --foreground: #171717;
   /* Single-brand-color system: one deep corporate blue drives every
      interactive element site-wide (buttons, links, active states,
