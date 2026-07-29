@@ -11,6 +11,8 @@ import {
   clearBumpAction,
 } from "@/app/admin/listings/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 type PendingConfirm = { type: "reject" | "hide" | "delete" };
@@ -122,60 +124,58 @@ export function ListingDetailActions({
   }
 
   return (
-    <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-      <h2 className="text-sm font-bold text-neutral-800">Moderation actions</h2>
+    <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+      <h2 className="text-sm font-bold text-slate-800">Moderation actions</h2>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
       <div className="mt-3 flex flex-wrap gap-2">
         {status !== "active" && (
-          <button
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => setStatus("active")}
-            className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-green-700 disabled:opacity-60"
+            className="bg-green-600 hover:bg-green-700"
           >
             Approve
-          </button>
+          </Button>
         )}
         {status !== "declined" && (
-          <button
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => setConfirm({ type: "reject" })}
-            className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-amber-700 disabled:opacity-60"
+            className="bg-amber-600 hover:bg-amber-700"
           >
             Reject
-          </button>
+          </Button>
         )}
         {status !== "removed" && (
-          <button
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => setConfirm({ type: "hide" })}
-            className="rounded-lg bg-neutral-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-neutral-700 disabled:opacity-60"
+            className="bg-slate-600 hover:bg-slate-700"
           >
             Hide
-          </button>
+          </Button>
         )}
-        <button
-          type="button"
-          disabled={isPending}
-          onClick={() => setConfirm({ type: "delete" })}
-          className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
-        >
+        <Button type="button" size="sm" variant="destructive" disabled={isPending} onClick={() => setConfirm({ type: "delete" })}>
           Delete
-        </button>
+        </Button>
       </div>
 
-      <div className="mt-5 border-t border-neutral-100 pt-4">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="mt-5 border-t border-slate-100 pt-4">
+        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Category
         </span>
         <div className="flex gap-2">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="flex-1 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className="h-9 flex-1 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
@@ -183,66 +183,61 @@ export function ListingDetailActions({
               </option>
             ))}
           </select>
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending || selectedCategory === categoryId}
             onClick={saveCategory}
-            className="rounded-lg border border-neutral-200 px-3 py-2 text-sm font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
           >
             Save
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="mt-5 border-t border-neutral-100 pt-4">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="mt-5 border-t border-slate-100 pt-4">
+        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Expiry
         </span>
         <div className="flex gap-2">
-          <button
-            type="button"
-            disabled={isPending}
-            onClick={() => extendExpiry(30)}
-            className="rounded-lg border border-neutral-200 px-3 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-          >
+          <Button type="button" size="sm" variant="outline" disabled={isPending} onClick={() => extendExpiry(30)}>
             +30 days
-          </button>
-          <button
-            type="button"
-            disabled={isPending}
-            onClick={() => extendExpiry(90)}
-            className="rounded-lg border border-neutral-200 px-3 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-          >
+          </Button>
+          <Button type="button" size="sm" variant="outline" disabled={isPending} onClick={() => extendExpiry(90)}>
             +90 days
-          </button>
+          </Button>
         </div>
       </div>
 
       {(isFeatured || isBumped) && (
-        <div className="mt-5 border-t border-neutral-100 pt-4">
-          <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+        <div className="mt-5 border-t border-slate-100 pt-4">
+          <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
             Manual overrides
           </span>
           <div className="flex flex-wrap gap-2">
             {isFeatured && (
-              <button
+              <Button
                 type="button"
+                size="sm"
+                variant="outline"
                 disabled={isPending}
                 onClick={removeFeatured}
-                className="rounded-lg border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-50 disabled:opacity-60"
+                className="border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-700"
               >
                 Remove featured
-              </button>
+              </Button>
             )}
             {isBumped && (
-              <button
+              <Button
                 type="button"
+                size="sm"
+                variant="outline"
                 disabled={isPending}
                 onClick={removeBump}
-                className="rounded-lg border border-blue-200 px-3 py-1.5 text-xs font-bold text-blue-700 hover:bg-blue-50 disabled:opacity-60"
+                className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-700"
               >
                 Remove bump
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -264,6 +259,6 @@ export function ListingDetailActions({
         onConfirm={handleConfirm}
         onCancel={() => setConfirm(null)}
       />
-    </div>
+    </Card>
   );
 }

@@ -8,6 +8,10 @@ import { ImageOff, Star, TrendingUp, AlertTriangle } from "lucide-react";
 import { ADMIN_STATUS_LABELS, ADMIN_STATUS_STYLES } from "@/lib/admin-listings";
 import { updateListingStatusAction, deleteListingsAction } from "@/app/admin/listings/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 const currency = new Intl.NumberFormat("en-GH", {
@@ -100,7 +104,7 @@ export function ListingsTable({ listings }: { listings: AdminListingRow[] }) {
 
   if (listings.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-neutral-300 bg-white py-16 text-center text-sm text-neutral-400">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
         No listings match these filters.
       </div>
     );
@@ -112,64 +116,61 @@ export function ListingsTable({ listings }: { listings: AdminListingRow[] }) {
 
       {selectedIds.length > 0 && (
         <div className="sticky top-14 z-20 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-brand/30 bg-brand-light px-4 py-3">
-          <span className="text-sm font-bold text-neutral-800">{selectedIds.length} selected</span>
-          <button
+          <span className="text-sm font-bold text-slate-800">{selectedIds.length} selected</span>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => runStatusChange(selectedIds, "active")}
-            className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-green-700 disabled:opacity-60"
+            className="bg-green-600 hover:bg-green-700"
           >
             Approve
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => setConfirm({ type: "reject", ids: selectedIds })}
-            className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-amber-700 disabled:opacity-60"
+            className="bg-amber-600 hover:bg-amber-700"
           >
             Reject
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => setConfirm({ type: "hide", ids: selectedIds })}
-            className="rounded-lg bg-neutral-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-neutral-700 disabled:opacity-60"
+            className="bg-slate-600 hover:bg-slate-700"
           >
             Hide
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
+            variant="destructive"
             disabled={isPending}
             onClick={() => setConfirm({ type: "delete", ids: selectedIds })}
-            className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
           >
             Delete
-          </button>
+          </Button>
         </div>
       )}
 
-      <div className="divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
-        <div className="flex items-center gap-3 bg-neutral-50 px-4 py-2">
-          <input
-            type="checkbox"
-            checked={allSelected}
-            onChange={toggleAll}
-            aria-label="Select all"
-            className="size-4 accent-brand"
-          />
-          <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <div className="flex items-center gap-3 bg-slate-50 px-4 py-2">
+          <Checkbox checked={allSelected} onCheckedChange={toggleAll} aria-label="Select all" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Select all on this page
           </span>
         </div>
 
         {listings.map((listing) => (
-          <div key={listing.id} className="flex items-center gap-3 p-4 hover:bg-neutral-50">
-            <input
-              type="checkbox"
+          <div key={listing.id} className="flex items-center gap-3 p-4 hover:bg-slate-50">
+            <Checkbox
               checked={selected.has(listing.id)}
-              onChange={() => toggleOne(listing.id)}
+              onCheckedChange={() => toggleOne(listing.id)}
               aria-label={`Select ${listing.title}`}
-              className="size-4 shrink-0 accent-brand"
+              className="shrink-0"
             />
 
             <div className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand/40">
@@ -184,37 +185,33 @@ export function ListingsTable({ listings }: { listings: AdminListingRow[] }) {
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href={`/admin/listings/${listing.id}`}
-                  className="truncate text-sm font-bold text-neutral-800 hover:text-brand hover:underline"
+                  className="truncate text-sm font-bold text-slate-800 hover:text-brand hover:underline"
                 >
                   {listing.title}
                 </Link>
-                <span
-                  className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${
-                    ADMIN_STATUS_STYLES[listing.status] ?? "bg-neutral-100 text-neutral-600"
-                  }`}
-                >
+                <Badge className={`shrink-0 ${ADMIN_STATUS_STYLES[listing.status] ?? "bg-slate-100 text-slate-600"}`}>
                   {ADMIN_STATUS_LABELS[listing.status] ?? listing.status}
-                </span>
+                </Badge>
                 {listing.isExpired && (
-                  <span className="flex shrink-0 items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-bold text-orange-700">
+                  <Badge className="shrink-0 gap-1 bg-orange-100 text-orange-700">
                     <AlertTriangle className="size-3" />
                     Expired
-                  </span>
+                  </Badge>
                 )}
                 {listing.isFeatured && (
-                  <span className="flex shrink-0 items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">
+                  <Badge className="shrink-0 gap-1 bg-amber-100 text-amber-700">
                     <Star className="size-3 fill-amber-500 text-amber-500" />
                     Featured
-                  </span>
+                  </Badge>
                 )}
                 {listing.isBumped && (
-                  <span className="flex shrink-0 items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-700">
+                  <Badge className="shrink-0 gap-1 bg-blue-100 text-blue-700">
                     <TrendingUp className="size-3" />
                     Bumped
-                  </span>
+                  </Badge>
                 )}
               </div>
-              <p className="mt-0.5 text-sm text-neutral-500">
+              <p className="mt-0.5 text-sm text-slate-500">
                 {currency.format(listing.price)} · {listing.location} · {listing.categoryName ?? "Uncategorized"}
                 {listing.sellerName ? ` · ${listing.sellerName}` : ""}
               </p>
@@ -222,45 +219,47 @@ export function ListingsTable({ listings }: { listings: AdminListingRow[] }) {
 
             <div className="flex shrink-0 flex-wrap items-center justify-end gap-1.5">
               {listing.status !== "active" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => runStatusChange([listing.id], "active")}
-                  className="rounded-lg border border-green-200 px-2.5 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+                  className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
                 >
                   Approve
-                </button>
+                </Button>
               )}
               {listing.status !== "declined" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => setConfirm({ type: "reject", ids: [listing.id] })}
-                  className="rounded-lg border border-amber-200 px-2.5 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-50 disabled:opacity-60"
+                  className="border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-700"
                 >
                   Reject
-                </button>
+                </Button>
               )}
               {listing.status !== "removed" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => setConfirm({ type: "hide", ids: [listing.id] })}
-                  className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
                 >
                   Hide
-                </button>
+                </Button>
               )}
-              <Link
-                href={`/admin/listings/${listing.id}`}
-                className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50"
-              >
-                Manage
-              </Link>
+              <Button asChild variant="outline" size="sm">
+                <Link href={`/admin/listings/${listing.id}`}>Manage</Link>
+              </Button>
             </div>
           </div>
         ))}
-      </div>
+      </Card>
 
       <ConfirmDialog
         open={confirm !== null}

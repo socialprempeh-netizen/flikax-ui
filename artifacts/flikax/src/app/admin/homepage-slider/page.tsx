@@ -10,8 +10,8 @@ export default async function AdminHomepageSliderPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Homepage Slider</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="text-xl font-bold text-slate-800">Homepage Slider</h1>
+      <p className="mt-1 text-sm text-slate-500">
         Manage the rotating banner shown at the top of the homepage. Inactive slides and slides
         outside their scheduled window are hidden automatically.
       </p>

@@ -3,6 +3,10 @@ import { X } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { accountStatus, type AdminUserRow } from "@/lib/admin-users";
 import { UsersRowActions } from "@/components/admin/users-row-actions";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 const ROLE_LABELS: Record<string, string> = {
   super_admin: "Super Admin",
@@ -30,7 +34,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
   if (!adminClient) {
     return (
       <div>
-        <h1 className="text-xl font-bold text-neutral-800">Users</h1>
+        <h1 className="text-xl font-bold text-slate-800">Users</h1>
         <p className="mt-4 text-sm text-red-600">
           Admin operations aren&apos;t configured on this environment (missing service role key).
         </p>
@@ -80,79 +84,72 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Users</h1>
-      <p className="mt-1 text-sm text-neutral-500">{rows.length} user{rows.length === 1 ? "" : "s"}.</p>
+      <h1 className="text-xl font-bold text-slate-800">Users</h1>
+      <p className="mt-1 text-sm text-slate-500">{rows.length} user{rows.length === 1 ? "" : "s"}.</p>
 
-      <form
-        method="get"
-        className="mt-6 mb-4 flex flex-wrap items-end gap-3 rounded-2xl border border-neutral-100 bg-white p-4"
-      >
-        <label className="block">
-          <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Search
-          </span>
-          <input
-            type="text"
-            name="q"
-            defaultValue={params.q}
-            placeholder="Name, phone, email, or ID"
-            className="w-64 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
-          />
-        </label>
+      <Card className="mt-6 mb-4 gap-0 rounded-2xl p-4 shadow-sm">
+        <form method="get" className="flex flex-wrap items-end gap-3">
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Search
+            </span>
+            <Input
+              type="text"
+              name="q"
+              defaultValue={params.q}
+              placeholder="Name, phone, email, or ID"
+              className="w-64"
+            />
+          </label>
 
-        <label className="block">
-          <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Role
-          </span>
-          <select
-            name="role"
-            defaultValue={roleFilter ?? ""}
-            className="rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
-          >
-            <option value="">All</option>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-            <option value="super_admin">Super Admin</option>
-          </select>
-        </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Role
+            </span>
+            <select
+              name="role"
+              defaultValue={roleFilter ?? ""}
+              className="h-9 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            >
+              <option value="">All</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+              <option value="super_admin">Super Admin</option>
+            </select>
+          </label>
 
-        <label className="block">
-          <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Status
-          </span>
-          <select
-            name="status"
-            defaultValue={statusFilter ?? ""}
-            className="rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
-          >
-            <option value="">All</option>
-            <option value="active">Active</option>
-            <option value="suspended">Suspended</option>
-            <option value="banned">Banned</option>
-          </select>
-        </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Status
+            </span>
+            <select
+              name="status"
+              defaultValue={statusFilter ?? ""}
+              className="h-9 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            >
+              <option value="">All</option>
+              <option value="active">Active</option>
+              <option value="suspended">Suspended</option>
+              <option value="banned">Banned</option>
+            </select>
+          </label>
 
-        <button
-          type="submit"
-          className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
-        >
-          Apply
-        </button>
+          <Button type="submit">Apply</Button>
 
-        {hasFilters && (
-          <Link
-            href="/admin/users"
-            className="flex items-center gap-1 pb-2.5 text-sm text-neutral-500 hover:text-brand"
-          >
-            <X className="size-3.5" />
-            Clear
-          </Link>
-        )}
-      </form>
+          {hasFilters && (
+            <Button asChild variant="ghost" className="text-slate-500 hover:text-brand">
+              <Link href="/admin/users">
+                <X className="size-3.5" />
+                Clear
+              </Link>
+            </Button>
+          )}
+        </form>
+      </Card>
 
-      <div className="divide-y divide-neutral-100 rounded-2xl border border-neutral-100 bg-white">
+      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
         {rows.length === 0 ? (
-          <p className="p-6 text-sm text-neutral-400">No users match these filters.</p>
+          <p className="p-6 text-sm text-slate-400">No users match these filters.</p>
         ) : (
           rows.map((row) => {
             const status = accountStatus(row);
@@ -162,20 +159,18 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                   <div className="flex flex-wrap items-center gap-2">
                     <Link
                       href={`/admin/users/${row.id}`}
-                      className="text-sm font-bold text-neutral-800 hover:text-brand hover:underline"
+                      className="text-sm font-bold text-slate-800 hover:text-brand hover:underline"
                     >
                       {row.fullName || "Unnamed user"}
                     </Link>
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${STATUS_STYLES[status]}`}>
+                    <Badge className={STATUS_STYLES[status]}>
                       {status.charAt(0).toUpperCase() + status.slice(1)}
-                    </span>
+                    </Badge>
                     {row.role && (
-                      <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-bold text-neutral-600">
-                        {ROLE_LABELS[row.role] ?? row.role}
-                      </span>
+                      <Badge className="bg-slate-100 text-slate-600">{ROLE_LABELS[row.role] ?? row.role}</Badge>
                     )}
                   </div>
-                  <p className="mt-0.5 text-sm text-neutral-500">
+                  <p className="mt-0.5 text-sm text-slate-500">
                     {[row.phone, row.email].filter(Boolean).join(" · ") || "No contact info"}
                   </p>
                 </div>
@@ -189,7 +184,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
             );
           })
         )}
-      </div>
+      </Card>
     </div>
   );
 }

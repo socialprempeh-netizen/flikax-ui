@@ -2,6 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { updateSiteSettingAction } from "@/app/admin/settings/actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { SiteSetting } from "@/lib/site-settings";
 
 export function SiteSettingField({ setting }: { setting: SiteSetting }) {
@@ -26,28 +28,23 @@ export function SiteSettingField({ setting }: { setting: SiteSetting }) {
   return (
     <div className="flex items-center justify-between gap-4 p-5">
       <div className="min-w-0 flex-1">
-        <p className="font-mono text-sm font-semibold text-neutral-800">{setting.key}</p>
-        {setting.description && <p className="mt-0.5 text-sm text-neutral-500">{setting.description}</p>}
+        <p className="font-mono text-sm font-semibold text-slate-800">{setting.key}</p>
+        {setting.description && <p className="mt-0.5 text-sm text-slate-500">{setting.description}</p>}
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
       <div className="flex shrink-0 items-center gap-2">
-        <input
+        <Input
           type="text"
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
             setSaved(false);
           }}
-          className="w-64 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+          className="w-64"
         />
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={isPending}
-          className="rounded-lg bg-brand px-3 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-        >
+        <Button type="button" onClick={handleSave} disabled={isPending}>
           {isPending ? "Saving..." : saved ? "Saved" : "Save"}
-        </button>
+        </Button>
       </div>
     </div>
   );

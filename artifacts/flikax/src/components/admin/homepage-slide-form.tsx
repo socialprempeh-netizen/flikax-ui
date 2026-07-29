@@ -7,10 +7,11 @@ import {
   updateSlideAction,
   type SlideFormInput,
 } from "@/app/admin/homepage-slider/actions";
+import { Button } from "@/components/ui/button";
 import type { HomepageSlide } from "@/lib/homepage-slides";
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand";
+  "w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand";
 
 // Slots straight into a datetime-local input, which needs "YYYY-MM-DDTHH:mm" -- an
 // ISO timestamp's trailing "Z"/offset and seconds aren't valid there.
@@ -101,19 +102,19 @@ export function HomepageSlideForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <span className="mb-1 block text-xs font-medium text-neutral-600">
+        <span className="mb-1 block text-xs font-medium text-slate-600">
           Banner image (auto-cropped to 1600×480)
         </span>
         <div className="flex items-center gap-4">
-          <div className="relative flex h-24 w-40 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-neutral-300 bg-neutral-50">
+          <div className="relative flex h-24 w-40 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50">
             {imageToShow ? (
               // eslint-disable-next-line @next/next/no-img-element -- local blob preview / already-optimized storage image, not worth next/image here
               <img src={imageToShow} alt="" className="size-full object-cover" />
             ) : (
-              <Upload className="size-5 text-neutral-300" />
+              <Upload className="size-5 text-slate-300" />
             )}
           </div>
-          <label className="cursor-pointer rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50">
+          <label className="cursor-pointer rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
             {isUploading ? "Uploading..." : "Choose image"}
             <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleFileSelect} className="hidden" />
           </label>
@@ -121,7 +122,7 @@ export function HomepageSlideForm({
       </div>
 
       <label className="block">
-        <span className="mb-1 block text-xs font-medium text-neutral-600">Headline (optional)</span>
+        <span className="mb-1 block text-xs font-medium text-slate-600">Headline (optional)</span>
         <input
           type="text"
           value={form.headline}
@@ -131,7 +132,7 @@ export function HomepageSlideForm({
       </label>
 
       <label className="block">
-        <span className="mb-1 block text-xs font-medium text-neutral-600">Link URL (optional)</span>
+        <span className="mb-1 block text-xs font-medium text-slate-600">Link URL (optional)</span>
         <input
           type="text"
           placeholder="/premium or https://..."
@@ -143,7 +144,7 @@ export function HomepageSlideForm({
 
       <div className="grid grid-cols-2 gap-4">
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">Starts (optional)</span>
+          <span className="mb-1 block text-xs font-medium text-slate-600">Starts (optional)</span>
           <input
             type="datetime-local"
             value={form.starts_at}
@@ -152,7 +153,7 @@ export function HomepageSlideForm({
           />
         </label>
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">Ends (optional)</span>
+          <span className="mb-1 block text-xs font-medium text-slate-600">Ends (optional)</span>
           <input
             type="datetime-local"
             value={form.ends_at}
@@ -167,29 +168,21 @@ export function HomepageSlideForm({
           type="checkbox"
           checked={form.is_active}
           onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))}
-          className="size-4 rounded border-neutral-300 text-brand focus:ring-brand"
+          className="size-4 rounded border-slate-300 text-brand focus:ring-brand"
         />
-        <span className="text-sm font-medium text-neutral-700">Active</span>
+        <span className="text-sm font-medium text-slate-700">Active</span>
       </label>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={isPending || isUploading}
-          className="rounded-lg bg-brand px-4 py-1.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-        >
+        <Button type="submit" disabled={isPending || isUploading}>
           {isPending ? "Saving..." : editingSlide ? "Save changes" : "Add slide"}
-        </button>
+        </Button>
         {editingSlide && (
-          <button
-            type="button"
-            onClick={onCancelEdit}
-            className="rounded-lg border border-neutral-200 px-4 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-          >
+          <Button type="button" variant="outline" onClick={onCancelEdit}>
             Cancel
-          </button>
+          </Button>
         )}
       </div>
     </form>

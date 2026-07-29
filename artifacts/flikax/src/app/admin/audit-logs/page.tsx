@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { buildAdminAuditLogsHref, type AdminAuditLogFilters } from "@/lib/admin-audit-logs-filters";
 import { AuditLogFilterBar } from "@/components/admin/audit-log-filter-bar";
 import { AuditLogTable, type AdminAuditLogRow } from "@/components/admin/audit-log-table";
+import { Button } from "@/components/ui/button";
 
 const PAGE_SIZE = 30;
 
@@ -78,8 +79,8 @@ export default async function AdminAuditLogsPage({ searchParams }: PageProps) {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Audit Logs</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="text-xl font-bold text-slate-800">Audit Logs</h1>
+      <p className="mt-1 text-sm text-slate-500">
         {totalCount} logged action{totalCount === 1 ? "" : "s"} total. Read-only record of every admin
         mutation across the app.
       </p>
@@ -90,29 +91,30 @@ export default async function AdminAuditLogsPage({ searchParams }: PageProps) {
 
         {totalPages > 1 && (
           <div className="mt-4 flex items-center justify-between">
-            <Link
-              href={buildAdminAuditLogsHref({ ...filters, page: String(Math.max(1, page - 1)) })}
-              aria-disabled={page <= 1}
-              className={`flex items-center gap-1 rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium ${
-                page <= 1 ? "pointer-events-none text-neutral-300" : "text-neutral-700 hover:bg-neutral-50"
-              }`}
-            >
-              <ChevronLeft className="size-4" />
-              Previous
-            </Link>
-            <span className="text-sm text-neutral-500">
+            <Button asChild variant="outline" size="sm" disabled={page <= 1} className={page <= 1 ? "pointer-events-none opacity-50" : ""}>
+              <Link href={buildAdminAuditLogsHref({ ...filters, page: String(Math.max(1, page - 1)) })} aria-disabled={page <= 1}>
+                <ChevronLeft className="size-4" />
+                Previous
+              </Link>
+            </Button>
+            <span className="text-sm text-slate-500">
               Page {page} of {totalPages}
             </span>
-            <Link
-              href={buildAdminAuditLogsHref({ ...filters, page: String(Math.min(totalPages, page + 1)) })}
-              aria-disabled={page >= totalPages}
-              className={`flex items-center gap-1 rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium ${
-                page >= totalPages ? "pointer-events-none text-neutral-300" : "text-neutral-700 hover:bg-neutral-50"
-              }`}
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              disabled={page >= totalPages}
+              className={page >= totalPages ? "pointer-events-none opacity-50" : ""}
             >
-              Next
-              <ChevronRight className="size-4" />
-            </Link>
+              <Link
+                href={buildAdminAuditLogsHref({ ...filters, page: String(Math.min(totalPages, page + 1)) })}
+                aria-disabled={page >= totalPages}
+              >
+                Next
+                <ChevronRight className="size-4" />
+              </Link>
+            </Button>
           </div>
         )}
       </div>

@@ -20,8 +20,8 @@ export default async function AdminLocationsPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Locations</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="text-xl font-bold text-slate-800">Locations</h1>
+      <p className="mt-1 text-sm text-slate-500">
         {districtRows.length} districts across{" "}
         {new Set(rows.map((r) => r.region_slug)).size} regions · {suburbRows.length} suburbs · {enabledCount} enabled.
       </p>

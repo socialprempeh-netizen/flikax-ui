@@ -9,6 +9,9 @@ import {
 } from "@/lib/admin-payments";
 import { PaymentsFilterBar } from "@/components/admin/payments-filter-bar";
 import { PaymentsTable, type AdminPurchaseRow } from "@/components/admin/payments-table";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const PAGE_SIZE = 20;
 
@@ -38,7 +41,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
   if (!adminClient) {
     return (
       <div>
-        <h1 className="text-xl font-bold text-neutral-800">Payments</h1>
+        <h1 className="text-xl font-bold text-slate-800">Payments</h1>
         <p className="mt-4 text-sm text-red-600">
           Admin operations aren&apos;t configured on this environment (missing service role key).
         </p>
@@ -133,43 +136,49 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Payments</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="text-xl font-bold text-slate-800">Payments</h1>
+      <p className="mt-1 text-sm text-slate-500">
         {totalCount} purchase{totalCount === 1 ? "" : "s"} total.
       </p>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-neutral-100 bg-white p-4">
-          <div className="flex items-center gap-2 text-neutral-400">
-            <Banknote className="size-4" />
-            <span className="text-xs font-semibold uppercase tracking-wide">Total revenue</span>
+        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total revenue</span>
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+              <Banknote className="size-4" />
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-extrabold text-neutral-800">GHS {totalRevenue.toFixed(2)}</p>
-        </div>
-        <div className="rounded-2xl border border-neutral-100 bg-white p-4">
-          <div className="flex items-center gap-2 text-neutral-400">
-            <CalendarDays className="size-4" />
-            <span className="text-xs font-semibold uppercase tracking-wide">This month</span>
+          <p className="text-2xl font-extrabold text-slate-800">GHS {totalRevenue.toFixed(2)}</p>
+        </Card>
+        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">This month</span>
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+              <CalendarDays className="size-4" />
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-extrabold text-neutral-800">GHS {monthRevenue.toFixed(2)}</p>
-        </div>
-        <div className="rounded-2xl border border-neutral-100 bg-white p-4">
-          <div className="flex items-center gap-2 text-neutral-400">
-            <CalendarClock className="size-4" />
-            <span className="text-xs font-semibold uppercase tracking-wide">Today</span>
+          <p className="text-2xl font-extrabold text-slate-800">GHS {monthRevenue.toFixed(2)}</p>
+        </Card>
+        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Today</span>
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+              <CalendarClock className="size-4" />
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-extrabold text-neutral-800">GHS {todayRevenue.toFixed(2)}</p>
-        </div>
+          <p className="text-2xl font-extrabold text-slate-800">GHS {todayRevenue.toFixed(2)}</p>
+        </Card>
       </div>
 
       {Object.keys(byPlanType).length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-2 rounded-2xl border border-neutral-100 bg-white p-4 text-sm text-neutral-600">
+        <Card className="mt-3 flex-row flex-wrap gap-2 rounded-2xl p-4 text-sm text-slate-600 shadow-sm">
           {Object.entries(byPlanType).map(([planType, amount]) => (
-            <span key={planType} className="rounded-full bg-neutral-100 px-3 py-1">
+            <Badge key={planType} className="bg-slate-100 px-3 py-1 text-slate-600">
               {ADMIN_PLAN_TYPE_LABELS[planType] ?? planType}: GHS {amount.toFixed(2)}
-            </span>
+            </Badge>
           ))}
-        </div>
+        </Card>
       )}
 
       <div className="mt-6">
@@ -178,29 +187,30 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
 
         {totalPages > 1 && (
           <div className="mt-4 flex items-center justify-between">
-            <Link
-              href={buildAdminPaymentsHref({ ...filters, page: String(Math.max(1, page - 1)) })}
-              aria-disabled={page <= 1}
-              className={`flex items-center gap-1 rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium ${
-                page <= 1 ? "pointer-events-none text-neutral-300" : "text-neutral-700 hover:bg-neutral-50"
-              }`}
-            >
-              <ChevronLeft className="size-4" />
-              Previous
-            </Link>
-            <span className="text-sm text-neutral-500">
+            <Button asChild variant="outline" size="sm" disabled={page <= 1} className={page <= 1 ? "pointer-events-none opacity-50" : ""}>
+              <Link href={buildAdminPaymentsHref({ ...filters, page: String(Math.max(1, page - 1)) })} aria-disabled={page <= 1}>
+                <ChevronLeft className="size-4" />
+                Previous
+              </Link>
+            </Button>
+            <span className="text-sm text-slate-500">
               Page {page} of {totalPages}
             </span>
-            <Link
-              href={buildAdminPaymentsHref({ ...filters, page: String(Math.min(totalPages, page + 1)) })}
-              aria-disabled={page >= totalPages}
-              className={`flex items-center gap-1 rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium ${
-                page >= totalPages ? "pointer-events-none text-neutral-300" : "text-neutral-700 hover:bg-neutral-50"
-              }`}
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              disabled={page >= totalPages}
+              className={page >= totalPages ? "pointer-events-none opacity-50" : ""}
             >
-              Next
-              <ChevronRight className="size-4" />
-            </Link>
+              <Link
+                href={buildAdminPaymentsHref({ ...filters, page: String(Math.min(totalPages, page + 1)) })}
+                aria-disabled={page >= totalPages}
+              >
+                Next
+                <ChevronRight className="size-4" />
+              </Link>
+            </Button>
           </div>
         )}
       </div>

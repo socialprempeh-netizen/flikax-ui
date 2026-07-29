@@ -8,8 +8,8 @@ export default async function AdminPremiumPlansPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Premium Plans</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="text-xl font-bold text-slate-800">Premium Plans</h1>
+      <p className="mt-1 text-sm text-slate-500">
         Create, edit, and enable or disable plans. Disabled plans stay saved but are hidden from users.
       </p>
 

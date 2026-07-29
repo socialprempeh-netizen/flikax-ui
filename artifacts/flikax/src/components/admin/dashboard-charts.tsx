@@ -12,19 +12,20 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { Card } from "@/components/ui/card";
 
 const INK_SECONDARY = "#52514e";
 const GRIDLINE = "#e1e0d9";
 const BASELINE = "#c3c2b7";
 
-const CATEGORICAL = ["#2a78d6", "#1baf7a", "#eda100", "#008300", "#4a3aa7"];
+const CATEGORICAL = ["#1868db", "#1baf7a", "#eda100", "#124f9e", "#4a3aa7"];
 
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-      <h3 className="text-sm font-bold text-neutral-800">{title}</h3>
+    <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+      <h3 className="text-sm font-bold text-slate-800">{title}</h3>
       <div className="mt-4 h-64">{children}</div>
-    </div>
+    </Card>
   );
 }
 
@@ -41,9 +42,9 @@ function TrendTooltip({
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-neutral-100 bg-white px-3 py-2 text-xs shadow-md">
-      <p className="font-semibold text-neutral-800">{label}</p>
-      <p className="text-neutral-500">
+    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs shadow-md">
+      <p className="font-semibold text-slate-800">{label}</p>
+      <p className="text-slate-500">
         {payload[0].value} {valueLabel}
       </p>
     </div>
@@ -61,7 +62,7 @@ export function TrendChart({
   title?: string;
   valueLabel?: string;
 }) {
-  const stroke = color === "blue" ? "#2a78d6" : "#1baf7a";
+  const stroke = color === "blue" ? "#1868db" : "#1baf7a";
   return (
     <ChartCard title={title ?? (color === "blue" ? "Listing growth (30 days)" : "User growth (30 days)")}>
       <ResponsiveContainer width="100%" height="100%">
@@ -108,9 +109,9 @@ function RankTooltip({
   if (!active || !payload?.length) return null;
   const { name, count } = payload[0].payload;
   return (
-    <div className="rounded-lg border border-neutral-100 bg-white px-3 py-2 text-xs shadow-md">
-      <p className="font-semibold text-neutral-800">{name}</p>
-      <p className="text-neutral-500">
+    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs shadow-md">
+      <p className="font-semibold text-slate-800">{name}</p>
+      <p className="text-slate-500">
         {count} {unit}
       </p>
     </div>
@@ -129,7 +130,7 @@ export function RankBarChart({
   if (data.length === 0) {
     return (
       <ChartCard title={title}>
-        <div className="flex h-full items-center justify-center text-sm text-neutral-400">
+        <div className="flex h-full items-center justify-center text-sm text-slate-400">
           No data yet.
         </div>
       </ChartCard>

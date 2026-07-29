@@ -15,6 +15,19 @@ import {
   warnFeedbackAuthorAction,
 } from "@/app/admin/reviews/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 const SENTIMENT_ICON: Record<string, LucideIcon> = { positive: Smile, neutral: Meh, negative: Frown };
@@ -77,7 +90,7 @@ export function ReviewsTable({ reviews }: { reviews: AdminReviewRow[] }) {
 
   if (reviews.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-neutral-300 bg-white py-16 text-center text-sm text-neutral-400">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
         No reported feedback matches these filters.
       </div>
     );
@@ -89,36 +102,32 @@ export function ReviewsTable({ reviews }: { reviews: AdminReviewRow[] }) {
 
       {selectedIds.length > 0 && (
         <div className="sticky top-14 z-20 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-brand/30 bg-brand-light px-4 py-3">
-          <span className="text-sm font-bold text-neutral-800">{selectedIds.length} selected</span>
-          <button
+          <span className="text-sm font-bold text-slate-800">{selectedIds.length} selected</span>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(() => updateFeedbackReportStatusAction(selectedIds, "resolved"), () => setSelected(new Set()))}
-            className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-green-700 disabled:opacity-60"
+            className="bg-green-600 hover:bg-green-700"
           >
             Resolve
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(() => updateFeedbackReportStatusAction(selectedIds, "dismissed"), () => setSelected(new Set()))}
-            className="rounded-lg bg-neutral-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-neutral-700 disabled:opacity-60"
+            className="bg-slate-600 hover:bg-slate-700"
           >
             Dismiss
-          </button>
+          </Button>
         </div>
       )}
 
-      <div className="divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
-        <div className="flex items-center gap-3 bg-neutral-50 px-4 py-2">
-          <input
-            type="checkbox"
-            checked={allSelected}
-            onChange={toggleAll}
-            aria-label="Select all"
-            className="size-4 accent-brand"
-          />
-          <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <div className="flex items-center gap-3 bg-slate-50 px-4 py-2">
+          <Checkbox checked={allSelected} onCheckedChange={toggleAll} aria-label="Select all" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Select all on this page
           </span>
         </div>
@@ -126,36 +135,31 @@ export function ReviewsTable({ reviews }: { reviews: AdminReviewRow[] }) {
         {reviews.map((review) => {
           const SentimentIcon = SENTIMENT_ICON[review.sentiment] ?? Meh;
           return (
-            <div key={review.id} className="flex items-start gap-3 p-4 hover:bg-neutral-50">
-              <input
-                type="checkbox"
+            <div key={review.id} className="flex items-start gap-3 p-4 hover:bg-slate-50">
+              <Checkbox
                 checked={selected.has(review.id)}
-                onChange={() => toggleOne(review.id)}
+                onCheckedChange={() => toggleOne(review.id)}
                 aria-label={`Select report on feedback from ${review.authorName ?? "unknown"}`}
-                className="mt-1 size-4 shrink-0 accent-brand"
+                className="mt-1 shrink-0"
               />
 
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <SentimentIcon className="size-4 shrink-0 text-neutral-400" />
-                  <span className="text-sm font-bold text-neutral-800">{review.authorName ?? "Unknown"}</span>
-                  <span className="text-xs text-neutral-400">on</span>
+                  <SentimentIcon className="size-4 shrink-0 text-slate-400" />
+                  <span className="text-sm font-bold text-slate-800">{review.authorName ?? "Unknown"}</span>
+                  <span className="text-xs text-slate-400">on</span>
                   <Link
                     href={`/u/${review.targetProfileId}`}
-                    className="text-sm text-neutral-600 hover:text-brand hover:underline"
+                    className="text-sm text-slate-600 hover:text-brand hover:underline"
                   >
                     {review.targetProfileName ?? "Unknown profile"}
                   </Link>
-                  <span
-                    className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${
-                      ADMIN_FEEDBACK_REPORT_STATUS_STYLES[review.status] ?? "bg-neutral-100 text-neutral-600"
-                    }`}
-                  >
+                  <Badge className={`shrink-0 ${ADMIN_FEEDBACK_REPORT_STATUS_STYLES[review.status] ?? "bg-slate-100 text-slate-600"}`}>
                     {ADMIN_FEEDBACK_REPORT_STATUS_LABELS[review.status] ?? review.status}
-                  </span>
+                  </Badge>
                 </div>
-                <p className="mt-1 truncate text-sm text-neutral-600">&quot;{review.message}&quot;</p>
-                <p className="mt-0.5 text-sm text-neutral-500">
+                <p className="mt-1 truncate text-sm text-slate-600">&quot;{review.message}&quot;</p>
+                <p className="mt-0.5 text-sm text-slate-500">
                   {FEEDBACK_REPORT_REASON_LABELS[review.reason as FeedbackReportReason] ?? review.reason} ·
                   Reported by {review.reporterName ?? "Unknown"} ·{" "}
                   {new Date(review.createdAt).toLocaleDateString()}
@@ -164,49 +168,55 @@ export function ReviewsTable({ reviews }: { reviews: AdminReviewRow[] }) {
 
               <div className="flex shrink-0 flex-wrap items-center justify-end gap-1.5">
                 {review.status !== "resolved" && (
-                  <button
+                  <Button
                     type="button"
+                    size="sm"
+                    variant="outline"
                     disabled={isPending}
                     onClick={() => run(() => updateFeedbackReportStatusAction([review.id], "resolved"))}
-                    className="rounded-lg border border-green-200 px-2.5 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+                    className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
                   >
                     Resolve
-                  </button>
+                  </Button>
                 )}
                 {review.status !== "dismissed" && (
-                  <button
+                  <Button
                     type="button"
+                    size="sm"
+                    variant="outline"
                     disabled={isPending}
                     onClick={() => run(() => updateFeedbackReportStatusAction([review.id], "dismissed"))}
-                    className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
                   >
                     Dismiss
-                  </button>
+                  </Button>
                 )}
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => {
                     setWarnTarget(review);
                     setWarnMessage("");
                   }}
-                  className="rounded-lg border border-amber-200 px-2.5 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-50 disabled:opacity-60"
+                  className="border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-700"
                 >
                   Warn author
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  size="sm"
+                  variant="destructive"
                   disabled={isPending}
                   onClick={() => setConfirm({ type: "delete", review })}
-                  className="rounded-lg bg-red-600 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
                 >
                   Delete feedback
-                </button>
+                </Button>
               </div>
             </div>
           );
         })}
-      </div>
+      </Card>
 
       <ConfirmDialog
         open={confirm?.type === "delete"}
@@ -224,53 +234,43 @@ export function ReviewsTable({ reviews }: { reviews: AdminReviewRow[] }) {
         onCancel={() => setConfirm(null)}
       />
 
-      {warnTarget && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-neutral-900/70 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl">
-            <div className="flex items-start gap-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-                <Flag className="size-5" />
-              </span>
-              <div className="min-w-0">
-                <h2 className="text-base font-bold text-neutral-800">Warn {warnTarget.authorName ?? "author"}</h2>
-                <p className="mt-1 text-sm text-neutral-600">
-                  Recorded on their profile — not delivered to them (no notification system exists yet).
-                </p>
-              </div>
-            </div>
-            <textarea
-              rows={3}
-              value={warnMessage}
-              onChange={(e) => setWarnMessage(e.target.value)}
-              placeholder="Regarding the feedback you left..."
-              className="mt-3 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
-            />
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setWarnTarget(null)}
-                disabled={isPending}
-                className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={isPending || !warnMessage.trim()}
-                onClick={() =>
-                  run(
-                    () => warnFeedbackAuthorAction(warnTarget.id, warnTarget.authorId, warnMessage),
-                    () => setWarnTarget(null)
-                  )
-                }
-                className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-              >
-                {isPending ? "Working..." : "Log warning"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Dialog open={warnTarget !== null} onOpenChange={(next) => !next && setWarnTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <Flag className="size-5" />
+            </span>
+            <DialogTitle>Warn {warnTarget?.authorName ?? "author"}</DialogTitle>
+            <DialogDescription>
+              Recorded on their profile — not delivered to them (no notification system exists yet).
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            rows={3}
+            value={warnMessage}
+            onChange={(e) => setWarnMessage(e.target.value)}
+            placeholder="Regarding the feedback you left..."
+          />
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setWarnTarget(null)} disabled={isPending}>
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              disabled={isPending || !warnMessage.trim()}
+              onClick={() =>
+                warnTarget &&
+                run(
+                  () => warnFeedbackAuthorAction(warnTarget.id, warnTarget.authorId, warnMessage),
+                  () => setWarnTarget(null)
+                )
+              }
+            >
+              {isPending ? "Working..." : "Log warning"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

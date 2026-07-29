@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { HomepageSlideForm } from "@/components/admin/homepage-slide-form";
 import { HomepageSlideRow } from "@/components/admin/homepage-slide-row";
+import { Card } from "@/components/ui/card";
 import type { HomepageSlide } from "@/lib/homepage-slides";
 
 export function HomepageSliderManager({ initialSlides }: { initialSlides: HomepageSlide[] }) {
@@ -27,8 +28,8 @@ export function HomepageSliderManager({ initialSlides }: { initialSlides: Homepa
 
   return (
     <>
-      <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-        <h2 className="text-sm font-bold text-neutral-800">
+      <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+        <h2 className="text-sm font-bold text-slate-800">
           {editingSlide ? "Edit slide" : "Add a slide"}
         </h2>
         <div className="mt-3">
@@ -39,11 +40,11 @@ export function HomepageSliderManager({ initialSlides }: { initialSlides: Homepa
             onCancelEdit={() => setEditingSlideId(null)}
           />
         </div>
-      </div>
+      </Card>
 
-      <div className="mt-6 divide-y divide-neutral-100 rounded-2xl border border-neutral-100 bg-white">
+      <Card className="mt-6 gap-0 divide-y divide-slate-100 rounded-2xl p-0 shadow-sm">
         {slides.length === 0 ? (
-          <p className="p-6 text-sm text-neutral-400">
+          <p className="p-6 text-sm text-slate-400">
             No slides yet. Add one above — it appears on the homepage as soon as it&apos;s active.
           </p>
         ) : (
@@ -59,7 +60,7 @@ export function HomepageSliderManager({ initialSlides }: { initialSlides: Homepa
             />
           ))
         )}
-      </div>
+      </Card>
     </>
   );
 }

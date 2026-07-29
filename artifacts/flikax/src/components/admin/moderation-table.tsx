@@ -9,6 +9,10 @@ import {
   ADMIN_MODERATION_STATUS_STYLES,
 } from "@/lib/admin-moderation";
 import { updateModerationFlagStatusAction } from "@/app/admin/moderation/actions";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 export type AdminModerationRow = {
@@ -62,7 +66,7 @@ export function ModerationTable({ flags }: { flags: AdminModerationRow[] }) {
 
   if (flags.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-neutral-300 bg-white py-16 text-center text-sm text-neutral-400">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
         No flagged listings match these filters.
       </div>
     );
@@ -74,82 +78,75 @@ export function ModerationTable({ flags }: { flags: AdminModerationRow[] }) {
 
       {selectedIds.length > 0 && (
         <div className="sticky top-14 z-20 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-brand/30 bg-brand-light px-4 py-3">
-          <span className="text-sm font-bold text-neutral-800">{selectedIds.length} selected</span>
-          <button
+          <span className="text-sm font-bold text-slate-800">{selectedIds.length} selected</span>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(selectedIds, "approved")}
-            className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-green-700 disabled:opacity-60"
+            className="bg-green-600 hover:bg-green-700"
           >
             Approve
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
+            variant="destructive"
             disabled={isPending}
             onClick={() => run(selectedIds, "rejected")}
-            className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
           >
             Reject &amp; hide listing
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => run(selectedIds, "escalated")}
-            className="rounded-lg border border-purple-200 px-3 py-1.5 text-xs font-bold text-purple-700 hover:bg-purple-50 disabled:opacity-60"
+            className="border-purple-200 text-purple-700 hover:bg-purple-50 hover:text-purple-700"
           >
             Escalate
-          </button>
+          </Button>
         </div>
       )}
 
-      <div className="divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
-        <div className="flex items-center gap-3 bg-neutral-50 px-4 py-2">
-          <input
-            type="checkbox"
-            checked={allSelected}
-            onChange={toggleAll}
-            aria-label="Select all"
-            className="size-4 accent-brand"
-          />
-          <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <div className="flex items-center gap-3 bg-slate-50 px-4 py-2">
+          <Checkbox checked={allSelected} onCheckedChange={toggleAll} aria-label="Select all" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Select all on this page
           </span>
         </div>
 
         {flags.map((flag) => (
-          <div key={flag.id} className="flex items-start gap-3 p-4 hover:bg-neutral-50">
-            <input
-              type="checkbox"
+          <div key={flag.id} className="flex items-start gap-3 p-4 hover:bg-slate-50">
+            <Checkbox
               checked={selected.has(flag.id)}
-              onChange={() => toggleOne(flag.id)}
+              onCheckedChange={() => toggleOne(flag.id)}
               aria-label={`Select flag on ${flag.listingTitle}`}
-              className="mt-1 size-4 shrink-0 accent-brand"
+              className="mt-1 shrink-0"
             />
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href={`/admin/listings/${flag.listingId}`}
-                  className="truncate text-sm font-bold text-neutral-800 hover:text-brand hover:underline"
+                  className="truncate text-sm font-bold text-slate-800 hover:text-brand hover:underline"
                 >
                   {flag.listingTitle}
                 </Link>
-                <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-bold text-neutral-600">
+                <Badge className="shrink-0 bg-slate-100 text-slate-600">
                   {ADMIN_MODERATION_FLAG_TYPE_LABELS[flag.flagType] ?? flag.flagType}
-                </span>
-                <span
-                  className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${
-                    ADMIN_MODERATION_STATUS_STYLES[flag.status] ?? "bg-neutral-100 text-neutral-600"
-                  }`}
-                >
+                </Badge>
+                <Badge className={`shrink-0 ${ADMIN_MODERATION_STATUS_STYLES[flag.status] ?? "bg-slate-100 text-slate-600"}`}>
                   {ADMIN_MODERATION_STATUS_LABELS[flag.status] ?? flag.status}
-                </span>
+                </Badge>
               </div>
-              <p className="mt-0.5 text-sm text-neutral-500">
+              <p className="mt-0.5 text-sm text-slate-500">
                 Seller: {flag.sellerName ?? "Unknown"} · {new Date(flag.createdAt).toLocaleDateString()}
               </p>
               {flag.flagType === "duplicate_image" && flag.duplicateOfListingId && (
-                <p className="mt-0.5 text-sm text-neutral-500">
+                <p className="mt-0.5 text-sm text-slate-500">
                   Matches:{" "}
                   <Link
                     href={`/admin/listings/${flag.duplicateOfListingId}`}
@@ -160,51 +157,54 @@ export function ModerationTable({ flags }: { flags: AdminModerationRow[] }) {
                 </p>
               )}
               {flag.flagType === "contact_in_description" && flag.detail && (
-                <p className="mt-0.5 truncate text-sm text-neutral-500">Matched: &quot;{flag.detail}&quot;</p>
+                <p className="mt-0.5 truncate text-sm text-slate-500">Matched: &quot;{flag.detail}&quot;</p>
               )}
             </div>
 
             <div className="flex shrink-0 flex-wrap items-center justify-end gap-1.5">
               {flag.status !== "approved" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run([flag.id], "approved")}
-                  className="rounded-lg border border-green-200 px-2.5 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+                  className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
                 >
                   Approve
-                </button>
+                </Button>
               )}
               {flag.status !== "rejected" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run([flag.id], "rejected")}
-                  className="rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50 disabled:opacity-60"
+                  className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-700"
                 >
                   Reject
-                </button>
+                </Button>
               )}
               {flag.status !== "escalated" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run([flag.id], "escalated")}
-                  className="rounded-lg border border-purple-200 px-2.5 py-1.5 text-xs font-bold text-purple-700 hover:bg-purple-50 disabled:opacity-60"
+                  className="border-purple-200 text-purple-700 hover:bg-purple-50 hover:text-purple-700"
                 >
                   Escalate
-                </button>
+                </Button>
               )}
-              <Link
-                href={`/admin/listings/${flag.listingId}`}
-                className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50"
-              >
-                Edit listing
-              </Link>
+              <Button asChild variant="outline" size="sm">
+                <Link href={`/admin/listings/${flag.listingId}`}>Edit listing</Link>
+              </Button>
             </div>
           </div>
         ))}
-      </div>
+      </Card>
     </div>
   );
 }

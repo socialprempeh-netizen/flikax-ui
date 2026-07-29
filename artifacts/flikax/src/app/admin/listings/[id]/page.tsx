@@ -8,6 +8,8 @@ import { getFieldsForCategory, HEADLINE_FIELD_KEYS } from "@/lib/listing-fields"
 import { ADMIN_STATUS_LABELS, ADMIN_STATUS_STYLES, isListingExpired } from "@/lib/admin-listings";
 import { ListingGallery } from "@/components/listings/listing-gallery";
 import { ListingDetailActions } from "@/components/admin/listing-detail-actions";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const currency = new Intl.NumberFormat("en-GH", {
   style: "currency",
@@ -77,7 +79,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
     <div>
       <Link
         href="/admin/listings"
-        className="mb-4 flex items-center gap-1 text-sm font-medium text-neutral-500 hover:text-brand"
+        className="mb-4 flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-brand"
       >
         <ChevronLeft className="size-4" />
         Back to listings
@@ -87,34 +89,18 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
         <div className="sm:col-span-2">
           <ListingGallery images={images} title={listing.title} />
 
-          <div className="mt-6 rounded-2xl border border-neutral-100 bg-white p-5">
+          <Card className="mt-6 gap-0 rounded-2xl p-5 shadow-sm">
             <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                  ADMIN_STATUS_STYLES[listing.status] ?? "bg-neutral-100 text-neutral-600"
-                }`}
-              >
+              <Badge className={ADMIN_STATUS_STYLES[listing.status] ?? "bg-slate-100 text-slate-600"}>
                 {ADMIN_STATUS_LABELS[listing.status] ?? listing.status}
-              </span>
-              {isExpired && (
-                <span className="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">
-                  Expired
-                </span>
-              )}
-              {isFeatured && (
-                <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-700">
-                  Featured
-                </span>
-              )}
-              {isBumped && (
-                <span className="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">
-                  Bumped
-                </span>
-              )}
+              </Badge>
+              {isExpired && <Badge className="bg-orange-100 text-orange-700">Expired</Badge>}
+              {isFeatured && <Badge className="bg-amber-100 text-amber-700">Featured</Badge>}
+              {isBumped && <Badge className="bg-blue-100 text-blue-700">Bumped</Badge>}
             </div>
 
-            <h1 className="mt-2 text-2xl font-bold text-neutral-800">{listing.title}</h1>
-            <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-neutral-500">
+            <h1 className="mt-2 text-2xl font-bold text-slate-800">{listing.title}</h1>
+            <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-slate-500">
               <span>{listing.location}</span>
               <span>·</span>
               <span className="flex items-center gap-1">
@@ -138,7 +124,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
             )}
 
             {headlineSpecs.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-4 border-t border-neutral-100 pt-4 text-sm text-neutral-700">
+              <div className="mt-4 flex flex-wrap gap-4 border-t border-slate-100 pt-4 text-sm text-slate-700">
                 {headlineSpecs.map((spec) => (
                   <span key={spec.key} className="font-medium">
                     {spec.label}: {spec.value}
@@ -148,57 +134,54 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
             )}
 
             {specs.length > 0 && (
-              <div className="mt-4 grid grid-cols-2 gap-3 border-t border-neutral-100 pt-4 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4 sm:grid-cols-3">
                 {specs.map((spec) => (
                   <div key={spec.key}>
-                    <p className="text-sm font-semibold text-neutral-800">{spec.value}</p>
-                    <p className="text-xs uppercase tracking-wide text-neutral-400">{spec.label}</p>
+                    <p className="text-sm font-semibold text-slate-800">{spec.value}</p>
+                    <p className="text-xs uppercase tracking-wide text-slate-400">{spec.label}</p>
                   </div>
                 ))}
               </div>
             )}
 
             {tagSpecs.map((spec) => (
-              <div key={spec.key} className="mt-4 border-t border-neutral-100 pt-4">
-                <h2 className="mb-2 text-sm font-bold text-neutral-800">{spec.label}</h2>
+              <div key={spec.key} className="mt-4 border-t border-slate-100 pt-4">
+                <h2 className="mb-2 text-sm font-bold text-slate-800">{spec.label}</h2>
                 <div className="flex flex-wrap gap-2">
                   {spec.values.map((value) => (
-                    <span
-                      key={value}
-                      className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700"
-                    >
+                    <Badge key={value} className="bg-slate-100 font-medium text-slate-700">
                       {value}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
               </div>
             ))}
 
             {listing.description && (
-              <div className="mt-4 border-t border-neutral-100 pt-4">
-                <h2 className="mb-2 text-sm font-bold text-neutral-800">Description</h2>
-                <p className="whitespace-pre-wrap text-sm text-neutral-600">{listing.description}</p>
+              <div className="mt-4 border-t border-slate-100 pt-4">
+                <h2 className="mb-2 text-sm font-bold text-slate-800">Description</h2>
+                <p className="whitespace-pre-wrap text-sm text-slate-600">{listing.description}</p>
               </div>
             )}
-          </div>
+          </Card>
         </div>
 
         <div className="flex flex-col gap-4 sm:col-span-1">
-          <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-            <h2 className="text-sm font-bold text-neutral-800">Seller</h2>
-            <p className="mt-2 text-sm text-neutral-700">{listing.profiles?.full_name || "Unnamed user"}</p>
+          <Card className="gap-2 rounded-2xl p-5 shadow-sm">
+            <h2 className="text-sm font-bold text-slate-800">Seller</h2>
+            <p className="text-sm text-slate-700">{listing.profiles?.full_name || "Unnamed user"}</p>
             {(listing.contact_phone || listing.profiles?.phone) && (
-              <p className="text-sm text-neutral-500">{listing.contact_phone || listing.profiles?.phone}</p>
+              <p className="text-sm text-slate-500">{listing.contact_phone || listing.profiles?.phone}</p>
             )}
             {listing.profiles?.id && (
               <Link
                 href={`/admin/users/${listing.profiles.id}`}
-                className="mt-2 inline-block text-sm font-medium text-brand hover:underline"
+                className="inline-block text-sm font-medium text-brand hover:underline"
               >
                 View user profile
               </Link>
             )}
-          </div>
+          </Card>
 
           <ListingDetailActions
             listingId={listing.id}

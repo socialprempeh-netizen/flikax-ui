@@ -14,6 +14,7 @@ import { createClient } from "@/lib/supabase/server";
 import { BUMP_BADGE_DISPLAY_HOURS } from "@/lib/premium-plans";
 import { TrendChart, RankBarChart } from "@/components/admin/dashboard-charts";
 import { bucketByDay } from "@/lib/admin-analytics";
+import { Card } from "@/components/ui/card";
 
 const DAYS = 30;
 
@@ -102,52 +103,52 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Dashboard</h1>
-      <p className="mt-1 text-sm text-neutral-500">Live overview of Flikax activity.</p>
+      <h1 className="text-xl font-bold text-slate-800">Dashboard</h1>
+      <p className="mt-1 text-sm text-slate-500">Live overview of Flikax activity.</p>
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="rounded-2xl border border-neutral-100 bg-white p-4">
-            <div className="flex items-center gap-2 text-neutral-400">
-              <stat.icon className="size-4" />
-              <span className="text-xs font-semibold uppercase tracking-wide">{stat.label}</span>
+          <Card key={stat.label} className="gap-2 rounded-2xl p-4 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">{stat.label}</span>
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+                <stat.icon className="size-4" />
+              </span>
             </div>
-            <p className="mt-2 text-2xl font-extrabold text-neutral-800">{stat.value}</p>
-          </div>
+            <p className="text-2xl font-extrabold text-slate-800">{stat.value}</p>
+          </Card>
         ))}
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <Link
-          href="/admin/listings?status=pending"
-          className="flex items-center justify-between rounded-2xl border border-neutral-100 bg-white p-5 hover:border-brand/40 hover:bg-brand-light/20"
-        >
-          <div className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-              <Clock3 className="size-5" />
-            </span>
-            <div>
-              <p className="text-sm font-bold text-neutral-800">Pending ads awaiting approval</p>
-              <p className="text-xs text-neutral-500">Review and approve or reject</p>
+        <Link href="/admin/listings?status=pending">
+          <Card className="flex-row items-center justify-between gap-3 rounded-2xl p-5 shadow-sm transition-colors hover:border-brand/40 hover:bg-brand-light/20">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+                <Clock3 className="size-5" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-slate-800">Pending ads awaiting approval</p>
+                <p className="text-xs text-slate-500">Review and approve or reject</p>
+              </div>
             </div>
-          </div>
-          <span className="text-2xl font-extrabold text-neutral-800">{pendingListings.count ?? 0}</span>
+            <span className="text-2xl font-extrabold text-slate-800">{pendingListings.count ?? 0}</span>
+          </Card>
         </Link>
 
-        <Link
-          href="/admin/reports"
-          className="flex items-center justify-between rounded-2xl border border-neutral-100 bg-white p-5 hover:border-brand/40 hover:bg-brand-light/20"
-        >
-          <div className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-full bg-red-100 text-red-600">
-              <Flag className="size-5" />
-            </span>
-            <div>
-              <p className="text-sm font-bold text-neutral-800">Open reports</p>
-              <p className="text-xs text-neutral-500">Flagged listings to review</p>
+        <Link href="/admin/reports">
+          <Card className="flex-row items-center justify-between gap-3 rounded-2xl p-5 shadow-sm transition-colors hover:border-brand/40 hover:bg-brand-light/20">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-full bg-red-100 text-red-600">
+                <Flag className="size-5" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-slate-800">Open reports</p>
+                <p className="text-xs text-slate-500">Flagged listings to review</p>
+              </div>
             </div>
-          </div>
-          <span className="text-2xl font-extrabold text-neutral-800">{openReports.count ?? 0}</span>
+            <span className="text-2xl font-extrabold text-slate-800">{openReports.count ?? 0}</span>
+          </Card>
         </Link>
       </div>
 

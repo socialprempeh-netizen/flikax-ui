@@ -14,6 +14,11 @@ import {
   deleteLocationAction,
 } from "@/app/admin/locations/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 export type AdminLocation = {
@@ -95,7 +100,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
     <div>
       {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
-      <div className="divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
+      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
         {regions.map((region, index) => {
           const districts = districtsOf(region.region_slug);
           const isOpen = expanded.has(region.region_slug);
@@ -107,12 +112,12 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                 <button
                   type="button"
                   onClick={() => toggle(region.region_slug)}
-                  className="flex size-7 shrink-0 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100"
+                  className="flex size-7 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
                 >
                   {isOpen ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
                 </button>
-                <span className="flex-1 text-sm font-bold text-neutral-800">{region.region_name}</span>
-                <span className="text-xs text-neutral-400">
+                <span className="flex-1 text-sm font-bold text-slate-800">{region.region_name}</span>
+                <span className="text-xs text-slate-400">
                   {enabledCount}/{districts.length} enabled
                 </span>
 
@@ -121,7 +126,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                     type="button"
                     disabled={isPending || index === 0}
                     onClick={() => run(() => reorderRegionAction(region.region_slug, "up"))}
-                    className="flex size-7 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100 disabled:opacity-30"
+                    className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ChevronUp className="size-4" />
                   </button>
@@ -129,7 +134,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                     type="button"
                     disabled={isPending || index === regions.length - 1}
                     onClick={() => run(() => reorderRegionAction(region.region_slug, "down"))}
-                    className="flex size-7 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100 disabled:opacity-30"
+                    className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ChevronDown className="size-4" />
                   </button>
@@ -139,7 +144,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                       setRenameTarget({ type: "region", slug: region.region_slug, name: region.region_name });
                       setRenameValue(region.region_name);
                     }}
-                    className="rounded-lg border border-neutral-200 px-2 py-1 text-xs font-bold text-neutral-700 hover:bg-neutral-50"
+                    className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
                   >
                     <Pencil className="size-3.5" />
                   </button>
@@ -147,7 +152,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
               </div>
 
               {isOpen && (
-                <div className="divide-y divide-neutral-50 bg-neutral-50/50 pl-9">
+                <div className="divide-y divide-slate-50 bg-slate-50/50 pl-9">
                   {districts.map((district, districtIndex) => {
                     const suburbs = suburbsOf(district.region_slug, district.district_slug);
                     const isDistrictOpen = expandedDistricts.has(district.id);
@@ -159,7 +164,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                             <button
                               type="button"
                               onClick={() => toggleDistrict(district.id)}
-                              className="flex size-6 shrink-0 items-center justify-center rounded-md text-neutral-500 hover:bg-white"
+                              className="flex size-6 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-white"
                             >
                               {isDistrictOpen ? (
                                 <ChevronDown className="size-3.5" />
@@ -170,21 +175,18 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                           ) : (
                             <span className="size-6 shrink-0" />
                           )}
-                          <label className="flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              checked={district.enabled}
-                              disabled={isPending}
-                              onChange={(e) => run(() => toggleLocationEnabledAction(district.id, e.target.checked))}
-                              className="size-4 accent-brand"
-                            />
-                          </label>
+                          <Checkbox
+                            checked={district.enabled}
+                            disabled={isPending}
+                            onCheckedChange={(checked) => run(() => toggleLocationEnabledAction(district.id, checked === true))}
+                            aria-label={`Toggle ${district.district_name}`}
+                          />
                           <span
-                            className={`flex-1 text-sm ${district.enabled ? "text-neutral-700" : "text-neutral-400 line-through"}`}
+                            className={`flex-1 text-sm ${district.enabled ? "text-slate-700" : "text-slate-400 line-through"}`}
                           >
                             {district.district_name}
                             {suburbs.length > 0 && (
-                              <span className="ml-1.5 text-xs font-normal text-neutral-400">
+                              <span className="ml-1.5 text-xs font-normal text-slate-400">
                                 ({suburbs.filter((s) => s.enabled).length}/{suburbs.length} suburbs)
                               </span>
                             )}
@@ -195,7 +197,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                               type="button"
                               disabled={isPending || districtIndex === 0}
                               onClick={() => run(() => reorderDistrictAction(district.id, "up"))}
-                              className="flex size-6 items-center justify-center rounded-md text-neutral-500 hover:bg-white disabled:opacity-30"
+                              className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-white disabled:opacity-30"
                             >
                               <ChevronUp className="size-3.5" />
                             </button>
@@ -203,7 +205,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                               type="button"
                               disabled={isPending || districtIndex === districts.length - 1}
                               onClick={() => run(() => reorderDistrictAction(district.id, "down"))}
-                              className="flex size-6 items-center justify-center rounded-md text-neutral-500 hover:bg-white disabled:opacity-30"
+                              className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-white disabled:opacity-30"
                             >
                               <ChevronDown className="size-3.5" />
                             </button>
@@ -213,7 +215,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                 setRenameTarget({ type: "district", id: district.id, name: district.district_name });
                                 setRenameValue(district.district_name);
                               }}
-                              className="rounded-lg border border-neutral-200 px-2 py-1 text-xs font-bold text-neutral-700 hover:bg-white"
+                              className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-white"
                             >
                               <Pencil className="size-3.5" />
                             </button>
@@ -228,20 +230,17 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                         </div>
 
                         {isDistrictOpen && suburbs.length > 0 && (
-                          <div className="divide-y divide-neutral-100 bg-white pl-8">
+                          <div className="divide-y divide-slate-100 bg-white pl-8">
                             {suburbs.map((suburb, suburbIndex) => (
                               <div key={suburb.id} className="flex items-center gap-2 py-1.5 pr-3">
-                                <label className="flex items-center gap-2">
-                                  <input
-                                    type="checkbox"
-                                    checked={suburb.enabled}
-                                    disabled={isPending}
-                                    onChange={(e) => run(() => toggleLocationEnabledAction(suburb.id, e.target.checked))}
-                                    className="size-4 accent-brand"
-                                  />
-                                </label>
+                                <Checkbox
+                                  checked={suburb.enabled}
+                                  disabled={isPending}
+                                  onCheckedChange={(checked) => run(() => toggleLocationEnabledAction(suburb.id, checked === true))}
+                                  aria-label={`Toggle ${suburb.suburb_name}`}
+                                />
                                 <span
-                                  className={`flex-1 text-sm ${suburb.enabled ? "text-neutral-600" : "text-neutral-400 line-through"}`}
+                                  className={`flex-1 text-sm ${suburb.enabled ? "text-slate-600" : "text-slate-400 line-through"}`}
                                 >
                                   {suburb.suburb_name}
                                 </span>
@@ -251,7 +250,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                     type="button"
                                     disabled={isPending || suburbIndex === 0}
                                     onClick={() => run(() => reorderSuburbAction(suburb.id, "up"))}
-                                    className="flex size-6 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-50 disabled:opacity-30"
+                                    className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-slate-50 disabled:opacity-30"
                                   >
                                     <ChevronUp className="size-3.5" />
                                   </button>
@@ -259,7 +258,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                     type="button"
                                     disabled={isPending || suburbIndex === suburbs.length - 1}
                                     onClick={() => run(() => reorderSuburbAction(suburb.id, "down"))}
-                                    className="flex size-6 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-50 disabled:opacity-30"
+                                    className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-slate-50 disabled:opacity-30"
                                   >
                                     <ChevronDown className="size-3.5" />
                                   </button>
@@ -269,14 +268,14 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                       setRenameTarget({ type: "suburb", id: suburb.id, name: suburb.suburb_name! });
                                       setRenameValue(suburb.suburb_name!);
                                     }}
-                                    className="rounded-lg border border-neutral-200 px-2 py-1 text-xs font-bold text-neutral-700 hover:bg-neutral-50"
+                                    className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
                                   >
                                     <Pencil className="size-3.5" />
                                   </button>
                                   <button
                                     type="button"
                                     onClick={() => setDeleteTarget(suburb)}
-                                    className="rounded-lg border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-neutral-50"
+                                    className="rounded-lg border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-slate-50"
                                   >
                                     <Trash2 className="size-3.5" />
                                   </button>
@@ -293,52 +292,41 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
             </div>
           );
         })}
-      </div>
+      </Card>
 
-      {renameTarget && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-neutral-900/70 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl">
-            <h2 className="text-base font-bold text-neutral-800">
-              Rename {renameTarget.type === "region" ? "region" : renameTarget.type === "district" ? "district" : "suburb"}
-            </h2>
-            <input
-              type="text"
-              value={renameValue}
-              onChange={(e) => setRenameValue(e.target.value)}
-              autoFocus
-              className="mt-3 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
-            />
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setRenameTarget(null)}
-                disabled={isPending}
-                className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={isPending || !renameValue.trim()}
-                onClick={() =>
-                  run(
-                    () =>
-                      renameTarget.type === "region"
-                        ? updateRegionNameAction(renameTarget.slug, renameValue)
-                        : renameTarget.type === "district"
-                          ? updateDistrictNameAction(renameTarget.id, renameValue)
-                          : updateSuburbNameAction(renameTarget.id, renameValue),
-                    () => setRenameTarget(null)
-                  )
-                }
-                className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-              >
-                {isPending ? "Saving..." : "Save"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Dialog open={renameTarget !== null} onOpenChange={(next) => !next && setRenameTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              Rename {renameTarget?.type === "region" ? "region" : renameTarget?.type === "district" ? "district" : "suburb"}
+            </DialogTitle>
+          </DialogHeader>
+          <Input type="text" value={renameValue} onChange={(e) => setRenameValue(e.target.value)} autoFocus />
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setRenameTarget(null)} disabled={isPending}>
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              disabled={isPending || !renameValue.trim()}
+              onClick={() =>
+                renameTarget &&
+                run(
+                  () =>
+                    renameTarget.type === "region"
+                      ? updateRegionNameAction(renameTarget.slug, renameValue)
+                      : renameTarget.type === "district"
+                        ? updateDistrictNameAction(renameTarget.id, renameValue)
+                        : updateSuburbNameAction(renameTarget.id, renameValue),
+                  () => setRenameTarget(null)
+                )
+              }
+            >
+              {isPending ? "Saving..." : "Save"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <ConfirmDialog
         open={deleteTarget !== null}

@@ -12,6 +12,9 @@ import {
   toggleVerifiedAction,
 } from "@/app/admin/users/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 const SUSPEND_DURATIONS = [3, 7, 14, 30];
@@ -49,55 +52,58 @@ export function UserDetailActions({
   }
 
   return (
-    <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-      <h2 className="text-sm font-bold text-neutral-800">Account actions</h2>
+    <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+      <h2 className="text-sm font-bold text-slate-800">Account actions</h2>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
-      <div className="mt-3 border-t border-neutral-100 pt-4">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="mt-3 border-t border-slate-100 pt-4">
+        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Verification
         </span>
         {verified ? (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => run(() => toggleVerifiedAction(userId, false))}
-            className="rounded-lg border border-neutral-200 px-3 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
           >
             Remove verification
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(() => toggleVerifiedAction(userId, true))}
-            className="rounded-lg bg-brand px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-dark disabled:opacity-60"
           >
             Mark as verified
-          </button>
+          </Button>
         )}
-        <p className="mt-1 text-xs text-neutral-400">Shows a verified badge on their public profile.</p>
+        <p className="mt-1 text-xs text-slate-400">Shows a verified badge on their public profile.</p>
       </div>
 
-      <div className="mt-4 border-t border-neutral-100 pt-4">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="mt-4 border-t border-slate-100 pt-4">
+        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Suspend posting
         </span>
         {suspended ? (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => run(() => restoreUserAction(userId))}
-            className="rounded-lg border border-green-200 px-3 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+            className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
           >
             Restore (lift suspension)
-          </button>
+          </Button>
         ) : (
           <div className="flex gap-2">
             <select
               value={suspendDays}
               onChange={(e) => setSuspendDays(Number(e.target.value))}
-              className="rounded-lg border border-neutral-200 px-2 py-1.5 text-xs text-neutral-800 outline-none focus:border-brand"
+              className="h-9 rounded-md border border-input bg-transparent px-2 text-xs text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             >
               {SUSPEND_DURATIONS.map((d) => (
                 <option key={d} value={d}>
@@ -105,78 +111,79 @@ export function UserDetailActions({
                 </option>
               ))}
             </select>
-            <button
+            <Button
               type="button"
+              size="sm"
               disabled={isPending}
               onClick={() => run(() => suspendUserAction(userId, suspendDays))}
-              className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-amber-700 disabled:opacity-60"
+              className="bg-amber-600 hover:bg-amber-700"
             >
               Suspend
-            </button>
+            </Button>
           </div>
         )}
-        <p className="mt-1 text-xs text-neutral-400">Blocks new listings and plan purchases. Login stays open.</p>
+        <p className="mt-1 text-xs text-slate-400">Blocks new listings and plan purchases. Login stays open.</p>
       </div>
 
-      <div className="mt-4 border-t border-neutral-100 pt-4">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="mt-4 border-t border-slate-100 pt-4">
+        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Login access
         </span>
         {banned ? (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => run(() => unbanUserAction(userId))}
-            className="rounded-lg border border-green-200 px-3 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+            className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
           >
             Unban
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="destructive"
             disabled={isPending}
             onClick={() => setConfirm("ban")}
-            className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
           >
             Ban
-          </button>
+          </Button>
         )}
-        <p className="mt-1 text-xs text-neutral-400">Blocks login entirely until unbanned.</p>
+        <p className="mt-1 text-xs text-slate-400">Blocks login entirely until unbanned.</p>
       </div>
 
-      <div className="mt-4 border-t border-neutral-100 pt-4">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="mt-4 border-t border-slate-100 pt-4">
+        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Log a warning
         </span>
-        <textarea
+        <Textarea
           rows={2}
           value={warningMessage}
           onChange={(e) => setWarningMessage(e.target.value)}
           placeholder="Recorded on this profile — not delivered to the user (no notification system exists yet)."
-          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-xs text-neutral-800 outline-none focus:border-brand"
+          className="text-xs"
         />
-        <button
+        <Button
           type="button"
+          size="sm"
+          variant="outline"
           disabled={isPending || !warningMessage.trim()}
           onClick={() => run(() => logWarningAction(userId, warningMessage), () => setWarningMessage(""))}
-          className="mt-2 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
+          className="mt-2"
         >
           Log warning
-        </button>
+        </Button>
       </div>
 
-      <div className="mt-4 border-t border-neutral-100 pt-4">
-        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="mt-4 border-t border-slate-100 pt-4">
+        <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Danger zone
         </span>
-        <button
-          type="button"
-          disabled={isPending}
-          onClick={() => setConfirm("delete")}
-          className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
-        >
+        <Button type="button" size="sm" variant="destructive" disabled={isPending} onClick={() => setConfirm("delete")}>
           Delete account
-        </button>
+        </Button>
       </div>
 
       <ConfirmDialog
@@ -196,6 +203,6 @@ export function UserDetailActions({
         }
         onCancel={() => setConfirm(null)}
       />
-    </div>
+    </Card>
   );
 }

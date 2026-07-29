@@ -7,6 +7,7 @@ import {
   deleteSlideAction,
   reorderSlideAction,
 } from "@/app/admin/homepage-slider/actions";
+import { Button } from "@/components/ui/button";
 import type { HomepageSlide } from "@/lib/homepage-slides";
 
 export function HomepageSlideRow({
@@ -72,33 +73,35 @@ export function HomepageSlideRow({
   return (
     <div className="flex items-center gap-4 p-5">
       <div className="flex shrink-0 flex-col gap-1">
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="icon-xs"
           onClick={() => handleReorder("up")}
           disabled={isPending || isFirst}
           aria-label="Move up"
-          className="flex size-6 items-center justify-center rounded border border-neutral-200 text-neutral-500 hover:bg-neutral-50 disabled:opacity-30"
         >
           <ArrowUp className="size-3.5" />
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="outline"
+          size="icon-xs"
           onClick={() => handleReorder("down")}
           disabled={isPending || isLast}
           aria-label="Move down"
-          className="flex size-6 items-center justify-center rounded border border-neutral-200 text-neutral-500 hover:bg-neutral-50 disabled:opacity-30"
         >
           <ArrowDown className="size-3.5" />
-        </button>
+        </Button>
       </div>
 
       {/* eslint-disable-next-line @next/next/no-img-element -- already-optimized storage image in an admin list, not worth next/image here */}
-      <img src={imageUrl} alt="" className="h-16 w-28 shrink-0 rounded-lg border border-neutral-200 object-cover" />
+      <img src={imageUrl} alt="" className="h-16 w-28 shrink-0 rounded-lg border border-slate-200 object-cover" />
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-neutral-800">{slide.headline || "(no headline)"}</p>
-        {slide.link_url && <p className="truncate text-xs text-neutral-400">{slide.link_url}</p>}
-        <p className="mt-0.5 text-xs text-neutral-400">
+        <p className="truncate text-sm font-semibold text-slate-800">{slide.headline || "(no headline)"}</p>
+        {slide.link_url && <p className="truncate text-xs text-slate-400">{slide.link_url}</p>}
+        <p className="mt-0.5 text-xs text-slate-400">
           {slide.starts_at || slide.ends_at
             ? `Scheduled: ${slide.starts_at ? new Date(slide.starts_at).toLocaleString() : "now"} → ${
                 slide.ends_at ? new Date(slide.ends_at).toLocaleString() : "no end"
@@ -109,17 +112,18 @@ export function HomepageSlideRow({
       </div>
 
       <div className="flex shrink-0 items-center gap-3">
-        <button type="button" onClick={onEdit} className="text-sm font-medium text-brand hover:underline">
+        <Button type="button" variant="link" onClick={onEdit} className="h-auto p-0 text-brand">
           Edit
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="link"
           onClick={handleDelete}
           disabled={isPending}
-          className="text-sm font-medium text-red-600 hover:underline disabled:opacity-60"
+          className="h-auto p-0 text-red-600 hover:text-red-700"
         >
           Delete
-        </button>
+        </Button>
         <button
           type="button"
           onClick={handleToggle}
@@ -127,7 +131,7 @@ export function HomepageSlideRow({
           aria-pressed={active}
           aria-label={`Toggle slide ${active ? "active" : "inactive"}`}
           className={`relative h-7 w-12 shrink-0 rounded-full transition-colors disabled:opacity-60 ${
-            active ? "bg-brand" : "bg-neutral-300"
+            active ? "bg-brand" : "bg-slate-300"
           }`}
         >
           <span

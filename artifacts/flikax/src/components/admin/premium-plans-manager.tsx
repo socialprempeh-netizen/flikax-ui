@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { PremiumPlanForm } from "@/components/admin/premium-plan-form";
 import { PremiumPlanRow } from "@/components/admin/premium-plan-row";
+import { Card } from "@/components/ui/card";
 import type { PremiumPlan } from "@/lib/premium-plans";
 
 export function PremiumPlansManager({ initialPlans }: { initialPlans: PremiumPlan[] }) {
@@ -29,8 +30,8 @@ export function PremiumPlansManager({ initialPlans }: { initialPlans: PremiumPla
 
   return (
     <>
-      <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-        <h2 className="text-sm font-bold text-neutral-800">
+      <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+        <h2 className="text-sm font-bold text-slate-800">
           {editingPlan ? `Edit "${editingPlan.name}"` : "Create a plan"}
         </h2>
         <div className="mt-3">
@@ -41,11 +42,11 @@ export function PremiumPlansManager({ initialPlans }: { initialPlans: PremiumPla
             onCancelEdit={() => setEditingPlanId(null)}
           />
         </div>
-      </div>
+      </Card>
 
-      <div className="mt-6 divide-y divide-neutral-100 rounded-2xl border border-neutral-100 bg-white">
+      <Card className="mt-6 gap-0 divide-y divide-slate-100 rounded-2xl p-0 shadow-sm">
         {plans.length === 0 ? (
-          <p className="p-6 text-sm text-neutral-400">No plans yet.</p>
+          <p className="p-6 text-sm text-slate-400">No plans yet.</p>
         ) : (
           plans.map((plan) => (
             <PremiumPlanRow
@@ -56,7 +57,7 @@ export function PremiumPlansManager({ initialPlans }: { initialPlans: PremiumPla
             />
           ))
         )}
-      </div>
+      </Card>
     </>
   );
 }

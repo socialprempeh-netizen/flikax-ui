@@ -2,6 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { togglePlanEnabledAction, deletePlanAction } from "@/app/admin/premium-plans/actions";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import type { PremiumPlan, PlanType } from "@/lib/premium-plans";
 
 const PLAN_TYPE_STYLES: Record<PlanType, string> = {
@@ -64,12 +66,10 @@ export function PremiumPlanRow({
     <div className="flex items-center justify-between gap-4 p-5">
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-semibold text-neutral-800">{plan.name}</p>
-          <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${PLAN_TYPE_STYLES[plan.plan_type]}`}>
-            {PLAN_TYPE_LABELS[plan.plan_type]}
-          </span>
+          <p className="text-sm font-semibold text-slate-800">{plan.name}</p>
+          <Badge className={PLAN_TYPE_STYLES[plan.plan_type]}>{PLAN_TYPE_LABELS[plan.plan_type]}</Badge>
         </div>
-        <p className="mt-0.5 text-sm text-neutral-500">
+        <p className="mt-0.5 text-sm text-slate-500">
           {currency.format(plan.price)}
           {plan.duration ? ` / ${plan.duration}` : ""}
           {plan.duration_days ? ` · active ${plan.duration_days}d` : ""}
@@ -78,21 +78,18 @@ export function PremiumPlanRow({
       </div>
 
       <div className="flex shrink-0 items-center gap-3">
-        <button
-          type="button"
-          onClick={onEdit}
-          className="text-sm font-medium text-brand hover:underline"
-        >
+        <Button type="button" variant="link" onClick={onEdit} className="h-auto p-0 text-brand">
           Edit
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="link"
           onClick={handleDelete}
           disabled={isPending}
-          className="text-sm font-medium text-red-600 hover:underline disabled:opacity-60"
+          className="h-auto p-0 text-red-600 hover:text-red-700"
         >
           Delete
-        </button>
+        </Button>
         <button
           type="button"
           onClick={handleToggle}
@@ -100,7 +97,7 @@ export function PremiumPlanRow({
           aria-pressed={enabled}
           aria-label={`Toggle ${plan.name}`}
           className={`relative h-7 w-12 shrink-0 rounded-full transition-colors disabled:opacity-60 ${
-            enabled ? "bg-brand" : "bg-neutral-300"
+            enabled ? "bg-brand" : "bg-slate-300"
           }`}
         >
           <span

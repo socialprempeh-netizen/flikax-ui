@@ -14,6 +14,19 @@ import {
   deleteListingForReportAction,
 } from "@/app/admin/reports/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 export type AdminReportRow = {
@@ -76,7 +89,7 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
 
   if (reports.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-neutral-300 bg-white py-16 text-center text-sm text-neutral-400">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
         No reports match these filters.
       </div>
     );
@@ -88,73 +101,64 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
 
       {selectedIds.length > 0 && (
         <div className="sticky top-14 z-20 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-brand/30 bg-brand-light px-4 py-3">
-          <span className="text-sm font-bold text-neutral-800">{selectedIds.length} selected</span>
-          <button
+          <span className="text-sm font-bold text-slate-800">{selectedIds.length} selected</span>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(() => updateReportStatusAction(selectedIds, "resolved"), () => setSelected(new Set()))}
-            className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-green-700 disabled:opacity-60"
+            className="bg-green-600 hover:bg-green-700"
           >
             Resolve
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(() => updateReportStatusAction(selectedIds, "dismissed"), () => setSelected(new Set()))}
-            className="rounded-lg bg-neutral-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-neutral-700 disabled:opacity-60"
+            className="bg-slate-600 hover:bg-slate-700"
           >
             Dismiss
-          </button>
+          </Button>
         </div>
       )}
 
-      <div className="divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
-        <div className="flex items-center gap-3 bg-neutral-50 px-4 py-2">
-          <input
-            type="checkbox"
-            checked={allSelected}
-            onChange={toggleAll}
-            aria-label="Select all"
-            className="size-4 accent-brand"
-          />
-          <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <div className="flex items-center gap-3 bg-slate-50 px-4 py-2">
+          <Checkbox checked={allSelected} onCheckedChange={toggleAll} aria-label="Select all" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Select all on this page
           </span>
         </div>
 
         {reports.map((report) => (
-          <div key={report.id} className="flex items-start gap-3 p-4 hover:bg-neutral-50">
-            <input
-              type="checkbox"
+          <div key={report.id} className="flex items-start gap-3 p-4 hover:bg-slate-50">
+            <Checkbox
               checked={selected.has(report.id)}
-              onChange={() => toggleOne(report.id)}
+              onCheckedChange={() => toggleOne(report.id)}
               aria-label={`Select report on ${report.listingTitle}`}
-              className="mt-1 size-4 shrink-0 accent-brand"
+              className="mt-1 shrink-0"
             />
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href={`/admin/listings/${report.listingId}`}
-                  className="truncate text-sm font-bold text-neutral-800 hover:text-brand hover:underline"
+                  className="truncate text-sm font-bold text-slate-800 hover:text-brand hover:underline"
                 >
                   {report.listingTitle}
                 </Link>
-                <span
-                  className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${
-                    ADMIN_REPORT_STATUS_STYLES[report.status] ?? "bg-neutral-100 text-neutral-600"
-                  }`}
-                >
+                <Badge className={`shrink-0 ${ADMIN_REPORT_STATUS_STYLES[report.status] ?? "bg-slate-100 text-slate-600"}`}>
                   {ADMIN_REPORT_STATUS_LABELS[report.status] ?? report.status}
-                </span>
+                </Badge>
                 {report.priority && (
-                  <span className="flex shrink-0 items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700">
+                  <Badge className="shrink-0 gap-1 bg-red-100 text-red-700">
                     <TriangleAlert className="size-3" />
                     High priority
-                  </span>
+                  </Badge>
                 )}
               </div>
-              <p className="mt-0.5 text-sm text-neutral-500">
+              <p className="mt-0.5 text-sm text-slate-500">
                 {REPORT_REASON_LABELS[report.reason as ReportReason] ?? report.reason} · Reported by{" "}
                 {report.reporterName ?? "Unknown"} · Seller:{" "}
                 <Link href={`/admin/users/${report.sellerId}`} className="hover:text-brand hover:underline">
@@ -166,64 +170,74 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
 
             <div className="flex shrink-0 flex-wrap items-center justify-end gap-1.5">
               {report.status !== "resolved" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run(() => updateReportStatusAction([report.id], "resolved"))}
-                  className="rounded-lg border border-green-200 px-2.5 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+                  className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
                 >
                   Resolve
-                </button>
+                </Button>
               )}
               {report.status !== "dismissed" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run(() => updateReportStatusAction([report.id], "dismissed"))}
-                  className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
                 >
                   Dismiss
-                </button>
+                </Button>
               )}
-              <button
+              <Button
                 type="button"
+                size="sm"
+                variant="outline"
                 disabled={isPending}
                 onClick={() => run(() => toggleReportPriorityAction(report.id, !report.priority))}
-                className="rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50 disabled:opacity-60"
+                className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-700"
               >
                 {report.priority ? "De-escalate" : "Escalate"}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                size="sm"
+                variant="outline"
                 disabled={isPending}
                 onClick={() => {
                   setWarnTarget(report);
                   setWarnMessage("");
                 }}
-                className="rounded-lg border border-amber-200 px-2.5 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-50 disabled:opacity-60"
+                className="border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-700"
               >
                 Warn seller
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                size="sm"
+                variant="outline"
                 disabled={isPending}
                 onClick={() => setConfirm({ type: "suspend", report })}
-                className="rounded-lg border border-orange-200 px-2.5 py-1.5 text-xs font-bold text-orange-700 hover:bg-orange-50 disabled:opacity-60"
+                className="border-orange-200 text-orange-700 hover:bg-orange-50 hover:text-orange-700"
               >
                 Suspend seller
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                size="sm"
+                variant="destructive"
                 disabled={isPending}
                 onClick={() => setConfirm({ type: "delete", report })}
-                className="rounded-lg bg-red-600 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
               >
                 Delete listing
-              </button>
+              </Button>
             </div>
           </div>
         ))}
-      </div>
+      </Card>
 
       <ConfirmDialog
         open={confirm?.type === "delete"}
@@ -241,98 +255,84 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
         onCancel={() => setConfirm(null)}
       />
 
-      {confirm?.type === "suspend" && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-neutral-900/70 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl">
-            <h2 className="text-base font-bold text-neutral-800">Suspend this seller?</h2>
-            <p className="mt-1 text-sm text-neutral-600">
+      <Dialog open={confirm?.type === "suspend"} onOpenChange={(next) => !next && setConfirm(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Suspend this seller?</DialogTitle>
+            <DialogDescription>
               Blocks new listings and plan purchases for the chosen duration, and marks the report resolved.
-            </p>
-            <select
-              value={suspendDays}
-              onChange={(e) => setSuspendDays(Number(e.target.value))}
-              className="mt-3 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            </DialogDescription>
+          </DialogHeader>
+          <select
+            value={suspendDays}
+            onChange={(e) => setSuspendDays(Number(e.target.value))}
+            className="h-9 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+          >
+            {[3, 7, 14, 30].map((d) => (
+              <option key={d} value={d}>
+                {d} days
+              </option>
+            ))}
+          </select>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setConfirm(null)} disabled={isPending}>
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              disabled={isPending}
+              onClick={() =>
+                confirm?.type === "suspend" &&
+                run(
+                  () => suspendSellerForReportAction(confirm.report.id, confirm.report.sellerId, suspendDays),
+                  () => setConfirm(null)
+                )
+              }
             >
-              {[3, 7, 14, 30].map((d) => (
-                <option key={d} value={d}>
-                  {d} days
-                </option>
-              ))}
-            </select>
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setConfirm(null)}
-                disabled={isPending}
-                className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={isPending}
-                onClick={() =>
-                  run(
-                    () => suspendSellerForReportAction(confirm.report.id, confirm.report.sellerId, suspendDays),
-                    () => setConfirm(null)
-                  )
-                }
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-60"
-              >
-                {isPending ? "Working..." : "Suspend"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+              {isPending ? "Working..." : "Suspend"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-      {warnTarget && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-neutral-900/70 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl">
-            <div className="flex items-start gap-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-                <Flag className="size-5" />
-              </span>
-              <div className="min-w-0">
-                <h2 className="text-base font-bold text-neutral-800">Warn {warnTarget.sellerName ?? "seller"}</h2>
-                <p className="mt-1 text-sm text-neutral-600">
-                  Recorded on their profile — not delivered to them (no notification system exists yet).
-                </p>
-              </div>
-            </div>
-            <textarea
-              rows={3}
-              value={warnMessage}
-              onChange={(e) => setWarnMessage(e.target.value)}
-              placeholder={`Regarding the report on "${warnTarget.listingTitle}"...`}
-              className="mt-3 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
-            />
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setWarnTarget(null)}
-                disabled={isPending}
-                className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={isPending || !warnMessage.trim()}
-                onClick={() =>
-                  run(
-                    () => warnSellerForReportAction(warnTarget.id, warnTarget.sellerId, warnMessage),
-                    () => setWarnTarget(null)
-                  )
-                }
-                className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-              >
-                {isPending ? "Working..." : "Log warning"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Dialog open={warnTarget !== null} onOpenChange={(next) => !next && setWarnTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <Flag className="size-5" />
+            </span>
+            <DialogTitle>Warn {warnTarget?.sellerName ?? "seller"}</DialogTitle>
+            <DialogDescription>
+              Recorded on their profile — not delivered to them (no notification system exists yet).
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            rows={3}
+            value={warnMessage}
+            onChange={(e) => setWarnMessage(e.target.value)}
+            placeholder={`Regarding the report on "${warnTarget?.listingTitle}"...`}
+          />
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setWarnTarget(null)} disabled={isPending}>
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              disabled={isPending || !warnMessage.trim()}
+              onClick={() =>
+                warnTarget &&
+                run(
+                  () => warnSellerForReportAction(warnTarget.id, warnTarget.sellerId, warnMessage),
+                  () => setWarnTarget(null)
+                )
+              }
+            >
+              {isPending ? "Working..." : "Log warning"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

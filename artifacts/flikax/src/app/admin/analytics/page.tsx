@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { bucketByDay, bucketSumByDay } from "@/lib/admin-analytics";
 import { ANALYTICS_WINDOWS, buildAdminAnalyticsHref, type AdminAnalyticsFilters } from "@/lib/admin-analytics-filters";
 import { TrendChart, RankBarChart } from "@/components/admin/dashboard-charts";
+import { Card } from "@/components/ui/card";
 
 const WINDOW_LABELS: Record<string, string> = { "30": "30 days", "90": "90 days", "365": "1 year" };
 
@@ -59,8 +60,8 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Analytics</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="text-xl font-bold text-slate-800">Analytics</h1>
+      <p className="mt-1 text-sm text-slate-500">
         Deeper reporting beyond the dashboard. Search-trend analytics isn&apos;t available — no search query
         logging exists in the app yet, so that&apos;s flagged as future work rather than shown here.
       </p>
@@ -73,7 +74,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             className={`rounded-lg border px-3 py-1.5 text-sm font-medium ${
               String(windowDays) === w
                 ? "border-brand bg-brand-light text-brand"
-                : "border-neutral-200 text-neutral-600 hover:bg-neutral-50"
+                : "border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
             {WINDOW_LABELS[w]}
@@ -81,14 +82,12 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
         ))}
       </div>
 
-      <div className="mt-4 rounded-2xl border border-neutral-100 bg-white p-4">
-        <div className="flex items-center gap-2 text-neutral-400">
-          <span className="text-xs font-semibold uppercase tracking-wide">
-            Revenue ({WINDOW_LABELS[String(windowDays)]})
-          </span>
-        </div>
-        <p className="mt-2 text-2xl font-extrabold text-neutral-800">GHS {totalRevenue.toFixed(2)}</p>
-      </div>
+      <Card className="mt-4 gap-2 rounded-2xl p-4 shadow-sm">
+        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Revenue ({WINDOW_LABELS[String(windowDays)]})
+        </span>
+        <p className="text-2xl font-extrabold text-slate-800">GHS {totalRevenue.toFixed(2)}</p>
+      </Card>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <TrendChart data={listingGrowth} color="blue" title={`Listing growth (${WINDOW_LABELS[String(windowDays)]})`} />
@@ -104,20 +103,24 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-neutral-100 bg-white p-4">
-          <div className="flex items-center gap-2 text-neutral-400">
-            <Eye className="size-4" />
-            <span className="text-xs font-semibold uppercase tracking-wide">Total views (all time)</span>
+        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total views (all time)</span>
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+              <Eye className="size-4" />
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-extrabold text-neutral-800">{totalViews}</p>
-        </div>
-        <div className="rounded-2xl border border-neutral-100 bg-white p-4">
-          <div className="flex items-center gap-2 text-neutral-400">
-            <Bookmark className="size-4" />
-            <span className="text-xs font-semibold uppercase tracking-wide">Total saves</span>
+          <p className="text-2xl font-extrabold text-slate-800">{totalViews}</p>
+        </Card>
+        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total saves</span>
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+              <Bookmark className="size-4" />
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-extrabold text-neutral-800">{(savedRows ?? []).length}</p>
-        </div>
+          <p className="text-2xl font-extrabold text-slate-800">{(savedRows ?? []).length}</p>
+        </Card>
       </div>
     </div>
   );

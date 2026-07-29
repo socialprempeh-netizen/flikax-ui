@@ -15,8 +15,8 @@ export default async function AdminCategoriesPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-neutral-800">Categories</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="text-xl font-bold text-slate-800">Categories</h1>
+      <p className="mt-1 text-sm text-slate-500">
         {rows.length} categories total ({parents.length} top-level). Max 2 levels deep.
       </p>
 

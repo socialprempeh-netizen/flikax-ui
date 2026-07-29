@@ -10,6 +10,7 @@ import {
   deleteUserAction,
 } from "@/app/admin/users/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { Button } from "@/components/ui/button";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 type PendingConfirm = { type: "ban" | "delete" };
@@ -46,53 +47,62 @@ export function UsersRowActions({
       {error && <p className="text-xs text-red-600">{error}</p>}
       <div className="flex flex-wrap justify-end gap-1.5">
         {suspended ? (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => run(() => restoreUserAction(userId))}
-            className="rounded-lg border border-green-200 px-2.5 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+            className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
           >
             Restore
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => run(() => suspendUserAction(userId, 7))}
-            className="rounded-lg border border-amber-200 px-2.5 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-50 disabled:opacity-60"
+            className="border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-700"
           >
             Suspend 7d
-          </button>
+          </Button>
         )}
 
         {banned ? (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => run(() => unbanUserAction(userId))}
-            className="rounded-lg border border-green-200 px-2.5 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+            className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
           >
             Unban
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant="outline"
             disabled={isPending}
             onClick={() => setConfirm({ type: "ban" })}
-            className="rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50 disabled:opacity-60"
+            className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-700"
           >
             Ban
-          </button>
+          </Button>
         )}
 
-        <button
+        <Button
           type="button"
+          size="sm"
+          variant="destructive"
           disabled={isPending}
           onClick={() => setConfirm({ type: "delete" })}
-          className="rounded-lg bg-red-600 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
         >
           Delete
-        </button>
+        </Button>
       </div>
 
       <ConfirmDialog

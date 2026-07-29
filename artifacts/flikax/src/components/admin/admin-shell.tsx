@@ -27,6 +27,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import type { AdminRole } from "@/lib/admin-auth";
 
 type NavItem = {
@@ -88,25 +90,34 @@ export function AdminShell({
   const navItems = NAV_ITEMS.filter((item) => !item.superAdminOnly || role === "super_admin");
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-slate-50">
       <aside
-        className={`flex shrink-0 flex-col border-r border-neutral-200 bg-neutral-900 text-white transition-all ${
+        className={`flex shrink-0 flex-col bg-[#0B1220] text-white transition-all ${
           collapsed ? "w-16" : "w-60"
         }`}
       >
         <div className="flex h-14 items-center justify-between border-b border-white/10 px-3">
-          {!collapsed && <span className="text-sm font-extrabold tracking-wide">FLIKAX ADMIN</span>}
-          <button
+          {!collapsed && (
+            <span className="flex items-center gap-2 text-sm font-extrabold tracking-wide">
+              <span className="flex size-6 items-center justify-center rounded-md bg-brand text-xs font-extrabold">
+                F
+              </span>
+              FLIKAX ADMIN
+            </span>
+          )}
+          <Button
             type="button"
             onClick={() => setCollapsed((c) => !c)}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            className="flex size-8 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
+            variant="ghost"
+            size="icon"
+            className="size-8 text-white/70 hover:bg-white/10 hover:text-white"
           >
             {collapsed ? <PanelLeftOpen className="size-4.5" /> : <PanelLeftClose className="size-4.5" />}
-          </button>
+          </Button>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 p-2">
+        <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
           {navItems.map((item) => {
             const isActive =
               item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
@@ -121,9 +132,7 @@ export function AdminShell({
                   {!collapsed && (
                     <span className="flex flex-1 items-center justify-between">
                       {item.label}
-                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide">
-                        Soon
-                      </span>
+                      <Badge className="bg-white/10 text-[10px] tracking-wide text-white/70">Soon</Badge>
                     </span>
                   )}
                 </span>
@@ -134,8 +143,10 @@ export function AdminShell({
                 key={item.label}
                 href={item.href}
                 title={collapsed ? item.label : undefined}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium ${
-                  isActive ? "bg-brand text-white" : "text-white/70 hover:bg-white/10 hover:text-white"
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-brand text-white shadow-sm"
+                    : "text-white/60 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <item.icon className="size-4.5 shrink-0" />
@@ -147,13 +158,13 @@ export function AdminShell({
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center justify-between border-b border-neutral-200 bg-white px-4 sm:px-6">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-neutral-500">
+        <header className="flex h-14 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-sm sm:px-6">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-slate-500">
             {crumbs.map((crumb, i) => (
               <span key={crumb.href} className="flex items-center gap-1">
-                {i > 0 && <ChevronRight className="size-3.5 text-neutral-500" />}
+                {i > 0 && <ChevronRight className="size-3.5 text-slate-400" />}
                 {crumb.isLast ? (
-                  <span className="font-semibold text-neutral-800">{crumb.label}</span>
+                  <span className="font-semibold text-slate-800">{crumb.label}</span>
                 ) : (
                   <Link href={crumb.href} className="hover:text-brand">
                     {crumb.label}
@@ -164,11 +175,11 @@ export function AdminShell({
           </nav>
 
           <div className="flex items-center gap-3">
-            <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+            <Badge variant="outline" className="border-slate-200 text-xs font-semibold uppercase tracking-wide text-slate-500">
               {role === "super_admin" ? "Super Admin" : "Admin"}
-            </span>
-            <span className="text-sm text-neutral-600">{adminName || "Admin"}</span>
-            <LogoutButton className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50" />
+            </Badge>
+            <span className="text-sm text-slate-600">{adminName || "Admin"}</span>
+            <LogoutButton className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" />
           </div>
         </header>
 

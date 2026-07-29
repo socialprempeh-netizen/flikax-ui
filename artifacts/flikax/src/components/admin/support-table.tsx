@@ -4,6 +4,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ADMIN_TICKET_STATUS_LABELS, ADMIN_TICKET_STATUS_STYLES } from "@/lib/admin-support";
 import { updateTicketStatusAction } from "@/app/admin/support/actions";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { withAuthRetry } from "@/lib/auth-retry";
 
 export type AdminTicketRow = {
@@ -54,7 +58,7 @@ export function SupportTable({ tickets }: { tickets: AdminTicketRow[] }) {
 
   if (tickets.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-neutral-300 bg-white py-16 text-center text-sm text-neutral-400">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
         No support tickets match these filters.
       </div>
     );
@@ -66,104 +70,100 @@ export function SupportTable({ tickets }: { tickets: AdminTicketRow[] }) {
 
       {selectedIds.length > 0 && (
         <div className="sticky top-14 z-20 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-brand/30 bg-brand-light px-4 py-3">
-          <span className="text-sm font-bold text-neutral-800">{selectedIds.length} selected</span>
-          <button
+          <span className="text-sm font-bold text-slate-800">{selectedIds.length} selected</span>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(selectedIds, "in_progress")}
-            className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-60"
+            className="bg-blue-600 hover:bg-blue-700"
           >
             Mark in progress
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            size="sm"
             disabled={isPending}
             onClick={() => run(selectedIds, "resolved")}
-            className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-green-700 disabled:opacity-60"
+            className="bg-green-600 hover:bg-green-700"
           >
             Resolve
-          </button>
+          </Button>
         </div>
       )}
 
-      <div className="divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
-        <div className="flex items-center gap-3 bg-neutral-50 px-4 py-2">
-          <input
-            type="checkbox"
-            checked={allSelected}
-            onChange={toggleAll}
-            aria-label="Select all"
-            className="size-4 accent-brand"
-          />
-          <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <div className="flex items-center gap-3 bg-slate-50 px-4 py-2">
+          <Checkbox checked={allSelected} onCheckedChange={toggleAll} aria-label="Select all" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Select all on this page
           </span>
         </div>
 
         {tickets.map((ticket) => (
-          <div key={ticket.id} className="flex items-start gap-3 p-4 hover:bg-neutral-50">
-            <input
-              type="checkbox"
+          <div key={ticket.id} className="flex items-start gap-3 p-4 hover:bg-slate-50">
+            <Checkbox
               checked={selected.has(ticket.id)}
-              onChange={() => toggleOne(ticket.id)}
+              onCheckedChange={() => toggleOne(ticket.id)}
               aria-label={`Select ticket from ${ticket.name}`}
-              className="mt-1 size-4 shrink-0 accent-brand"
+              className="mt-1 shrink-0"
             />
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-bold text-neutral-800">{ticket.name}</span>
+                <span className="text-sm font-bold text-slate-800">{ticket.name}</span>
                 <a href={`mailto:${ticket.email}`} className="text-sm text-brand hover:underline">
                   {ticket.email}
                 </a>
-                <span
-                  className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${
-                    ADMIN_TICKET_STATUS_STYLES[ticket.status] ?? "bg-neutral-100 text-neutral-600"
-                  }`}
-                >
+                <Badge className={`shrink-0 ${ADMIN_TICKET_STATUS_STYLES[ticket.status] ?? "bg-slate-100 text-slate-600"}`}>
                   {ADMIN_TICKET_STATUS_LABELS[ticket.status] ?? ticket.status}
-                </span>
+                </Badge>
               </div>
-              <p className="mt-0.5 text-sm font-medium text-neutral-600">{ticket.topic}</p>
-              <p className="mt-1 text-sm text-neutral-600">{ticket.message}</p>
-              <p className="mt-1 text-xs text-neutral-400">{new Date(ticket.createdAt).toLocaleString()}</p>
+              <p className="mt-0.5 text-sm font-medium text-slate-600">{ticket.topic}</p>
+              <p className="mt-1 text-sm text-slate-600">{ticket.message}</p>
+              <p className="mt-1 text-xs text-slate-400">{new Date(ticket.createdAt).toLocaleString()}</p>
             </div>
 
             <div className="flex shrink-0 flex-wrap items-center justify-end gap-1.5">
               {ticket.status !== "in_progress" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run([ticket.id], "in_progress")}
-                  className="rounded-lg border border-blue-200 px-2.5 py-1.5 text-xs font-bold text-blue-700 hover:bg-blue-50 disabled:opacity-60"
+                  className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-700"
                 >
                   In progress
-                </button>
+                </Button>
               )}
               {ticket.status !== "resolved" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run([ticket.id], "resolved")}
-                  className="rounded-lg border border-green-200 px-2.5 py-1.5 text-xs font-bold text-green-700 hover:bg-green-50 disabled:opacity-60"
+                  className="border-green-200 text-green-700 hover:bg-green-50 hover:text-green-700"
                 >
                   Resolve
-                </button>
+                </Button>
               )}
               {ticket.status !== "open" && (
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="outline"
                   disabled={isPending}
                   onClick={() => run([ticket.id], "open")}
-                  className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-xs font-bold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
                 >
                   Reopen
-                </button>
+                </Button>
               )}
             </div>
           </div>
         ))}
-      </div>
+      </Card>
     </div>
   );
 }

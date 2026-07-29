@@ -3,6 +3,8 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { X } from "lucide-react";
 import { createPlanAction, updatePlanAction, type PlanFormInput } from "@/app/admin/premium-plans/actions";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import type { PremiumPlan, PlanType } from "@/lib/premium-plans";
 
 const PLAN_TYPE_OPTIONS: { value: PlanType; label: string }[] = [
@@ -13,7 +15,7 @@ const PLAN_TYPE_OPTIONS: { value: PlanType; label: string }[] = [
 ];
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand";
+  "w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand";
 
 function planToForm(plan: PremiumPlan | null): PlanFormInput {
   if (!plan) {
@@ -85,7 +87,7 @@ export function PremiumPlanForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">Name</span>
+          <span className="mb-1 block text-xs font-medium text-slate-600">Name</span>
           <input
             type="text"
             required
@@ -96,7 +98,7 @@ export function PremiumPlanForm({
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">Plan type</span>
+          <span className="mb-1 block text-xs font-medium text-slate-600">Plan type</span>
           <select
             value={form.plan_type}
             onChange={(e) => setForm((f) => ({ ...f, plan_type: e.target.value as PlanType }))}
@@ -111,7 +113,7 @@ export function PremiumPlanForm({
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">Price (GHS)</span>
+          <span className="mb-1 block text-xs font-medium text-slate-600">Price (GHS)</span>
           <input
             type="number"
             required
@@ -124,7 +126,7 @@ export function PremiumPlanForm({
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">Billing label (optional)</span>
+          <span className="mb-1 block text-xs font-medium text-slate-600">Billing label (optional)</span>
           <select
             value={form.duration}
             onChange={(e) => setForm((f) => ({ ...f, duration: e.target.value as PlanFormInput["duration"] }))}
@@ -137,7 +139,7 @@ export function PremiumPlanForm({
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">
+          <span className="mb-1 block text-xs font-medium text-slate-600">
             Effect duration (days, blank = no expiry)
           </span>
           <input
@@ -152,7 +154,7 @@ export function PremiumPlanForm({
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-neutral-600">Display order</span>
+          <span className="mb-1 block text-xs font-medium text-slate-600">Display order</span>
           <input
             type="number"
             value={form.display_order}
@@ -163,7 +165,7 @@ export function PremiumPlanForm({
       </div>
 
       <label className="block">
-        <span className="mb-1 block text-xs font-medium text-neutral-600">Description (optional)</span>
+        <span className="mb-1 block text-xs font-medium text-slate-600">Description (optional)</span>
         <textarea
           rows={2}
           value={form.description}
@@ -173,23 +175,15 @@ export function PremiumPlanForm({
       </label>
 
       <div>
-        <span className="mb-1 block text-xs font-medium text-neutral-600">Features</span>
+        <span className="mb-1 block text-xs font-medium text-slate-600">Features</span>
         <div className="flex flex-wrap gap-2">
           {form.features.map((feature, i) => (
-            <span
-              key={`${feature}-${i}`}
-              className="flex items-center gap-1 rounded-full bg-brand-light px-3 py-1 text-xs font-medium text-brand"
-            >
+            <Badge key={`${feature}-${i}`} className="gap-1 bg-brand-light px-3 py-1 text-brand">
               {feature}
-              <button
-                type="button"
-                onClick={() => removeFeature(i)}
-                aria-label={`Remove ${feature}`}
-                className="hover:text-brand-dark"
-              >
+              <button type="button" onClick={() => removeFeature(i)} aria-label={`Remove ${feature}`} className="hover:text-brand-dark">
                 <X className="size-3" />
               </button>
-            </span>
+            </Badge>
           ))}
         </div>
         <div className="mt-2 flex gap-2">
@@ -206,34 +200,22 @@ export function PremiumPlanForm({
             placeholder="e.g. Top of search results"
             className={`${FIELD_CLASS} flex-1`}
           />
-          <button
-            type="button"
-            onClick={addFeature}
-            className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-          >
+          <Button type="button" variant="outline" onClick={addFeature}>
             Add
-          </button>
+          </Button>
         </div>
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded-lg bg-brand px-4 py-1.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
-        >
+        <Button type="submit" disabled={isPending}>
           {isPending ? "Saving..." : editingPlan ? "Save changes" : "Create plan"}
-        </button>
+        </Button>
         {editingPlan && (
-          <button
-            type="button"
-            onClick={onCancelEdit}
-            className="rounded-lg border border-neutral-200 px-4 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-          >
+          <Button type="button" variant="outline" onClick={onCancelEdit}>
             Cancel
-          </button>
+          </Button>
         )}
       </div>
     </form>

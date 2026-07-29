@@ -26,8 +26,8 @@ export function FlagToggle({ flag }: { flag: FeatureFlag }) {
   return (
     <div className="flex items-center justify-between gap-4 p-5">
       <div>
-        <p className="font-mono text-sm font-semibold text-neutral-800">{flag.key}</p>
-        {flag.description && <p className="mt-0.5 text-sm text-neutral-500">{flag.description}</p>}
+        <p className="font-mono text-sm font-semibold text-slate-800">{flag.key}</p>
+        {flag.description && <p className="mt-0.5 text-sm text-slate-500">{flag.description}</p>}
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
       <button
@@ -37,7 +37,7 @@ export function FlagToggle({ flag }: { flag: FeatureFlag }) {
         aria-pressed={enabled}
         aria-label={`Toggle ${flag.key}`}
         className={`relative h-7 w-12 shrink-0 rounded-full transition-colors disabled:opacity-60 ${
-          enabled ? "bg-brand" : "bg-neutral-300"
+          enabled ? "bg-brand" : "bg-slate-300"
         }`}
       >
         <span
