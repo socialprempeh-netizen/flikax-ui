@@ -163,7 +163,7 @@ const getListingByShortId = cache(async (shortId: number) => {
       const { data } = await supabase
         .from("listings")
         .select(
-          "*, categories(id, name, slug, parent_id), listing_images(storage_path, position), profiles(full_name, phone, verified)"
+          "*, categories(id, name, slug, parent_id), listing_images(storage_path, position, width, height), profiles(full_name, phone, verified)"
         )
         .eq("short_id", shortId)
         .maybeSingle();
@@ -208,6 +208,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const supabase = createPublicClient();
   const cover = [...(listing.listing_images ?? [])].sort((a, b) => a.position - b.position)[0];
   const imageUrl = cover ? resolveListingImageUrl(supabase, cover.storage_path) : undefined;
+  // Explicit width/height (when the upload tracked them) let social crawlers
+  // render the preview card without having to fetch and probe the image
+  // themselves first -- a common cause of a missing/late-appearing preview.
+  const ogImage = imageUrl
+    ? { url: imageUrl, width: cover?.width ?? 1200, height: cover?.height ?? 900, alt: listing.title }
+    : undefined;
   const title = `${listing.title} for Sale in ${listing.location} | Flikax Ghana`;
   const priceLabel = currency.format(listing.price);
   const description = listing.description
@@ -222,10 +228,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title,
       description,
-      url: canonicalPath,
+      url: `${SITE_URL}${canonicalPath}`,
       siteName: "Flikax",
       type: "website",
-      images: imageUrl ? [imageUrl] : undefined,
+      images: ogImage ? [ogImage] : undefined,
     },
     twitter: {
       card: "summary_large_image",
@@ -621,6 +627,16 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
     <div className="flex flex-1 flex-col bg-background pb-16 lg:pb-0">
       <JsonLd data={productJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
+      {/* Rendered directly (not via the metadata.other API) because Next.js
+          emits `other` fields as <meta name="..."> -- the OG product
+          namespace is only recognized by Facebook/WhatsApp/etc. crawlers
+          via the RDFa `property` attribute, same as the rest of Open Graph.
+          Next.js hoists any <meta>/<title>/<link> rendered from a Server
+          Component's tree into <head> regardless of where it's rendered, so
+          this works exactly like the metadata export does. */}
+      <meta property="product:price:amount" content={String(listing.price)} />
+      <meta property="product:price:currency" content="GHS" />
+      <meta property="product:availability" content={listing.status === "active" ? "in stock" : "out of stock"} />
       <SiteHeader />
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">

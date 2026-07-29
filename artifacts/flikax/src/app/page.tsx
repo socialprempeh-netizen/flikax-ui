@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { SiteHeader } from "@/components/site-header";
 import { CategorySidebar } from "@/components/category-sidebar";
@@ -7,6 +8,7 @@ import { HomepageQuickLinks } from "@/components/homepage-quick-links";
 import { TopSellers } from "@/components/top-sellers";
 import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
+import { JsonLd } from "@/components/seo/json-ld";
 import { createPublicClient } from "@/lib/supabase/public";
 import { getCategories } from "@/lib/categories";
 import { fetchHomeListings } from "@/lib/home-listings";
@@ -18,6 +20,47 @@ const HOME_MAX_LISTINGS = 100;
 const VALID_SORTS = ["recommended", "newest", "price_asc", "price_desc"];
 
 export const revalidate = 60;
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+// Homepage-specific metadata, richer than the generic fallback in the root
+// layout -- keyword-relevant title/description and (until a purpose-made
+// 1200x630 social card exists) a real photo instead of no image at all, so
+// shares of the homepage aren't a blank link preview.
+export const metadata: Metadata = {
+  title: "Flikax - Buy & Sell Anything in Ghana | Free Classifieds Marketplace",
+  description:
+    "Ghana's classifieds marketplace. Browse thousands of verified listings for phones, vehicles, property, electronics, fashion and more, or post your own ad free in minutes.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Flikax - Buy & Sell Anything in Ghana",
+    description:
+      "Browse thousands of verified listings across every category, or post your own ad free in minutes.",
+    url: SITE_URL,
+    siteName: "Flikax",
+    locale: "en_GH",
+    type: "website",
+    images: [{ url: `${SITE_URL}/images/login-hero.jpg`, width: 1200, height: 630, alt: "Flikax marketplace" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Flikax - Buy & Sell Anything in Ghana",
+    description: "Browse thousands of verified listings, or post your own ad free in minutes.",
+    images: [`${SITE_URL}/images/login-hero.jpg`],
+  },
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Flikax",
+  url: SITE_URL,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${SITE_URL}/?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
+};
 
 const getHomeCategoryCounts = unstable_cache(
   async () => {
@@ -69,6 +112,7 @@ export default async function Home({ searchParams }: PageProps) {
 
   return (
     <div className="flex flex-1 flex-col bg-background pb-16 lg:pb-0">
+      <JsonLd data={websiteJsonLd} />
       <SiteHeader categories={categories} />
 
       {/* 1. Hero promotional carousel — full width, no container constraint */}

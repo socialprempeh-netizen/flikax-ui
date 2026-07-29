@@ -4,6 +4,7 @@ import { ImageOff, Star, TrendingUp, MapPin, Clock } from "lucide-react";
 import { formatRelativeTime } from "@/lib/format-time";
 import { CompactSaveButton } from "@/components/listings/compact-save-button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ListingCardHover } from "@/components/listing-card-hover";
 
 export type ListingCard = {
   id: string;
@@ -69,8 +70,9 @@ export function ListingGrid({
           const hasNaturalAspect = Boolean(listing.imageWidth && listing.imageHeight);
 
           return (
-            <Link key={listing.id} href={listing.href} className="group mb-4 block break-inside-avoid">
-              <Card className="gap-0 overflow-hidden border-neutral-300 p-0 shadow-sm transition-all duration-200 group-hover:-translate-y-1 group-hover:border-brand/30 group-hover:shadow-xl">
+            <Link key={listing.id} href={listing.href} className="mb-4 block break-inside-avoid">
+              <ListingCardHover>
+              <Card className="gap-0 overflow-hidden border-neutral-300 p-0 shadow-sm transition-shadow duration-200 group-hover:border-brand/30 group-hover:shadow-xl">
                 <div
                   className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
                     hasNaturalAspect ? "" : isHome ? "aspect-[4/3]" : "aspect-video"
@@ -144,6 +146,7 @@ export function ListingGrid({
                   </div>
                 </CardContent>
               </Card>
+              </ListingCardHover>
             </Link>
           );
         })}
