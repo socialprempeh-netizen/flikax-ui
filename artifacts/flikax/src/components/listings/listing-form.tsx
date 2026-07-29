@@ -80,13 +80,13 @@ const NEGOTIABLE_OPTIONS = [
 //
 // The explicit `border` (width) utility below is load-bearing, not decor:
 // Tailwind's preflight zeroes every element's border-width, so a bare
-// `border-slate-300` (color only) renders with zero width -- invisible --
+// `border-slate-400` (color only) renders with zero width -- invisible --
 // unless something also sets the width. The shadcn Input/Textarea components
 // carry `border` from their own base classes, but raw <select> elements (used
 // throughout this form) have no such base to inherit from, so they need it
 // spelled out here or they render as borderless, flat-looking boxes.
 const INPUT =
-  "h-auto w-full rounded-lg border border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
+  "h-auto w-full rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
 const SELECT = INPUT + " appearance-none";
 
 // ─── Section header ───────────────────────────────────────────────────────────
@@ -494,7 +494,7 @@ export function ListingForm({
           {/* Card header accent */}
           <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
 
-          <div className="space-y-7 p-6 sm:p-8">
+          <div className="space-y-7 p-8 sm:p-10">
 
             {/* ── Category ── */}
             <section>
@@ -639,7 +639,7 @@ export function ListingForm({
                                   className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
                                     isSelected
                                       ? "border-brand bg-brand text-white"
-                                      : "border-slate-300 bg-neutral-50 text-neutral-600 hover:border-brand/40 hover:text-brand"
+                                      : "border-slate-400 bg-neutral-50 text-neutral-600 hover:border-brand/40 hover:text-brand"
                                   }`}
                                 >
                                   {opt}
@@ -708,7 +708,7 @@ export function ListingForm({
                         className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-3 py-2.5 text-xs font-semibold transition-colors ${
                           negotiable === opt.value
                             ? "border-brand bg-brand text-white"
-                            : "border-slate-300 bg-neutral-50 text-neutral-600 hover:border-brand/40"
+                            : "border-slate-400 bg-neutral-50 text-neutral-600 hover:border-brand/40"
                         }`}
                       >
                         <input
@@ -733,8 +733,8 @@ export function ListingForm({
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 Contact phone number <span className="text-red-500">*</span>
               </label>
-              <div className="flex overflow-hidden rounded-lg border border-slate-300 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
-                <span className="flex items-center border-r border-slate-300 bg-neutral-100 px-3.5 text-sm font-semibold text-neutral-500">
+              <div className="flex overflow-hidden rounded-lg border border-slate-400 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
+                <span className="flex items-center border-r border-slate-400 bg-neutral-100 px-3.5 text-sm font-semibold text-neutral-500">
                   +233
                 </span>
                 <input
@@ -787,7 +787,7 @@ export function ListingForm({
         >
           <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
 
-          <div className="space-y-7 p-6 sm:p-8">
+          <div className="space-y-7 p-8 sm:p-10">
 
             {/* ── Title & Location ── */}
             <section>
@@ -817,7 +817,7 @@ export function ListingForm({
                   <button
                     type="button"
                     onClick={() => setLocationPickerOpen(true)}
-                    className="flex w-full items-center justify-between rounded-lg border border-slate-300 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
+                    className="flex w-full items-center justify-between rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
                   >
                     <span className="flex items-center gap-2">
                       <MapPin className="size-4 text-brand" />
@@ -832,7 +832,7 @@ export function ListingForm({
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Category
                   </label>
-                  <div className="flex items-center justify-between rounded-lg border border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm">
+                  <div className="flex items-center justify-between rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm">
                     <span className="text-neutral-700">
                       {parentCategory?.name}
                       {selectedCategory ? ` › ${selectedCategory.name}` : ""}
@@ -856,7 +856,7 @@ export function ListingForm({
 
               {/* Drop zone (shown when no images yet) */}
               {images.length === 0 && (
-                <label className="mb-4 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-300 bg-neutral-50 py-10 text-center transition-colors hover:border-brand/40 hover:bg-brand/5 cursor-pointer">
+                <label className="mb-4 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-400 bg-neutral-50 py-10 text-center transition-colors hover:border-brand/40 hover:bg-brand/5 cursor-pointer">
                   <div className="flex size-12 items-center justify-center rounded-full bg-neutral-100">
                     <ImagePlus className="size-6 text-neutral-400" />
                   </div>
@@ -885,7 +885,7 @@ export function ListingForm({
                   {images.map((img, i) => (
                     <div
                       key={img.id}
-                      className="relative aspect-square overflow-hidden rounded-xl border border-slate-300 bg-neutral-100"
+                      className="relative aspect-square overflow-hidden rounded-xl border border-slate-400 bg-neutral-100"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={img.previewUrl} alt="" className="size-full object-cover" />
@@ -918,7 +918,7 @@ export function ListingForm({
                   ))}
 
                   {images.length < MAX_IMAGES && (
-                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-300 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand">
+                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-400 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand">
                       <ImagePlus className="size-5" />
                       <span className="text-xs font-medium">Add more</span>
                       <input

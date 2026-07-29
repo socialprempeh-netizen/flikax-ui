@@ -23,7 +23,7 @@ export default async function SellPage() {
   return (
     <div className="flex flex-1 flex-col bg-background">
       <SiteHeader />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 sm:px-6">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 sm:px-6">
         {isSuspended ? (
           <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center">
             <h1 className="text-lg font-bold text-amber-800">Posting is temporarily suspended</h1>
