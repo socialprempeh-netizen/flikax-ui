@@ -73,14 +73,20 @@ const NEGOTIABLE_OPTIONS = [
 ];
 
 // ─── Shared input class ───────────────────────────────────────────────────────
-// Layered on top of the shadcn Input/Textarea/select base classes -- rounder
-// and roomier than the shadcn default (h-9/rounded-md) to match this form's
+// Layered on top of the shadcn Input/Textarea base classes -- rounder and
+// roomier than the shadcn default (h-9/rounded-md) to match this form's
 // larger, card-based visual language; h-auto lets padding drive height
-// instead of the default's fixed h-9. border-slate-300 (rather than the
-// neutral-200 this used to be) is deliberately a shade deeper -- input edges
-// need to read as crisp/tactile, not just barely-there.
+// instead of the default's fixed h-9.
+//
+// The explicit `border` (width) utility below is load-bearing, not decor:
+// Tailwind's preflight zeroes every element's border-width, so a bare
+// `border-slate-300` (color only) renders with zero width -- invisible --
+// unless something also sets the width. The shadcn Input/Textarea components
+// carry `border` from their own base classes, but raw <select> elements (used
+// throughout this form) have no such base to inherit from, so they need it
+// spelled out here or they render as borderless, flat-looking boxes.
 const INPUT =
-  "h-auto w-full rounded-xl border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
+  "h-auto w-full rounded-lg border border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
 const SELECT = INPUT + " appearance-none";
 
 // ─── Section header ───────────────────────────────────────────────────────────
@@ -90,7 +96,7 @@ function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }
       <span className="flex size-7 items-center justify-center rounded-lg bg-brand-light text-brand">
         {icon}
       </span>
-      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{label}</span>
+      <span className="text-xs font-bold uppercase tracking-wider text-neutral-700">{label}</span>
     </div>
   );
 }
@@ -493,7 +499,7 @@ export function ListingForm({
             {/* ── Category ── */}
             <section>
               <SectionHeader icon={<Tag className="size-3.5" />} label="Category" />
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Main category <span className="text-red-500">*</span>
@@ -547,7 +553,7 @@ export function ListingForm({
             {genericFields.length > 0 && categoryId && (
               <section className="border-t border-slate-200 pt-7">
                 <SectionHeader icon={<Tag className="size-3.5" />} label="Item details" />
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {genericFields.map((field) => {
                     const scalarValue = (attributes[field.key] as string | undefined) ?? "";
                     const tagValues = Array.isArray(attributes[field.key])
@@ -670,7 +676,7 @@ export function ListingForm({
             {/* ── Pricing ── */}
             <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<DollarSign className="size-3.5" />} label="Pricing" />
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Price (GHS) <span className="text-red-500">*</span>
@@ -727,7 +733,7 @@ export function ListingForm({
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 Contact phone number <span className="text-red-500">*</span>
               </label>
-              <div className="flex overflow-hidden rounded-xl border border-slate-300 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
+              <div className="flex overflow-hidden rounded-lg border border-slate-300 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
                 <span className="flex items-center border-r border-slate-300 bg-neutral-100 px-3.5 text-sm font-semibold text-neutral-500">
                   +233
                 </span>
@@ -811,7 +817,7 @@ export function ListingForm({
                   <button
                     type="button"
                     onClick={() => setLocationPickerOpen(true)}
-                    className="flex w-full items-center justify-between rounded-xl border border-slate-300 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
+                    className="flex w-full items-center justify-between rounded-lg border border-slate-300 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
                   >
                     <span className="flex items-center gap-2">
                       <MapPin className="size-4 text-brand" />
@@ -826,7 +832,7 @@ export function ListingForm({
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Category
                   </label>
-                  <div className="flex items-center justify-between rounded-xl border border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm">
+                  <div className="flex items-center justify-between rounded-lg border border-slate-300 bg-neutral-50 px-4 py-2.5 text-sm">
                     <span className="text-neutral-700">
                       {parentCategory?.name}
                       {selectedCategory ? ` › ${selectedCategory.name}` : ""}
