@@ -45,11 +45,13 @@ export function AuthModalProvider({ children }: { children: React.ReactNode }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           showCloseButton
-          overlayClassName="bg-black/50 backdrop-blur-sm"
-          className="max-w-md gap-0 rounded-3xl border border-slate-200/80 bg-white p-8 shadow-2xl sm:p-10"
+          overlayClassName="bg-black/30 backdrop-blur-[1px]"
+          className="max-h-[calc(100vh-2rem)] max-w-md gap-0 overflow-y-auto rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl sm:p-7"
         >
           <DialogTitle className="sr-only">Sign in to Flikax</DialogTitle>
-          <LoginCardBody redirectTo={redirectTo} centered />
+          <div className="flex flex-col gap-4">
+            <LoginCardBody redirectTo={redirectTo} centered />
+          </div>
         </DialogContent>
       </Dialog>
     </AuthModalContext.Provider>

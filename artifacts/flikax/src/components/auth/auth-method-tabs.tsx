@@ -11,7 +11,7 @@ export function AuthMethodTabs({ redirectTo }: { redirectTo?: string }) {
   const [method, setMethod] = useState<Method>("email");
 
   return (
-    <div className="flex w-full flex-col gap-5">
+    <div className="flex w-full flex-col gap-3">
       <div className="flex items-center gap-3">
         <span className="h-px flex-1 bg-slate-200" />
         <span className="text-xs font-medium tracking-wide text-neutral-400">or continue with</span>

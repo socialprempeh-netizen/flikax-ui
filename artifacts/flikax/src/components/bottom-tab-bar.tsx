@@ -33,16 +33,17 @@ export async function BottomTabBar({ activeHref }: { activeHref: string }) {
   }
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-stretch border-t border-neutral-100 bg-white pb-[env(safe-area-inset-bottom)] lg:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-stretch border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.04)] pb-[env(safe-area-inset-bottom)] lg:hidden">
       {TABS.map((tab) => (
         <BottomTabLink
           key={tab.label}
           href={tab.href}
           label={tab.label}
-          icon={<tab.icon className="size-5" />}
+          icon={<tab.icon className="size-[22px]" strokeWidth={2.4} />}
           isActive={tab.href === activeHref}
           gated={tab.href !== "/" && tab.href !== "/sell" && !isLoggedIn}
           showUnreadDot={tab.href === "/messages" && hasUnreadMessages}
+          opensMessagesModal={tab.href === "/messages"}
         />
       ))}
     </nav>

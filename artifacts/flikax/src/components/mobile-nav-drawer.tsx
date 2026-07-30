@@ -15,6 +15,7 @@ import {
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuthModal } from "@/components/auth/auth-modal-provider";
+import { useMessagesModal } from "@/components/messages/messages-modal-provider";
 import type { Category } from "@/components/category-sidebar";
 import { useSessionSummary } from "@/lib/use-session-summary";
 import { CategoryThumb } from "@/components/category-thumb";
@@ -32,6 +33,7 @@ export function MobileNavDrawer({ categories }: { categories: Category[] }) {
   const [open, setOpen] = useState(false);
   const { isLoggedIn, hasUnreadMessages } = useSessionSummary();
   const { openAuthModal } = useAuthModal();
+  const { openMessages } = useMessagesModal();
   const parents = categories.filter((c) => c.parent_id === null);
 
   return (
@@ -73,16 +75,23 @@ export function MobileNavDrawer({ categories }: { categories: Category[] }) {
             <nav className="flex flex-col">
               {ACCOUNT_LINKS.map((item) => (
                 <SheetClose asChild key={item.href}>
-                  {isLoggedIn ? (
+                  {isLoggedIn && item.href === "/messages" ? (
+                    <button
+                      type="button"
+                      onClick={openMessages}
+                      className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                    >
+                      <item.icon className="size-4.5 shrink-0 text-neutral-600" />
+                      {item.label}
+                      {hasUnreadMessages && <span className="size-2 rounded-full bg-red-500" />}
+                    </button>
+                  ) : isLoggedIn ? (
                     <Link
                       href={item.href}
                       className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                     >
                       <item.icon className="size-4.5 shrink-0 text-neutral-600" />
                       {item.label}
-                      {item.href === "/messages" && hasUnreadMessages && (
-                        <span className="size-2 rounded-full bg-red-500" />
-                      )}
                     </Link>
                   ) : (
                     <button

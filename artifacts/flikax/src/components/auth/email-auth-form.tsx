@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const FIELD_CLASS =
-  "h-auto w-full rounded-xl border-slate-300 px-4 py-3 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
+  "h-auto w-full rounded-xl border-slate-300 px-4 py-2.5 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 type Mode = "sign-in" | "sign-up";
 
@@ -105,7 +105,7 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
   return (
     <div className="w-full">
-      <div className="mb-5 flex rounded-full bg-slate-100 p-1 text-sm font-bold">
+      <div className="mb-3 flex rounded-full bg-slate-100 p-1 text-sm font-bold">
         <Button
           type="button"
           onClick={() => switchMode("sign-in")}
@@ -132,7 +132,7 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
         </Button>
       </div>
 
-      <form onSubmit={mode === "sign-in" ? handleSignIn : handleSignUp} className="space-y-4">
+      <form onSubmit={mode === "sign-in" ? handleSignIn : handleSignUp} className="space-y-3">
         {mode === "sign-up" && (
           <label className="block">
             <span className="mb-1.5 block text-sm font-medium text-neutral-700">Full name</span>

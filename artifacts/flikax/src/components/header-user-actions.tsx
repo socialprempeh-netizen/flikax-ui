@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MessageSquare, Bell, Gem, ClipboardList, UserRound, UserPlus, Plus } from "lucide-react";
 import { useSessionSummary } from "@/lib/use-session-summary";
 import { useAuthModal } from "@/components/auth/auth-modal-provider";
+import { useMessagesModal } from "@/components/messages/messages-modal-provider";
 import { Button } from "@/components/ui/button";
 
 // Renders a real <Link> when a destination is reachable, or a button that
@@ -45,6 +46,7 @@ function GatedIconLink({
 export function HeaderUserActions() {
   const { isLoggedIn, avatarUrl, initials, hasUnreadMessages } = useSessionSummary();
   const { openAuthModal } = useAuthModal();
+  const { openMessages } = useMessagesModal();
 
   const avatar = avatarUrl ? (
     // eslint-disable-next-line @next/next/no-img-element
@@ -83,18 +85,18 @@ export function HeaderUserActions() {
       </div>
 
       <div className="hidden items-center gap-1.5 sm:flex sm:gap-3">
-        <GatedIconLink
-          href="/messages"
-          gated={!isLoggedIn}
-          onOpenModal={() => openAuthModal("/messages")}
+        <button
+          type="button"
+          onClick={() => (isLoggedIn ? openMessages() : openAuthModal("/messages"))}
           title="Messages"
+          aria-label="Messages"
           className="relative flex size-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:size-10"
         >
           <MessageSquare className="size-4 sm:size-5" />
           {hasUnreadMessages && (
             <span className="absolute right-1 top-1 size-2 rounded-full bg-red-500 ring-2 ring-white" />
           )}
-        </GatedIconLink>
+        </button>
 
         <GatedIconLink
           href="/notifications"

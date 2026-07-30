@@ -3,6 +3,7 @@ import { Baloo_2, Inter } from "next/font/google";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthModalProvider } from "@/components/auth/auth-modal-provider";
+import { MessagesModalProvider } from "@/components/messages/messages-modal-provider";
 import "./globals.css";
 
 const baloo2 = Baloo_2({
@@ -57,7 +58,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider>
           <JsonLd data={organizationJsonLd} />
-          <AuthModalProvider>{children}</AuthModalProvider>
+          <AuthModalProvider>
+            <MessagesModalProvider>{children}</MessagesModalProvider>
+          </AuthModalProvider>
         </ThemeProvider>
       </body>
     </html>

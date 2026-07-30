@@ -586,9 +586,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
   const sellerName = listing.profiles?.full_name || "Flikax user";
   const sellerPhoneDigits = (listing.contact_phone || listing.profiles?.phone)?.replace(/^\+/, "");
   const sellerPhone = sellerPhoneDigits ? `+${sellerPhoneDigits}` : null;
-  const feedbackHref = `mailto:feedback@flikax.com?subject=${encodeURIComponent(
-    `Feedback on listing: ${listing.title}`
-  )}&body=${encodeURIComponent(`Listing ID: ${listing.id}`)}`;
+  const feedbackHref = `/feedback?listingId=${encodeURIComponent(listing.id)}`;
 
   const canonicalListingPath = listingPath(listing);
   const isVehicle = topLevelSlug === "vehicles";

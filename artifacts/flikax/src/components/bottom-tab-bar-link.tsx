@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useAuthModal } from "@/components/auth/auth-modal-provider";
+import { useMessagesModal } from "@/components/messages/messages-modal-provider";
 
 export function BottomTabLink({
   href,
@@ -10,6 +11,7 @@ export function BottomTabLink({
   label,
   icon,
   showUnreadDot,
+  opensMessagesModal = false,
 }: {
   href: string;
   gated: boolean;
@@ -21,10 +23,15 @@ export function BottomTabLink({
   // raw function for the client to call itself.
   icon: React.ReactNode;
   showUnreadDot: boolean;
+  // The Messages tab opens the floating inbox instead of navigating, same
+  // as the header's Messages icon -- only meaningful when !gated (a gated
+  // tap already opens the auth modal instead).
+  opensMessagesModal?: boolean;
 }) {
   const { openAuthModal } = useAuthModal();
-  const className = `relative flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-medium ${
-    isActive ? "text-brand" : "text-neutral-500"
+  const { openMessages } = useMessagesModal();
+  const className = `relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[12px] font-semibold ${
+    isActive ? "text-brand" : "text-neutral-700"
   }`;
 
   if (gated) {
@@ -32,6 +39,16 @@ export function BottomTabLink({
       <button type="button" onClick={() => openAuthModal(href)} className={className}>
         {icon}
         {label}
+      </button>
+    );
+  }
+
+  if (opensMessagesModal) {
+    return (
+      <button type="button" onClick={openMessages} className={className}>
+        {icon}
+        {label}
+        {showUnreadDot && <span className="absolute right-1/3 top-1 size-2 rounded-full bg-red-500" />}
       </button>
     );
   }

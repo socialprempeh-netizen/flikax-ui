@@ -15,7 +15,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-[16/9] items-center justify-center rounded-2xl border border-slate-200/80 border-t-4 border-t-brand bg-cream text-brand/40">
+      <div className="flex aspect-[2/1] items-center justify-center rounded-2xl border border-slate-200/80 border-t-4 border-t-brand bg-cream text-brand/40">
         <ImageOff className="size-10" />
       </div>
     );
@@ -45,7 +45,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
   return (
     <div>
       <div
-        className="relative aspect-[16/9] w-full touch-pan-y select-none overflow-hidden rounded-2xl border border-slate-200/80 border-t-4 border-t-brand bg-cream"
+        className="relative aspect-[2/1] w-full touch-pan-y select-none overflow-hidden rounded-2xl border border-slate-200/80 border-t-4 border-t-brand bg-cream"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {
@@ -56,7 +56,11 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
             swapping a single <Image>'s src on each click meant the browser had
             to decode the next photo from scratch before it could paint,
             reading as a flash-to-blank flicker. Stacking means every photo is
-            already decoded and ready, so switching is an instant, smooth fade. */}
+            already decoded and ready, so switching is an instant, smooth fade.
+            loading="eager" on every one (not just the first) matters here too --
+            without it the browser's native lazy-load scheduling can leave a
+            later photo undecoded until the moment it's switched to, which
+            reads as the same flash this stacking trick is meant to avoid. */}
         {images.map((url, index) => (
           <Image
             key={url + index}
@@ -64,9 +68,10 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
             alt={index === activeIndex ? title : ""}
             fill
             priority={index === 0}
+            loading={index === 0 ? undefined : "eager"}
             sizes="(min-width: 640px) 75vw, 100vw"
             quality={82}
-            className={`object-cover transition-opacity duration-300 ${
+            className={`object-cover transition-opacity duration-300 ease-in-out ${
               index === activeIndex ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           />

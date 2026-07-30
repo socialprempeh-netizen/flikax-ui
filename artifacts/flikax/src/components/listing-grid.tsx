@@ -35,7 +35,7 @@ const currency = new Intl.NumberFormat("en-GH", {
 // Caps how tall a single card's image can get before object-cover starts
 // cropping it -- without this, an extreme portrait photo would blow out
 // its column and dominate the whole grid.
-const MAX_IMAGE_HEIGHT = 480;
+const MAX_IMAGE_HEIGHT = 560;
 
 // CSS multi-column masonry, not a CSS Grid: cards keep each listing's real
 // image aspect ratio (see hasNaturalAspect below), which means different
@@ -72,10 +72,10 @@ export function ListingGrid({
           return (
             <Link key={listing.id} href={listing.href} className="mb-4 block break-inside-avoid">
               <ListingCardHover>
-              <Card className="gap-0 overflow-hidden border-neutral-300 p-0 shadow-sm transition-shadow duration-200 group-hover:border-brand/30 group-hover:shadow-xl">
+              <Card className="gap-0 overflow-hidden rounded-2xl border-2 border-neutral-200 p-0 shadow-sm transition-shadow duration-200 group-hover:border-brand group-hover:shadow-xl">
                 <div
                   className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
-                    hasNaturalAspect ? "" : isHome ? "aspect-[4/3]" : "aspect-video"
+                    hasNaturalAspect ? "" : isHome ? "aspect-[3/4]" : "aspect-[4/5]"
                   }`}
                   style={
                     hasNaturalAspect
@@ -104,13 +104,13 @@ export function ListingGrid({
                   {(listing.isFeatured || listing.isBumped) && (
                     <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
                       {listing.isFeatured && (
-                        <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 shadow-sm">
+                        <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 shadow-sm ring-1 ring-inset ring-amber-300">
                           <Star className="size-3 fill-amber-500 text-amber-500" />
                           Featured
                         </span>
                       )}
                       {listing.isBumped && (
-                        <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 shadow-sm">
+                        <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 shadow-sm ring-1 ring-inset ring-blue-300">
                           <TrendingUp className="size-3 text-blue-600" />
                           Bumped
                         </span>
@@ -119,26 +119,28 @@ export function ListingGrid({
                   )}
                   <CompactSaveButton listingId={listing.id} />
                 </div>
-                <CardContent className="space-y-1 p-3">
+                <CardContent className="space-y-1.5 p-3.5">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-lg font-extrabold text-brand">{currency.format(listing.price)}</span>
+                    <span className="text-xl font-extrabold tracking-tight text-brand">
+                      {currency.format(listing.price)}
+                    </span>
                     {listing.negotiable && (
-                      <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium text-neutral-500">
+                      <span className="rounded-full bg-neutral-100 px-1.5 py-0.5 text-[10px] font-semibold text-neutral-600">
                         Neg.
                       </span>
                     )}
                   </div>
-                  <p className="line-clamp-2 text-sm font-semibold text-neutral-800">{listing.title}</p>
+                  <p className="line-clamp-2 text-[15px] font-bold leading-snug text-neutral-900">{listing.title}</p>
                   {listing.description && (
                     <p className="line-clamp-2 text-xs text-neutral-500">{listing.description}</p>
                   )}
-                  <div className="flex items-center justify-between gap-2 pt-0.5 text-xs text-neutral-400">
-                    <span className="flex min-w-0 items-center gap-1 truncate">
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    <span className="flex min-w-0 items-center gap-1 truncate rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-medium text-neutral-600">
                       <MapPin className="size-3 shrink-0" />
                       <span className="truncate">{listing.location}</span>
                     </span>
                     {listing.createdAt && (
-                      <span className="flex shrink-0 items-center gap-1">
+                      <span className="flex shrink-0 items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-medium text-neutral-600">
                         <Clock className="size-3" />
                         {formatRelativeTime(new Date(listing.createdAt))}
                       </span>
