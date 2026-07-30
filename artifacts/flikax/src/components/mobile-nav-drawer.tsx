@@ -64,7 +64,7 @@ export function MobileNavDrawer({ categories }: { categories: Category[] }) {
                   href={`/${cat.slug}`}
                   className="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                 >
-                  <CategoryThumb category={cat} size="size-8" iconSize="size-4" sizes="32px" />
+                  <CategoryThumb category={cat} size="size-8" iconSize="size-4" rounded="rounded-full" sizes="32px" />
                   {cat.name}
                 </Link>
               </SheetClose>

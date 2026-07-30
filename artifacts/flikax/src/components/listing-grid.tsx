@@ -65,14 +65,14 @@ export function ListingGrid({
 
   return (
     <section className="flex-1">
-      <div className={isHome ? "columns-2 gap-4 sm:columns-3 lg:columns-4" : "columns-2 gap-4 sm:columns-2 lg:columns-3"}>
+      <div className={isHome ? "columns-2 gap-2 sm:columns-3 lg:columns-4" : "columns-2 gap-2 sm:columns-2 lg:columns-3"}>
         {listings.map((listing) => {
           const hasNaturalAspect = Boolean(listing.imageWidth && listing.imageHeight);
 
           return (
-            <Link key={listing.id} href={listing.href} className="mb-4 block break-inside-avoid">
+            <Link key={listing.id} href={listing.href} className="mb-2 block break-inside-avoid">
               <ListingCardHover>
-              <Card className="gap-0 overflow-hidden rounded-2xl border-2 border-neutral-200 p-0 shadow-sm transition-shadow duration-200 group-hover:border-brand group-hover:shadow-xl">
+              <Card className="gap-0 overflow-hidden rounded-lg p-0 shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-200 group-hover:shadow-lg">
                 <div
                   className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
                     hasNaturalAspect ? "" : isHome ? "aspect-[3/4]" : "aspect-[4/5]"

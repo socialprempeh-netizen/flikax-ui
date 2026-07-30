@@ -110,7 +110,7 @@ export function CategorySidebar({
                   category={child}
                   size="size-7"
                   iconSize="size-3.5"
-                  rounded="rounded-lg"
+                  rounded="rounded-full"
                   sizes="28px"
                   className="ring-1 ring-slate-200/70"
                 />

@@ -29,6 +29,7 @@ export function SiblingCategoryRow({
               category={{ ...sibling, parent_id: "sibling" }}
               size="size-12"
               iconSize="size-5"
+              rounded="rounded-full"
               sizes="48px"
               eager
               className={isActive ? "ring-2 ring-brand ring-offset-1" : ""}

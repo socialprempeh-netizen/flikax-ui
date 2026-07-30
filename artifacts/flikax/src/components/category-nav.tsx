@@ -139,7 +139,7 @@ export function CategoryNav({
                 category={cat}
                 size="size-9"
                 iconSize="size-4"
-                rounded="rounded-xl"
+                rounded="rounded-full"
                 sizes="36px"
                 className="ring-1 ring-slate-200/70 transition-transform duration-150 group-hover:scale-105"
               />
@@ -178,7 +178,7 @@ export function CategoryNav({
                         category={child}
                         size="size-8"
                         iconSize="size-4"
-                        rounded="rounded-lg"
+                        rounded="rounded-full"
                         sizes="32px"
                         className="ring-1 ring-slate-200/70"
                       />
