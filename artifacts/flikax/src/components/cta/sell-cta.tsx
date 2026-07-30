@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import type { LucideIcon } from "lucide-react";
+import { useSessionSummary } from "@/lib/use-session-summary";
+import { useAuthModal } from "@/components/auth/auth-modal-provider";
 
 // Single source of truth for every "Sell / Post an Ad / Create Listing"-style
 // call to action across the site. If the post-listing route ever moves,
@@ -22,21 +25,40 @@ export function SellCta({
   label = "Post an Ad",
   variant = "solid",
   size = "md",
-  icon: Icon,
+  // Pre-rendered by the caller (e.g. `icon={<PencilLine className="size-4" />}`)
+  // rather than a bare component reference -- a Server Component caller can
+  // only pass this Client Component an already-rendered element as a prop,
+  // not a raw function for the client to call itself.
+  icon,
   className = "",
 }: {
   label?: string;
   variant?: keyof typeof VARIANT_CLASSES;
   size?: keyof typeof SIZE_CLASSES;
-  icon?: LucideIcon;
+  icon?: React.ReactNode;
   className?: string;
 }) {
+  // /sell itself gates on the server with a hard redirect() -- fine for a
+  // direct link, but landing a logged-out click there means a full page
+  // navigation to /auth/login instead of the floating modal. Checking here
+  // first keeps that click on the current page, matching every other
+  // sign-in entry point in the header/nav.
+  const { isLoggedIn } = useSessionSummary();
+  const { openAuthModal } = useAuthModal();
+  const sharedClassName = `inline-flex items-center justify-center gap-2 rounded-lg font-bold transition-colors ${VARIANT_CLASSES[variant]} ${SIZE_CLASSES[size]} ${className}`;
+
+  if (!isLoggedIn) {
+    return (
+      <button type="button" onClick={() => openAuthModal(SELL_ROUTE)} className={sharedClassName}>
+        {icon}
+        {label}
+      </button>
+    );
+  }
+
   return (
-    <Link
-      href={SELL_ROUTE}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-bold transition-colors ${VARIANT_CLASSES[variant]} ${SIZE_CLASSES[size]} ${className}`}
-    >
-      {Icon && <Icon className="size-4" />}
+    <Link href={SELL_ROUTE} className={sharedClassName}>
+      {icon}
       {label}
     </Link>
   );

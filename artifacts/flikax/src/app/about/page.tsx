@@ -346,7 +346,7 @@ export default async function AboutPage() {
             ))}
           </div>
           <div className="mt-8 flex justify-center">
-            <SellCta label="Start Selling" size="lg" icon={Sparkles} />
+            <SellCta label="Start Selling" size="lg" icon={<Sparkles className="size-4" />} />
           </div>
         </section>
 

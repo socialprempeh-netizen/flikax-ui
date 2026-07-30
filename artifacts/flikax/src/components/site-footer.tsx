@@ -101,7 +101,7 @@ export function SiteFooter() {
               label="Create Your Listing"
               variant="footer"
               size="sm"
-              icon={PencilLine}
+              icon={<PencilLine className="size-4" />}
               className="!justify-start !font-medium"
             />
           </div>

@@ -135,12 +135,24 @@ export function HeaderUserActions() {
           {avatar}
         </GatedIconLink>
 
-        <Button asChild size="lg" className="rounded-full px-5 font-bold shadow-sm">
-          <Link href="/sell">
+        {isLoggedIn ? (
+          <Button asChild size="lg" className="rounded-full px-5 font-bold shadow-sm">
+            <Link href="/sell">
+              <Plus className="size-4" />
+              Post Ad
+            </Link>
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            size="lg"
+            className="rounded-full px-5 font-bold shadow-sm"
+            onClick={() => openAuthModal("/sell")}
+          >
             <Plus className="size-4" />
             Post Ad
-          </Link>
-        </Button>
+          </Button>
+        )}
       </div>
     </>
   );

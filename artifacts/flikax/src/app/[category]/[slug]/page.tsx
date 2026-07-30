@@ -49,6 +49,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { SellCta } from "@/components/cta/sell-cta";
 import { ListingGallery } from "@/components/listings/listing-gallery";
 import { SaveListingButton } from "@/components/listings/save-listing-button";
 import { RevealPhoneButton } from "@/components/listings/reveal-phone-button";
@@ -855,9 +856,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
             <Card className="gap-1 rounded-2xl border-dashed border-brand/30 bg-brand-light p-5 text-center shadow-none">
               <h3 className="text-sm font-bold text-neutral-800">Post an Ad Similar to This</h3>
               <p className="mt-1 text-xs text-neutral-500">Reach thousands of buyers across Ghana.</p>
-              <Button asChild className="mt-3">
-                <Link href="/sell">Post an Ad</Link>
-              </Button>
+              <SellCta className="mt-3 w-full" />
             </Card>
 
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm">
