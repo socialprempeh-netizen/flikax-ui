@@ -42,7 +42,7 @@ export function ReplyForm({ feedbackId, profileId }: { feedbackId: string; profi
           {isPending ? "..." : "Reply"}
         </button>
       </form>
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-600" role="alert">{error}</p>}
     </div>
   );
 }

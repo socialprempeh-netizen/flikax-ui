@@ -36,7 +36,7 @@ export function MarkUnavailableButton({ listingId }: { listingId: string }) {
         <CircleOff className="size-4" />
         {isPending ? "Updating..." : "Mark unavailable"}
       </Button>
-      {error && <p className="mt-1 text-center text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-center text-xs text-red-600" role="alert">{error}</p>}
     </div>
   );
 }

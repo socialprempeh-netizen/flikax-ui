@@ -44,9 +44,9 @@ export function CompactSaveButton({ listingId }: { listingId: string }) {
       disabled={isPending}
       aria-label={saved ? "Remove from saved" : "Save listing"}
       aria-pressed={saved}
-      className="glass absolute right-2 top-2 flex size-8 items-center justify-center rounded-full !bg-white/70 transition-colors hover:!bg-white/90 disabled:opacity-60"
+      className="glass absolute right-1 top-1 flex size-11 items-center justify-center rounded-full !bg-white/70 transition-colors hover:!bg-white/90 disabled:opacity-60"
     >
-      <Heart className={`size-4 ${saved ? "fill-brand text-brand" : "text-neutral-600"}`} />
+      <Heart className={`size-4.5 ${saved ? "fill-brand text-brand" : "text-neutral-600"}`} />
     </button>
   );
 }

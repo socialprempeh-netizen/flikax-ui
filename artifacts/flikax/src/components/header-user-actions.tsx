@@ -68,7 +68,7 @@ export function HeaderUserActions() {
             href="/settings"
             title="My Account"
             aria-label="My Account"
-            className="flex size-8 items-center justify-center overflow-hidden rounded-full bg-white/10 text-white hover:bg-white/20"
+            className="flex size-11 items-center justify-center overflow-hidden rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             {avatar}
           </Link>

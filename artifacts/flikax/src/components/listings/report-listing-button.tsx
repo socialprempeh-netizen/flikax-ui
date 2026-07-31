@@ -92,7 +92,7 @@ export function ReportListingButton({ listingId }: { listingId: string }) {
                 ))}
               </div>
 
-              {error && <p className="text-sm text-red-600">{error}</p>}
+              {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
 
               <div className="flex justify-end gap-2">
                 <Button type="button" onClick={close} disabled={submitting} variant="outline">

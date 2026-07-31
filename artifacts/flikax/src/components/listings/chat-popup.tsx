@@ -123,7 +123,7 @@ export function ChatPopupButton({
         {phase === "loading" ? "Opening…" : "Send Message"}
       </Button>
 
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-600" role="alert">{error}</p>}
 
       {phase === "open" && data && (
         <ChatPopupOverlay data={data} onClose={() => setPhase("idle")} />
@@ -171,7 +171,7 @@ function ChatPopupOverlay({
           aria-label="Close chat"
           variant="ghost"
           size="icon-sm"
-          className="rounded-full text-white/60 hover:bg-white/10 hover:text-white"
+          className="size-11 rounded-full text-white/60 hover:bg-white/10 hover:text-white"
         >
           <X className="size-4" />
         </Button>

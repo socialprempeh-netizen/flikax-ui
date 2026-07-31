@@ -98,7 +98,7 @@ export function ReportFeedbackButton({ feedbackId }: { feedbackId: string }) {
                   ))}
                 </div>
 
-                {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+                {error && <p className="mt-3 text-sm text-red-600" role="alert">{error}</p>}
 
                 <div className="mt-5 flex justify-end gap-2">
                   <button

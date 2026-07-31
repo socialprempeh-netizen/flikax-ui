@@ -287,7 +287,7 @@ export function ChatThread({
             <Send className="size-4.5" />
           </Button>
         </form>
-        {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+        {error && <p className="mt-2 text-xs text-red-600" role="alert">{error}</p>}
       </div>
     </div>
   );

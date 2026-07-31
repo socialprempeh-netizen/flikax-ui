@@ -910,9 +910,9 @@ export function ListingForm({
                         aria-label="Remove photo"
                         variant="ghost"
                         size="icon-xs"
-                        className="absolute right-1.5 top-1.5 rounded-full bg-black/70 text-white hover:bg-black hover:text-white"
+                        className="absolute right-0 top-0 size-11 rounded-full bg-black/70 text-white hover:bg-black hover:text-white"
                       >
-                        <X className="size-3" />
+                        <X className="size-3.5" />
                       </Button>
                     </div>
                   ))}

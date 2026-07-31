@@ -131,7 +131,7 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
         </label>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
 
       <Button type="submit" disabled={saving}>
         {saving ? "Saving..." : "Save"}

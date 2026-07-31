@@ -27,6 +27,11 @@ export function InfiniteListingGrid({
   const [totalCount, setTotalCount] = useState(initialTotalCount);
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
+  // Screen readers otherwise have no way to know this grid grew, since the
+  // new cards land off-screen (below the fold) and nothing moves focus --
+  // a polite live region announces the outcome of each load without
+  // interrupting whatever the user is doing.
+  const [liveMessage, setLiveMessage] = useState("");
   const pageRef = useRef(1);
   const loadingRef = useRef(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -49,6 +54,7 @@ export function InfiniteListingGrid({
     loadingRef.current = true;
     setLoading(true);
     setErrored(false);
+    setLiveMessage("Loading more listings…");
     try {
       const nextPage = pageRef.current + 1;
       const result = await loadMore(nextPage);
@@ -58,8 +64,14 @@ export function InfiniteListingGrid({
       });
       setTotalCount(result.totalCount);
       pageRef.current = nextPage;
+      setLiveMessage(
+        result.listings.length > 0
+          ? `${result.listings.length} more listing${result.listings.length === 1 ? "" : "s"} loaded.`
+          : "No more listings to load."
+      );
     } catch {
       setErrored(true);
+      setLiveMessage("Couldn't load more listings. Try again.");
     } finally {
       loadingRef.current = false;
       setLoading(false);
@@ -96,6 +108,9 @@ export function InfiniteListingGrid({
 
   return (
     <>
+      <div role="status" aria-live="polite" className="sr-only">
+        {liveMessage}
+      </div>
       <ListingGrid listings={listings} variant={variant} />
       {hasMore && (
         <div ref={sentinelRef} className="flex items-center justify-center py-8">

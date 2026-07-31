@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Baloo_2, Inter } from "next/font/google";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -38,6 +38,16 @@ export const metadata: Metadata = {
     title: DEFAULT_TITLE,
     description: DEFAULT_DESCRIPTION,
   },
+};
+
+// Explicit (rather than relying on Next.js's own default, which is the same
+// values anyway) so pinch-to-zoom staying enabled is a deliberate,
+// grep-able decision here -- no maximumScale/userScalable, both of which
+// would defeat zoom for low-vision users on the mobile-first majority of
+// this site's traffic.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 const organizationJsonLd = {

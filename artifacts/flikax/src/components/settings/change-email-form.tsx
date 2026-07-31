@@ -50,7 +50,7 @@ export function ChangeEmailForm({ currentEmail }: { currentEmail: string | null 
         </Button>
       </form>
 
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-600" role="alert">{error}</p>}
     </div>
   );
 }

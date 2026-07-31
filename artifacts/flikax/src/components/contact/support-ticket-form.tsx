@@ -103,7 +103,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
           />
         </label>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
 
         <button
           type="submit"

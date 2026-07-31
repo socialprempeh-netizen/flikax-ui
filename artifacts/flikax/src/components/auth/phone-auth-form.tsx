@@ -172,7 +172,11 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
             </div>
           </label>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          )}
 
           <Button
             type="submit"
@@ -201,7 +205,11 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
           <OtpInput value={otp} onChange={setOtp} length={OTP_LENGTH} autoFocus />
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          )}
 
           <Button
             type="submit"
@@ -256,7 +264,11 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
             </div>
           </label>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          )}
 
           <Button
             type="submit"

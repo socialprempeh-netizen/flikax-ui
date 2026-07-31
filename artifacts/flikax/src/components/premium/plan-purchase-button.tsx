@@ -44,7 +44,7 @@ export function PlanPurchaseButton({ planId }: { planId: string }) {
           {loading === "flutterwave" ? "Redirecting..." : "Pay with Flutterwave"}
         </Button>
       </div>
-      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-xs text-red-600" role="alert">{error}</p>}
     </div>
   );
 }

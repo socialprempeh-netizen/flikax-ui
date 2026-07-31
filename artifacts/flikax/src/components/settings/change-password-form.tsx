@@ -84,7 +84,7 @@ export function ChangePasswordForm({ redirectTo }: { redirectTo?: string } = {})
         />
       </label>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
 
       <Button type="submit" disabled={loading}>
         {loading ? "Saving..." : "Update password"}

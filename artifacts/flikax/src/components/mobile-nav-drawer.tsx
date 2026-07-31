@@ -42,9 +42,9 @@ export function MobileNavDrawer({ categories }: { categories: Category[] }) {
         <button
           type="button"
           aria-label="Open menu"
-          className="flex size-9 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 sm:size-11 lg:hidden"
+          className="flex size-11 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 lg:hidden"
         >
-          <Menu className="size-4.5 sm:size-5" />
+          <Menu className="size-5" />
         </button>
       </SheetTrigger>
 
