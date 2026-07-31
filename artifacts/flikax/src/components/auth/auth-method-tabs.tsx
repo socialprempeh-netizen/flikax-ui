@@ -7,7 +7,13 @@ import { PhoneAuthForm } from "@/components/auth/phone-auth-form";
 
 type Method = "email" | "phone";
 
-export function AuthMethodTabs({ redirectTo }: { redirectTo?: string }) {
+export function AuthMethodTabs({
+  redirectTo,
+  defaultEmailMode = "sign-in",
+}: {
+  redirectTo?: string;
+  defaultEmailMode?: "sign-in" | "sign-up";
+}) {
   const [method, setMethod] = useState<Method>("email");
 
   return (
@@ -46,7 +52,7 @@ export function AuthMethodTabs({ redirectTo }: { redirectTo?: string }) {
       </div>
 
       {method === "email" ? (
-        <EmailAuthForm redirectTo={redirectTo} />
+        <EmailAuthForm redirectTo={redirectTo} defaultMode={defaultEmailMode} />
       ) : (
         <PhoneAuthForm redirectTo={redirectTo} />
       )}

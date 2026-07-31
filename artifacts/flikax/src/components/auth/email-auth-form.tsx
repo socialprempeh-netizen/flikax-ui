@@ -13,11 +13,17 @@ const FIELD_CLASS =
 
 type Mode = "sign-in" | "sign-up";
 
-export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
+export function EmailAuthForm({
+  redirectTo = "/",
+  defaultMode = "sign-in",
+}: {
+  redirectTo?: string;
+  defaultMode?: Mode;
+}) {
   const router = useRouter();
   const [supabase] = useState(() => createClient());
 
-  const [mode, setMode] = useState<Mode>("sign-in");
+  const [mode, setMode] = useState<Mode>(defaultMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

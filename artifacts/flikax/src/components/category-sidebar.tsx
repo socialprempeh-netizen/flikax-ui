@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { buildListingsHref, type ListingFilters } from "@/lib/filters";
+import { ScrollableSidebarColumn } from "@/components/scrollable-sidebar-column";
 import { LocationPicker } from "@/components/location-picker";
 import { ExcludeLocationPicker } from "@/components/exclude-location-picker";
 import { CategoryNav } from "@/components/category-nav";
@@ -55,7 +56,7 @@ export function CategorySidebar({
 
   if (!activeParent) {
     return (
-      <div className="flex w-full shrink-0 flex-col gap-3 lg:w-72 lg:sticky lg:top-16 lg:z-10 lg:max-h-[calc(100vh-5rem)] lg:self-start lg:overflow-y-auto lg:no-scrollbar">
+      <ScrollableSidebarColumn>
         <div className="hidden lg:block">
           <CategoryNav parents={parents} categories={categories} counts={counts} filters={filters} />
         </div>
@@ -78,14 +79,14 @@ export function CategorySidebar({
             className="mt-4 w-full !bg-white !text-brand hover:!bg-brand-light"
           />
         </div>
-      </div>
+      </ScrollableSidebarColumn>
     );
   }
 
   const children = categories.filter((c) => c.parent_id === activeParent.id);
 
   return (
-    <div className="flex w-full shrink-0 flex-col gap-3 lg:w-72 lg:sticky lg:top-16 lg:z-10 lg:max-h-[calc(100vh-5rem)] lg:self-start lg:overflow-y-auto lg:no-scrollbar">
+    <ScrollableSidebarColumn>
       <div className="hidden lg:block rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm">
         <h3 className="mb-2 text-sm font-bold tracking-tight text-neutral-800">Categories</h3>
         <Link
@@ -193,6 +194,6 @@ export function CategorySidebar({
           })}
         </div>
       </div>
-    </div>
+    </ScrollableSidebarColumn>
   );
 }

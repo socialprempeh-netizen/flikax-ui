@@ -2,18 +2,16 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { GoogleIcon } from "@/components/icons/social-icons";
+import { FacebookIcon } from "@/components/icons/social-icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function GoogleSignInButton({
+export function FacebookSignInButton({
   redirectTo = "/",
   compact = false,
   className,
 }: {
   redirectTo?: string;
-  // Short "Google" label for the side-by-side Google/Facebook row (Jiji's
-  // layout); full "Continue with Google" when it's the only option shown.
   compact?: boolean;
   className?: string;
 }) {
@@ -23,7 +21,7 @@ export function GoogleSignInButton({
     setLoading(true);
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({
-      provider: "google",
+      provider: "facebook",
       options: {
         redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`,
       },
@@ -41,8 +39,8 @@ export function GoogleSignInButton({
         className
       )}
     >
-      <GoogleIcon className="size-4.5" aria-hidden="true" />
-      {loading ? "..." : compact ? "Google" : "Continue with Google"}
+      <FacebookIcon className="size-4.5" aria-hidden="true" />
+      {loading ? "..." : compact ? "Facebook" : "Continue with Facebook"}
     </Button>
   );
 }
