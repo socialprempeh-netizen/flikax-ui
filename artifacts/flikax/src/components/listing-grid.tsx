@@ -72,7 +72,7 @@ export function ListingGrid({
           return (
             <Link key={listing.id} href={listing.href} className="mb-2 block break-inside-avoid">
               <ListingCardHover>
-              <Card className="gap-0 overflow-hidden rounded-lg p-0 shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-200 group-hover:shadow-lg">
+              <Card className="gap-0 overflow-hidden rounded-lg border-neutral-200 bg-neutral-100 p-0 shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-200 group-hover:shadow-lg">
                 <div
                   className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
                     hasNaturalAspect ? "" : isHome ? "aspect-[3/4]" : "aspect-[4/5]"

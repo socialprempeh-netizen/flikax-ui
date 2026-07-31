@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { buildListingsHref, type ListingFilters } from "@/lib/filters";
 import type { Category } from "@/components/category-sidebar";
 import { CategoryThumb } from "@/components/category-thumb";
@@ -115,7 +114,7 @@ export function CategoryNav({
           >
             <Link
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`group relative flex items-center gap-3 py-2.5 pl-5 pr-4 transition-colors duration-150 hover:bg-slate-50 ${
+              className={`group relative flex items-center gap-3 px-5 py-2.5 transition-colors duration-150 hover:bg-slate-50 ${
                 isHovered ? "bg-slate-50" : ""
               }`}
             >
@@ -151,7 +150,6 @@ export function CategoryNav({
                   {totalFor(cat)} ads
                 </span>
               </span>
-              <ChevronRight className="size-4 shrink-0 text-neutral-300 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-brand" />
             </Link>
 
             {isHovered && children.length > 0 && flyoutPos && (
