@@ -14,11 +14,9 @@ export function LoginCardBody({
   return (
     <>
       <div className={centered ? "flex flex-col items-center text-center" : undefined}>
-        <FlikaxLogo wordmarkColor="text-brand" iconSize="size-8" wordmarkSize="text-xl sm:text-2xl" />
-        <h1 className="mt-3 text-xl font-bold text-neutral-900">Welcome back</h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          Buy and sell anything, anywhere in Ghana. Log in or create an account to get started.
-        </p>
+        <FlikaxLogo wordmarkColor="text-brand" iconSize="size-7" wordmarkSize="text-lg sm:text-xl" />
+        <h1 className="mt-2 text-lg font-bold text-neutral-900">Welcome back</h1>
+        <p className="mt-0.5 text-xs text-neutral-500 sm:text-sm">Buy and sell anything, anywhere in Ghana.</p>
       </div>
 
       {error && (
@@ -27,7 +25,7 @@ export function LoginCardBody({
         </p>
       )}
 
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex min-w-0 flex-col items-center gap-2.5">
         <GoogleSignInButton redirectTo={redirectTo} />
         <AuthMethodTabs redirectTo={redirectTo} />
       </div>

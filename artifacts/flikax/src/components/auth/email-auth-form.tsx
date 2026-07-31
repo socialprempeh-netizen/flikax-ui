@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const FIELD_CLASS =
-  "h-auto w-full rounded-xl border-slate-300 px-4 py-2.5 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
+  "h-11 w-full rounded-xl border-slate-300 px-4 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 type Mode = "sign-in" | "sign-up";
 
@@ -90,13 +90,18 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
   if (checkEmail) {
     return (
-      <div className="w-full rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="w-full min-w-0">
         <h1 className="text-lg font-bold text-neutral-800">Check your email</h1>
         <p className="mt-1 text-sm text-neutral-500">
           We sent a confirmation link to <span className="font-medium text-neutral-700">{email}</span>. Click
           it to activate your account, then come back and sign in.
         </p>
-        <Button type="button" onClick={() => switchMode("sign-in")} variant="outline" className="mt-4 w-full rounded-xl">
+        <Button
+          type="button"
+          onClick={() => switchMode("sign-in")}
+          variant="outline"
+          className="mt-4 h-11 w-full rounded-xl"
+        >
           Back to sign in
         </Button>
       </div>
@@ -104,13 +109,13 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
   }
 
   return (
-    <div className="w-full">
-      <div className="mb-3 flex rounded-full bg-slate-100 p-1 text-sm font-bold">
+    <div className="w-full min-w-0">
+      <div className="mb-3 flex min-w-0 rounded-full bg-slate-100 p-1 text-sm font-bold">
         <Button
           type="button"
           onClick={() => switchMode("sign-in")}
           variant="ghost"
-          className={`h-auto flex-1 rounded-full py-2 transition-all ${
+          className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
             mode === "sign-in"
               ? "bg-white text-neutral-900 shadow-sm hover:bg-white"
               : "text-neutral-500 hover:bg-transparent"
@@ -122,7 +127,7 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           type="button"
           onClick={() => switchMode("sign-up")}
           variant="ghost"
-          className={`h-auto flex-1 rounded-full py-2 transition-all ${
+          className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
             mode === "sign-up"
               ? "bg-white text-neutral-900 shadow-sm hover:bg-white"
               : "text-neutral-500 hover:bg-transparent"
@@ -210,7 +215,7 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+          className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
         >
           {loading ? "Please wait..." : mode === "sign-in" ? "Sign in" : "Create account"}
         </Button>

@@ -25,8 +25,7 @@ export function GoogleSignInButton({ redirectTo = "/" }: { redirectTo?: string }
       onClick={handleClick}
       disabled={loading}
       variant="outline"
-      size="lg"
-      className="w-full rounded-xl border-slate-300 py-3 text-sm font-semibold text-neutral-800 shadow-sm transition-all hover:border-slate-400 hover:bg-slate-50"
+      className="h-11 w-full min-w-0 !shrink rounded-xl border-slate-300 text-sm font-semibold text-neutral-800 shadow-sm transition-all hover:border-slate-400 hover:bg-slate-50"
     >
       <GoogleIcon className="size-4.5" aria-hidden="true" />
       {loading ? "Redirecting..." : "Continue with Google"}

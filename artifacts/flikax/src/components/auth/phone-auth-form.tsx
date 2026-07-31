@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const FIELD_CLASS =
-  "h-auto w-full rounded-xl border-slate-300 px-4 py-3 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
+  "h-11 w-full rounded-xl border-slate-300 px-4 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 const RESEND_SECONDS = 30;
 
@@ -138,9 +138,9 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {step === "phone" && (
-        <form onSubmit={sendOtp} className="space-y-4">
+        <form onSubmit={sendOtp} className="space-y-3">
           <div>
             <h1 className="text-lg font-bold text-neutral-800">Log in or sign up</h1>
             <p className="mt-1 text-sm text-neutral-500">
@@ -152,8 +152,8 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
             <span className="mb-1.5 block text-sm font-medium text-neutral-700">
               Phone number
             </span>
-            <div className="flex items-center rounded-xl border border-slate-300 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
-              <span className="border-r border-slate-300 px-3.5 py-3 text-sm text-neutral-500">
+            <div className="flex h-11 min-w-0 items-center rounded-xl border border-slate-300 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
+              <span className="flex h-full items-center border-r border-slate-300 px-3.5 text-sm text-neutral-500">
                 +233
               </span>
               <Input
@@ -164,7 +164,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
                 value={rawPhone}
                 onChange={(e) => setRawPhone(e.target.value)}
                 placeholder="024 123 4567"
-                className="h-auto min-w-0 flex-1 rounded-l-none border-none px-4 py-3 text-sm shadow-none focus-visible:ring-0"
+                className="h-full min-w-0 flex-1 rounded-l-none border-none px-4 text-sm shadow-none focus-visible:ring-0"
               />
             </div>
           </label>
@@ -174,7 +174,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+            className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
           >
             {loading ? "Sending code..." : "Send code"}
           </Button>
@@ -182,7 +182,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
       )}
 
       {step === "otp" && (
-        <form onSubmit={verifyOtp} className="space-y-4">
+        <form onSubmit={verifyOtp} className="space-y-3">
           <div>
             <h1 className="text-lg font-bold text-neutral-800">Enter the code</h1>
             <p className="mt-1 text-sm text-neutral-500">
@@ -215,7 +215,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading || otp.length !== 6}
-            className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+            className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
           >
             {loading ? "Verifying..." : "Verify"}
           </Button>
@@ -233,7 +233,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
       )}
 
       {step === "name" && (
-        <form onSubmit={saveName} className="space-y-4">
+        <form onSubmit={saveName} className="space-y-3">
           <div>
             <h1 className="text-lg font-bold text-neutral-800">What&apos;s your name?</h1>
             <p className="mt-1 text-sm text-neutral-500">
@@ -262,7 +262,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+            className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
           >
             {loading ? "Saving..." : "Continue"}
           </Button>

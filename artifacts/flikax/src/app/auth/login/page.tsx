@@ -19,8 +19,8 @@ export default async function LoginPage({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-[#0B1B33] to-[#124F9E] p-4 sm:p-8">
-      <div className="flex w-full max-w-md flex-col gap-6 rounded-3xl border border-slate-200/80 bg-white p-8 shadow-2xl sm:p-10">
+    <div className="flex min-h-screen min-w-0 items-center justify-center bg-gradient-to-br from-slate-900 via-[#0B1B33] to-[#124F9E] p-4 sm:p-8">
+      <div className="glass flex w-full min-w-0 max-w-sm flex-col gap-3 rounded-3xl p-5 sm:p-6">
         <LoginCardBody redirectTo={redirectTo} error={error} />
       </div>
     </div>
