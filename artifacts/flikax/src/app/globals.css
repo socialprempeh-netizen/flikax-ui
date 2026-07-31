@@ -168,3 +168,20 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
+
+/* Scrolling stays fully functional (wheel/trackpad/drag) -- only the
+   scrollbar's own visual track/thumb is suppressed, for panels like the
+   category sidebar that scroll internally but shouldn't look like a
+   scrollable widget. @utility (not a plain class) so responsive variants
+   like `lg:no-scrollbar` actually generate a rule -- a plain class has no
+   variant support in Tailwind v4. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
