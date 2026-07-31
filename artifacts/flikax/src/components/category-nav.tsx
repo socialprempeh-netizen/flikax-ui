@@ -149,34 +149,36 @@ export function CategoryNav({
                 }}
                 onMouseEnter={() => handleEnter(cat.id)}
                 onMouseLeave={handleLeave}
-                className="z-40 overflow-y-auto rounded-2xl border border-slate-200/80 bg-white p-2 shadow-lg"
+                className="z-40 overflow-y-auto rounded-2xl border border-slate-200/80 bg-white p-2 shadow-lg no-scrollbar"
               >
-                {children.map((child) => {
-                  return (
-                    <Link
-                      key={child.id}
-                      href={`/${child.slug}`}
-                      className="group flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors hover:bg-neutral-200"
-                    >
-                      <CategoryThumb
-                        category={child}
-                        size="size-8"
-                        iconSize="size-4"
-                        rounded="rounded-full"
-                        sizes="32px"
-                        className="ring-1 ring-slate-200/70"
-                      />
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-medium text-neutral-800">
-                          {child.name}
+                <div className="flex flex-col divide-y divide-neutral-200">
+                  {children.map((child) => {
+                    return (
+                      <Link
+                        key={child.id}
+                        href={`/${child.slug}`}
+                        className="group flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors hover:bg-neutral-200"
+                      >
+                        <CategoryThumb
+                          category={child}
+                          size="size-8"
+                          iconSize="size-4"
+                          rounded="rounded-full"
+                          sizes="32px"
+                          className="ring-1 ring-slate-200/70"
+                        />
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium text-neutral-800">
+                            {child.name}
+                          </span>
+                          <span className="block text-xs text-neutral-400">
+                            {counts.get(child.id) ?? 0} ads
+                          </span>
                         </span>
-                        <span className="block text-xs text-neutral-400">
-                          {counts.get(child.id) ?? 0} ads
-                        </span>
-                      </span>
-                    </Link>
-                  );
-                })}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
