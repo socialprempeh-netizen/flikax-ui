@@ -37,7 +37,7 @@ export function GoogleSignInButton({
       disabled={loading}
       variant="outline"
       className={cn(
-        "h-11 w-full min-w-0 !shrink rounded-xl border-slate-300 text-sm font-semibold text-neutral-800 shadow-sm transition-all hover:border-slate-400 hover:bg-slate-50",
+        "h-11 w-full min-w-0 !shrink rounded-xl border-slate-300 bg-neutral-100 text-sm font-semibold text-neutral-800 shadow-sm transition-all hover:border-slate-400 hover:bg-neutral-200",
         className
       )}
     >

@@ -115,16 +115,16 @@ export function CategoryNav({
           >
             <Link
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`group flex items-center gap-3 px-5 py-2.5 transition-colors duration-150 hover:bg-neutral-200 ${
+              className={`group flex items-center gap-2.5 px-4 py-2 transition-colors duration-150 hover:bg-neutral-200 ${
                 isHovered ? "bg-neutral-200" : ""
               }`}
             >
               <CategoryThumb
                 category={cat}
-                size="size-9"
-                iconSize="size-4"
+                size="size-8"
+                iconSize="size-3.5"
                 rounded="rounded-full"
-                sizes="36px"
+                sizes="32px"
                 className="ring-1 ring-slate-200/70"
               />
               <span className="min-w-0 flex-1">

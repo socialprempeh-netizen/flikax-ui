@@ -671,11 +671,11 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
           imageUrl={images[0] ?? null}
         />
 
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-3 sm:gap-5">
           <div className="sm:col-span-2">
             <ListingGallery images={images} title={listing.title} />
 
-            <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
+            <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
               {(isFeatured || isBumped) && (
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   {isFeatured && (
@@ -755,24 +755,27 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               )}
             </Card>
 
-            {specs.length > 0 && (
-              <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
-                <h2 className="mb-4 text-lg font-bold tracking-tight text-neutral-900">Specifications</h2>
-                <div className="grid grid-cols-2 divide-y divide-neutral-200 sm:grid-cols-3">
-                  {specs.map((spec) => (
-                    <div key={spec.key} className="py-3.5 pr-4">
-                      <p className="text-base font-semibold text-neutral-800">{spec.value}</p>
-                      <p className="text-xs font-medium text-neutral-400">{spec.label}</p>
+            {(specs.length > 0 || tagSpecs.length > 0 || listing.description) && (
+              <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
+                {specs.length > 0 && (
+                  <div>
+                    <h2 className="mb-3 text-lg font-bold tracking-tight text-neutral-900">Specifications</h2>
+                    <div className="grid grid-cols-2 divide-y divide-neutral-200 sm:grid-cols-3">
+                      {specs.map((spec) => (
+                        <div key={spec.key} className="py-3 pr-4">
+                          <p className="text-base font-semibold text-neutral-800">{spec.value}</p>
+                          <p className="text-xs font-medium text-neutral-400">{spec.label}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </Card>
-            )}
+                  </div>
+                )}
 
-            {tagSpecs.length > 0 && (
-              <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
                 {tagSpecs.map((spec, index) => (
-                  <div key={spec.key} className={index > 0 ? "mt-4 border-t border-neutral-200 pt-4" : ""}>
+                  <div
+                    key={spec.key}
+                    className={specs.length > 0 || index > 0 ? "mt-4 border-t border-neutral-200 pt-4" : ""}
+                  >
                     <h2 className="mb-2.5 text-lg font-bold tracking-tight text-neutral-900">{spec.label}</h2>
                     <div className="flex flex-wrap gap-2">
                       {spec.values.map((value) => (
@@ -786,25 +789,25 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                     </div>
                   </div>
                 ))}
+
+                {listing.description && (
+                  <div className={specs.length > 0 || tagSpecs.length > 0 ? "mt-4 border-t border-neutral-200 pt-4" : ""}>
+                    <h2 className="mb-2.5 text-lg font-bold tracking-tight text-neutral-900">Description</h2>
+                    <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-neutral-600">
+                      {listing.description}
+                    </p>
+                  </div>
+                )}
               </Card>
             )}
 
-            {listing.description && (
-              <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
-                <h2 className="mb-2.5 text-lg font-bold tracking-tight text-neutral-900">Description</h2>
-                <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-neutral-600">
-                  {listing.description}
-                </p>
-              </Card>
-            )}
-
-            <Card className="mt-5 gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm sm:p-6">
+            <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
               <ShareButtons title={listing.title} priceLabel={currency.format(listing.price)} />
             </Card>
           </div>
 
-          <div className="flex flex-col gap-4 sm:col-span-1">
-            <Card className="gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm">
+          <div className="flex flex-col gap-3 sm:col-span-1 sm:gap-4">
+            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex items-center gap-3">
                 <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-light text-lg font-bold text-brand">
                   {sellerName[0]?.toUpperCase() ?? "F"}
@@ -833,31 +836,31 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                   currentPath={currentPath}
                 />
               </div>
+
+              <div className="mt-4 flex flex-col gap-2 border-t border-neutral-200 pt-4">
+                <Button asChild variant="outline">
+                  <a href={feedbackHref}>
+                    <MessageSquareWarning className="size-4" />
+                    Leave Feedback
+                  </a>
+                </Button>
+
+                <span className="flex items-center justify-center gap-2 rounded-lg bg-green-50 py-2 text-base font-bold text-green-700">
+                  <CheckCircle2 className="size-4" />
+                  Status: {STATUS_LABELS[listing.status] ?? listing.status}
+                </span>
+
+                <ListingOwnerActions listingId={listing.id} sellerId={listing.user_id} status={listing.status} />
+              </div>
             </Card>
 
-            <Card className="gap-2 rounded-2xl border-slate-200/80 p-4 shadow-sm">
-              <Button asChild variant="outline">
-                <a href={feedbackHref}>
-                  <MessageSquareWarning className="size-4" />
-                  Leave Feedback
-                </a>
-              </Button>
-
-              <span className="flex items-center justify-center gap-2 rounded-lg bg-green-50 py-2 text-base font-bold text-green-700">
-                <CheckCircle2 className="size-4" />
-                Status: {STATUS_LABELS[listing.status] ?? listing.status}
-              </span>
-
-              <ListingOwnerActions listingId={listing.id} sellerId={listing.user_id} status={listing.status} />
-            </Card>
-
-            <Card className="gap-1 rounded-2xl border-dashed border-brand/30 bg-brand-light p-5 text-center shadow-none">
+            <Card className="gap-1 rounded-2xl border-dashed border-brand/30 bg-brand-light p-4 text-center shadow-none sm:p-5">
               <h3 className="text-sm font-bold text-neutral-800">Post an Ad Similar to This</h3>
               <p className="mt-1 text-xs text-neutral-500">Reach thousands of buyers across Ghana.</p>
               <SellCta className="mt-3 w-full" />
             </Card>
 
-            <Card className="gap-0 rounded-2xl border-slate-200/80 p-5 shadow-sm">
+            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               <h3 className="mb-3 text-sm font-bold text-neutral-800">Safety First - Read This Before Proceeding</h3>
               <ul className="list-disc space-y-2 pl-4 marker:text-brand">
                 {SAFETY_TIPS.map((tip) => (

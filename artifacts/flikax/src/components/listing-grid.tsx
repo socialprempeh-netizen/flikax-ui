@@ -72,7 +72,15 @@ export function ListingGrid({
           return (
             <Link key={listing.id} href={listing.href} className="mb-2 block break-inside-avoid">
               <ListingCardHover>
-              <Card className="gap-0 overflow-hidden rounded-lg border-neutral-200 bg-neutral-100 p-0 shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-200 group-hover:shadow-lg">
+              <Card
+                className={`gap-0 overflow-hidden rounded-lg bg-neutral-100 p-0 shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-200 group-hover:shadow-lg ${
+                  listing.isFeatured
+                    ? "border-amber-300"
+                    : listing.isBumped
+                      ? "border-blue-300"
+                      : "border-neutral-200"
+                }`}
+              >
                 <div
                   className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
                     hasNaturalAspect ? "" : isHome ? "aspect-[3/4]" : "aspect-[4/5]"
@@ -128,7 +136,7 @@ export function ListingGrid({
                       <span className="text-[11px] font-medium text-neutral-400">Neg.</span>
                     )}
                   </div>
-                  <p className="line-clamp-2 text-[13px] font-semibold leading-snug text-neutral-800">
+                  <p className="line-clamp-2 text-[13px] font-bold leading-snug text-neutral-900">
                     {listing.title}
                   </p>
                   <div className="flex items-center gap-1 pt-0.5 text-[11px] text-neutral-500">
