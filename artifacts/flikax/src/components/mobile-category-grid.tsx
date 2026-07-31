@@ -20,26 +20,26 @@ export function MobileCategoryGrid({
 
   const postAdTile = (
     <>
-      <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand text-white">
-        <Plus className="size-6" />
+      <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+        <Plus className="size-5" />
       </span>
-      <span className="line-clamp-2 text-[13px] font-semibold leading-tight text-neutral-800">
+      <span className="line-clamp-2 text-[11px] font-semibold leading-tight text-neutral-800">
         Post an Ad
       </span>
     </>
   );
 
   return (
-    <div className="grid grid-cols-3 gap-x-2 gap-y-2 md:grid-cols-4">
+    <div className="grid grid-cols-4 gap-x-1.5 gap-y-3">
       {isLoggedIn ? (
-        <Link href="/sell" className="flex min-h-16 flex-col items-center justify-start gap-1.5 text-center">
+        <Link href="/sell" className="flex min-h-14 flex-col items-center justify-start gap-1 text-center">
           {postAdTile}
         </Link>
       ) : (
         <button
           type="button"
           onClick={() => openAuthModal("/sell")}
-          className="flex min-h-16 flex-col items-center justify-start gap-1.5 text-center"
+          className="flex min-h-14 flex-col items-center justify-start gap-1 text-center"
         >
           {postAdTile}
         </button>
@@ -49,10 +49,10 @@ export function MobileCategoryGrid({
         <Link
           key={cat.id}
           href={buildListingsHref({ ...filters, category: cat.slug })}
-          className="flex min-h-16 flex-col items-center justify-start gap-1.5 text-center"
+          className="flex min-h-14 flex-col items-center justify-start gap-1 text-center"
         >
-          <CategoryThumb category={cat} size="size-14" iconSize="size-6" rounded="rounded-full" sizes="56px" />
-          <span className="line-clamp-2 text-[13px] font-medium leading-tight text-neutral-700">
+          <CategoryThumb category={cat} size="size-12" iconSize="size-5" rounded="rounded-full" sizes="48px" />
+          <span className="line-clamp-2 text-[11px] font-medium leading-tight text-neutral-700">
             {cat.name}
           </span>
         </Link>

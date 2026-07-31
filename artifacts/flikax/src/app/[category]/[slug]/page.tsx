@@ -18,7 +18,6 @@ import {
   Tag,
   Layers,
   BadgeCheck,
-  BarChart3,
   type LucideIcon,
 } from "lucide-react";
 import { getUser } from "@/lib/supabase/server";
@@ -27,11 +26,6 @@ import { resolveListingImageUrl } from "@/lib/images";
 import { isRecentlyBumped } from "@/lib/premium-plans";
 import { getFieldsForCategory, HEADLINE_FIELD_KEYS } from "@/lib/listing-fields";
 import { formatAttributeValue } from "@/lib/format-attribute-value";
-import {
-  computeMarketPriceRange,
-  MARKET_PRICE_MIN_SAMPLE,
-  MARKET_PRICE_WINDOW_DAYS,
-} from "@/lib/market-price";
 import { formatRelativeTime } from "@/lib/format-time";
 import { getListingPath, extractShortIdFromSlug } from "@/lib/listing-url";
 import {
@@ -505,38 +499,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
   // headline badge right under the price.
   const specs = allSpecs.filter((spec) => !headlineKeys.includes(spec.key));
 
-  const marketPriceSinceIso = new Date(
-    Date.now() - MARKET_PRICE_WINDOW_DAYS * 24 * 3600 * 1000
-  ).toISOString();
-  let comparablePrices: number[] = [];
-
   const make = attributes.make as string | undefined;
-  const model = attributes.model as string | undefined;
-  if (topLevelSlug === "vehicles" && make && model) {
-    const { data: makeModelRows } = await supabase
-      .from("listings")
-      .select("price")
-      .eq("category_id", listing.category_id)
-      .eq("status", "active")
-      .neq("id", listing.id)
-      .gte("created_at", marketPriceSinceIso)
-      .ilike("attributes->>make", make)
-      .ilike("attributes->>model", model);
-    comparablePrices = (makeModelRows ?? []).map((row) => row.price);
-  }
-
-  if (comparablePrices.length < MARKET_PRICE_MIN_SAMPLE) {
-    const { data: categoryRows } = await supabase
-      .from("listings")
-      .select("price")
-      .eq("category_id", listing.category_id)
-      .eq("status", "active")
-      .neq("id", listing.id)
-      .gte("created_at", marketPriceSinceIso);
-    comparablePrices = (categoryRows ?? []).map((row) => row.price);
-  }
-
-  const marketPrice = computeMarketPriceRange(comparablePrices);
 
   // Ownership is no longer known server-side for an active listing (see
   // above) -- the previous "don't count the owner's own view" exclusion
@@ -673,11 +636,9 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
         <div className="grid gap-4 sm:grid-cols-3 sm:gap-5">
           <div className="sm:col-span-2">
-            <ListingGallery images={images} title={listing.title} />
-
-            <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
+            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               {(isFeatured || isBumped) && (
-                <div className="mb-3 flex flex-wrap items-center gap-2">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
                   {isFeatured && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-700">
                       <Star className="size-3.5 fill-amber-500 text-amber-500" />
@@ -694,13 +655,13 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               )}
 
               <div className="flex items-start justify-between gap-3">
-                <h1 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-[1.75rem]">
+                <h1 className="text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl">
                   {listing.title}
                 </h1>
                 <SaveListingButton listingId={listing.id} />
               </div>
 
-              <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-neutral-500">
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-neutral-500">
                 <span>{listing.location}</span>
                 <span className="text-neutral-300">·</span>
                 <span>{formatRelativeTime(new Date(listing.created_at))}</span>
@@ -711,35 +672,28 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 </span>
               </div>
 
-              <p className="mt-4 text-2xl font-bold tracking-tight text-brand">
+              <p className="mt-3 text-2xl font-bold tracking-tight text-brand">
                 {currency.format(listing.price)}
                 {listing.negotiable === "yes" && (
                   <span className="ml-2 text-base font-medium text-neutral-500">Negotiable</span>
                 )}
               </p>
 
-              {marketPrice && (
-                <p className="mt-2 flex items-center gap-1.5 text-sm text-neutral-500">
-                  <BarChart3 className="size-4 text-neutral-400" />
-                  Market price: {currency.format(marketPrice.low)} ~ {currency.format(marketPrice.high)}
-                </p>
-              )}
-
               {sellerPhone && (
-                <div className="mt-5 flex gap-2 sm:hidden">
+                <div className="mt-3 flex gap-2 sm:hidden">
                   <RevealPhoneButton phone={sellerPhone} label="Show contact" compact />
                   <ChatPopupButton listingId={listing.id} sellerName={sellerName} currentPath={currentPath} />
                 </div>
               )}
 
               {sellerPhone && (
-                <div className="mt-5 hidden sm:block sm:w-64">
+                <div className="mt-3 hidden sm:block sm:w-64">
                   <RevealPhoneButton phone={sellerPhone} label="Show contact" />
                 </div>
               )}
 
               {headlineSpecs.length > 0 && (
-                <div className="mt-5 flex flex-wrap gap-4 border-t border-neutral-100 pt-5">
+                <div className="mt-3 flex flex-wrap gap-4 border-t border-neutral-100 pt-3">
                   {headlineSpecs.map((spec) => {
                     const Icon = FIELD_ICONS[spec.key] ?? Sparkles;
                     return (
@@ -755,16 +709,20 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               )}
             </Card>
 
+            <div className="mt-4 sm:mt-5">
+              <ListingGallery images={images} title={listing.title} />
+            </div>
+
             {(specs.length > 0 || tagSpecs.length > 0 || listing.description) && (
               <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
                 {specs.length > 0 && (
                   <div>
                     <h2 className="mb-3 text-lg font-bold tracking-tight text-neutral-900">Specifications</h2>
-                    <div className="grid grid-cols-2 divide-y divide-neutral-200 sm:grid-cols-3">
+                    <div className="grid grid-cols-3 divide-y divide-neutral-200">
                       {specs.map((spec) => (
-                        <div key={spec.key} className="py-3 pr-4">
-                          <p className="text-base font-semibold text-neutral-800">{spec.value}</p>
-                          <p className="text-xs font-medium text-neutral-400">{spec.label}</p>
+                        <div key={spec.key} className="py-2.5 pr-2">
+                          <p className="text-sm font-semibold text-neutral-800 sm:text-base">{spec.value}</p>
+                          <p className="text-[11px] font-medium text-neutral-400 sm:text-xs">{spec.label}</p>
                         </div>
                       ))}
                     </div>
