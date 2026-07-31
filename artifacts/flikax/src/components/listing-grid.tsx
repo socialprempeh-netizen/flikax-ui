@@ -119,31 +119,29 @@ export function ListingGrid({
                   )}
                   <CompactSaveButton listingId={listing.id} />
                 </div>
-                <CardContent className="space-y-1.5 p-3.5">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-xl font-extrabold tracking-tight text-brand">
+                <CardContent className="space-y-1 p-3.5">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-lg font-extrabold tracking-tight text-brand">
                       {currency.format(listing.price)}
                     </span>
                     {listing.negotiable && (
-                      <span className="rounded-full bg-neutral-100 px-1.5 py-0.5 text-[10px] font-semibold text-neutral-600">
-                        Neg.
-                      </span>
+                      <span className="text-[11px] font-medium text-neutral-400">Neg.</span>
                     )}
                   </div>
-                  <p className="line-clamp-2 text-[15px] font-bold leading-snug text-neutral-900">{listing.title}</p>
-                  {listing.description && (
-                    <p className="line-clamp-2 text-xs text-neutral-500">{listing.description}</p>
-                  )}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                    <span className="flex min-w-0 items-center gap-1 truncate rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-medium text-neutral-600">
-                      <MapPin className="size-3 shrink-0" />
-                      <span className="truncate">{listing.location}</span>
-                    </span>
+                  <p className="line-clamp-2 text-[13px] font-semibold leading-snug text-neutral-800">
+                    {listing.title}
+                  </p>
+                  <div className="flex items-center gap-1 pt-0.5 text-[11px] text-neutral-500">
+                    <MapPin className="size-3 shrink-0" />
+                    <span className="min-w-0 truncate">{listing.location}</span>
                     {listing.createdAt && (
-                      <span className="flex shrink-0 items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-medium text-neutral-600">
-                        <Clock className="size-3" />
-                        {formatRelativeTime(new Date(listing.createdAt))}
-                      </span>
+                      <>
+                        <span className="shrink-0 text-neutral-300">•</span>
+                        <span className="flex shrink-0 items-center gap-0.5">
+                          <Clock className="size-3" />
+                          {formatRelativeTime(new Date(listing.createdAt))}
+                        </span>
+                      </>
                     )}
                   </div>
                 </CardContent>
