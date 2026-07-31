@@ -95,7 +95,7 @@ export function CategorySidebar({
           All categories
         </Link>
         <p className="mb-2 truncate text-sm font-semibold text-brand">{activeParent.name}</p>
-        <div className="flex flex-col divide-y divide-neutral-100">
+        <div className="flex flex-col divide-y divide-neutral-200">
           {children.map((child) => {
             const isActive = child.slug === selectedSlug;
             return (
@@ -103,7 +103,7 @@ export function CategorySidebar({
                 key={child.id}
                 href={`/${child.slug}`}
                 className={`group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors ${
-                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-slate-50"
+                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-neutral-200"
                 }`}
               >
                 <CategoryThumb
@@ -117,7 +117,7 @@ export function CategorySidebar({
                 <span className="min-w-0 flex-1 truncate">{child.name}</span>
                 <span
                   className={`ml-2 shrink-0 rounded-full px-1.5 py-0.5 text-[11px] font-medium ${
-                    isActive ? "bg-white/60 text-brand" : "bg-slate-100 text-neutral-500 group-hover:bg-brand-light group-hover:text-brand"
+                    isActive ? "bg-white/60 text-brand" : "bg-slate-100 text-neutral-500"
                   }`}
                 >
                   {counts.get(child.id) ?? 0}

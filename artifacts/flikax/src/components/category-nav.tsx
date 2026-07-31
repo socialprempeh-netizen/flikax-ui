@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { buildListingsHref, type ListingFilters } from "@/lib/filters";
 import type { Category } from "@/components/category-sidebar";
 import { CategoryThumb } from "@/components/category-thumb";
@@ -97,7 +98,7 @@ export function CategoryNav({
   }, [hoveredId]);
 
   return (
-    <nav className="relative w-full shrink-0 divide-y divide-neutral-100 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm sm:w-72">
+    <nav className="relative w-full shrink-0 divide-y divide-neutral-200 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm sm:w-72">
       {parents.map((cat) => {
         const children = categories.filter((c) => c.parent_id === cat.id);
         const isHovered = hoveredId === cat.id;
@@ -114,42 +115,27 @@ export function CategoryNav({
           >
             <Link
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`group relative flex items-center gap-3 px-5 py-2.5 transition-colors duration-150 hover:bg-slate-50 ${
-                isHovered ? "bg-slate-50" : ""
+              className={`group flex items-center gap-3 px-5 py-2.5 transition-colors duration-150 hover:bg-neutral-200 ${
+                isHovered ? "bg-neutral-200" : ""
               }`}
             >
-              {/* Animated accent bar (rather than the flat full-row highlight
-                  most classifieds sites use) is the row's hover/active tell --
-                  a quieter, more deliberate cue that reads as bespoke rather
-                  than a stock list style. */}
-              <span
-                className={`absolute inset-y-2 left-0 w-1 rounded-r-full bg-brand transition-all duration-200 ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
-              />
-              {/* className (not a wrapping span) for the hover-scale --
-                  CategoryThumb's root span needs to stay a direct flex-item
-                  child of this row for its size-9 width/height to apply at
-                  all: nested one level inside a plain (non-flex) wrapper
-                  span, "size-9" is a no-op on an inline element with no
-                  intrinsic size, collapsing it (and the fill image inside)
-                  to 0x0. */}
               <CategoryThumb
                 category={cat}
                 size="size-9"
                 iconSize="size-4"
                 rounded="rounded-full"
                 sizes="36px"
-                className="ring-1 ring-slate-200/70 transition-transform duration-150 group-hover:scale-105"
+                className="ring-1 ring-slate-200/70"
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold tracking-tight text-neutral-800 transition-colors group-hover:text-brand">
+                <span className="block truncate text-sm font-semibold tracking-tight text-neutral-800">
                   {cat.name}
                 </span>
-                <span className="mt-0.5 inline-block rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-neutral-500 transition-colors group-hover:bg-brand-light group-hover:text-brand">
+                <span className="mt-0.5 inline-block rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-neutral-500">
                   {totalFor(cat)} ads
                 </span>
               </span>
+              <ChevronRight className="size-4 shrink-0 text-neutral-400" />
             </Link>
 
             {isHovered && children.length > 0 && flyoutPos && (
@@ -170,7 +156,7 @@ export function CategoryNav({
                     <Link
                       key={child.id}
                       href={`/${child.slug}`}
-                      className="group flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-50"
+                      className="group flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors hover:bg-neutral-200"
                     >
                       <CategoryThumb
                         category={child}
@@ -181,7 +167,7 @@ export function CategoryNav({
                         className="ring-1 ring-slate-200/70"
                       />
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-medium text-neutral-800 group-hover:text-brand">
+                        <span className="block truncate text-sm font-medium text-neutral-800">
                           {child.name}
                         </span>
                         <span className="block text-xs text-neutral-400">

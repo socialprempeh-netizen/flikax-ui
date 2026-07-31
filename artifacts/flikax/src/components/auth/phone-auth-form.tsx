@@ -7,6 +7,9 @@ import { createClient } from "@/lib/supabase/client";
 import { toGhanaE164 } from "@/lib/phone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { OtpInput } from "@/components/auth/otp-input";
+
+const OTP_LENGTH = 6;
 
 const FIELD_CLASS =
   "h-11 w-full rounded-xl border-slate-300 px-4 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
@@ -182,53 +185,49 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
       )}
 
       {step === "otp" && (
-        <form onSubmit={verifyOtp} className="space-y-3">
+        <form
+          onSubmit={verifyOtp}
+          className="space-y-4 rounded-2xl border border-neutral-300 bg-white p-5 shadow-lg"
+        >
           <div>
-            <h1 className="text-lg font-bold text-neutral-800">Enter the code</h1>
+            <h1 className="text-xl font-bold text-slate-950">OTP Validation</h1>
             <p className="mt-1 text-sm text-neutral-500">
-              We sent a 6-digit code to {phone}.{" "}
+              Enter the 6-digit code sent to {phone}.{" "}
               <Button type="button" onClick={() => setStep("phone")} variant="link" className="h-auto p-0 text-sm">
-                Change
+                Change number
               </Button>
             </p>
           </div>
 
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-neutral-700">
-              Verification code
-            </span>
-            <Input
-              type="text"
-              inputMode="numeric"
-              autoFocus
-              required
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-              placeholder="123456"
-              className={`${FIELD_CLASS} text-center text-lg tracking-[0.5em]`}
-            />
-          </label>
+          <OtpInput value={otp} onChange={setOtp} length={OTP_LENGTH} autoFocus />
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
           <Button
             type="submit"
-            disabled={loading || otp.length !== 6}
+            disabled={loading || otp.length !== OTP_LENGTH}
             className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
           >
-            {loading ? "Verifying..." : "Verify"}
+            {loading ? "Verifying..." : "Confirm OTP"}
           </Button>
 
-          <Button
-            type="button"
-            onClick={resendOtp}
-            disabled={cooldown > 0 || loading}
-            variant="ghost"
-            className="w-full text-neutral-500"
-          >
-            {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
-          </Button>
+          <div className="flex items-center justify-center gap-1 text-sm">
+            {cooldown > 0 ? (
+              <span className="text-neutral-500">
+                Resend after <span className="font-semibold text-neutral-700">{cooldown}s</span>
+              </span>
+            ) : (
+              <Button
+                type="button"
+                onClick={resendOtp}
+                disabled={loading}
+                variant="ghost"
+                className="h-auto p-0 text-sm font-semibold text-brand hover:bg-transparent hover:text-brand-dark"
+              >
+                Resend OTP
+              </Button>
+            )}
+          </div>
         </form>
       )}
 
