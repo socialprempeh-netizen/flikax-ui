@@ -145,7 +145,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
       {step === "phone" && (
         <form onSubmit={sendOtp} className="space-y-3">
           <div>
-            <h1 className="text-lg font-bold text-neutral-800">Log in or sign up</h1>
+            <h1 className="text-lg font-bold text-slate-950">Log in or sign up</h1>
             <p className="mt-1 text-sm text-neutral-500">
               We&apos;ll text you a code to verify your number.
             </p>
@@ -234,7 +234,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
       {step === "name" && (
         <form onSubmit={saveName} className="space-y-3">
           <div>
-            <h1 className="text-lg font-bold text-neutral-800">What&apos;s your name?</h1>
+            <h1 className="text-lg font-bold text-slate-950">What&apos;s your name?</h1>
             <p className="mt-1 text-sm text-neutral-500">
               This is how buyers and sellers will see you on Flikax.
             </p>

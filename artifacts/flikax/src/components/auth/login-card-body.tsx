@@ -15,8 +15,8 @@ export function LoginCardBody({
     <>
       <div className={centered ? "flex flex-col items-center text-center" : undefined}>
         <FlikaxLogo wordmarkColor="text-brand" iconSize="size-7" wordmarkSize="text-lg sm:text-xl" />
-        <h1 className="mt-2 text-lg font-bold text-neutral-900">Welcome back</h1>
-        <p className="mt-0.5 text-xs text-neutral-500 sm:text-sm">Buy and sell anything, anywhere in Ghana.</p>
+        <h1 className="mt-2 text-lg font-bold text-slate-950">Welcome back</h1>
+        <p className="mt-0.5 text-xs text-neutral-600 sm:text-sm">Buy and sell anything, anywhere in Ghana.</p>
       </div>
 
       {error && (

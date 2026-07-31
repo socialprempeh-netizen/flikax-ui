@@ -18,15 +18,15 @@ export function AuthMethodTabs({ redirectTo }: { redirectTo?: string }) {
         <span className="h-px flex-1 bg-slate-200" />
       </div>
 
-      <div className="flex min-w-0 rounded-full bg-slate-100 p-1 text-sm font-semibold">
+      <div className="flex min-w-0 rounded-full bg-neutral-100 p-1 text-sm font-bold">
         <Button
           type="button"
           onClick={() => setMethod("email")}
           variant="ghost"
           className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
             method === "email"
-              ? "bg-white text-brand shadow-sm hover:bg-white hover:text-brand"
-              : "text-neutral-500 hover:bg-transparent hover:text-neutral-700"
+              ? "bg-white text-slate-950 shadow-sm hover:bg-white hover:text-slate-950"
+              : "text-neutral-600 hover:bg-transparent hover:text-neutral-800"
           }`}
         >
           Email
@@ -37,8 +37,8 @@ export function AuthMethodTabs({ redirectTo }: { redirectTo?: string }) {
           variant="ghost"
           className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
             method === "phone"
-              ? "bg-white text-brand shadow-sm hover:bg-white hover:text-brand"
-              : "text-neutral-500 hover:bg-transparent hover:text-neutral-700"
+              ? "bg-white text-slate-950 shadow-sm hover:bg-white hover:text-slate-950"
+              : "text-neutral-600 hover:bg-transparent hover:text-neutral-800"
           }`}
         >
           Phone

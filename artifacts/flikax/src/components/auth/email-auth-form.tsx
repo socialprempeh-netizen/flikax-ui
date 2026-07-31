@@ -91,7 +91,7 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
   if (checkEmail) {
     return (
       <div className="w-full min-w-0">
-        <h1 className="text-lg font-bold text-neutral-800">Check your email</h1>
+        <h1 className="text-lg font-bold text-slate-950">Check your email</h1>
         <p className="mt-1 text-sm text-neutral-500">
           We sent a confirmation link to <span className="font-medium text-neutral-700">{email}</span>. Click
           it to activate your account, then come back and sign in.
@@ -110,15 +110,15 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
 
   return (
     <div className="w-full min-w-0">
-      <div className="mb-3 flex min-w-0 rounded-full bg-slate-100 p-1 text-sm font-bold">
+      <div className="mb-3 flex min-w-0 rounded-full bg-neutral-100 p-1 text-sm font-bold">
         <Button
           type="button"
           onClick={() => switchMode("sign-in")}
           variant="ghost"
           className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
             mode === "sign-in"
-              ? "bg-white text-neutral-900 shadow-sm hover:bg-white"
-              : "text-neutral-500 hover:bg-transparent"
+              ? "bg-white text-slate-950 shadow-sm hover:bg-white"
+              : "text-neutral-600 hover:bg-transparent hover:text-neutral-800"
           }`}
         >
           Sign in
@@ -129,8 +129,8 @@ export function EmailAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           variant="ghost"
           className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
             mode === "sign-up"
-              ? "bg-white text-neutral-900 shadow-sm hover:bg-white"
-              : "text-neutral-500 hover:bg-transparent"
+              ? "bg-white text-slate-950 shadow-sm hover:bg-white"
+              : "text-neutral-600 hover:bg-transparent hover:text-neutral-800"
           }`}
         >
           Sign up
