@@ -41,7 +41,7 @@ export async function BottomTabBar({ activeHref }: { activeHref: string }) {
           label={tab.label}
           icon={<tab.icon className="size-[22px]" strokeWidth={2.4} />}
           isActive={tab.href === activeHref}
-          gated={tab.href !== "/" && tab.href !== "/sell" && !isLoggedIn}
+          gated={tab.href !== "/" && !isLoggedIn}
           showUnreadDot={tab.href === "/messages" && hasUnreadMessages}
           opensMessagesModal={tab.href === "/messages"}
         />
