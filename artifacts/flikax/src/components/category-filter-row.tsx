@@ -59,7 +59,9 @@ export function CategoryFilterRow({
             <Link
               key={bucket.label}
               href={hrefWith(searchParams, { minPrice: bucket.minPrice, maxPrice: bucket.maxPrice })}
-              className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap ${
+              // relative + before:-inset expands the real hit area to 44px tall
+              // (30px visual pill + 7px above/below) without growing the chip.
+              className={`relative shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap before:absolute before:-inset-[7px] before:content-[''] ${
                 isActive
                   ? "border-brand bg-brand-light text-brand"
                   : "border-neutral-300 text-neutral-600 hover:bg-neutral-50"

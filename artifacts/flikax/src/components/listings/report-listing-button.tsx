@@ -40,7 +40,7 @@ export function ReportListingButton({ listingId }: { listingId: string }) {
 
   return (
     <>
-      <Button type="button" onClick={() => setOpen(true)} variant="outline" className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-600">
+      <Button type="button" onClick={() => setOpen(true)} variant="outline" className="h-11 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-600">
         <AlertTriangle className="size-4" />
         Report Abuse
       </Button>
@@ -53,7 +53,7 @@ export function ReportListingButton({ listingId }: { listingId: string }) {
                 <DialogTitle>Report submitted</DialogTitle>
                 <DialogDescription>Thanks — our team will review this listing.</DialogDescription>
               </DialogHeader>
-              <Button type="button" onClick={close} className="w-full">
+              <Button type="button" onClick={close} className="h-11 w-full">
                 Close
               </Button>
             </>
@@ -95,14 +95,14 @@ export function ReportListingButton({ listingId }: { listingId: string }) {
               {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
 
               <div className="flex justify-end gap-2">
-                <Button type="button" onClick={close} disabled={submitting} variant="outline">
+                <Button type="button" onClick={close} disabled={submitting} variant="outline" className="h-11">
                   Cancel
                 </Button>
                 <Button
                   type="button"
                   onClick={submit}
                   disabled={submitting}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="h-11 bg-red-600 hover:bg-red-700"
                 >
                   {submitting ? "Submitting..." : "Submit report"}
                 </Button>

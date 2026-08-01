@@ -14,7 +14,7 @@ export function SearchLocationField({ defaultLocation }: { defaultLocation?: str
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="relative flex shrink-0 items-center rounded-full bg-transparent py-1.5 pl-4 pr-7 text-base font-normal text-neutral-700 outline-none"
+        className="relative flex h-11 shrink-0 items-center rounded-full bg-transparent pl-4 pr-7 text-base font-normal text-neutral-700 outline-none"
       >
         {location || "All Ghana"}
         <ChevronDown className="pointer-events-none absolute right-2 size-4 text-neutral-500" />

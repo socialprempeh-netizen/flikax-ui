@@ -348,19 +348,19 @@ async function CategoryLocationPage({
       <SiteHeader />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 flex flex-wrap items-center gap-1 text-sm text-neutral-500">
-          <Link href="/" className="hover:text-brand">
+          <Link href="/" className="flex min-h-11 min-w-11 items-center hover:text-brand">
             Home
           </Link>
           {parentCategory && (
             <>
               <span>/</span>
-              <Link href={`/${parentCategory.slug}`} className="hover:text-brand">
+              <Link href={`/${parentCategory.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
                 {parentCategory.name}
               </Link>
             </>
           )}
           <span>/</span>
-          <Link href={`/${category.slug}`} className="hover:text-brand">
+          <Link href={`/${category.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
             {category.name}
           </Link>
           <span>/</span>
@@ -603,13 +603,13 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 flex flex-wrap items-center gap-1 text-sm text-neutral-500">
-          <Link href="/" className="hover:text-brand">
+          <Link href="/" className="flex min-h-11 min-w-11 items-center hover:text-brand">
             All ads
           </Link>
           {parentCategory && (
             <>
               <span>/</span>
-              <Link href={`/${parentCategory.slug}`} className="hover:text-brand">
+              <Link href={`/${parentCategory.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
                 {parentCategory.name}
               </Link>
             </>
@@ -617,7 +617,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
           {category && (
             <>
               <span>/</span>
-              <Link href={`/${category.slug}`} className="hover:text-brand">
+              <Link href={`/${category.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
                 {category.name}
               </Link>
             </>
@@ -684,7 +684,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               {sellerPhone && (
                 <div className="mt-3 flex gap-2 sm:hidden">
                   <RevealPhoneButton phone={sellerPhone} label="Show contact" compact />
-                  <ChatPopupButton listingId={listing.id} sellerName={sellerName} currentPath={currentPath} />
+                  <ChatPopupButton listingId={listing.id} sellerName={sellerName} currentPath={currentPath} compact />
                 </div>
               )}
 
@@ -791,7 +791,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 <div className="min-w-0">
                   <Link
                     href={`/u/${listing.user_id}`}
-                    className="flex items-center gap-1 truncate text-base font-bold text-neutral-800 hover:text-brand hover:underline"
+                    className="flex min-h-11 items-center gap-1 truncate text-base font-bold text-neutral-800 hover:text-brand hover:underline"
                   >
                     <span className="truncate">{sellerName}</span>
                     {listing.profiles?.verified && (
@@ -814,7 +814,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               </div>
 
               <div className="mt-4 flex flex-col gap-2 border-t border-neutral-200 pt-4">
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="h-11">
                   <a href={feedbackHref}>
                     <MessageSquareWarning className="size-4" />
                     Leave Feedback

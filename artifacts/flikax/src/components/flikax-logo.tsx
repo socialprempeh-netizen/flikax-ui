@@ -30,7 +30,7 @@ export function FlikaxLogo({
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2 ${className}`.trim()}
+      className={`flex min-h-11 items-center gap-2 ${className}`.trim()}
       aria-label="Flikax home"
     >
       {/* Orange rounded-square icon */}

@@ -25,7 +25,7 @@ export function RevealPhoneButton({
   // generic neutral outline), so its own colors are layered on top.
   const outlineClasses =
     variant === "outline" ? "border-brand/30 bg-brand-light text-brand hover:bg-brand/10 hover:text-brand" : "";
-  const sizeClasses = compact ? "flex-1" : "w-full";
+  const sizeClasses = compact ? "h-11 flex-1" : "h-11 w-full";
 
   if (revealed) {
     return (

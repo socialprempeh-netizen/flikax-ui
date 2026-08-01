@@ -5,8 +5,10 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FacebookIcon, XIcon, WhatsAppIcon, TikTokIcon } from "@/components/icons/social-icons";
 
+// relative + before:-inset-1 expands the real hit area to 44x44 (36px visual
+// circle + 4px on each side) without growing the icon itself.
 const ICON_LINK_CLASS =
-  "flex size-9 items-center justify-center rounded-full shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2";
+  "relative flex size-9 items-center justify-center rounded-full shadow-sm transition-all duration-200 before:absolute before:-inset-1 before:content-[''] hover:-translate-y-0.5 hover:scale-105 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2";
 
 export function ShareButtons({ title, priceLabel }: { title: string; priceLabel: string }) {
   const [url, setUrl] = useState("");

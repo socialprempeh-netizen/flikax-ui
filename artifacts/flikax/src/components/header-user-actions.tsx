@@ -76,7 +76,7 @@ export function HeaderUserActions() {
           <button
             type="button"
             onClick={() => openAuthModal("/", "register")}
-            className="flex items-center gap-1.5 rounded-full bg-brand px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-dark"
+            className="flex h-11 items-center gap-1.5 rounded-full bg-brand px-3 text-xs font-bold text-white hover:bg-brand-dark"
           >
             <UserPlus className="size-4" />
             Sign up

@@ -76,18 +76,25 @@ export function HeroBanner() {
             <h1 className="text-xl font-extrabold leading-tight text-white drop-shadow-sm sm:text-2xl lg:text-3xl xl:text-4xl">
               {slide.headline}
             </h1>
-            {/* Dot nav */}
-            <div className="mt-4 flex items-center gap-1.5">
+            {/* Dot nav -- each button is a real 44x44 hit area (h-11, px-5
+                sized so even the narrowest w-1 dot clears 44px total width)
+                with the small visible dot centered inside, rather than the
+                dot itself being the clickable element. */}
+            <div className="mt-4 flex items-center">
               {SLIDES.map((_, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => goTo(i)}
                   aria-label={`Go to slide ${i + 1}`}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    i === index ? "w-6 bg-white" : "w-1 bg-white/45 hover:bg-white/65"
-                  }`}
-                />
+                  className="flex h-11 items-center justify-center px-5"
+                >
+                  <span
+                    className={`h-1 rounded-full transition-all duration-300 ${
+                      i === index ? "w-6 bg-white" : "w-1 bg-white/45"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>

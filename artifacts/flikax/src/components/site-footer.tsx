@@ -84,10 +84,10 @@ export function SiteFooter() {
         <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-5">
           <div>
             <h3 className="mb-2 text-sm font-bold text-white/90">Explore</h3>
-            <ul className="space-y-1.5">
+            <ul className="space-y-0.5">
               {exploreLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white">
+                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-white/70 hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -108,10 +108,10 @@ export function SiteFooter() {
 
           <div>
             <h3 className="mb-2 text-sm font-bold text-white/90">Company</h3>
-            <ul className="space-y-1.5">
+            <ul className="space-y-0.5">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white">
+                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-white/70 hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -121,10 +121,10 @@ export function SiteFooter() {
 
           <div>
             <h3 className="mb-2 text-sm font-bold text-white/90">Legal</h3>
-            <ul className="space-y-1.5">
+            <ul className="space-y-0.5">
               {legalLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white">
+                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-white/70 hover:text-white">
                     {link.label}
                   </Link>
                 </li>

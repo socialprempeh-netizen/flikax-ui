@@ -34,10 +34,14 @@ export function ChatPopupButton({
   listingId,
   sellerName,
   currentPath,
+  compact = false,
 }: {
   listingId: string;
   sellerName: string;
   currentPath: string;
+  /** Content-sized and sharing a row with a sibling action, rather than the
+   * default full-width block used when this stands alone in a flex-col. */
+  compact?: boolean;
 }) {
   const [phase, setPhase] = useState<"idle" | "loading" | "open">("idle");
   const [data, setData] = useState<ConversationData | null>(null);
@@ -117,7 +121,7 @@ export function ChatPopupButton({
         onClick={handleOpen}
         disabled={phase === "loading"}
         variant="outline"
-        className="flex-1 border-2 border-brand text-brand hover:bg-brand-light hover:text-brand"
+        className={`h-11 border-2 border-brand text-brand hover:bg-brand-light hover:text-brand ${compact ? "flex-1" : "w-full"}`}
       >
         <MessageCircle className="size-4" />
         {phase === "loading" ? "Opening…" : "Send Message"}
