@@ -18,19 +18,31 @@ export function LoginCardBody({
   redirectTo,
   error,
   centered = false,
+  onSwitchToRegister,
 }: {
   redirectTo: string;
   error?: string;
   centered?: boolean;
+  /** When rendered inside the floating modal, switches its content to the
+   * register view in place instead of navigating away -- the standalone
+   * /auth/login page (which never passes this) still links out to the real
+   * /auth/register page as before. */
+  onSwitchToRegister?: () => void;
 }) {
   const [view, setView] = useState<"options" | "form">("options");
 
   const registrationLink = (
     <p className="text-sm text-neutral-600">
       Don&apos;t have an account?{" "}
-      <Link href="/auth/register" className="font-semibold text-brand hover:underline">
-        Registration
-      </Link>
+      {onSwitchToRegister ? (
+        <button type="button" onClick={onSwitchToRegister} className="font-semibold text-brand hover:underline">
+          Registration
+        </button>
+      ) : (
+        <Link href="/auth/register" className="font-semibold text-brand hover:underline">
+          Registration
+        </Link>
+      )}
     </p>
   );
 

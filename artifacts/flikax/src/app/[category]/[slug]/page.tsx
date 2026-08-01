@@ -636,7 +636,9 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
         <div className="grid gap-4 sm:grid-cols-3 sm:gap-5">
           <div className="sm:col-span-2">
-            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
+            <ListingGallery images={images} title={listing.title} />
+
+            <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-5">
               {(isFeatured || isBumped) && (
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   {isFeatured && (
@@ -709,10 +711,6 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               )}
             </Card>
 
-            <div className="mt-4 sm:mt-5">
-              <ListingGallery images={images} title={listing.title} />
-            </div>
-
             {(specs.length > 0 || tagSpecs.length > 0 || listing.description) && (
               <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
                 {specs.length > 0 && (
@@ -765,6 +763,26 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
           </div>
 
           <div className="flex flex-col gap-3 sm:col-span-1 sm:gap-4">
+            {/* Tonaton-style price box: a distinct card of its own, sitting
+                above the seller-info card, so the price is visible right at
+                the top of the right column without needing the eye to find
+                it inside the (denser, text-heavier) title card in the main
+                column. */}
+            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
+              <p className="text-2xl font-bold tracking-tight text-brand">
+                {currency.format(listing.price)}
+                {listing.negotiable === "yes" && (
+                  <span className="ml-2 text-sm font-medium text-neutral-500">Negotiable</span>
+                )}
+              </p>
+              {sellerPhone && (
+                <div className="mt-3 flex flex-col gap-2">
+                  <RevealPhoneButton phone={sellerPhone} label="Show contact" />
+                  <ChatPopupButton listingId={listing.id} sellerName={sellerName} currentPath={currentPath} />
+                </div>
+              )}
+            </Card>
+
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex items-center gap-3">
                 <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-light text-lg font-bold text-brand">
