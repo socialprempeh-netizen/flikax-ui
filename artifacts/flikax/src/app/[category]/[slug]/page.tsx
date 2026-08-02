@@ -47,7 +47,6 @@ import { SellCta } from "@/components/cta/sell-cta";
 import { ListingGallery } from "@/components/listings/listing-gallery";
 import { SaveListingButton } from "@/components/listings/save-listing-button";
 import { RevealPhoneButton } from "@/components/listings/reveal-phone-button";
-import { ChatPopupButton } from "@/components/listings/chat-popup";
 import { ContactSellerActions } from "@/components/listings/contact-seller-actions";
 import { ListingOwnerActions } from "@/components/listings/listing-owner-actions";
 import { ShareButtons } from "@/components/listings/share-buttons";
@@ -694,26 +693,6 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 </span>
               </div>
 
-              <p className="mt-3 text-2xl font-bold tracking-tight text-brand">
-                {currency.format(listing.price)}
-                {listing.negotiable === "yes" && (
-                  <span className="ml-2 text-base font-medium text-neutral-500">Negotiable</span>
-                )}
-              </p>
-
-              {sellerPhone && (
-                <div className="mt-3 flex gap-2 sm:hidden">
-                  <RevealPhoneButton phone={sellerPhone} label="Show contact" compact />
-                  <ChatPopupButton listingId={listing.id} sellerName={sellerName} currentPath={currentPath} compact />
-                </div>
-              )}
-
-              {sellerPhone && (
-                <div className="mt-3 hidden sm:block sm:w-64">
-                  <RevealPhoneButton phone={sellerPhone} label="Show contact" />
-                </div>
-              )}
-
               {headlineSpecs.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-4 border-t border-neutral-100 pt-3">
                   {headlineSpecs.map((spec) => {
@@ -795,12 +774,6 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                   <span className="ml-2 text-sm font-medium text-neutral-500">Negotiable</span>
                 )}
               </p>
-              {sellerPhone && (
-                <div className="mt-3 flex flex-col gap-2">
-                  <RevealPhoneButton phone={sellerPhone} label="Show contact" />
-                  <ChatPopupButton listingId={listing.id} sellerName={sellerName} currentPath={currentPath} />
-                </div>
-              )}
             </Card>
 
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
