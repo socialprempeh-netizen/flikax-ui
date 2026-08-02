@@ -73,7 +73,7 @@ export function ListingGrid({
             <Link key={listing.id} href={listing.href} className="mb-2 block break-inside-avoid">
               <ListingCardHover>
               <Card
-                className={`gap-0 overflow-hidden rounded-lg bg-neutral-100 p-0 shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-200 group-hover:shadow-lg ${
+                className={`gap-0 overflow-hidden rounded-lg bg-neutral-200 p-0 shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-200 group-hover:shadow-lg ${
                   listing.isFeatured
                     ? "border-amber-300"
                     : listing.isBumped
