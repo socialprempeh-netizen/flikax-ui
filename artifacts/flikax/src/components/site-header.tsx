@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getCategories } from "@/lib/categories";
 import { MobileNavDrawer } from "@/components/mobile-nav-drawer";
 import { HeaderUserActions } from "@/components/header-user-actions";
-import { HeaderLocationButton } from "@/components/header-location-button";
 import { FlikaxLogo } from "@/components/flikax-logo";
 import type { Category } from "@/components/category-sidebar";
 
@@ -36,11 +35,8 @@ export async function SiteHeader({ categories: categoriesProp }: { categories?: 
           </nav>
         </div>
 
-        {/* Right: location + icons + CTA */}
-        <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
-          <HeaderLocationButton />
-          <HeaderUserActions />
-        </div>
+        {/* Right: icons + CTA */}
+        <HeaderUserActions />
       </div>
     </header>
   );

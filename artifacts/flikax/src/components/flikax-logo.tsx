@@ -42,8 +42,8 @@ export function FlikaxLogo({
         F
       </span>
       {/* Wordmark */}
-      <span className={`font-logo font-extrabold lowercase ${wordmarkSize} ${wordmarkColor}`}>
-        flikax
+      <span className={`font-logo font-extrabold ${wordmarkSize} ${wordmarkColor}`}>
+        Flikax
       </span>
     </Link>
   );

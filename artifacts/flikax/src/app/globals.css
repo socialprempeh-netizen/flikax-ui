@@ -12,15 +12,16 @@
   /* Single-brand-color system: one deep corporate blue drives every
      interactive element site-wide (buttons, links, active states,
      highlights, focus rings) via these three tokens -- nothing else should
-     introduce a second accent color. */
-  --brand: #1868db;
-  --brand-dark: #124f9e;
-  --brand-light: #eaf2fe;
-  /* Deep navy shell reserved for the header bar -- same blue family as
-     --brand but dark enough that the brand-blue logo mark and CTA button
-     still read as distinct accents against it (a flat --brand header would
-     make them disappear into the bar). */
-  --header-bg: #0b1b33;
+     introduce a second accent color. Post Ad is the one deliberate
+     exception (hardcoded orange, see header-user-actions.tsx) so it still
+     reads as the primary conversion action against this blue. */
+  --brand: #2563eb;
+  --brand-dark: #1d4ed8;
+  --brand-light: #dbeafe;
+  /* Near-black shell reserved for the header bar -- distinct from --brand
+     so the brand-blue logo mark and CTA button still read as accents
+     against it (a flat --brand header would make them disappear into it). */
+  --header-bg: #000000;
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
      as a deliberate tint, not just an off-white. */

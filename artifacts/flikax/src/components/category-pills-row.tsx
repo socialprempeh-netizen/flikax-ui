@@ -6,6 +6,7 @@ import { ChevronDown, Grid2x2 } from "lucide-react";
 import { buildListingsHref, type ListingFilters } from "@/lib/filters";
 import type { Category } from "@/components/category-sidebar";
 import { CategoryMegaMenu } from "@/components/category-mega-menu";
+import { CategoryThumb } from "@/components/category-thumb";
 
 const MENU_WIDTH = 600;
 const VIEWPORT_MARGIN = 16;
@@ -68,12 +69,13 @@ export function CategoryPillsRow({
             <Link
               key={cat.id}
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-1.5 rounded-full border py-1.5 pl-1.5 pr-4 text-sm font-medium transition-colors ${
                 isActive
                   ? "border-brand bg-brand-light text-brand"
                   : "border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
             >
+              <CategoryThumb category={cat} size="size-6" iconSize="size-3" rounded="rounded-full" sizes="24px" />
               {cat.name}
             </Link>
           );

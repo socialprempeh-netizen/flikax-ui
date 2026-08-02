@@ -132,13 +132,23 @@ export function HeaderUserActions() {
           gated={!isLoggedIn}
           onOpenModal={() => openAuthModal("/")}
           title="My Account"
-          className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-white/10 text-white ring-2 ring-white/25 hover:bg-white/20 sm:size-10"
+          className="flex items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 text-white hover:bg-white/20"
         >
-          {avatar}
+          <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/15 ring-2 ring-white/25">
+            {avatar}
+          </span>
+          <span className="text-sm font-medium">Account</span>
         </GatedIconLink>
 
+        {/* Post Ad is the one deliberate exception to the site's single-blue-
+            accent system -- stays orange regardless of --brand so it keeps
+            reading as the primary conversion action. */}
         {isLoggedIn ? (
-          <Button asChild size="lg" className="rounded-full px-5 font-bold shadow-sm">
+          <Button
+            asChild
+            size="lg"
+            className="rounded-full bg-orange-500 px-5 font-bold text-white shadow-sm hover:bg-orange-600"
+          >
             <Link href="/sell">
               <Plus className="size-4" />
               Post Ad
@@ -148,7 +158,7 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="lg"
-            className="rounded-full px-5 font-bold shadow-sm"
+            className="rounded-full bg-orange-500 px-5 font-bold text-white shadow-sm hover:bg-orange-600"
             onClick={() => openAuthModal("/sell")}
           >
             <Plus className="size-4" />
