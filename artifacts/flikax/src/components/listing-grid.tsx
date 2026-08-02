@@ -65,7 +65,7 @@ export function ListingGrid({
 
   return (
     <section className="flex-1">
-      <div className={isHome ? "columns-2 gap-2 sm:columns-3 lg:columns-4" : "columns-2 gap-2 sm:columns-2 lg:columns-3"}>
+      <div className={isHome ? "columns-2 gap-2 sm:columns-3 lg:columns-4 xl:columns-5" : "columns-2 gap-2 sm:columns-2 lg:columns-3"}>
         {listings.map((listing) => {
           const hasNaturalAspect = Boolean(listing.imageWidth && listing.imageHeight);
 
