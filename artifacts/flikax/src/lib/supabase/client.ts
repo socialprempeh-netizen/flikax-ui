@@ -1,6 +1,12 @@
 import { createBrowserClient } from "@supabase/ssr";
 import type { Database } from "./database.types";
 
+// Browser-side Supabase client used by every "use client" auth form
+// (email/phone sign-in, OAuth buttons, logout) and any client component that
+// needs to read/write data as the signed-in user. Session refresh for
+// Server Component renders is handled separately by the middleware client
+// (src/lib/supabase/middleware.ts) -- this file only owns the in-tab client
+// instance, not the refresh strategy.
 let browserClient: ReturnType<typeof createBrowserClient<Database>> | undefined;
 
 // A singleton, not a per-call factory: every GoTrueClient instance recovers

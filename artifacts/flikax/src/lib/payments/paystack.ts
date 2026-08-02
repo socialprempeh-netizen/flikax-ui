@@ -1,5 +1,10 @@
 import { createHmac } from "node:crypto";
 
+// Purchase flow: thin Paystack API wrapper used by two call sites --
+// initializePaystackTransaction() from the /initialize route (step 2, kicks
+// off the redirect to Paystack's hosted checkout) and
+// verifyPaystackSignature() from the /webhook route (gatekeeper that runs
+// before we trust anything Paystack posts back to us).
 const PAYSTACK_BASE_URL = "https://api.paystack.co";
 
 type PaystackInitializeResponse = {
@@ -47,6 +52,12 @@ export function verifyPaystackSignature(rawBody: string, signature: string | nul
   const secretKey = getPaystackSecretKey();
   if (!secretKey || !signature) return false;
 
+  // Security-critical: this is the only thing standing between "Paystack
+  // told us this payment succeeded" and "anyone on the internet POSTed to
+  // our webhook URL claiming a payment succeeded." We recompute the HMAC
+  // ourselves from the raw (unparsed) body using our secret key -- an
+  // attacker without that key cannot produce a matching signature. The
+  // webhook route must call this BEFORE parsing/trusting the body.
   const expected = createHmac("sha512", secretKey).update(rawBody).digest("hex");
   return expected === signature;
 }

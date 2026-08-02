@@ -3,6 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "./database.types";
 import { logAuthEvent } from "./auth-debug-log";
 
+// The middleware-side half of session refresh. src/middleware.ts calls
+// updateSession() below on every non-excluded request; it builds a
+// request-scoped Supabase client, calls getUser() (which transparently
+// rotates the access/refresh token pair if the access token has expired),
+// and returns a response carrying the refreshed Set-Cookie headers so the
+// browser and the next Server Component render both see the new session.
+
 function buildClient(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -50,6 +57,8 @@ async function expiresAtUnix(supabase: ReturnType<typeof buildClient>["supabase"
   }
 }
 
+// Called by the middleware() function in src/middleware.ts for every request
+// that isn't excluded by the matcher (API routes, Server Actions, prefetches).
 export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const attempt = buildClient(request);

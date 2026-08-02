@@ -1,3 +1,8 @@
+// Purchase flow: thin Flutterwave API wrapper used by two call sites --
+// initializeFlutterwavePayment() from the /initialize route (step 2, kicks
+// off the redirect to Flutterwave's hosted checkout) and
+// verifyFlutterwaveSignature() from the /webhook route (gatekeeper that runs
+// before we trust anything Flutterwave posts back to us).
 const FLUTTERWAVE_BASE_URL = "https://api.flutterwave.com/v3";
 
 type FlutterwaveInitializeResponse = {
@@ -44,5 +49,11 @@ export async function initializeFlutterwavePayment(params: {
 export function verifyFlutterwaveSignature(signature: string | null): boolean {
   const secretHash = process.env.FLUTTERWAVE_SECRET_HASH;
   if (!secretHash || !signature) return false;
+  // Security-critical: unlike Paystack, Flutterwave doesn't HMAC-sign the
+  // body -- it just expects the `verif-hash` header to equal a static
+  // secret you configured in the Flutterwave dashboard. It's a simpler
+  // check but serves the same purpose: reject any webhook call that
+  // doesn't prove knowledge of a value only Flutterwave (and us) has.
+  // Must run before the webhook route trusts event.data.
   return signature === secretHash;
 }

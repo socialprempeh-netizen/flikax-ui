@@ -4,6 +4,11 @@ import { PAYMENTS_ENABLED } from "@/lib/payments/config";
 import { createPendingPurchase } from "@/lib/payments/create-pending-purchase";
 import { initializePaystackTransaction } from "@/lib/payments/paystack";
 
+// Purchase flow step 2: hit by PlanPurchaseButton's "Pay with Paystack"
+// click. Authenticates the caller, records a pending payment/purchase row
+// (createPendingPurchase), then asks Paystack for a hosted checkout URL and
+// hands it back to the browser to redirect to. No money moves here -- that
+// only happens on Paystack's page, and we only find out via the webhook.
 export async function POST(request: Request) {
   if (!PAYMENTS_ENABLED) {
     return NextResponse.json({ error: "Payments are not enabled." }, { status: 404 });

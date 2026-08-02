@@ -1,3 +1,10 @@
+// Declarative schema for the category-specific fields listing-form.tsx
+// renders in its step 1 "Item details" section (Condition, Colour, Key
+// Features, etc. — vehicles additionally gets the hand-built cascading
+// fields in vehicle-spec-fields.tsx for make/model/year/trim, which the form
+// filters out of this list via VEHICLE_CASCADE_KEYS). Adding a field here is
+// enough to get it rendered, validated (via `required`), and stored in the
+// listing's `attributes` JSON column — no form changes needed per category.
 export type ListingFieldType = "text" | "number" | "select" | "boolean" | "tags";
 
 export type ListingFieldDef = {

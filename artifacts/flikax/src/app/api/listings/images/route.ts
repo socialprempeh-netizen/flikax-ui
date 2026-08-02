@@ -6,6 +6,16 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { watermarkImage } from "@/lib/watermark";
 import { computeAverageHash, computeBlurScore } from "@/lib/image-hash";
 
+// Per-photo upload endpoint for the "post an ad" flow. listing-form.tsx calls
+// this once per file (see uploadOne/handleFiles), not once per listing, so a
+// single ad with 10 photos means 10 requests here in quick succession. Each
+// call: authenticates the caller, validates the raw upload, watermarks it
+// server-side (see watermarkImage's own why-comment for why this can't be
+// done client-side), computes a perceptual hash + blur score for later
+// duplicate/low-quality detection, then pushes the processed file to the
+// "listing-images" Storage bucket. The listing row + listing_images rows
+// themselves are written later, directly from the client, once all photos
+// for the ad have finished uploading.
 export const runtime = "nodejs";
 
 const MAX_FILE_BYTES = 8 * 1024 * 1024;
@@ -66,6 +76,13 @@ export async function POST(request: Request) {
 
   const inputBuffer = Buffer.from(await file.arrayBuffer());
 
+  // Watermarking (and the hash/blur checks below) run here, server-side,
+  // rather than in the browser before upload: it keeps the Flikax mark and
+  // the sharp/libvips processing off the client bundle, guarantees every
+  // photo that reaches Storage is stamped no matter what client posted it
+  // (a raw API call could otherwise skip a browser-only step entirely), and
+  // avoids trusting a client-reported hash/blur score that a scraper could
+  // fake to get past duplicate/quality checks.
   let watermarked: Buffer;
   let phash: string;
   let blurScore: number;
@@ -77,6 +94,11 @@ export async function POST(request: Request) {
     // the *stored* image's real dimensions -- not the original upload's,
     // which is what listing cards need to render at their true aspect ratio.
     ({ width, height } = await sharp(watermarked).metadata());
+    // Hashed/scored from the *original* upload, not the watermarked output —
+    // the watermark and resize would otherwise shift the hash/blur numbers
+    // for every photo by roughly the same amount, which defeats the point of
+    // comparing them (duplicate detection needs the hash to reflect the
+    // photo the seller actually took, not Flikax's own processing of it).
     [phash, blurScore] = await Promise.all([
       computeAverageHash(inputBuffer),
       computeBlurScore(inputBuffer),
@@ -90,6 +112,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Could not process image" }, { status: 400 });
   }
 
+  // Namespaced under the uploader's user id so Storage RLS policies can scope
+  // access by folder prefix, and randomUUID'd so two photos never collide
+  // even within the same rapid batch upload.
   const path = `${user.id}/${randomUUID()}.webp`;
   const { error: uploadError } = await storageClient.storage
     .from("listing-images")
@@ -103,5 +128,10 @@ export async function POST(request: Request) {
     data: { publicUrl },
   } = storageClient.storage.from("listing-images").getPublicUrl(path);
 
+  // No DB row is written here — this route only uploads one file. The client
+  // (listing-form.tsx handleFiles/uploadOne) collects this payload per image
+  // and writes the listing + listing_images rows itself once the seller
+  // submits the whole ad, so path/phash/blurScore/width/height all need to
+  // travel back to the browser now to be persisted later.
   return NextResponse.json({ path, url: publicUrl, phash, blurScore, width, height });
 }

@@ -4,6 +4,12 @@ import { PAYMENTS_ENABLED } from "@/lib/payments/config";
 import { createPendingPurchase } from "@/lib/payments/create-pending-purchase";
 import { initializeFlutterwavePayment } from "@/lib/payments/flutterwave";
 
+// Purchase flow step 2: hit by PlanPurchaseButton's "Pay with Flutterwave"
+// click. Mirrors the Paystack initialize route -- authenticates the caller,
+// records a pending payment/purchase row (createPendingPurchase), then asks
+// Flutterwave for a hosted payment link and hands it back to the browser to
+// redirect to. No money moves here -- that only happens on Flutterwave's
+// page, and we only find out via the webhook.
 export async function POST(request: Request) {
   if (!PAYMENTS_ENABLED) {
     return NextResponse.json({ error: "Payments are not enabled." }, { status: 404 });

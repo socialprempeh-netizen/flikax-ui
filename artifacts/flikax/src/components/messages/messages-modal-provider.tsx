@@ -142,7 +142,7 @@ function MessagesPanelBody() {
           `id, buyer_id, seller_id, phone_revealed_by_buyer, phone_revealed_by_seller,
            buyer:profiles!conversations_buyer_id_fkey(full_name, phone),
            seller:profiles!conversations_seller_id_fkey(full_name, phone),
-           listing:listings(contact_phone)`
+           listing:listings(id)`
         )
         .eq("id", conversationId)
         .maybeSingle(),
@@ -162,8 +162,14 @@ function MessagesPanelBody() {
     const seller = one(conv.seller);
     const listing = one(conv.listing);
 
+    // contact_phone can no longer be selected directly off listings --
+    // authorized here by the caller being a participant in this conversation.
+    const { data: listingContactPhone } = listing
+      ? await supabase.rpc("get_listing_contact_phone", { p_listing_id: listing.id })
+      : { data: null };
+
     const currentUserPhone = (isBuyer ? buyer?.phone : seller?.phone) ?? null;
-    const otherPartyPhone = isBuyer ? listing?.contact_phone || seller?.phone || null : buyer?.phone || null;
+    const otherPartyPhone = isBuyer ? listingContactPhone || seller?.phone || null : buyer?.phone || null;
     const resolvedName = (isBuyer ? seller?.full_name : buyer?.full_name) || "Flikax user";
 
     setThread({

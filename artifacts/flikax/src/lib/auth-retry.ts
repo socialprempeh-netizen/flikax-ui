@@ -1,3 +1,9 @@
+// Thin wrapper Server Actions call around their own body (save/unsave a
+// listing, admin approve/suspend/ban, mark-unavailable, report, etc.) so
+// each action doesn't need to hand-roll the same retry. See the individual
+// call sites (grep withAuthRetry) for usage -- it's a generic helper, not
+// tied to any one action.
+
 const RETRYABLE_MESSAGE = "Not authenticated";
 
 /**

@@ -1,6 +1,9 @@
 import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 
+// Full category list (id/name/slug/parent/icon) used for the homepage
+// category grid and the header's category nav/dropdown. Rarely changes, so
+// it's wrapped in unstable_cache rather than re-queried per request.
 // Shared by the homepage and SiteHeader's no-prop fallback so both hit the
 // same cached entry instead of two separate ones for identical data.
 export const getCategories = unstable_cache(

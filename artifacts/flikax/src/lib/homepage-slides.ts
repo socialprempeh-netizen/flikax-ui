@@ -1,6 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
 
+// Homepage hero banner slides, managed at /admin/homepage-slider. Images live
+// in the "homepage-slides" storage bucket as paths, not URLs, so
+// resolveSlideImageUrl turns a stored path into the public URL the <img> tag
+// actually needs -- same pattern as resolveListingImageUrl in images.ts, just
+// against a different bucket.
 export type HomepageSlide = {
   id: string;
   image_path: string;

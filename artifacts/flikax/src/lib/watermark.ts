@@ -2,6 +2,12 @@ import { readFile } from "fs/promises";
 import path from "path";
 import sharp from "sharp";
 
+// Image-processing step of the listing upload pipeline (called from
+// app/api/listings/images/route.ts, server-side only — see that file for why
+// this doesn't happen in the browser). watermarkImage() is the only export:
+// it downsizes an uploaded photo to a sane max dimension and stamps a
+// translucent, shadow-backed Flikax logo in the center before the result is
+// pushed to Storage.
 const MAX_DIMENSION = 1600;
 
 // The logo itself sits at a low opacity so the photo underneath stays fully

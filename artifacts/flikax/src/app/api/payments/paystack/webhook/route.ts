@@ -3,16 +3,27 @@ import { PAYMENTS_ENABLED } from "@/lib/payments/config";
 import { verifyPaystackSignature } from "@/lib/payments/paystack";
 import { markPaymentSuccess } from "@/lib/payments/mark-payment-success";
 
-export const runtime = "nodejs";
+// Purchase flow step 3: Paystack calls this server-to-server after a
+// checkout completes (independent of whether the user's browser ever makes
+// it back to /dashboard). This -- not the initialize route, not the
+// client -- is the only trigger for markPaymentSuccess(), which is the
+// only place a payment actually gets marked successful.
+export const runtime = "nodejs"; // needs Node's crypto (via verifyPaystackSignature), not the Edge runtime.
 
 export async function POST(request: Request) {
   if (!PAYMENTS_ENABLED) {
     return NextResponse.json({ error: "Payments are not enabled." }, { status: 404 });
   }
 
+  // Read the body as raw text (not request.json()) because signature
+  // verification is computed over the exact byte string Paystack sent --
+  // parsing and re-serializing JSON could change whitespace and break the
+  // HMAC comparison.
   const rawBody = await request.text();
   const signature = request.headers.get("x-paystack-signature");
 
+  // Security-critical: reject anything that isn't provably from Paystack
+  // BEFORE touching its contents. Never parse/act on `event` first.
   if (!verifyPaystackSignature(rawBody, signature)) {
     return NextResponse.json({ error: "Invalid signature." }, { status: 401 });
   }

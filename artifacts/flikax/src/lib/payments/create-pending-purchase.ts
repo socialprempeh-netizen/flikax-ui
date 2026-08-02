@@ -3,6 +3,14 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
 import { LISTING_SCOPED_PLAN_TYPES, type PlanType } from "@/lib/premium-plans";
 
+// Purchase flow step 1 (server side): called from each provider's
+// /initialize route right after the buy button click. Runs with the
+// signed-in user's own cookie-scoped Supabase client (not the admin
+// client), so ownership checks below are backed by real auth rather than
+// caller-supplied data. Writes a "pending" payment + purchase row *before*
+// we ever talk to Paystack/Flutterwave, so the reference we hand the
+// provider always maps back to a known user/plan/listing when the webhook
+// eventually calls markPaymentSuccess().
 type PendingPurchaseError =
   | "plan_not_found"
   | "listing_required"
@@ -36,6 +44,8 @@ export async function createPendingPurchase({
 
   if (isListingScoped) {
     if (!listingId) return { error: "listing_required" };
+    // Ownership check: without this, any signed-in user could pass someone
+    // else's listingId and pay to feature/bump a listing they don't own.
     const { data: listing } = await supabase
       .from("listings")
       .select("id, user_id")
@@ -46,6 +56,9 @@ export async function createPendingPurchase({
     }
   }
 
+  // This reference is the shared key that ties everything together: it's
+  // sent to the provider on initialize, echoed back in the webhook payload,
+  // and used by markPaymentSuccess() to look up this exact payment row.
   const reference = `flikax_plan_${randomUUID()}`;
 
   const { data: payment, error: paymentError } = await supabase

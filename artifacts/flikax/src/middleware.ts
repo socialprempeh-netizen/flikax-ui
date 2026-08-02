@@ -1,6 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
+// Root Next.js middleware -- runs on (almost) every request per the matcher
+// below. Two jobs: (1) short-circuit the whole site to /maintenance when the
+// maintenance_mode feature flag is on, and (2) hand everything else to
+// updateSession() (src/lib/supabase/middleware.ts), which is what actually
+// refreshes the Supabase session cookie so Server Components see a valid
+// user. The two `next-action`/`next-router-prefetch` header checks further
+// down exist to keep that refresh from racing itself on other code paths.
+
 // A direct REST call rather than the full SSR client — feature_flags has a
 // public read policy, so no cookies/session are needed for this check, and
 // middleware runs on every request so it should stay as cheap as possible.

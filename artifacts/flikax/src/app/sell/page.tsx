@@ -3,6 +3,11 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { SiteHeader } from "@/components/site-header";
 import { ListingForm } from "@/components/listings/listing-form";
 
+// Entry point for "post an ad". This is just a server-rendered shell: it
+// gates on auth, checks for a posting suspension, and preloads the category
+// tree + poster profile so <ListingForm> can render without its own loading
+// state. All of the actual listing-creation and image-upload logic lives
+// client-side in listing-form.tsx.
 export default async function SellPage() {
   const supabase = await createClient();
   const {

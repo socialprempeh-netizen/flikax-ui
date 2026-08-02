@@ -1,6 +1,11 @@
 import { redirect } from "next/navigation";
 import { createClient, getUser } from "@/lib/supabase/server";
 
+// Auth/role gate for every /admin page and admin server action. Looks up the
+// signed-in user's `profiles.role` and redirects non-admins away — this is
+// the app-level check, not a substitute for RLS (the DB itself must still
+// restrict admin-only tables; this just controls who gets to see the UI).
+
 export type AdminRole = "super_admin" | "admin";
 
 const ADMIN_ROLES: readonly AdminRole[] = ["super_admin", "admin"];

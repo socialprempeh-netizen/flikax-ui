@@ -6,6 +6,11 @@ import { getListingPath } from "@/lib/listing-url";
 import { formatAttributeValue } from "@/lib/format-attribute-value";
 import type { ListingCard } from "@/components/listing-grid";
 
+// Data layer for /[category] (and /[category]/[slug] via countCategoryListings)
+// -- fetches paginated, filtered, sorted active listings for a single category,
+// plus the quick-filter "top values" row and the count used for the
+// noindex/sitemap decision. Counterpart to home-listings.ts, which covers the
+// homepage's cross-category feed instead.
 export const CATEGORY_PAGE_SIZE = 24;
 
 /** Below this, a category+location combo is thin content — rendered (with a

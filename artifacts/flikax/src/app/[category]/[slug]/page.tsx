@@ -20,7 +20,7 @@ import {
   BadgeCheck,
   type LucideIcon,
 } from "lucide-react";
-import { getUser } from "@/lib/supabase/server";
+import { createClient, getUser } from "@/lib/supabase/server";
 import { createPublicClient } from "@/lib/supabase/public";
 import { resolveListingImageUrl } from "@/lib/images";
 import { isRecentlyBumped } from "@/lib/premium-plans";
@@ -155,10 +155,16 @@ const getListingByShortId = cache(async (shortId: number) => {
   return unstable_cache(
     async () => {
       const supabase = createPublicClient();
+      // contact_phone and profiles.phone are deliberately excluded here: this
+      // result is cached and shared across every viewer for 60s (see
+      // unstable_cache below), so anything caller-specific or otherwise
+      // access-controlled can't safely live in it. Both are fetched
+      // separately per-request in ListingDetail via the RPCs that actually
+      // enforce who gets to see them.
       const { data } = await supabase
         .from("listings")
         .select(
-          "*, categories(id, name, slug, parent_id), listing_images(storage_path, position, width, height), profiles(full_name, phone, verified)"
+          "id, user_id, category_id, title, description, price, location, status, created_at, updated_at, attributes, negotiable, video_url, is_featured, featured_until, views, bumped_at, short_id, categories(id, name, slug, parent_id), listing_images(storage_path, position, width, height), profiles(full_name, verified)"
         )
         .eq("short_id", shortId)
         .maybeSingle();
@@ -429,12 +435,26 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
   // the *active*-listing UI (Mark Unavailable, hiding "Message Seller" from
   // yourself, etc.) is resolved client-side instead -- see
   // ContactSellerActions/ListingOwnerActions.
+  // Cookie-scoped client only fetched for the non-active branch (owner
+  // viewing their own sold/removed listing) -- get_listing_contact_phone
+  // needs a real auth.uid() there, but calling createClient() (and its
+  // cookies()) on the active-listing hot path would kill this render's
+  // cache-eligibility, per the comment above. createClient() is memoized
+  // per request, so this doesn't duplicate the client getUser() already built.
+  let ownerScopedClient: Awaited<ReturnType<typeof createClient>> | null = null;
   if (listing.status !== "active") {
     const { data: userData } = await getUser();
     if (userData.user?.id !== listing.user_id) notFound();
+    ownerScopedClient = await createClient();
   }
 
   const supabase = createPublicClient();
+
+  const [{ data: sellerContactPhone }, { data: sellerProfileRows }] = await Promise.all([
+    (ownerScopedClient ?? supabase).rpc("get_listing_contact_phone", { p_listing_id: listing.id }),
+    supabase.rpc("get_public_seller_profile", { p_user_id: listing.user_id }),
+  ]);
+  const sellerProfile = sellerProfileRows?.[0] ?? null;
 
   const images = [...(listing.listing_images ?? [])]
     .sort((a, b) => a.position - b.position)
@@ -546,8 +566,8 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
     listing.is_featured && (!listing.featured_until || new Date(listing.featured_until) > new Date());
   const isBumped = isRecentlyBumped(listing.bumped_at);
 
-  const sellerName = listing.profiles?.full_name || "Flikax user";
-  const sellerPhoneDigits = (listing.contact_phone || listing.profiles?.phone)?.replace(/^\+/, "");
+  const sellerName = sellerProfile?.full_name || listing.profiles?.full_name || "Flikax user";
+  const sellerPhoneDigits = sellerContactPhone?.replace(/^\+/, "");
   const sellerPhone = sellerPhoneDigits ? `+${sellerPhoneDigits}` : null;
   const feedbackHref = `/feedback?listingId=${encodeURIComponent(listing.id)}`;
 
@@ -794,7 +814,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                     className="flex min-h-11 items-center gap-1 truncate text-base font-bold text-neutral-800 hover:text-brand hover:underline"
                   >
                     <span className="truncate">{sellerName}</span>
-                    {listing.profiles?.verified && (
+                    {(sellerProfile?.verified ?? listing.profiles?.verified) && (
                       <BadgeCheck className="size-4 shrink-0 fill-brand text-white" aria-label="Verified seller" />
                     )}
                   </Link>

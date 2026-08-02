@@ -24,7 +24,9 @@ export default async function EditListingPage({
     supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
     supabase
       .from("listings")
-      .select("*, listing_images(id, storage_path, position)")
+      .select(
+        "id, category_id, title, description, price, location, negotiable, attributes, video_url, user_id, listing_images(id, storage_path, position)"
+      )
       .eq("id", id)
       .eq("user_id", user.id)
       .maybeSingle(),
@@ -33,6 +35,11 @@ export default async function EditListingPage({
   if (!listing) {
     notFound();
   }
+
+  // contact_phone can no longer be selected directly off listings -- this
+  // call is authorized by the .eq("user_id", user.id) filter above already
+  // having proven ownership.
+  const { data: contactPhone } = await supabase.rpc("get_listing_contact_phone", { p_listing_id: listing.id });
 
   const images = (listing.listing_images ?? [])
     .sort((a, b) => a.position - b.position)
@@ -52,7 +59,7 @@ export default async function EditListingPage({
     category_id: listing.category_id,
     attributes: (listing.attributes ?? {}) as Record<string, string | string[]>,
     video_url: listing.video_url,
-    contact_phone: listing.contact_phone,
+    contact_phone: contactPhone,
     images,
   };
 

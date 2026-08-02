@@ -1,6 +1,10 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./database.types";
 
+// Not part of the login/OAuth/OTP flow itself -- this client never reads a
+// session, so it always queries as an anonymous visitor regardless of who's
+// actually signed in. It exists purely to avoid the cost below.
+//
 // The cookie-aware client in server.ts calls cookies() unconditionally --
 // which is correct for anything that needs to respect a signed-in viewer's
 // session, but it also means *any* page that uses it for even a plain public

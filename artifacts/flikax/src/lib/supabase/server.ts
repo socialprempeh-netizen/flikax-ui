@@ -4,6 +4,16 @@ import { cookies } from "next/headers";
 import type { Database } from "./database.types";
 import { logAuthEvent } from "./auth-debug-log";
 
+// Cookie-aware Supabase client for Server Components, Route Handlers, and
+// Server Actions -- anywhere that needs to know "who is the signed-in
+// viewer" and act with their RLS-scoped permissions. createClient() and
+// getUser() are both memoized per request (see the `cache()` wraps below) so
+// every call site in a single request shares one client and one refresh
+// decision instead of racing each other. For public, non-personalized data
+// on statically/ISR-rendered pages, use createPublicClient() from ./public.ts
+// instead -- it skips cookies() entirely so the page doesn't get forced
+// dynamic.
+
 async function buildClient() {
   const cookieStore = await cookies();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -86,6 +96,11 @@ async function expiresAtUnix(client: Awaited<ReturnType<typeof buildClient>>): P
   }
 }
 
+// The single source of truth for "is there a signed-in user" on the server --
+// called directly by layouts/pages that gate content, and indirectly by
+// createClient() consumers that need auth.getUser() rather than raw cookie
+// data. Wrapping in cache() means the retry-on-race logic below only ever
+// runs once per request no matter how many components ask.
 export const getUser = cache(async () => {
   const supabase = await createClient();
   const result = await supabase.auth.getUser();

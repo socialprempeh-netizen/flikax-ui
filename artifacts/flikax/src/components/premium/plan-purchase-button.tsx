@@ -3,6 +3,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
+// Purchase flow step 1 (client side, the very start): renders the two "Pay
+// with ..." buttons. On click it only asks our own /initialize route for a
+// hosted checkout URL and full-page-redirects there -- it never talks to
+// Paystack/Flutterwave directly and never sees a secret key. Whether the
+// payment actually succeeded is decided later by the provider's webhook,
+// not by anything that happens in this component.
 export function PlanPurchaseButton({ planId }: { planId: string }) {
   const [loading, setLoading] = useState<"paystack" | "flutterwave" | null>(null);
   const [error, setError] = useState<string | null>(null);

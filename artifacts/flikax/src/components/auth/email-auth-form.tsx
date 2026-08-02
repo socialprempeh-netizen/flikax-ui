@@ -13,6 +13,13 @@ const FIELD_CLASS =
 
 type Mode = "sign-in" | "sign-up";
 
+// Email + password sign-in and sign-up, combined into one tabbed form
+// (mirrors PhoneAuthForm's role for the phone method -- see
+// auth-method-tabs.tsx, which renders this and PhoneAuthForm side by side).
+// Sign-up stashes full_name in the auth user's metadata via `options.data`
+// rather than writing to public.profiles directly here -- unlike
+// PhoneAuthForm's "name" step, which does a direct profiles update because
+// phone signup has no equivalent metadata field to piggyback on.
 export function EmailAuthForm({
   redirectTo = "/",
   defaultMode = "sign-in",

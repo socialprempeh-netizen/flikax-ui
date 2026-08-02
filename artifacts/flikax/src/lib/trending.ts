@@ -1,6 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
 
+// Backs the "trending searches" chips (components/trending-searches.tsx) on
+// the homepage.
 const TRENDING_LIMIT = 5;
 // Pull a wider pool than we need before deduping -- several of the
 // most-viewed listings are often near-duplicate titles (the same phone

@@ -12,8 +12,12 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   const { id } = await params;
   const supabase = await createClient();
 
-  const [{ data: userData }, { data: profile }, { data: feedback }] = await Promise.all([
+  const [{ data: userData }, { data: directProfile }, { data: feedback }] = await Promise.all([
     getUser(),
+    // Works when the viewer is this profile's owner (any listing status) or
+    // an admin, per the profiles RLS policies -- returns null for anyone
+    // else now that the old blanket "public if active listing" policy is
+    // gone.
     supabase.from("profiles").select("id, full_name, verified").eq("id", id).maybeSingle(),
     supabase
       .from("profile_feedback")
@@ -23,6 +27,13 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
       .eq("profile_id", id)
       .order("created_at", { ascending: false }),
   ]);
+
+  // Falls back to the public-safe RPC for the general "viewing someone
+  // else's seller profile" case -- same "has an active listing" condition
+  // the old policy used, just enforced inside the function instead.
+  const profile =
+    directProfile ??
+    (await supabase.rpc("get_public_seller_profile", { p_user_id: id }).then((r) => r.data?.[0] ?? null));
 
   if (!profile) notFound();
 

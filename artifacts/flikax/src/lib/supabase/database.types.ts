@@ -1015,6 +1015,20 @@ export type Database = {
           listing_count: number
         }[]
       }
+      get_listing_contact_phone: {
+        Args: { p_listing_id: string }
+        Returns: string
+      }
+      get_public_seller_profile: {
+        Args: { p_user_id: string }
+        Returns: {
+          full_name: string
+          id: string
+          location: string
+          member_since: string
+          verified: boolean
+        }[]
+      }
       get_seller_listing_stats: {
         Args: { p_user_id: string }
         Returns: {
@@ -1072,8 +1086,8 @@ export type Database = {
           category_name: string
           category_slug: string
           cover_image_height: number
-          cover_image_width: number
           cover_image_path: string
+          cover_image_width: number
           created_at: string
           description: string
           id: string

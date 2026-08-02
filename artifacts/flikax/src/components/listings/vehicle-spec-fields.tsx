@@ -1,5 +1,10 @@
 "use client";
 
+// Category-specific sub-form rendered inside listing-form.tsx's step 1 "Item
+// details" section, but only when the seller has picked the Vehicles
+// category. It replaces the generic make/model/year/trim fields (which
+// CATEGORY_FIELDS/getFieldsForCategory would otherwise render as plain text
+// inputs) with cascading, data-backed selects.
 import { useState } from "react";
 import { CAR_MAKES_MODELS } from "@/lib/car-data";
 import { Button } from "@/components/ui/button";

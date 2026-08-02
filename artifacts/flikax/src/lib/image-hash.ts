@@ -1,5 +1,11 @@
 import sharp from "sharp";
 
+// Anti-spam/quality signals computed for every photo uploaded through
+// app/api/listings/images/route.ts. Neither function blocks an upload by
+// itself — they attach a phash + blurScore to each listing_images row so
+// abuse/quality checks (duplicate-listing detection, flagging obviously
+// blurry photos) can run against them elsewhere, now or later.
+
 /**
  * 8x8 grayscale average-hash (aHash): downscale to 8x8, compare each pixel
  * to the mean luminance, pack the 64 bits as a '0'/'1' string for Postgres's

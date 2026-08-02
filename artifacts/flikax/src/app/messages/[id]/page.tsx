@@ -39,7 +39,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
       .from("conversations")
       .select(
         `id, buyer_id, seller_id, phone_revealed_by_buyer, phone_revealed_by_seller,
-         listing:listings(id, title, price, location, status, contact_phone, short_id, listing_images(storage_path, position), categories(slug)),
+         listing:listings(id, title, price, location, status, short_id, listing_images(storage_path, position), categories(slug)),
          buyer:profiles!conversations_buyer_id_fkey(full_name, phone),
          seller:profiles!conversations_seller_id_fkey(full_name, phone)`
       )
@@ -60,11 +60,19 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
   // Deferred until after the response is sent, same as the listing page's view-count bump.
   after(() => markConversationReadAction(id));
 
+  // contact_phone can no longer be selected directly off listings (see
+  // get_listing_contact_phone's own comment) -- this call is authorized by
+  // the caller being a participant in this exact conversation, which is
+  // already established above.
+  const { data: listingContactPhone } = conversation.listing
+    ? await supabase.rpc("get_listing_contact_phone", { p_listing_id: conversation.listing.id })
+    : { data: null };
+
   const isBuyer = user.id === conversation.buyer_id;
   const otherParty = isBuyer ? conversation.seller : conversation.buyer;
   const currentUserPhone = (isBuyer ? conversation.buyer?.phone : conversation.seller?.phone) ?? null;
   const otherPartyPhone = isBuyer
-    ? conversation.listing?.contact_phone || conversation.seller?.phone || null
+    ? listingContactPhone || conversation.seller?.phone || null
     : conversation.buyer?.phone || null;
 
   const cover = [...(conversation.listing?.listing_images ?? [])].sort((a, b) => a.position - b.position)[0];

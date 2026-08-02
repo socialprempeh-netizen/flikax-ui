@@ -18,6 +18,21 @@ const RESEND_SECONDS = 30;
 
 type Step = "phone" | "otp" | "name";
 
+// Ghana phone + SMS OTP sign-in/sign-up, combined into one flow (Supabase's
+// phone auth treats "new number" and "existing number" identically -- both
+// just get an OTP, and signInWithOtp implicitly creates the auth user on
+// first verify). Three steps:
+//   1. "phone"  -- collect a local Ghana number, normalize to E.164 via
+//      toGhanaE164 (Supabase's phone auth requires E.164), call
+//      signInWithOtp({ phone }) to trigger the SMS.
+//   2. "otp"    -- verifyOtp({ phone, token, type: "sms" }) exchanges the
+//      6-digit code for a real session. On success we check whether this
+//      user already has a profiles.full_name (returning user) or not
+//      (brand-new phone signup, since phone auth alone never collects a
+//      name) and branch to step 3 only when it's missing.
+//   3. "name"   -- one-time name capture for brand-new phone accounts,
+//      written straight to profiles via an authenticated update (RLS scopes
+//      it to auth.uid() = id).
 export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
   const router = useRouter();
   const [supabase] = useState(() => createClient());
@@ -37,6 +52,10 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
     return () => clearInterval(timer);
   }, [cooldown]);
 
+  // rawPhone stays whatever the user typed (so the "024 123 4567" input
+  // keeps its editable local format if they hit "Change number" later);
+  // `phone` only ever holds the validated E.164 form Supabase's SMS API
+  // actually requires, and is what verifyOtp/resendOtp reuse afterwards.
   async function sendOtp(e: FormEvent) {
     e.preventDefault();
     setError(null);
@@ -61,6 +80,10 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
     setCooldown(RESEND_SECONDS);
   }
 
+  // Guarded by the same `cooldown` countdown shown next to the "Resend OTP"
+  // button -- purely a client-side UX throttle (Supabase enforces its own
+  // rate limit server-side regardless) so users aren't tempted to spam the
+  // SMS provider while a code is already in flight.
   async function resendOtp() {
     if (cooldown > 0) return;
     setError(null);
@@ -75,6 +98,14 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
     setCooldown(RESEND_SECONDS);
   }
 
+  // The step where the SMS code is actually exchanged for a session.
+  // verifyOtp() logs the user in (or, for a phone number seen for the first
+  // time, creates the auth user) in one call -- there's no separate
+  // "confirm this is a new account" step. Afterwards we look up
+  // profiles.full_name: a phone-only signup has no name yet (unlike email
+  // signup, which collects it up front), so a missing name is how we detect
+  // "this was just created" and route to the one-time "name" step instead
+  // of straight to redirectTo.
   async function verifyOtp(e: FormEvent) {
     e.preventDefault();
     setError(null);
@@ -110,6 +141,8 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
     router.push(redirectTo);
   }
 
+  // Only reached from the "name" step, i.e. only for a phone number that
+  // just verified for the first time with no profiles.full_name set yet.
   async function saveName(e: FormEvent) {
     e.preventDefault();
     setError(null);

@@ -13,7 +13,7 @@ export default async function AdminFraudPage() {
   const adminClient = createAdminClient();
 
   const [duplicatePhones, highFrequencyPosters, similarEmails] = await Promise.all([
-    findDuplicateContactPhones(supabase),
+    adminClient ? findDuplicateContactPhones(adminClient) : Promise.resolve([]),
     findHighFrequencyPosters(supabase, FREQUENCY_WINDOW_HOURS, FREQUENCY_THRESHOLD),
     adminClient ? findSimilarEmailPatterns(adminClient) : Promise.resolve([]),
   ]);

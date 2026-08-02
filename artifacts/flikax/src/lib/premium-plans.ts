@@ -1,5 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 
+// Premium plan catalog (pricing, features, plan type) shown on /premium and
+// used by the payments flow (lib/payments/create-pending-purchase.ts) to look
+// up what a purchase is actually for. Also backs /admin/premium-plans, which
+// is why getAllPlans exists alongside the public getEnabledPlans.
 export type PlanType = "pay_per_ad" | "subscription" | "featured_spot" | "bump_fee";
 
 export type PremiumPlan = {

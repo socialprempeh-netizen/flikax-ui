@@ -27,6 +27,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+// ─── ListingForm: the "post an ad" / "edit an ad" wizard ──────────────────────
+// This one component drives both the create flow (rendered from app/sell/page.tsx,
+// no `existingListing` prop) and the edit flow (`existingListing` supplied,
+// `isEditing` derived from it) — the two only diverge at submit time, in how
+// the listing + image rows are written.
+//
+// Shape of the form, top to bottom:
+//   Step 1 "Item Details" — category pickers, then category-specific fields
+//     (either the hand-built VehicleSpecFields cascade for Vehicles, or the
+//     generic field loop driven by listing-fields.ts for everything else),
+//     description, price/negotiable, contact phone. handleNext() validates
+//     this step and advances `step` to 2; nothing is persisted yet.
+//   Step 2 "Photos & Title" — title, location, photo grid, optional video
+//     link. Photos are uploaded eagerly as soon as they're picked (see
+//     handleFiles/uploadOne below), *before* the seller presses submit, so
+//     by the time handleSubmit() runs, each photo already has a Storage path
+//     and just needs a DB row. handleSubmit() writes the `listings` row (or
+//     updates it, if editing) and the `listing_images` rows in one go.
+//
+// State is a flat list of useState hooks mirroring each form field, rather
+// than a single reducer or form-library instance — this is a linear two-step
+// wizard with no nested routing or deeply shared cross-field logic, so the
+// extra structure wouldn't pay for itself. `attributes` is the one exception:
+// it's a single Record because the fields it holds are fully dynamic
+// (defined by listing-fields.ts per category), not knowable at compile time.
+
 // Rendered via the dedicated cascading VehicleSpecFields component instead of
 // the generic field loop below when the category is Vehicles.
 const VEHICLE_CASCADE_KEYS = ["make", "model", "year", "trim"];
@@ -212,10 +238,17 @@ export function ListingForm({
     ? dynamicFields.filter((field) => !VEHICLE_CASCADE_KEYS.includes(field.key))
     : dynamicFields;
 
+  // Generic setter for the dynamic `attributes` fields (listing-fields.ts /
+  // VehicleSpecFields both call this) — one function handles every category's
+  // scalar fields since the field set itself isn't known until a category is
+  // picked.
   function setAttribute(key: string, value: string) {
     setAttributes((prev) => ({ ...prev, [key]: value }));
   }
 
+  // Same idea as setAttribute, but for `type: "tags"` fields (e.g. "Key
+  // Features"), which store an array of selected option strings instead of a
+  // single value.
   function toggleTagAttribute(key: string, tag: string) {
     setAttributes((prev) => {
       const current = Array.isArray(prev[key]) ? (prev[key] as string[]) : [];
@@ -224,6 +257,15 @@ export function ListingForm({
     });
   }
 
+  // ─── Photo upload (client side) ────────────────────────────────────────────
+  // uploadOne() POSTs a single file to app/api/listings/images/route.ts,
+  // which does the real work (validate, watermark, hash, push to Storage —
+  // see that file). It retries once on a 401: that route accepts a bearer
+  // token specifically so a batch of these requests firing back-to-back
+  // doesn't race the cookie-session refresh (see the route's own comment),
+  // but a 401 can still happen if the access token this function was handed
+  // expired mid-batch, so one retry with a fresh look is cheap insurance
+  // rather than failing a photo outright.
   async function uploadOne(file: File, accessToken: string | undefined) {
     const MAX_ATTEMPTS = 2;
     let lastBody: { error?: string } = {};
@@ -244,6 +286,16 @@ export function ListingForm({
     return { ok: false as const, body: lastBody };
   }
 
+  // Fires the moment the seller picks/drops files in the Photos step — each
+  // file starts uploading immediately (not deferred to the final "Publish"
+  // submit), so `images` is the source of truth for what's actually landed
+  // in Storage by the time handleSubmit() runs. Each file gets its own
+  // ImageSlot with independent uploading/done/error status so one bad photo
+  // (wrong type, too large, failed watermark) doesn't block or roll back the
+  // others — the seller can just remove that slot and keep going. The access
+  // token is fetched once per batch, up front, and reused for every file in
+  // it (rather than re-fetched per file) — see uploadOne's comment for why
+  // that matters for a fast multi-photo batch.
   async function handleFiles(fileList: FileList | null) {
     if (!fileList) return;
     const files = Array.from(fileList).slice(0, MAX_IMAGES - images.length);
@@ -292,6 +344,13 @@ export function ListingForm({
     }
   }
 
+  // Removing a slot never deletes anything in Storage/DB here — for a
+  // pre-existing image (edit flow) it just records the id in
+  // removedExistingIds so handleSubmit() can delete the listing_images row
+  // (and only that row) once the edit is actually saved; for a
+  // freshly-uploaded-but-not-yet-submitted image it's dropped from local
+  // state only, leaving an orphaned file in Storage (accepted tradeoff —
+  // simpler than wiring a delete call into every discard path).
   function removeImage(id: string) {
     setImages((prev) => {
       const target = prev.find((img) => img.id === id);
@@ -302,6 +361,11 @@ export function ListingForm({
     });
   }
 
+  // ─── Step 1 -> Step 2 ───────────────────────────────────────────────────────
+  // Validates everything collected in "Item Details" (category, the
+  // category's required dynamic fields, price, contact phone) and advances
+  // the wizard. Nothing is written to the network here — this step is pure
+  // client-side gating before the seller reaches the photo upload step.
   function handleNext(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!categoryId) {
@@ -330,6 +394,17 @@ export function ListingForm({
     setStep(2);
   }
 
+  // ─── Final submit: persist the listing ─────────────────────────────────────
+  // By this point every photo has already been uploaded to Storage (see
+  // handleFiles above) — this function's only job is writing the `listings`
+  // row and the matching `listing_images` rows (each carrying the phash/
+  // blurScore/dimensions the upload route computed) directly via the
+  // cookie-authenticated `supabase` client, since RLS already scopes those
+  // tables to the signed-in user. Create and edit share this function:
+  // editing updates the existing listing row, deletes any listing_images
+  // rows the seller removed (removedExistingIds), and inserts rows only for
+  // the newly-uploaded images (positioned after the surviving existing ones)
+  // rather than re-inserting images that were already there.
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);

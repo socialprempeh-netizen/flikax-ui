@@ -25,7 +25,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
     supabase
       .from("listings")
       .select(
-        "*, categories(id, name, slug, parent_id), listing_images(id, storage_path, position), profiles(full_name, phone, id)"
+        "id, user_id, category_id, title, description, price, location, status, created_at, updated_at, attributes, negotiable, declined_reason, video_url, is_featured, featured_until, views, bumped_at, expires_at, short_id, categories(id, name, slug, parent_id), listing_images(id, storage_path, position), profiles(full_name, phone, id)"
       )
       .eq("id", id)
       .maybeSingle(),
@@ -33,6 +33,10 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
   ]);
 
   if (!listing) notFound();
+
+  // contact_phone can no longer be selected directly off listings -- this
+  // call is authorized by the is_admin branch inside the function.
+  const { data: listingContactPhone } = await supabase.rpc("get_listing_contact_phone", { p_listing_id: listing.id });
 
   const images = [...(listing.listing_images ?? [])]
     .sort((a, b) => a.position - b.position)
@@ -170,8 +174,8 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
           <Card className="gap-2 rounded-2xl p-5 shadow-sm">
             <h2 className="text-sm font-bold text-slate-800">Seller</h2>
             <p className="text-sm text-slate-700">{listing.profiles?.full_name || "Unnamed user"}</p>
-            {(listing.contact_phone || listing.profiles?.phone) && (
-              <p className="text-sm text-slate-500">{listing.contact_phone || listing.profiles?.phone}</p>
+            {(listingContactPhone || listing.profiles?.phone) && (
+              <p className="text-sm text-slate-500">{listingContactPhone || listing.profiles?.phone}</p>
             )}
             {listing.profiles?.id && (
               <Link

@@ -10,6 +10,13 @@ export type SessionSummary = {
   hasUnreadMessages: boolean;
 };
 
+// Client-side hook for "is anyone logged in, and what do we show for them in
+// chrome like the header/nav" -- backed by GET /api/session-summary (see
+// src/app/api/session-summary/route.ts), which is the thing that actually
+// calls getUser(). Exists so pages that render SiteHeader don't need to call
+// cookies()/getUser() themselves during render (which would force them
+// dynamic); this hook fetches after the static shell has already painted.
+
 const DEFAULT_SUMMARY: SessionSummary = { isLoggedIn: false, hasUnreadMessages: false };
 
 // Both MobileNavDrawer and HeaderUserActions mount on the same page load and

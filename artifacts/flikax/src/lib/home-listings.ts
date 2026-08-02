@@ -5,6 +5,12 @@ import { getListingPath } from "@/lib/listing-url";
 import type { ListingFilters } from "@/lib/filters";
 import type { ListingCard } from "@/components/listing-grid";
 
+// Data layer for the homepage's main listing feed (app/page.tsx + the
+// infinite-scroll "load more" action). Delegates the actual query to the
+// `search_listings` Postgres RPC (cross-category search/filter/sort in one
+// call) rather than building it with the query builder here, unlike
+// category-listings.ts's single-category page.
+//
 // Rows returned per page by the search_listings RPC (hardcoded in the SQL
 // function -- there is no p_page_size parameter to override it).
 export const HOME_RPC_PAGE_SIZE = 24;

@@ -2,6 +2,13 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
 import type { createAdminClient } from "@/lib/supabase/admin";
 
+// Queries backing /admin/fraud. Each function here is a standalone heuristic
+// over data we already have (listings, profiles, auth users) rather than a
+// dedicated fraud-detection system -- there's no scoring model or ML, just
+// three independent "does this look like the same person working around
+// account limits" checks: shared contact phone across accounts, burst
+// posting, and Gmail-alias email variants. Admins read the results and act
+// on them manually.
 export type DuplicatePhoneGroup = {
   phone: string;
   listings: { id: string; title: string; userId: string; sellerName: string | null; createdAt: string }[];
@@ -26,11 +33,17 @@ export type SimilarEmailGroup = {
  * what "same seller running several accounts" actually looks like on this
  * schema: the same real-world contact number posted under different
  * `user_id`s.
+ *
+ * Takes the service-role admin client (like findSimilarEmailPatterns below),
+ * not the caller's own session client -- contact_phone was revoked from
+ * anon/authenticated at the grant level (it's only exposed per-listing
+ * through get_listing_contact_phone's own auth checks), and this needs a
+ * bulk cross-listing read that a narrow per-row RPC can't do.
  */
 export async function findDuplicateContactPhones(
-  supabase: SupabaseClient<Database>
+  adminClient: NonNullable<ReturnType<typeof createAdminClient>>
 ): Promise<DuplicatePhoneGroup[]> {
-  const { data } = await supabase
+  const { data } = await adminClient
     .from("listings")
     .select("id, title, user_id, contact_phone, created_at, profiles(full_name)")
     .not("contact_phone", "is", null)

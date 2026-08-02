@@ -14,6 +14,12 @@ type AuthModalContextValue = {
 
 const AuthModalContext = createContext<AuthModalContextValue | null>(null);
 
+// Mounted once near the root in app/layout.tsx; any component calls
+// useAuthModal().openAuthModal() to pop sign-in/register over the current
+// page instead of navigating to /auth/login. The actual sign-in UI (email,
+// phone OTP, OAuth buttons) is unchanged from the standalone pages -- this
+// just wraps LoginCardBody/RegisterCardBody in a floating shell.
+//
 // A plain client-state modal (deliberately NOT built on Next.js parallel +
 // intercepting routes -- that combination hits an unresolved Next.js router
 // bug, "TypeError: initialTree is not iterable", the moment a link into the

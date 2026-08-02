@@ -3,6 +3,10 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { getInitials } from "@/lib/avatar";
 import { isConversationUnread } from "@/lib/messages";
 
+// Backs useSessionSummary() (src/lib/use-session-summary.ts), the client
+// hook the header/nav use to know whether someone's logged in. This is
+// where the actual getUser() call and unread-messages query happen.
+//
 // Reads cookies(), so this route itself is always dynamic -- that's expected
 // and fine for a route handler. The point of splitting it out of SiteHeader
 // is that a *page* rendering SiteHeader no longer needs to touch cookies()
