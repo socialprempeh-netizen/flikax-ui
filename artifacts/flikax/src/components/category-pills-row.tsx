@@ -54,11 +54,11 @@ export function CategoryPillsRow({
           ref={triggerRef}
           type="button"
           onClick={toggleMenu}
-          className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+          className={`flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
             menuOpen ? "bg-brand-dark text-white" : "bg-brand text-white hover:bg-brand-dark"
           }`}
         >
-          <Grid2x2 className="size-4" />
+          <Grid2x2 className="size-3.5" />
           All categories
           <ChevronDown className={`size-3.5 transition-transform ${menuOpen ? "rotate-180" : ""}`} />
         </button>
@@ -69,7 +69,7 @@ export function CategoryPillsRow({
             <Link
               key={cat.id}
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`flex shrink-0 items-center gap-2 rounded-full border py-1 pl-1 pr-4 text-sm font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-1.5 rounded-full border py-1 pl-1 pr-3.5 text-sm font-medium transition-colors ${
                 isActive
                   ? "border-brand bg-brand-light text-brand"
                   : "border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
@@ -77,10 +77,10 @@ export function CategoryPillsRow({
             >
               <CategoryThumb
                 category={cat}
-                size="size-9"
-                iconSize="size-4"
+                size="size-7"
+                iconSize="size-3.5"
                 rounded="rounded-full"
-                sizes="36px"
+                sizes="28px"
                 className="ring-1 ring-slate-200/70"
               />
               {cat.name}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MapPin } from "lucide-react";
 import { LocationPickerModal } from "@/components/location-picker-modal";
 
 export function SearchLocationField({ defaultLocation }: { defaultLocation?: string }) {
@@ -14,8 +14,9 @@ export function SearchLocationField({ defaultLocation }: { defaultLocation?: str
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="relative flex h-9 shrink-0 items-center rounded-full bg-transparent pl-3.5 pr-6 text-sm font-normal text-neutral-700 outline-none"
+        className="relative flex h-9 shrink-0 items-center gap-1 rounded-md bg-transparent pl-3.5 pr-6 text-sm font-normal text-neutral-700 outline-none"
       >
+        <MapPin className="size-3.5 shrink-0 text-neutral-500" />
         {location || "All Ghana"}
         <ChevronDown className="pointer-events-none absolute right-1.5 size-3.5 text-neutral-500" />
       </button>

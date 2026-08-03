@@ -65,7 +65,15 @@ export function ListingGrid({
 
   return (
     <section className="flex-1">
-      <div className={isHome ? "columns-2 gap-2 sm:columns-3 lg:columns-4 xl:columns-5" : "columns-2 gap-2 sm:columns-2 lg:columns-3"}>
+      {/* -mx-4 cancels the page's own px-4 edge padding below sm, so listing
+          images run flush to the screen edges (Jiji-style) on mobile; sm:mx-0
+          hands padding back to the page container once it's no longer just
+          a hairline gap. */}
+      <div
+        className={`-mx-4 sm:mx-0 ${
+          isHome ? "columns-2 gap-2 sm:columns-3 lg:columns-4 xl:columns-5" : "columns-2 gap-2 sm:columns-2 lg:columns-3"
+        }`}
+      >
         {listings.map((listing) => {
           const hasNaturalAspect = Boolean(listing.imageWidth && listing.imageHeight);
 

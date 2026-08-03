@@ -14,7 +14,7 @@ export function SearchBar({
       role="search"
       action="/"
       method="get"
-      className="mx-auto flex w-full items-stretch overflow-hidden rounded-full border border-transparent bg-white text-sm shadow-xl transition-shadow focus-within:border-brand/30 focus-within:shadow-2xl"
+      className="mx-auto flex w-full items-stretch overflow-hidden rounded-md border border-transparent bg-white text-sm shadow-xl transition-shadow focus-within:border-brand/30 focus-within:shadow-2xl"
     >
       <div className="flex min-w-0 flex-1 items-center gap-1 py-1 pl-1">
         <SearchLocationField defaultLocation={defaultLocation} />

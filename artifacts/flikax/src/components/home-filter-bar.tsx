@@ -60,7 +60,7 @@ export function HomeFilterBar({ filters }: { filters: ListingFilters }) {
           ref={filtersBtnRef}
           type="button"
           onClick={() => (filtersOpen ? setFiltersOpen(false) : openFilters())}
-          className={`flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+          className={`flex items-center gap-1.5 rounded-md border px-3.5 py-1.5 text-sm font-medium transition-colors ${
             hasActiveFilters
               ? "border-brand bg-brand-light text-brand"
               : "border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
@@ -78,7 +78,7 @@ export function HomeFilterBar({ filters }: { filters: ListingFilters }) {
               setFiltersOpen(false);
               setSortOpen((v) => !v);
             }}
-            className="flex items-center gap-1.5 rounded-full border border-neutral-300 bg-white px-3.5 py-1.5 text-sm font-medium text-neutral-600 hover:bg-neutral-50"
+            className="flex items-center gap-1.5 rounded-md border border-neutral-300 bg-white px-3.5 py-1.5 text-sm font-medium text-neutral-600 hover:bg-neutral-50"
           >
             {activeSort.label}
             <ChevronDown className={`size-3.5 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
