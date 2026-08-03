@@ -1,15 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Grid2x2 } from "lucide-react";
 import { buildListingsHref, type ListingFilters } from "@/lib/filters";
 import type { Category } from "@/components/category-sidebar";
 import { CategoryMegaMenu } from "@/components/category-mega-menu";
 import { CategoryThumb } from "@/components/category-thumb";
-
-const MENU_WIDTH = 600;
-const VIEWPORT_MARGIN = 16;
 
 /** Homepage category row: a horizontally-scrollable strip of pills, one per
  * top-level category, plus an "All categories" pill that opens the Temu-
@@ -25,33 +22,28 @@ export function CategoryPillsRow({
   filters: ListingFilters;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [anchor, setAnchor] = useState<{ top: number; left: number } | null>(null);
   const [activeParentId, setActiveParentId] = useState<string | null>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const parents = categories.filter((c) => c.parent_id === null);
 
   function toggleMenu() {
-    if (menuOpen) {
-      setMenuOpen(false);
-      return;
-    }
-    const rect = triggerRef.current?.getBoundingClientRect();
-    if (rect) {
-      setAnchor({
-        top: rect.bottom + 8,
-        left: Math.min(rect.left, window.innerWidth - MENU_WIDTH - VIEWPORT_MARGIN),
-      });
-    }
     setActiveParentId((current) => current ?? parents[0]?.id ?? null);
-    setMenuOpen(true);
+    setMenuOpen((v) => !v);
   }
 
   return (
+    // `relative` lives here, on the wrapper AROUND the scrollable row, not
+    // on a wrapper around just the trigger button inside it -- the row has
+    // `overflow-x-auto`, and per the CSS spec that forces its *other* axis
+    // (overflow-y) into a clipping context too, so an absolutely-positioned
+    // panel nested inside the row gets its height clipped to the row's own
+    // ~44px instead of showing full-size. Anchoring from out here, at the
+    // same left edge the button (the row's first/leftmost item) sits at,
+    // keeps the panel visually under the button without being a descendant
+    // of the clipping container.
     <div className="relative">
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 no-scrollbar sm:mx-0 sm:px-0">
         <button
-          ref={triggerRef}
           type="button"
           onClick={toggleMenu}
           className={`flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
@@ -97,7 +89,6 @@ export function CategoryPillsRow({
         filters={filters}
         activeParentId={activeParentId}
         onHoverParent={setActiveParentId}
-        anchor={anchor}
       />
     </div>
   );

@@ -7,7 +7,7 @@ export function HeroBanner() {
   return (
     <div className="w-full bg-hero-bg">
       <div className="mx-auto flex max-w-7xl flex-col items-center px-4 pt-10 pb-16 text-center sm:px-6 sm:pt-14 sm:pb-20">
-        <h1 className="text-xl font-extrabold leading-tight text-white drop-shadow-sm sm:text-2xl lg:text-3xl xl:text-4xl">
+        <h1 className="text-lg font-extrabold leading-tight text-white drop-shadow-sm sm:text-xl lg:text-2xl xl:text-3xl">
           Ghana&apos;s Premium Marketplace
         </h1>
         <div className="mt-5 w-full max-w-xl sm:mt-6">

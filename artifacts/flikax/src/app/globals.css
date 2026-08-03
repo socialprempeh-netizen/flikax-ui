@@ -26,9 +26,11 @@
      deeper, more muted navy-blue than --brand (which stays the vivid
      site-wide accent for buttons/links/active states elsewhere). Two
      distinct shades so the search button still reads as a separate,
-     darker element against the hero band behind it, per the reference. */
-  --hero-bg: #1b3f8a;
-  --hero-search-btn: #10265c;
+     darker element against the hero band behind it, per the reference.
+     --hero-bg is the exact hex picked off the reference screenshot
+     (rgb(11,20,38)) -- don't drift it back toward a lighter blue. */
+  --hero-bg: #0b1426;
+  --hero-search-btn: #060c18;
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
      as a deliberate tint, not just an off-white. */

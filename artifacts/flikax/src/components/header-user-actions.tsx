@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MessageSquare, Bell, Gem, ClipboardList, UserRound, UserPlus, Plus } from "lucide-react";
+import { MessageSquare, Bell, Gem, ClipboardList, UserRound, Plus } from "lucide-react";
 import { useSessionSummary } from "@/lib/use-session-summary";
 import { useAuthModal } from "@/components/auth/auth-modal-provider";
 import { useMessagesModal } from "@/components/messages/messages-modal-provider";
@@ -60,10 +60,16 @@ export function HeaderUserActions() {
   return (
     <>
       {/* Mobile: everything else lives in the hamburger drawer already, so the
-          header itself only needs one action -- sign up when logged out,
-          or the account avatar when logged in. Desktop keeps the full row. */}
+          header itself only needs the account avatar (logged in) plus the
+          same orange Post Ad CTA as desktop. This used to be a "Sign up"
+          button that forced openAuthModal(..., "register") -- skipping
+          straight to the expanded create-account form and, being the site's
+          one non-brand button, rendering in --brand blue instead of orange.
+          Post Ad here calls openAuthModal(SELL_ROUTE) with no mode override,
+          same as the desktop button and the Sell bottom-tab, so a logged-out
+          tap opens the compact sign-in chooser first, not the register form. */}
       <div className="flex items-center gap-1.5 sm:hidden">
-        {isLoggedIn ? (
+        {isLoggedIn && (
           <Link
             href="/settings"
             title="My Account"
@@ -72,15 +78,25 @@ export function HeaderUserActions() {
           >
             {avatar}
           </Link>
+        )}
+
+        {isLoggedIn ? (
+          <Button asChild size="sm" className="h-11 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600">
+            <Link href="/sell">
+              <Plus className="size-4" />
+              Post Ad
+            </Link>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
-            onClick={() => openAuthModal("/", "register")}
-            className="flex h-11 items-center gap-1.5 rounded-full bg-brand px-3 text-xs font-bold text-white hover:bg-brand-dark"
+            size="sm"
+            className="h-11 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600"
+            onClick={() => openAuthModal("/sell")}
           >
-            <UserPlus className="size-4" />
-            Sign up
-          </button>
+            <Plus className="size-4" />
+            Post Ad
+          </Button>
         )}
       </div>
 

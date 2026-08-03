@@ -9,10 +9,11 @@ import { CategoryThumb } from "@/components/category-thumb";
 
 /** Temu-style two-pane category browser: a left list of top-level
  * categories and a right icon+label grid of the active one's children.
- * Positioned via `anchor` (viewport coordinates from the trigger button's
- * own getBoundingClientRect, computed by the caller) on sm+ screens;
- * on mobile it always takes over the full screen instead, since a small
- * anchored dropdown isn't usable at phone width. */
+ * Rendered as a plain CSS `absolute` box inside the trigger button's own
+ * `relative` wrapper (see CategoryPillsRow) -- deliberately not a
+ * getBoundingClientRect()-measured `fixed` overlay, which only computed its
+ * position once at click time and went stale (rendering far from the
+ * button) on resize or once nearby content settled. */
 export function CategoryMegaMenu({
   open,
   onClose,
@@ -21,7 +22,6 @@ export function CategoryMegaMenu({
   filters,
   activeParentId,
   onHoverParent,
-  anchor,
 }: {
   open: boolean;
   onClose: () => void;
@@ -30,7 +30,6 @@ export function CategoryMegaMenu({
   filters: ListingFilters;
   activeParentId: string | null;
   onHoverParent: (id: string) => void;
-  anchor: { top: number; left: number } | null;
 }) {
   useEffect(() => {
     if (!open) return;
@@ -48,18 +47,9 @@ export function CategoryMegaMenu({
 
   return (
     <>
-      {/* Click-away layer -- only needed on sm+, where the panel is a small
-          anchored dropdown rather than a full-screen takeover. */}
-      <div className="fixed inset-0 z-40 hidden sm:block" onClick={onClose} aria-hidden="true" />
+      <div className="fixed inset-0 z-40" onClick={onClose} aria-hidden="true" />
 
-      <div
-        style={
-          anchor
-            ? ({ "--mm-top": `${anchor.top}px`, "--mm-left": `${anchor.left}px` } as React.CSSProperties)
-            : undefined
-        }
-        className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white sm:inset-auto sm:top-[var(--mm-top)] sm:left-[var(--mm-left)] sm:h-auto sm:max-h-[70vh] sm:w-[600px] sm:rounded-2xl sm:border sm:border-neutral-200 sm:shadow-xl"
-      >
+      <div className="absolute left-0 top-full z-50 mt-2 flex max-h-[70vh] w-[min(90vw,600px)] flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl">
         <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-3 sm:hidden">
           <span className="text-base font-bold text-neutral-800">All categories</span>
           <button
@@ -84,11 +74,17 @@ export function CategoryMegaMenu({
             {parents.map((cat) => {
               const isActive = cat.id === activeParent?.id;
               return (
-                <button
+                // A real link, not a button that only swaps the preview pane --
+                // clicking a name here now navigates straight to that
+                // category's listing page (closing the menu), matching what
+                // "All {name} ›" in the right pane already did. Hover still
+                // swaps the preview pane for mouse users who want to browse
+                // subcategories before committing to a click.
+                <Link
                   key={cat.id}
-                  type="button"
+                  href={buildListingsHref({ ...filters, category: cat.slug })}
                   onMouseEnter={() => onHoverParent(cat.id)}
-                  onClick={() => onHoverParent(cat.id)}
+                  onClick={onClose}
                   className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs font-medium transition-colors sm:text-sm ${
                     isActive ? "bg-brand-light text-brand" : "text-neutral-600 hover:bg-neutral-50"
                   }`}
@@ -106,7 +102,7 @@ export function CategoryMegaMenu({
                       being cut off with an ellipsis, so the full name is
                       always readable. */}
                   <span className="min-w-0 flex-1 leading-tight">{cat.name}</span>
-                </button>
+                </Link>
               );
             })}
           </div>
