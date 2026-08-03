@@ -14,10 +14,10 @@ export function SearchLocationField({ defaultLocation }: { defaultLocation?: str
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="relative flex h-11 shrink-0 items-center rounded-full bg-transparent pl-4 pr-7 text-base font-normal text-neutral-700 outline-none"
+        className="relative flex h-9 shrink-0 items-center rounded-full bg-transparent pl-3.5 pr-6 text-sm font-normal text-neutral-700 outline-none"
       >
         {location || "All Ghana"}
-        <ChevronDown className="pointer-events-none absolute right-2 size-4 text-neutral-500" />
+        <ChevronDown className="pointer-events-none absolute right-1.5 size-3.5 text-neutral-500" />
       </button>
 
       <LocationPickerModal open={open} onClose={() => setOpen(false)} onSelect={(name) => setLocation(name)} />

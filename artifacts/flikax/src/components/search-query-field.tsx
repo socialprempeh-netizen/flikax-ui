@@ -33,7 +33,7 @@ export function SearchQueryField({ defaultQuery }: { defaultQuery?: string }) {
         }}
         placeholder="Search phrase, cars, property, fashion..."
         autoComplete="off"
-        className="w-full min-w-0 bg-transparent px-1 py-1.5 text-sm text-neutral-800 outline-none placeholder:text-neutral-400"
+        className="h-9 w-full min-w-0 bg-transparent px-2 text-sm text-neutral-800 outline-none placeholder:text-neutral-400"
       />
 
       {open && recent.length > 0 && (

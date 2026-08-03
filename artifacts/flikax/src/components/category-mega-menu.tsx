@@ -73,8 +73,14 @@ export function CategoryMegaMenu({
         </div>
 
         <div className="flex min-h-0 flex-1">
-          {/* Left: top-level categories */}
-          <div className="w-28 shrink-0 overflow-y-auto border-r border-neutral-100 py-2 sm:w-44">
+          {/* Left: top-level categories. `min-h-0` here (not just on the row
+              wrapper above) is the fix for the panel getting "stuck" and
+              refusing to scroll -- a flex item's default min-height is
+              `auto` (sized to its content), which silently overrides
+              `overflow-y-auto` and lets the list blow past its allotted
+              height instead of scrolling. Every scrollable flex item in the
+              chain needs its own explicit min-h-0. */}
+          <div className="w-32 min-h-0 shrink-0 overflow-y-auto border-r border-neutral-100 py-2 sm:w-48">
             {parents.map((cat) => {
               const isActive = cat.id === activeParent?.id;
               return (
@@ -83,26 +89,30 @@ export function CategoryMegaMenu({
                   type="button"
                   onMouseEnter={() => onHoverParent(cat.id)}
                   onClick={() => onHoverParent(cat.id)}
-                  className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-xs font-medium transition-colors sm:text-sm ${
+                  className={`flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-xs font-medium transition-colors sm:text-sm ${
                     isActive ? "bg-brand-light text-brand" : "text-neutral-600 hover:bg-neutral-50"
                   }`}
                 >
                   <CategoryThumb
                     category={cat}
-                    size="size-6"
-                    iconSize="size-3"
+                    size="size-8"
+                    iconSize="size-4"
                     rounded="rounded-full"
-                    sizes="24px"
-                    className="shrink-0"
+                    sizes="32px"
+                    className="shrink-0 ring-1 ring-slate-200/70"
                   />
-                  <span className="min-w-0 flex-1 truncate">{cat.name}</span>
+                  {/* No truncate/nowrap -- long names (e.g. "Commercial
+                      Equipment & Tools") wrap to a second line instead of
+                      being cut off with an ellipsis, so the full name is
+                      always readable. */}
+                  <span className="min-w-0 flex-1 leading-tight">{cat.name}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Right: active category's subcategories */}
-          <div className="min-w-0 flex-1 overflow-y-auto p-4">
+          <div className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4">
             {activeParent && (
               <Link
                 href={buildListingsHref({ ...filters, category: activeParent.slug })}
@@ -112,23 +122,23 @@ export function CategoryMegaMenu({
                 All {activeParent.name} &rsaquo;
               </Link>
             )}
-            <div className="grid grid-cols-3 gap-x-2 gap-y-4 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-5 sm:grid-cols-4">
               {children.map((child) => (
                 <Link
                   key={child.id}
                   href={`/${child.slug}`}
                   onClick={onClose}
-                  className="flex flex-col items-center gap-1.5 text-center"
+                  className="group flex flex-col items-center gap-2 text-center"
                 >
                   <CategoryThumb
                     category={child}
-                    size="size-12"
-                    iconSize="size-5"
+                    size="size-16"
+                    iconSize="size-7"
                     rounded="rounded-full"
-                    sizes="48px"
-                    className="ring-1 ring-slate-200/70"
+                    sizes="64px"
+                    className="shadow-sm ring-2 ring-white transition-transform group-hover:scale-105"
                   />
-                  <span className="line-clamp-2 text-[11px] font-medium leading-tight text-neutral-700">
+                  <span className="line-clamp-2 text-xs font-medium leading-tight text-neutral-700">
                     {child.name}
                   </span>
                 </Link>

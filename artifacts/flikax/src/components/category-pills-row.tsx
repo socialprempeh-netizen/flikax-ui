@@ -69,13 +69,20 @@ export function CategoryPillsRow({
             <Link
               key={cat.id}
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`flex shrink-0 items-center gap-1.5 rounded-full border py-1.5 pl-1.5 pr-4 text-sm font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-2 rounded-full border py-1 pl-1 pr-4 text-sm font-medium transition-colors ${
                 isActive
                   ? "border-brand bg-brand-light text-brand"
                   : "border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
             >
-              <CategoryThumb category={cat} size="size-6" iconSize="size-3" rounded="rounded-full" sizes="24px" />
+              <CategoryThumb
+                category={cat}
+                size="size-9"
+                iconSize="size-4"
+                rounded="rounded-full"
+                sizes="36px"
+                className="ring-1 ring-slate-200/70"
+              />
               {cat.name}
             </Link>
           );
