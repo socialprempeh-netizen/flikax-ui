@@ -11,6 +11,7 @@ import { BottomTabBar } from "@/components/bottom-tab-bar";
 import { SellerStoreListings } from "@/components/listings/seller-store-listings";
 import { RevealPhoneButton } from "@/components/listings/reveal-phone-button";
 import { WhatsAppIcon } from "@/components/icons/social-icons";
+import { AvatarContent } from "@/components/avatar-content";
 
 // Jiji-style public "seller store" page -- a storefront for browsing one
 // seller's active listings, distinct from /u/[id] (that page is about
@@ -74,8 +75,8 @@ export default async function SellerStorePage({ params }: { params: Promise<{ id
         <div className="overflow-hidden rounded-2xl bg-white shadow-md">
           <div className="h-2 bg-brand" />
           <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:p-6">
-            <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-brand text-2xl font-bold text-white ring-4 ring-brand-light">
-              {initials}
+            <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-2xl font-bold text-white ring-4 ring-brand-light">
+              <AvatarContent avatarUrl={profile.avatar_url} initials={initials} sizes="64px" />
             </span>
 
             <div className="min-w-0 flex-1">

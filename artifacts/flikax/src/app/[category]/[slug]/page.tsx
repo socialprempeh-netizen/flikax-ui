@@ -59,6 +59,7 @@ import { CategorySidebarFilters } from "@/components/category-sidebar-filters";
 import { CategoryQuickFilters } from "@/components/category-quick-filters";
 import { JsonLd } from "@/components/seo/json-ld";
 import { TrackRecentlyViewed } from "@/components/track-recently-viewed";
+import { AvatarContent } from "@/components/avatar-content";
 import { loadMoreCategoryListingsAction } from "@/app/[category]/actions";
 
 // Only actually applies to the listing-detail branch of this route (the
@@ -165,7 +166,7 @@ const getListingByShortId = cache(async (shortId: number) => {
       const { data } = await supabase
         .from("listings")
         .select(
-          "id, user_id, category_id, title, description, price, location, status, created_at, updated_at, attributes, negotiable, video_url, is_featured, featured_until, views, bumped_at, short_id, categories(id, name, slug, parent_id), listing_images(storage_path, position, width, height), profiles(full_name, verified)"
+          "id, user_id, category_id, title, description, price, location, status, created_at, updated_at, attributes, negotiable, video_url, is_featured, featured_until, views, bumped_at, short_id, categories(id, name, slug, parent_id), listing_images(storage_path, position, width, height), profiles(full_name, verified, avatar_url)"
         )
         .eq("short_id", shortId)
         .maybeSingle();
@@ -780,8 +781,12 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex items-center gap-3">
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-light text-lg font-bold text-brand">
-                  {sellerName[0]?.toUpperCase() ?? "F"}
+                <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-light text-lg font-bold text-brand">
+                  <AvatarContent
+                    avatarUrl={sellerProfile?.avatar_url ?? listing.profiles?.avatar_url}
+                    initials={sellerName[0]?.toUpperCase() ?? "F"}
+                    sizes="48px"
+                  />
                 </span>
                 <div className="min-w-0">
                   <Link

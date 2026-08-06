@@ -15,7 +15,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   const [{ data: profile }, { count: declinedCount }] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
+    supabase.from("profiles").select("full_name, avatar_url").eq("id", user.id).maybeSingle(),
     supabase
       .from("listings")
       .select("id", { count: "exact", head: true })
@@ -32,7 +32,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <DashboardSidebar
           fullName={profile?.full_name ?? meta.full_name ?? meta.name ?? null}
           phone={user.phone ?? null}
-          avatarUrl={meta.avatar_url ?? null}
+          // Same preference order as the header (see session-summary's own
+          // comment): an uploaded photo beats the OAuth-provided one.
+          avatarUrl={profile?.avatar_url || meta.avatar_url || null}
           declinedCount={declinedCount ?? 0}
         />
         <div className="min-w-0 flex-1">{children}</div>

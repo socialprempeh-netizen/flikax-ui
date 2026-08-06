@@ -747,6 +747,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           bio: string | null
           created_at: string
           date_of_birth: string | null
@@ -763,6 +764,7 @@ export type Database = {
           verified: boolean
         }
         Insert: {
+          avatar_url?: string | null
           bio?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -779,6 +781,7 @@ export type Database = {
           verified?: boolean
         }
         Update: {
+          avatar_url?: string | null
           bio?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -1029,6 +1032,7 @@ export type Database = {
       get_public_seller_profile: {
         Args: { p_user_id: string }
         Returns: {
+          avatar_url: string
           bio: string
           full_name: string
           id: string
@@ -1059,6 +1063,7 @@ export type Database = {
       get_top_sellers: {
         Args: { limit_count?: number }
         Returns: {
+          avatar_url: string
           full_name: string
           listing_count: number
           location: string

@@ -29,17 +29,26 @@ export async function GET() {
   const meta = (user.user_metadata ?? {}) as { avatar_url?: string; full_name?: string; name?: string };
 
   const supabase = await createClient();
-  const { data: conversations } = await supabase
-    .from("conversations")
-    .select("buyer_id, seller_id, last_message_at, last_read_by_buyer_at, last_read_by_seller_at")
-    .or(`buyer_id.eq.${user.id},seller_id.eq.${user.id}`);
+  const [{ data: conversations }, { data: profile }] = await Promise.all([
+    supabase
+      .from("conversations")
+      .select("buyer_id, seller_id, last_message_at, last_read_by_buyer_at, last_read_by_seller_at")
+      .or(`buyer_id.eq.${user.id},seller_id.eq.${user.id}`),
+    // Own row -- allowed by the "Users can view own profile" RLS policy
+    // regardless of what the header shows for anyone else.
+    supabase.from("profiles").select("avatar_url").eq("id", user.id).maybeSingle(),
+  ]);
   const hasUnreadMessages = (conversations ?? []).some((c) => isConversationUnread(c, user.id));
 
   return NextResponse.json(
     {
       isLoggedIn: true,
       userId: user.id,
-      avatarUrl: meta.avatar_url,
+      // A deliberately-uploaded photo (profiles.avatar_url) wins over
+      // whatever generic picture the OAuth provider handed back at signup
+      // -- the OAuth one is only a fallback for someone who's never
+      // uploaded their own.
+      avatarUrl: profile?.avatar_url || meta.avatar_url,
       initials: getInitials(meta.full_name || meta.name || undefined),
       hasUnreadMessages,
     },

@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { LeaveFeedbackForm } from "@/components/feedback/leave-feedback-form";
 import { FeedbackList, type FeedbackEntry } from "@/components/feedback/feedback-list";
+import { AvatarContent } from "@/components/avatar-content";
 
 export default async function PublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -18,7 +19,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
     // an admin, per the profiles RLS policies -- returns null for anyone
     // else now that the old blanket "public if active listing" policy is
     // gone.
-    supabase.from("profiles").select("id, full_name, verified").eq("id", id).maybeSingle(),
+    supabase.from("profiles").select("id, full_name, verified, avatar_url").eq("id", id).maybeSingle(),
     supabase
       .from("profile_feedback")
       .select(
@@ -59,8 +60,8 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           {/* Brand accent strip */}
           <div className="h-2 bg-brand" />
           <div className="flex items-center gap-4 p-6">
-            <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-brand text-xl font-bold text-white ring-4 ring-brand-light">
-              {getInitials(profile.full_name) || "F"}
+            <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-xl font-bold text-white ring-4 ring-brand-light">
+              <AvatarContent avatarUrl={profile.avatar_url} initials={getInitials(profile.full_name) || "F"} sizes="64px" />
             </span>
             <div className="min-w-0">
               <p className="flex flex-wrap items-center gap-1.5 text-lg font-bold text-neutral-800">

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient, getUser } from "@/lib/supabase/server";
+import { AvatarUpload } from "@/components/settings/avatar-upload";
 import { PersonalDetailsForm } from "@/components/settings/personal-details-form";
 import { ConnectedAccounts } from "@/components/settings/connected-accounts";
 
@@ -15,7 +16,7 @@ export default async function PersonalDetailsPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, location, date_of_birth, sex, bio")
+    .select("full_name, location, date_of_birth, sex, bio, avatar_url")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -24,6 +25,8 @@ export default async function PersonalDetailsPage() {
   return (
     <div className="space-y-4">
       <h1 className="border-l-4 border-brand pl-3 text-xl font-bold text-neutral-800">Personal details</h1>
+
+      <AvatarUpload initialAvatarUrl={profile?.avatar_url ?? null} fullName={profile?.full_name ?? null} />
 
       <PersonalDetailsForm
         profile={{

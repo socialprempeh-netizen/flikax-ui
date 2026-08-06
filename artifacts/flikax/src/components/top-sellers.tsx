@@ -1,12 +1,14 @@
 import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import { Star } from "lucide-react";
+import { AvatarContent } from "@/components/avatar-content";
 
 type TopSeller = {
   id: string;
   full_name: string | null;
   location: string | null;
   listing_count: number;
+  avatar_url: string | null;
 };
 
 const fetchTopSellers = unstable_cache(
@@ -22,11 +24,12 @@ const fetchTopSellers = unstable_cache(
       );
 
       if (!rpcError && Array.isArray(rpcData) && rpcData.length > 0) {
-        return rpcData.map((row: { user_id: string; full_name: string | null; location: string | null; listing_count: number }) => ({
+        return rpcData.map((row: { user_id: string; full_name: string | null; location: string | null; listing_count: number; avatar_url: string | null }) => ({
           id: row.user_id,
           full_name: row.full_name,
           location: row.location,
           listing_count: Number(row.listing_count),
+          avatar_url: row.avatar_url,
         }));
       }
 
@@ -34,13 +37,13 @@ const fetchTopSellers = unstable_cache(
       // Accurate enough for a "top sellers" widget; avoids the full-table scan.
       const { data, error } = await supabase
         .from("listings")
-        .select("user_id, profiles(full_name, location)")
+        .select("user_id, profiles(full_name, location, avatar_url)")
         .eq("status", "active")
         .limit(100);
 
       if (error || !data?.length) return [];
 
-      const countMap = new Map<string, { full_name: string | null; location: string | null; count: number }>();
+      const countMap = new Map<string, { full_name: string | null; location: string | null; avatar_url: string | null; count: number }>();
       for (const row of data) {
         if (!row.user_id) continue;
         const profile = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
@@ -51,6 +54,7 @@ const fetchTopSellers = unstable_cache(
           countMap.set(row.user_id, {
             full_name: profile?.full_name ?? null,
             location: profile?.location ?? null,
+            avatar_url: profile?.avatar_url ?? null,
             count: 1,
           });
         }
@@ -64,6 +68,7 @@ const fetchTopSellers = unstable_cache(
           full_name: info.full_name,
           location: info.location,
           listing_count: info.count,
+          avatar_url: info.avatar_url,
         }));
     } catch {
       return [];
@@ -112,9 +117,9 @@ export async function TopSellers() {
         {sellers.map((seller) => (
           <li key={seller.id} className="flex items-center gap-3 px-5 py-3.5 transition hover:bg-white/5">
             <div
-              className={`flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${avatarColor(seller.id)}`}
+              className={`relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-bold text-white ${avatarColor(seller.id)}`}
             >
-              {sellerInitial(seller.full_name)}
+              <AvatarContent avatarUrl={seller.avatar_url} initials={sellerInitial(seller.full_name)} sizes="36px" />
             </div>
 
             <div className="min-w-0 flex-1">
