@@ -34,10 +34,10 @@ import {
   fetchCategoryListings,
   getTopAttributeValues,
   countCategoryListings,
+  parseAttributeFilters,
   MIN_INDEXABLE_LISTINGS,
   type CategorySort,
   type DatePosted,
-  type AttributeFilter,
 } from "@/lib/category-listings";
 import { getSidebarFields, getQuickFilterKey } from "@/lib/category-filters";
 import { SiteHeader } from "@/components/site-header";
@@ -166,7 +166,7 @@ const getListingByShortId = cache(async (shortId: number) => {
       const { data } = await supabase
         .from("listings")
         .select(
-          "id, user_id, category_id, title, description, price, location, status, created_at, updated_at, attributes, negotiable, video_url, is_featured, featured_until, views, bumped_at, short_id, categories(id, name, slug, parent_id), listing_images(storage_path, position, width, height), profiles(full_name, verified, avatar_url)"
+          "id, user_id, category_id, title, description, price, original_price, is_discounted, location, status, created_at, updated_at, attributes, negotiable, video_url, is_featured, featured_until, views, bumped_at, short_id, categories(id, name, slug, parent_id), listing_images(storage_path, position, width, height), profiles(full_name, verified, avatar_url)"
         )
         .eq("short_id", shortId)
         .maybeSingle();
@@ -294,27 +294,10 @@ async function CategoryLocationPage({
         .then((r) => r.data)
     : null;
   const topLevelSlug = parentCategory?.slug;
-  const sidebarFields = getSidebarFields(topLevelSlug);
-  const quickFilterKey = getQuickFilterKey(topLevelSlug);
+  const sidebarFields = getSidebarFields(topLevelSlug, category.slug);
+  const quickFilterKey = getQuickFilterKey(topLevelSlug, category.slug);
 
-  const attributeFilters: AttributeFilter[] = [];
-  for (const field of sidebarFields) {
-    if (field.type === "range") {
-      const min = rawParams[`attr_${field.key}_min`];
-      const max = rawParams[`attr_${field.key}_max`];
-      if (min || max) {
-        attributeFilters.push({
-          key: field.key,
-          kind: "range",
-          min: min ? Number(min) : undefined,
-          max: max ? Number(max) : undefined,
-        });
-      }
-    } else {
-      const value = rawParams[`attr_${field.key}`];
-      if (value) attributeFilters.push({ key: field.key, kind: field.type, value });
-    }
-  }
+  const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
 
   const listingsFilter = {
@@ -322,6 +305,8 @@ async function CategoryLocationPage({
     location: location.district_name,
     sort,
     datePosted,
+    verifiedOnly,
+    discountOnly,
     attributeFilters,
   };
 
@@ -401,6 +386,7 @@ async function CategoryLocationPage({
                 <CategoryQuickFilters
                   items={quickFilterValues}
                   topLevelSlug={topLevelSlug}
+                  leafSlug={category.slug}
                   attributeKey={quickFilterKey}
                   activeValue={activeQuickFilterValue}
                   baseHref={`/${category.slug}/${location.district_slug}`}
@@ -478,7 +464,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
     supabase
       .from("listings")
       .select(
-        "id, title, price, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
+        "id, title, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
       )
       .eq("category_id", listing.category_id)
       .eq("status", "active")
@@ -537,7 +523,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
     const { data: similarAnyLocation } = await supabase
       .from("listings")
       .select(
-        "id, title, price, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
+        "id, title, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
       )
       .eq("category_id", listing.category_id)
       .eq("status", "active")
@@ -555,12 +541,14 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
       href: listingPath(row),
       title: row.title,
       price: row.price,
+      originalPrice: row.is_discounted ? row.original_price : null,
       location: row.location,
       imageUrl: cover ? resolveListingImageUrl(supabase, cover.storage_path) : null,
       imageWidth: cover?.width,
       imageHeight: cover?.height,
       isFeatured: row.is_featured && (row.featured_until ? new Date(row.featured_until).getTime() > now : false),
       isBumped: isRecentlyBumped(row.bumped_at),
+      isVerifiedSeller: row.seller_verified,
     };
   });
 
@@ -771,12 +759,24 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 it inside the (denser, text-heavier) title card in the main
                 column. */}
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
-              <p className="text-2xl font-bold tracking-tight text-brand">
-                {currency.format(listing.price)}
-                {listing.negotiable === "yes" && (
-                  <span className="ml-2 text-sm font-medium text-neutral-500">Negotiable</span>
+              <div className="flex flex-wrap items-baseline gap-2">
+                <p className="text-2xl font-bold tracking-tight text-brand">
+                  {currency.format(listing.price)}
+                </p>
+                {listing.is_discounted && listing.original_price != null && (
+                  <>
+                    <span className="text-sm font-medium text-neutral-400 line-through">
+                      {currency.format(listing.original_price)}
+                    </span>
+                    <span className="flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">
+                      {Math.round((1 - listing.price / listing.original_price) * 100)}% OFF
+                    </span>
+                  </>
                 )}
-              </p>
+                {listing.negotiable === "yes" && (
+                  <span className="text-sm font-medium text-neutral-500">Negotiable</span>
+                )}
+              </div>
             </Card>
 
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">

@@ -400,10 +400,13 @@ export type Database = {
           expires_at: string | null
           featured_until: string | null
           id: string
+          is_discounted: boolean | null
           is_featured: boolean
           location: string
           negotiable: string | null
+          original_price: number | null
           price: number
+          seller_verified: boolean
           short_id: number
           status: string
           title: string
@@ -423,10 +426,13 @@ export type Database = {
           expires_at?: string | null
           featured_until?: string | null
           id?: string
+          is_discounted?: boolean | null
           is_featured?: boolean
           location: string
           negotiable?: string | null
+          original_price?: number | null
           price: number
+          seller_verified?: boolean
           short_id?: never
           status?: string
           title: string
@@ -446,10 +452,13 @@ export type Database = {
           expires_at?: string | null
           featured_until?: string | null
           id?: string
+          is_discounted?: boolean | null
           is_featured?: boolean
           location?: string
           negotiable?: string | null
+          original_price?: number | null
           price?: number
+          seller_verified?: boolean
           short_id?: never
           status?: string
           title?: string

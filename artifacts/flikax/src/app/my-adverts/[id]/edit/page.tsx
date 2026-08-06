@@ -25,7 +25,7 @@ export default async function EditListingPage({
     supabase
       .from("listings")
       .select(
-        "id, category_id, title, description, price, location, negotiable, attributes, video_url, user_id, listing_images(id, storage_path, position)"
+        "id, category_id, title, description, price, original_price, location, negotiable, attributes, video_url, user_id, listing_images(id, storage_path, position)"
       )
       .eq("id", id)
       .eq("user_id", user.id)
@@ -54,6 +54,7 @@ export default async function EditListingPage({
     title: listing.title,
     description: listing.description,
     price: listing.price,
+    original_price: listing.original_price,
     location: listing.location,
     negotiable: listing.negotiable,
     category_id: listing.category_id,

@@ -5,6 +5,7 @@ import { isRecentlyBumped } from "@/lib/premium-plans";
 import { getListingPath } from "@/lib/listing-url";
 import { formatAttributeValue } from "@/lib/format-attribute-value";
 import type { ListingCard } from "@/components/listing-grid";
+import type { SidebarFilterField } from "@/lib/category-filters";
 
 // Data layer for /[category] (and /[category]/[slug] via countCategoryListings)
 // -- fetches paginated, filtered, sorted active listings for a single category,
@@ -26,13 +27,73 @@ const DATE_POSTED_HOURS: Record<DatePosted, number> = {
   "30d": 24 * 30,
 };
 
-/** A sidebar attribute filter as actually applied to the query -- "select"/"text" carry
- * `value`, "range" carries `min`/`max` (either end optional). Built by the caller from
- * whichever SidebarFilterField (see category-filters.ts) the visitor filled in. */
+/** A sidebar attribute filter as actually applied to the query -- "text" carries a
+ * substring `value`, "range" carries `min`/`max` (either end optional), "checklist"
+ * carries the checked `values` (one or more) and whether the attribute itself stores
+ * an array (`arrayField`, e.g. Key Features) rather than a single scalar. Built by the
+ * caller from whichever SidebarFilterField (see category-filters.ts) the visitor
+ * filled in. */
 export type AttributeFilter =
-  | { key: string; kind: "select"; value: string }
   | { key: string; kind: "text"; value: string }
-  | { key: string; kind: "range"; min?: number; max?: number };
+  | { key: string; kind: "range"; min?: number; max?: number }
+  | { key: string; kind: "checklist"; values: string[]; arrayField?: boolean };
+
+// Same pseudo-field -> query-param mapping as CategorySidebarFilters (the "Verified
+// sellers"/"Discount" toggles aren't attr_<key>-namespaced -- see that component for
+// why). Kept here too since this is the other half of the same URL contract.
+const PSEUDO_FIELD_PARAM: Record<string, string> = {
+  __verified_sellers: "verified",
+  __discount: "discount",
+};
+
+/** Turns a resolved sidebar field list + the raw ?searchParams into the shape
+ * fetchCategoryListings expects. Shared by both /[category] and the location-scoped
+ * branch of /[category]/[slug] so the query-param format can't drift between them. */
+export function parseAttributeFilters(
+  fields: SidebarFilterField[],
+  rawParams: Record<string, string | undefined>
+): { attributeFilters: AttributeFilter[]; verifiedOnly?: boolean; discountOnly?: boolean } {
+  const attributeFilters: AttributeFilter[] = [];
+  let verifiedOnly: boolean | undefined;
+  let discountOnly: boolean | undefined;
+
+  for (const field of fields) {
+    if (field.type === "range") {
+      const min = rawParams[`attr_${field.key}_min`];
+      const max = rawParams[`attr_${field.key}_max`];
+      if (min || max) {
+        attributeFilters.push({
+          key: field.key,
+          kind: "range",
+          min: min ? Number(min) : undefined,
+          max: max ? Number(max) : undefined,
+        });
+      }
+    } else if (field.type === "checklist") {
+      const raw = rawParams[`attr_${field.key}`];
+      const values = raw ? raw.split(",").filter(Boolean) : [];
+      if (values.length > 0) {
+        attributeFilters.push({ key: field.key, kind: "checklist", values, arrayField: field.arrayField });
+      }
+    } else if (field.type === "toggle") {
+      const paramName = PSEUDO_FIELD_PARAM[field.key] ?? `attr_${field.key}`;
+      const raw = rawParams[paramName];
+      if (raw === "yes" || raw === "no") {
+        if (field.key === "__verified_sellers") verifiedOnly = raw === "yes";
+        else if (field.key === "__discount") discountOnly = raw === "yes";
+        // A "real" boolean attribute (Exchange Possible, Registered Car) is stored as
+        // the literal string "yes"/"no" on `attributes` (see listing-form.tsx's
+        // boolean checkbox handling), so an exact-match text filter is enough.
+        else attributeFilters.push({ key: field.key, kind: "text", value: raw });
+      }
+    } else {
+      const value = rawParams[`attr_${field.key}`];
+      if (value) attributeFilters.push({ key: field.key, kind: "text", value });
+    }
+  }
+
+  return { attributeFilters, verifiedOnly, discountOnly };
+}
 
 type CategoryListingsFilter = {
   categoryId: string;
@@ -43,6 +104,12 @@ type CategoryListingsFilter = {
   sort?: CategorySort;
   datePosted?: DatePosted;
   attributeFilters?: AttributeFilter[];
+  // Backed by real listings columns (see the migration that added them), not a
+  // per-category attribute -- true/false filter to that value, undefined shows all
+  // (the sidebar's "Verified sellers"/"Discount" toggles are Any/Yes/No, not a plain
+  // on/off switch).
+  verifiedOnly?: boolean;
+  discountOnly?: boolean;
   page?: number;
 };
 
@@ -57,13 +124,15 @@ export async function fetchCategoryListings(
     sort = "recommended",
     datePosted,
     attributeFilters,
+    verifiedOnly,
+    discountOnly,
     page = 1,
   }: CategoryListingsFilter
 ): Promise<{ listings: ListingCard[]; totalCount: number }> {
   let query = supabase
     .from("listings")
     .select(
-      "id, title, description, price, location, is_featured, featured_until, bumped_at, short_id, listing_images(storage_path, position, width, height), categories(slug)",
+      "id, title, description, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, short_id, listing_images(storage_path, position, width, height), categories(slug)",
       { count: "exact" }
     )
     .eq("category_id", categoryId)
@@ -76,6 +145,12 @@ export async function fetchCategoryListings(
     const cutoff = new Date(Date.now() - DATE_POSTED_HOURS[datePosted] * 3600 * 1000).toISOString();
     query = query.gte("created_at", cutoff);
   }
+  // seller_verified/is_discounted are real columns (denormalized/generated -- see the
+  // migration), not JSONB attributes, so these are plain column filters rather than
+  // going through the attributeFilters loop below.
+  if (verifiedOnly !== undefined) query = query.eq("seller_verified", verifiedOnly);
+  if (discountOnly !== undefined) query = query.eq("is_discounted", discountOnly);
+
   // Range fields (year, mileage, ...) are saved as JSON *strings* on `attributes`
   // (whatever the form input sent), not JSON numbers -- so both "->>' (text) and "->"
   // (jsonb-vs-jsonb, where any string ranks above every number regardless of value)
@@ -83,13 +158,23 @@ export async function fetchCategoryListings(
   // text-extracted value is what actually makes ">=" mean "greater than", not
   // "sorts later as a string" or "wrong JSON type entirely".
   for (const filter of attributeFilters ?? []) {
-    if (filter.kind === "select") {
-      query = query.eq(`attributes->>${filter.key}`, filter.value);
-    } else if (filter.kind === "text") {
+    if (filter.kind === "text") {
       query = query.ilike(`attributes->>${filter.key}`, `%${filter.value}%`);
-    } else {
+    } else if (filter.kind === "range") {
       if (filter.min !== undefined) query = query.gte(`attributes->>${filter.key}::numeric`, filter.min);
       if (filter.max !== undefined) query = query.lte(`attributes->>${filter.key}::numeric`, filter.max);
+    } else if (filter.arrayField) {
+      // Key Features-style: attributes->key is itself a JSON array (e.g.
+      // ["Air Conditioning","Sunroof"]) -- match if it contains ANY checked value,
+      // via one jsonb "contains" (cs) check per value, OR'd together.
+      const orExpr = filter.values
+        .map((v) => `attributes->${filter.key}.cs.${JSON.stringify([v])}`)
+        .join(",");
+      query = query.or(orExpr);
+    } else {
+      // Make/Colour-style: attributes->>key is a plain scalar string -- match if
+      // it's any one of the checked values.
+      query = query.in(`attributes->>${filter.key}`, filter.values);
     }
   }
   // A plain ilike is enough for "narrow this category by keyword" -- unlike
@@ -131,12 +216,14 @@ export async function fetchCategoryListings(
       title: row.title,
       description: row.description,
       price: row.price,
+      originalPrice: row.is_discounted ? row.original_price : null,
       location: row.location,
       imageUrl: cover ? resolveListingImageUrl(supabase, cover.storage_path) : null,
       imageWidth: cover?.width,
       imageHeight: cover?.height,
       isFeatured: row.is_featured && (row.featured_until ? new Date(row.featured_until).getTime() > now : false),
       isBumped: isRecentlyBumped(row.bumped_at),
+      isVerifiedSeller: row.seller_verified,
     };
   });
 

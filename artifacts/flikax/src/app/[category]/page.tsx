@@ -6,9 +6,9 @@ import { createPublicClient } from "@/lib/supabase/public";
 import {
   fetchCategoryListings,
   getTopAttributeValues,
+  parseAttributeFilters,
   type CategorySort,
   type DatePosted,
-  type AttributeFilter,
 } from "@/lib/category-listings";
 import { getSidebarFields, getQuickFilterKey } from "@/lib/category-filters";
 import { SiteHeader } from "@/components/site-header";
@@ -115,30 +115,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const sidebarFields = getSidebarFields(topLevelSlug, category.slug);
   const quickFilterKey = getQuickFilterKey(topLevelSlug, category.slug);
 
-  const attributeFilters: AttributeFilter[] = [];
-  for (const field of sidebarFields) {
-    if (field.type === "range") {
-      const min = rawParams[`attr_${field.key}_min`];
-      const max = rawParams[`attr_${field.key}_max`];
-      if (min || max) {
-        attributeFilters.push({
-          key: field.key,
-          kind: "range",
-          min: min ? Number(min) : undefined,
-          max: max ? Number(max) : undefined,
-        });
-      }
-    } else {
-      const value = rawParams[`attr_${field.key}`];
-      if (value) attributeFilters.push({ key: field.key, kind: field.type, value });
-    }
-  }
+  const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
 
   const listingsFilter = {
     categoryId: category.id,
     location,
     q,
+    verifiedOnly,
+    discountOnly,
     minPrice: minPrice ? Number(minPrice) : undefined,
     maxPrice: maxPrice ? Number(maxPrice) : undefined,
     sort,

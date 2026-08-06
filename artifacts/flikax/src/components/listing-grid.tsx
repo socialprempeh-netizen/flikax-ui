@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ImageOff, Star, TrendingUp, MapPin, Clock } from "lucide-react";
+import { ImageOff, Star, TrendingUp, MapPin, Clock, BadgePercent, ShieldCheck } from "lucide-react";
 import { formatRelativeTime } from "@/lib/format-time";
 import { CompactSaveButton } from "@/components/listings/compact-save-button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,6 +24,11 @@ export type ListingCard = {
   isBumped?: boolean;
   negotiable?: boolean;
   createdAt?: string;
+  // Set only when the seller recorded a higher original_price than the current
+  // price (is_discounted, computed in the DB -- see the migration) -- null/undefined
+  // means "not on sale", not "unknown", so callers can render on presence alone.
+  originalPrice?: number | null;
+  isVerifiedSeller?: boolean;
 };
 
 const currency = new Intl.NumberFormat("en-GH", {
@@ -130,6 +135,12 @@ export function ListingGrid({
                       )}
                     </div>
                   )}
+                  {listing.originalPrice != null && (
+                    <span className="absolute right-2 top-2 flex items-center gap-0.5 rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+                      <BadgePercent className="size-3" />
+                      {Math.round((1 - listing.price / listing.originalPrice) * 100)}% OFF
+                    </span>
+                  )}
                   <CompactSaveButton listingId={listing.id} />
                 </div>
                 <CardContent className="space-y-1 p-3.5">
@@ -137,6 +148,11 @@ export function ListingGrid({
                     <span className="text-lg font-extrabold tracking-tight text-brand">
                       {currency.format(listing.price)}
                     </span>
+                    {listing.originalPrice != null && (
+                      <span className="text-[11px] font-medium text-neutral-400 line-through">
+                        {currency.format(listing.originalPrice)}
+                      </span>
+                    )}
                     {listing.negotiable && (
                       <span className="text-[11px] font-medium text-neutral-400">Neg.</span>
                     )}
@@ -147,6 +163,9 @@ export function ListingGrid({
                   <div className="flex items-center gap-1 pt-0.5 text-[11px] text-neutral-500">
                     <MapPin className="size-3 shrink-0" />
                     <span className="min-w-0 truncate">{listing.location}</span>
+                    {listing.isVerifiedSeller && (
+                      <ShieldCheck className="size-3 shrink-0 fill-blue-100 text-blue-600" aria-label="Verified seller" />
+                    )}
                     {listing.createdAt && (
                       <>
                         <span className="shrink-0 text-neutral-300">•</span>

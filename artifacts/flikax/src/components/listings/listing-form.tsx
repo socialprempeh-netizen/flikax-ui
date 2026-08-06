@@ -82,6 +82,7 @@ export type ExistingListing = {
   title: string;
   description: string | null;
   price: number;
+  original_price: number | null;
   location: string;
   negotiable: string | null;
   category_id: string;
@@ -202,6 +203,9 @@ export function ListingForm({
   );
   const [description, setDescription] = useState(existingListing?.description ?? "");
   const [price, setPrice] = useState(existingListing ? String(existingListing.price) : "");
+  const [originalPrice, setOriginalPrice] = useState(
+    existingListing?.original_price ? String(existingListing.original_price) : ""
+  );
   const [negotiable, setNegotiable] = useState(existingListing?.negotiable ?? "not_sure");
   const [contactPhoneRaw, setContactPhoneRaw] = useState(
     toGhanaLocal(existingListing?.contact_phone ?? defaultContactPhone)
@@ -435,6 +439,7 @@ export function ListingForm({
       title: title.trim(),
       description: description.trim() || null,
       price: Number(price),
+      original_price: originalPrice.trim() ? Number(originalPrice) : null,
       location,
       negotiable,
       attributes,
@@ -798,6 +803,30 @@ export function ListingForm({
                       </label>
                     ))}
                   </div>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
+                    Original price (optional)
+                  </label>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-sm font-bold text-neutral-400">
+                      GH₵
+                    </span>
+                    <Input
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      value={originalPrice}
+                      onChange={(e) => setOriginalPrice(e.target.value)}
+                      placeholder="0.00"
+                      className={`${INPUT} pl-12`}
+                    />
+                  </div>
+                  <p className="mt-1.5 text-xs text-slate-500">
+                    Only fill this in if this item is on sale -- set it higher than your
+                    price above and buyers see a &quot;% OFF&quot; badge and the old price
+                    struck through.
+                  </p>
                 </div>
               </div>
             </section>

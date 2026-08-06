@@ -20,19 +20,23 @@ import {
 } from "lucide-react";
 import { getFieldsForCategory } from "@/lib/listing-fields";
 
-export type SidebarFieldType = "select" | "text" | "range";
+export type SidebarFieldType = "text" | "range" | "checklist" | "toggle";
 
 export type SidebarFilterField = {
   key: string;
   label: string;
   type: SidebarFieldType;
   options?: string[];
+  // checklist only: true when the underlying attribute stores an array (e.g. Key
+  // Features) rather than a single scalar -- a listing matches if it has ANY of the
+  // checked values, not an exact match, and category-listings.ts needs to know which
+  // query operator that implies.
+  arrayField?: boolean;
 };
 
 /** Curated, per-top-level-category subset of CATEGORY_FIELDS shown in the sidebar --
  * deliberately narrow (Location + Price are handled separately, always shown) rather
- * than dumping every attribute the listing form collects. Verified sellers/Discount are
- * deliberately not included -- Jiji has them, this sidebar doesn't. */
+ * than dumping every attribute the listing form collects. */
 const SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
   vehicles: ["make", "year", "condition", "transmission", "mileage"],
   property: ["property_type", "bedrooms", "bathrooms", "furnished"],
@@ -44,9 +48,25 @@ const SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
 /** Overrides SIDEBAR_FIELD_KEYS per vehicle leaf subcategory (Cars, Motorcycles, ...) --
  * Tonaton shows a different filter set per leaf (a boat has no "transmission"), whereas
  * the top-level "vehicles" set above is really just the Cars-shaped default. Keyed by
- * leaf slug rather than nested under "vehicles" since leaf slugs are unique site-wide. */
+ * leaf slug rather than nested under "vehicles" since leaf slugs are unique site-wide.
+ * Every key here maps to a real, already-collected listing attribute (see
+ * listing-fields.ts) -- nothing invented just to pad out the filter list. */
 const LEAF_SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
-  cars: ["make", "body_type", "year", "condition", "transmission", "mileage", "fuel_type", "exchange_possible"],
+  cars: [
+    "make",
+    "model",
+    "body_type",
+    "year",
+    "condition",
+    "color",
+    "powertrain_type",
+    "fuel_type",
+    "transmission",
+    "mileage",
+    "registered",
+    "key_features",
+    "exchange_possible",
+  ],
   "motorcycles-scooters": ["vehicle_type", "make", "year", "powertrain_type", "condition", "color", "exchange_possible"],
   "buses-microbuses": ["make", "transmission", "condition", "color", "fuel_type", "exchange_possible"],
   "trucks-trailers": ["vehicle_type", "make", "year", "condition", "exchange_possible"],
@@ -57,11 +77,32 @@ const LEAF_SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
   "vehicle-car-services": ["vehicle_type"],
 };
 
-// "range" for number fields (rendered as min/max inputs, filtered numerically),
-// "select" for anything with a fixed option list, "text" (substring search) otherwise.
-function resolveFieldType(key: string, formType: string): SidebarFieldType {
+/** Two filters that apply to every category, backed by real listing columns
+ * (`seller_verified`/`is_discounted` -- see the migration that added them) rather than
+ * a per-category attribute, so they're appended after the category-specific fields
+ * instead of living in the key lists above. Rendered as a 3-state Any/Yes/No toggle,
+ * same as the boolean attribute fields below. */
+export const VERIFIED_SELLERS_FIELD: SidebarFilterField = {
+  key: "__verified_sellers",
+  label: "Verified sellers",
+  type: "toggle",
+};
+export const DISCOUNT_FIELD: SidebarFilterField = {
+  key: "__discount",
+  label: "Discount",
+  type: "toggle",
+};
+
+// "range" for number fields (min/max inputs, filtered numerically), "toggle" for
+// booleans (Any/Yes/No), "checklist" for anything with a fixed option list -- select
+// and tags formTypes both render as a multi-check list, the only difference being
+// whether the stored value is a single string or an array (see arrayField above) --
+// "text" (substring search) for everything else (free-typed fields like Make/Model,
+// which have no fixed option list to check against).
+function resolveFieldType(formType: string): SidebarFieldType {
   if (formType === "number") return "range";
-  if (formType === "select") return "select";
+  if (formType === "boolean") return "toggle";
+  if (formType === "select" || formType === "tags") return "checklist";
   return "text";
 }
 
@@ -69,14 +110,20 @@ export function getSidebarFields(
   topLevelSlug: string | undefined,
   leafSlug?: string
 ): SidebarFilterField[] {
-  if (!topLevelSlug) return [];
-  const keys = (leafSlug && LEAF_SIDEBAR_FIELD_KEYS[leafSlug]) ?? SIDEBAR_FIELD_KEYS[topLevelSlug];
-  if (!keys) return [];
-  const defs = getFieldsForCategory(topLevelSlug, leafSlug);
-  return keys
+  const keys = (leafSlug ? LEAF_SIDEBAR_FIELD_KEYS[leafSlug] : undefined) ?? (topLevelSlug ? SIDEBAR_FIELD_KEYS[topLevelSlug] : undefined);
+  const defs = topLevelSlug ? getFieldsForCategory(topLevelSlug, leafSlug) : [];
+  const categoryFields = (keys ?? [])
     .map((key) => defs.find((f) => f.key === key))
     .filter((f): f is NonNullable<typeof f> => Boolean(f))
-    .map((f) => ({ key: f.key, label: f.label, type: resolveFieldType(f.key, f.type), options: f.options }));
+    .map((f): SidebarFilterField => ({
+      key: f.key,
+      label: f.label,
+      type: resolveFieldType(f.type),
+      options: f.options,
+      arrayField: f.type === "tags",
+    }));
+
+  return [...categoryFields, VERIFIED_SELLERS_FIELD, DISCOUNT_FIELD];
 }
 
 /** The attribute that best represents "sub-type" for this category's quick-filter row
