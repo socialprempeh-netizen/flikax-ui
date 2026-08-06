@@ -32,16 +32,7 @@ export function CategoryPillsRow({
   }
 
   return (
-    // `relative` lives here, on the wrapper AROUND the scrollable row, not
-    // on a wrapper around just the trigger button inside it -- the row has
-    // `overflow-x-auto`, and per the CSS spec that forces its *other* axis
-    // (overflow-y) into a clipping context too, so an absolutely-positioned
-    // panel nested inside the row gets its height clipped to the row's own
-    // ~44px instead of showing full-size. Anchoring from out here, at the
-    // same left edge the button (the row's first/leftmost item) sits at,
-    // keeps the panel visually under the button without being a descendant
-    // of the clipping container.
-    <div className="relative">
+    <div>
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 no-scrollbar sm:mx-0 sm:px-0">
         <button
           type="button"

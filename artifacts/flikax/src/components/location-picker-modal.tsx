@@ -113,12 +113,17 @@ export function LocationPickerModal({
   if (!open) return null;
 
   return (
+    // On mobile this is a full page takeover (Jiji-style), not a small
+    // dialog -- `sm:` hands back the centered-box + backdrop treatment once
+    // there's enough width for it to read as a modal rather than the whole
+    // screen. `onClick={close}` on this outer layer only does anything on
+    // sm+, since below that there's no backdrop to click past the sheet.
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-neutral-900/70 p-4"
+      className="fixed inset-0 z-[60] flex flex-col bg-white sm:items-center sm:justify-center sm:bg-neutral-900/70 sm:p-4"
       onClick={close}
     >
       <div
-        className="flex max-h-[75vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl"
+        className="flex h-full w-full flex-col overflow-hidden bg-white sm:h-auto sm:max-h-[75vh] sm:w-full sm:max-w-3xl sm:rounded-2xl sm:shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2 border-b border-neutral-100 px-4 py-3">

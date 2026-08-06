@@ -127,7 +127,7 @@ export function ChatPopupButton({
         onClick={handleOpen}
         disabled={phase === "loading"}
         variant="outline"
-        className={`h-11 border-2 border-brand text-brand hover:bg-brand-light hover:text-brand ${compact ? "flex-1" : "w-full"}`}
+        className={`h-11 border-2 border-brand bg-brand-light text-brand hover:bg-brand/10 hover:text-brand ${compact ? "flex-1" : "w-full"}`}
       >
         <MessageCircle className="size-4" />
         {phase === "loading" ? "Opening…" : "Send Message"}
@@ -156,11 +156,13 @@ function ChatPopupOverlay({
   const initial = data.otherPartyName[0]?.toUpperCase() ?? "S";
 
   return (
-    /* Fixed bottom-right panel — sits above everything, no backdrop */
-    <div
-      className="fixed bottom-20 right-4 z-[9999] flex w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl lg:bottom-6"
-      style={{ height: 520 }}
-    >
+    /* Full-screen on mobile (h-[100dvh], no inset) rather than a fixed
+       520px box anchored to the bottom -- `dvh` shrinks with the on-screen
+       keyboard while a fixed pixel height anchored via `bottom-20` doesn't,
+       so the chat input (the box's last, non-scrolling child) could end up
+       hidden behind the keyboard. sm+ keeps the floating bottom-right panel. */
+    <div className="fixed inset-0 z-[9999] flex h-[100dvh] w-full flex-col overflow-hidden bg-white sm:inset-auto sm:bottom-20 sm:right-4 sm:h-[520px] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:rounded-xl sm:border sm:border-neutral-200 sm:shadow-2xl lg:bottom-6">
+
       {/* ── Header ── */}
       <div className="flex shrink-0 items-center gap-3 bg-[#1a1f2e] px-4 py-3">
         {/* Avatar */}

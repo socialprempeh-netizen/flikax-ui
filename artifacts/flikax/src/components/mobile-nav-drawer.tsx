@@ -16,9 +16,7 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose 
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuthModal } from "@/components/auth/auth-modal-provider";
 import { useMessagesModal } from "@/components/messages/messages-modal-provider";
-import type { Category } from "@/components/category-sidebar";
 import { useSessionSummary } from "@/lib/use-session-summary";
-import { CategoryThumb } from "@/components/category-thumb";
 
 const ACCOUNT_LINKS = [
   { label: "Saved", href: "/saved", icon: Bookmark },
@@ -29,12 +27,14 @@ const ACCOUNT_LINKS = [
   { label: "Help & Support", href: "/contact", icon: LifeBuoy },
 ];
 
-export function MobileNavDrawer({ categories }: { categories: Category[] }) {
+// No category links here -- the homepage's "All categories" mega-menu is
+// the one place to browse categories, so this drawer only holds account
+// pages that have nowhere else to live on mobile.
+export function MobileNavDrawer() {
   const [open, setOpen] = useState(false);
   const { isLoggedIn, hasUnreadMessages } = useSessionSummary();
   const { openAuthModal } = useAuthModal();
   const { openMessages } = useMessagesModal();
-  const parents = categories.filter((c) => c.parent_id === null);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -54,59 +54,40 @@ export function MobileNavDrawer({ categories }: { categories: Category[] }) {
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto px-4 pb-4">
-          <p className="mb-2 mt-2 text-xs font-bold uppercase tracking-wide text-neutral-400">
-            Categories
-          </p>
-          <nav className="mb-4 flex flex-col">
-            {parents.map((cat) => (
-              <SheetClose asChild key={cat.id}>
-                <Link
-                  href={`/${cat.slug}`}
-                  className="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                >
-                  <CategoryThumb category={cat} size="size-8" iconSize="size-4" rounded="rounded-full" sizes="32px" />
-                  {cat.name}
-                </Link>
+          <nav className="mt-2 flex flex-col">
+            {ACCOUNT_LINKS.map((item) => (
+              <SheetClose asChild key={item.href}>
+                {isLoggedIn && item.href === "/messages" ? (
+                  <button
+                    type="button"
+                    onClick={openMessages}
+                    className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                  >
+                    <item.icon className="size-4.5 shrink-0 text-neutral-600" />
+                    {item.label}
+                    {hasUnreadMessages && <span className="size-2 rounded-full bg-red-500" />}
+                  </button>
+                ) : isLoggedIn ? (
+                  <Link
+                    href={item.href}
+                    className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                  >
+                    <item.icon className="size-4.5 shrink-0 text-neutral-600" />
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal(item.href)}
+                    className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                  >
+                    <item.icon className="size-4.5 shrink-0 text-neutral-600" />
+                    {item.label}
+                  </button>
+                )}
               </SheetClose>
             ))}
           </nav>
-
-          <div className="border-t border-neutral-100 pt-3">
-            <nav className="flex flex-col">
-              {ACCOUNT_LINKS.map((item) => (
-                <SheetClose asChild key={item.href}>
-                  {isLoggedIn && item.href === "/messages" ? (
-                    <button
-                      type="button"
-                      onClick={openMessages}
-                      className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                    >
-                      <item.icon className="size-4.5 shrink-0 text-neutral-600" />
-                      {item.label}
-                      {hasUnreadMessages && <span className="size-2 rounded-full bg-red-500" />}
-                    </button>
-                  ) : isLoggedIn ? (
-                    <Link
-                      href={item.href}
-                      className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                    >
-                      <item.icon className="size-4.5 shrink-0 text-neutral-600" />
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => openAuthModal(item.href)}
-                      className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                    >
-                      <item.icon className="size-4.5 shrink-0 text-neutral-600" />
-                      {item.label}
-                    </button>
-                  )}
-                </SheetClose>
-              ))}
-            </nav>
-          </div>
 
           <div className="mt-3 border-t border-neutral-100 pt-3">
             {isLoggedIn ? (

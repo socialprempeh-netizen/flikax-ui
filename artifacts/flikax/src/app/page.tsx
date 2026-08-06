@@ -99,7 +99,7 @@ export default async function Home({ searchParams }: PageProps) {
   return (
     <div className="flex flex-1 flex-col bg-background pb-16 lg:pb-0">
       <JsonLd data={websiteJsonLd} />
-      <SiteHeader categories={categories} />
+      <SiteHeader />
 
       {/* 1. Static hero band — full width, no container constraint */}
       <HeroBanner />

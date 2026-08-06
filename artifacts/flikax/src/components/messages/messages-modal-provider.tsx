@@ -61,7 +61,15 @@ export function MessagesModalProvider({ children }: { children: React.ReactNode 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           showCloseButton
-          className="flex h-[min(600px,calc(100vh-4rem))] max-w-md flex-col gap-0 overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-0 shadow-2xl"
+          // Full-screen on mobile (top-0, h-[100dvh], no centering transform)
+          // rather than the small vh-centered box used at sm+ -- `dvh`
+          // shrinks with the on-screen keyboard while `vh` doesn't, and a
+          // fixed-height box centered against the *pre-keyboard* viewport
+          // could end up with its bottom half (where the chat input lives)
+          // sitting behind the keyboard. Full-screen sidesteps that: the
+          // dialog IS the visible viewport, so the input (last, non-scrolling
+          // flex child) always lands right above wherever the keyboard starts.
+          className="flex top-0 left-0 h-[100dvh] w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:top-[50%] sm:left-[50%] sm:h-[min(600px,calc(100dvh-4rem))] sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-slate-200/80"
         >
           <DialogTitle className="sr-only">Messages</DialogTitle>
           {open && <MessagesPanelBody />}

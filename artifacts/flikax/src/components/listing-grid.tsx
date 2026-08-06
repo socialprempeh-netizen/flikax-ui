@@ -32,17 +32,12 @@ const currency = new Intl.NumberFormat("en-GH", {
   maximumFractionDigits: 0,
 });
 
-// Caps how tall a single card's image can get before object-cover starts
-// cropping it -- without this, an extreme portrait photo would blow out
-// its column and dominate the whole grid.
-const MAX_IMAGE_HEIGHT = 560;
-
-// CSS multi-column masonry, not a CSS Grid: cards keep each listing's real
-// image aspect ratio (see hasNaturalAspect below), which means different
-// heights per card by design -- a strict grid forces every row to the
-// height of its tallest cell, which is what left gaps under the shorter
-// cards. `columns` lays cards out column-by-column instead, so each column
-// packs tightly regardless of what height the others' cards end up at.
+// CSS multi-column masonry, not a CSS Grid: every card's image is a fixed
+// square, but the text block below it (title can wrap 1 or 2 lines) still
+// varies in height -- a strict grid forces every row to the height of its
+// tallest cell, which is what left gaps under the shorter cards. `columns`
+// lays cards out column-by-column instead, so each column packs tightly
+// regardless of what height the others' cards end up at.
 export function ListingGrid({
   listings,
   variant = "default",
@@ -75,8 +70,6 @@ export function ListingGrid({
         }`}
       >
         {listings.map((listing) => {
-          const hasNaturalAspect = Boolean(listing.imageWidth && listing.imageHeight);
-
           return (
             <Link key={listing.id} href={listing.href} className="mb-2 block break-inside-avoid">
               <ListingCardHover>
@@ -89,16 +82,11 @@ export function ListingGrid({
                       : "border-neutral-200"
                 }`}
               >
-                <div
-                  className={`relative w-full overflow-hidden bg-cream text-brand/40 ${
-                    hasNaturalAspect ? "" : isHome ? "aspect-[3/4]" : "aspect-[4/5]"
-                  }`}
-                  style={
-                    hasNaturalAspect
-                      ? { aspectRatio: `${listing.imageWidth} / ${listing.imageHeight}`, maxHeight: MAX_IMAGE_HEIGHT }
-                      : undefined
-                  }
-                >
+                {/* Square, not the image's natural aspect ratio -- keeps every
+                    card in the grid the same shape (Jiji-style), even though
+                    imageWidth/imageHeight are still tracked for other uses
+                    (e.g. the detail page gallery). */}
+                <div className="relative aspect-square w-full overflow-hidden bg-cream text-brand/40">
                   {listing.imageUrl ? (
                     <Image
                       src={listing.imageUrl}
