@@ -8,7 +8,6 @@ import {
   MessageSquare,
   ClipboardList,
   Gem,
-  Settings,
   LifeBuoy,
   LogIn,
 } from "lucide-react";
@@ -18,12 +17,13 @@ import { useAuthModal } from "@/components/auth/auth-modal-provider";
 import { useMessagesModal } from "@/components/messages/messages-modal-provider";
 import { useSessionSummary } from "@/lib/use-session-summary";
 
+// No Settings entry here -- it's redundant with the account avatar in the
+// header (mobile HeaderUserActions), which already links to /settings.
 const ACCOUNT_LINKS = [
   { label: "Saved", href: "/saved", icon: Bookmark },
   { label: "Messages", href: "/messages", icon: MessageSquare },
   { label: "My Ads", href: "/dashboard", icon: ClipboardList },
   { label: "Premium Plans", href: "/premium", icon: Gem },
-  { label: "Settings", href: "/settings", icon: Settings },
   { label: "Help & Support", href: "/contact", icon: LifeBuoy },
 ];
 

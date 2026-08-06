@@ -25,7 +25,7 @@ export function HomeFilterBar({ filters }: { filters: ListingFilters }) {
 
   return (
     <div className="flex items-center justify-between gap-3">
-      <h2 className="text-base font-bold text-neutral-800 sm:text-lg">Fresh listings</h2>
+      <h2 className="text-base font-bold tracking-tight text-neutral-800 sm:text-lg">Fresh listings</h2>
 
       <div className="relative shrink-0">
         <button

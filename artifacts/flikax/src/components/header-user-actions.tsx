@@ -81,9 +81,9 @@ export function HeaderUserActions() {
         )}
 
         {isLoggedIn ? (
-          <Button asChild size="sm" className="h-11 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600">
+          <Button asChild size="sm" className="h-9 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600">
             <Link href="/sell">
-              <Plus className="size-4" />
+              <Plus className="size-3.5" />
               Post Ad
             </Link>
           </Button>
@@ -91,10 +91,10 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="sm"
-            className="h-11 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600"
+            className="h-9 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600"
             onClick={() => openAuthModal("/sell")}
           >
-            <Plus className="size-4" />
+            <Plus className="size-3.5" />
             Post Ad
           </Button>
         )}

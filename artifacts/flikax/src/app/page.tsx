@@ -109,6 +109,13 @@ export default async function Home({ searchParams }: PageProps) {
         <CategoryPillsRow categories={categories ?? []} selectedSlug={filters.category} filters={filters} />
       </div>
 
+      {/* A hairline divider between each macro section (categories/listings/top
+          sellers) gives the page visible structure instead of everything
+          just floating on the same flat background. */}
+      <div className="mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-neutral-200" />
+      </div>
+
       {/* 3. Main content: filter bar + listing grid, full width now the sidebar is gone */}
       <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 px-4 pb-10 pt-4 sm:px-6 lg:px-8">
         <HomeFilterBar filters={filters} />
@@ -122,7 +129,7 @@ export default async function Home({ searchParams }: PageProps) {
         />
 
         {/* 4. Top sellers this week — bottom-right, desktop only */}
-        <div className="hidden lg:flex lg:justify-end">
+        <div className="hidden border-t border-neutral-200 pt-4 lg:flex lg:justify-end">
           <div className="w-72">
             <TopSellers />
           </div>

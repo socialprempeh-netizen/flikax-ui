@@ -253,6 +253,10 @@ export function ChatThread({
               <Tag className="size-3" />
               Make an offer
             </Button>
+            {/* Tinted at rest (not just on hover) -- matches the "Make an
+                offer" chip right before it, so the row reads as one set of
+                quick actions instead of one styled chip next to plain
+                flat-white ones. */}
             {QUICK_REPLIES.map((text) => (
               <Button
                 key={text}
@@ -261,7 +265,7 @@ export function ChatThread({
                 disabled={isSending}
                 variant="outline"
                 size="sm"
-                className="shrink-0 rounded-full text-neutral-600 hover:border-brand/40 hover:bg-brand-light hover:text-brand"
+                className="shrink-0 rounded-full border-neutral-200 bg-neutral-100 text-neutral-700 hover:border-brand/40 hover:bg-brand-light hover:text-brand"
               >
                 {text}
               </Button>

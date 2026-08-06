@@ -9,10 +9,17 @@ import { CategoryThumb } from "@/components/category-thumb";
 
 /** Temu-style two-pane category browser: a left list of top-level
  * categories and a right icon+label grid of the active one's children.
- * A full-screen takeover (not an anchored dropdown) -- clicking a parent on
- * the left swaps the right pane in place rather than navigating away, so
- * browsing subcategories never leaves this panel. Only "All {name} ›" and
- * an actual subcategory icon are real exits. */
+ * Below `sm` this is a full-screen takeover (a small anchored dropdown isn't
+ * usable at phone width); at `sm` and up it's a normal anchored dropdown
+ * panel under the trigger button instead, positioned via plain CSS
+ * `absolute` in the trigger's own `relative` wrapper (see CategoryPillsRow)
+ * -- deliberately not a getBoundingClientRect()-measured `fixed` overlay,
+ * which only computed its position once at click time and went stale
+ * (rendering far from the button) on resize or once nearby content settled.
+ * At every width, clicking a parent on the left swaps the right pane in
+ * place rather than navigating away, so browsing subcategories never leaves
+ * this panel. Only "All {name} ›" and an actual subcategory icon are real
+ * exits. */
 export function CategoryMegaMenu({
   open,
   onClose,
@@ -65,20 +72,25 @@ export function CategoryMegaMenu({
   const children = activeParent ? categories.filter((c) => c.parent_id === activeParent.id) : [];
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white">
-      <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-3">
-        <span className="text-base font-bold text-neutral-800">All categories</span>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="flex size-8 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100"
-        >
-          <X className="size-4.5" />
-        </button>
-      </div>
+    <>
+      {/* Click-away layer -- only needed at sm+, where the panel is a small
+          anchored dropdown rather than a full-screen takeover. */}
+      <div className="fixed inset-0 z-40 hidden sm:block" onClick={onClose} aria-hidden="true" />
 
-      <div className="mx-auto flex min-h-0 w-full max-w-4xl flex-1">
+      <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white sm:absolute sm:inset-auto sm:left-0 sm:top-full sm:mt-2 sm:max-h-[70vh] sm:w-[min(90vw,600px)] sm:rounded-2xl sm:border sm:border-neutral-200 sm:shadow-xl">
+        <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-3 sm:hidden">
+          <span className="text-base font-bold text-neutral-800">All categories</span>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="flex size-8 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100"
+          >
+            <X className="size-4.5" />
+          </button>
+        </div>
+
+        <div className="flex min-h-0 flex-1">
         {/* Left: top-level categories. `min-h-0` here (not just on the row
             wrapper above) is the fix for the panel getting "stuck" and
             refusing to scroll -- a flex item's default min-height is
@@ -161,7 +173,8 @@ export function CategoryMegaMenu({
             )}
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

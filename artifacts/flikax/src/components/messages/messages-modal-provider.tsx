@@ -10,6 +10,7 @@ import { resolveListingImageUrl } from "@/lib/images";
 import { formatRelativeTime } from "@/lib/format-time";
 import { isConversationUnread } from "@/lib/messages";
 import { ChatThread } from "@/components/messages/chat-thread";
+import { useVisualViewportHeight } from "@/lib/use-visual-viewport-height";
 
 type Message = { id: string; sender_id: string; body: string; created_at: string };
 
@@ -54,6 +55,7 @@ const MessagesModalContext = createContext<MessagesModalContextValue | null>(nul
 // as real, deep-linkable full pages (e.g. from a notification email).
 export function MessagesModalProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const visualViewportHeight = useVisualViewportHeight();
 
   return (
     <MessagesModalContext.Provider value={{ openMessages: () => setOpen(true) }}>
@@ -61,15 +63,19 @@ export function MessagesModalProvider({ children }: { children: React.ReactNode 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           showCloseButton
-          // Full-screen on mobile (top-0, h-[100dvh], no centering transform)
-          // rather than the small vh-centered box used at sm+ -- `dvh`
-          // shrinks with the on-screen keyboard while `vh` doesn't, and a
+          // Full-screen on mobile (top-0, h-[var(--vvh)], no centering
+          // transform) rather than the small vh-centered box used at sm+.
+          // Height comes from window.visualViewport (--vvh, set below),
+          // which shrinks with the on-screen keyboard even in webviews
+          // where CSS `dvh` doesn't reliably track it; `100dvh` is only the
+          // fallback for the instant before that JS value is available. A
           // fixed-height box centered against the *pre-keyboard* viewport
           // could end up with its bottom half (where the chat input lives)
-          // sitting behind the keyboard. Full-screen sidesteps that: the
+          // sitting behind the keyboard -- full-screen sidesteps that: the
           // dialog IS the visible viewport, so the input (last, non-scrolling
           // flex child) always lands right above wherever the keyboard starts.
-          className="flex top-0 left-0 h-[100dvh] w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:top-[50%] sm:left-[50%] sm:h-[min(600px,calc(100dvh-4rem))] sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-slate-200/80"
+          className="flex top-0 left-0 h-[var(--vvh,100dvh)] w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:top-[50%] sm:left-[50%] sm:h-[min(600px,calc(100dvh-4rem))] sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-slate-200/80"
+          style={visualViewportHeight ? ({ "--vvh": `${visualViewportHeight}px` } as React.CSSProperties) : undefined}
         >
           <DialogTitle className="sr-only">Messages</DialogTitle>
           {open && <MessagesPanelBody />}

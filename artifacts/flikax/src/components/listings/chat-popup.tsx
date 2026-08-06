@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { getOrCreateConversationIdAction } from "@/app/messages/actions";
 import { createClient } from "@/lib/supabase/client";
 import { ChatThread } from "@/components/messages/chat-thread";
+import { useVisualViewportHeight } from "@/lib/use-visual-viewport-height";
 
 type Message = {
   id: string;
@@ -122,12 +123,16 @@ export function ChatPopupButton({
 
   return (
     <>
+      {/* Light orange fill, not brand-blue -- matches Post Ad's orange accent
+          rather than the site's blue system, since "Send Message" sits next
+          to a solid blue "Contact Seller" button and needs its own distinct
+          color to read as a separate action, not a fainter version of it. */}
       <Button
         type="button"
         onClick={handleOpen}
         disabled={phase === "loading"}
         variant="outline"
-        className={`h-11 border-2 border-brand bg-brand-light text-brand hover:bg-brand/10 hover:text-brand ${compact ? "flex-1" : "w-full"}`}
+        className={`h-11 border-2 border-orange-400 bg-orange-100 text-orange-700 hover:bg-orange-200 hover:text-orange-800 ${compact ? "flex-1" : "w-full"}`}
       >
         <MessageCircle className="size-4" />
         {phase === "loading" ? "Opening…" : "Send Message"}
@@ -154,14 +159,22 @@ function ChatPopupOverlay({
   onClose: () => void;
 }) {
   const initial = data.otherPartyName[0]?.toUpperCase() ?? "S";
+  const visualViewportHeight = useVisualViewportHeight();
 
   return (
-    /* Full-screen on mobile (h-[100dvh], no inset) rather than a fixed
-       520px box anchored to the bottom -- `dvh` shrinks with the on-screen
-       keyboard while a fixed pixel height anchored via `bottom-20` doesn't,
-       so the chat input (the box's last, non-scrolling child) could end up
-       hidden behind the keyboard. sm+ keeps the floating bottom-right panel. */
-    <div className="fixed inset-0 z-[9999] flex h-[100dvh] w-full flex-col overflow-hidden bg-white sm:inset-auto sm:bottom-20 sm:right-4 sm:h-[520px] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:rounded-xl sm:border sm:border-neutral-200 sm:shadow-2xl lg:bottom-6">
+    /* Full-screen on mobile (h-[var(--vvh)], no inset) rather than a fixed
+       520px box anchored to the bottom. Height comes from
+       window.visualViewport (--vvh, set below) so it shrinks with the
+       on-screen keyboard even in webviews where CSS `dvh` doesn't reliably
+       track it -- `100dvh` is only the fallback for the instant before that
+       JS value is available. A fixed pixel height anchored via `bottom-20`
+       wouldn't shrink at all, so the chat input (the box's last,
+       non-scrolling child) could end up hidden behind the keyboard. sm+
+       keeps the floating bottom-right panel. */
+    <div
+      className="fixed inset-0 z-[9999] flex h-[var(--vvh,100dvh)] w-full flex-col overflow-hidden bg-white sm:inset-auto sm:bottom-20 sm:right-4 sm:h-[520px] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:rounded-xl sm:border sm:border-neutral-200 sm:shadow-2xl lg:bottom-6"
+      style={visualViewportHeight ? ({ "--vvh": `${visualViewportHeight}px` } as React.CSSProperties) : undefined}
+    >
 
       {/* ── Header ── */}
       <div className="flex shrink-0 items-center gap-3 bg-[#1a1f2e] px-4 py-3">
