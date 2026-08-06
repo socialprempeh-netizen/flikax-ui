@@ -14,7 +14,12 @@ type Profile = {
   location: string | null;
   date_of_birth: string | null;
   sex: string | null;
+  bio: string | null;
 };
+
+// Same 500-char cap as the DB column's check constraint -- enforced here
+// too so a seller finds out before submitting, not from a failed update.
+const BIO_MAX_LENGTH = 500;
 
 export function PersonalDetailsForm({ profile }: { profile: Profile }) {
   const [supabase] = useState(() => createClient());
@@ -23,6 +28,7 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
   const [location, setLocation] = useState(profile.location ?? "");
   const [dateOfBirth, setDateOfBirth] = useState(profile.date_of_birth ?? "");
   const [sex, setSex] = useState(profile.sex ?? "");
+  const [bio, setBio] = useState(profile.bio ?? "");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +54,7 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
         location: location || null,
         date_of_birth: dateOfBirth || null,
         sex: sex || null,
+        bio: bio.trim() || null,
       })
       .eq("id", user.id);
 
@@ -130,6 +137,25 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
           </select>
         </label>
       </div>
+
+      <label className="block">
+        <span className="mb-1 flex items-center justify-between text-sm font-medium text-neutral-700">
+          Bio
+          <span className="text-xs font-normal text-neutral-400">
+            {bio.length}/{BIO_MAX_LENGTH}
+          </span>
+        </span>
+        <textarea
+          value={bio}
+          onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX_LENGTH))}
+          placeholder="A short line about what you sell, e.g. 'Trusted phone dealer in Accra since 2019.'"
+          rows={3}
+          className="w-full resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand"
+        />
+        <span className="mt-1 block text-xs text-neutral-400">
+          Shown on your public seller page, visible to anyone who views your ads.
+        </span>
+      </label>
 
       {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
 

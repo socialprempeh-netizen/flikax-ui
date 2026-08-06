@@ -747,6 +747,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          bio: string | null
           created_at: string
           date_of_birth: string | null
           full_name: string | null
@@ -762,6 +763,7 @@ export type Database = {
           verified: boolean
         }
         Insert: {
+          bio?: string | null
           created_at?: string
           date_of_birth?: string | null
           full_name?: string | null
@@ -777,6 +779,7 @@ export type Database = {
           verified?: boolean
         }
         Update: {
+          bio?: string | null
           created_at?: string
           date_of_birth?: string | null
           full_name?: string | null
@@ -1026,6 +1029,7 @@ export type Database = {
       get_public_seller_profile: {
         Args: { p_user_id: string }
         Returns: {
+          bio: string
           full_name: string
           id: string
           location: string

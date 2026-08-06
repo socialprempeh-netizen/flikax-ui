@@ -18,6 +18,8 @@ import {
   Tag,
   Layers,
   BadgeCheck,
+  Store,
+  ChevronRight,
   type LucideIcon,
 } from "lucide-react";
 import { createClient, getUser } from "@/lib/supabase/server";
@@ -794,6 +796,20 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                   <p className="text-sm text-neutral-500">Seller on Flikax</p>
                 </div>
               </div>
+
+              {/* Distinct from the seller-name link above, which goes to
+                  /u/[id] (reputation/feedback history) -- this goes to the
+                  storefront of everything else they're currently selling. */}
+              <Link
+                href={`/seller/${listing.user_id}`}
+                className="mt-3 flex min-h-11 items-center justify-between rounded-lg border border-neutral-200 px-3 text-sm font-semibold text-neutral-700 hover:border-brand hover:text-brand"
+              >
+                <span className="flex items-center gap-2">
+                  <Store className="size-4" />
+                  Visit seller&apos;s shop
+                </span>
+                <ChevronRight className="size-4" />
+              </Link>
 
               <div className="mt-4 flex flex-col gap-2">
                 {sellerPhone && <RevealPhoneButton phone={sellerPhone} label="Contact Seller" />}

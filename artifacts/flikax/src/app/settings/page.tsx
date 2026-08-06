@@ -15,7 +15,7 @@ export default async function PersonalDetailsPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, location, date_of_birth, sex")
+    .select("full_name, location, date_of_birth, sex, bio")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -31,6 +31,7 @@ export default async function PersonalDetailsPage() {
           location: profile?.location ?? null,
           date_of_birth: profile?.date_of_birth ?? null,
           sex: profile?.sex ?? null,
+          bio: profile?.bio ?? null,
         }}
       />
 
