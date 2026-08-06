@@ -231,8 +231,8 @@ export function ListingForm({
   const selectedCategory = categories.find((c) => c.id === categoryId);
   const isVehicles = parentCategory?.slug === "vehicles";
   const dynamicFields = useMemo(
-    () => getFieldsForCategory(parentCategory?.slug),
-    [parentCategory]
+    () => getFieldsForCategory(parentCategory?.slug, selectedCategory?.slug),
+    [parentCategory, selectedCategory]
   );
   const genericFields = isVehicles
     ? dynamicFields.filter((field) => !VEHICLE_CASCADE_KEYS.includes(field.key))

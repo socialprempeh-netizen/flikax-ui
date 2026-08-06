@@ -182,9 +182,72 @@ export const CATEGORY_FIELDS: Record<string, ListingFieldDef[]> = {
   ],
 };
 
-export function getFieldsForCategory(topLevelSlug: string | undefined): ListingFieldDef[] {
+/** Vehicles has 9 leaf subcategories (Cars, Motorcycles, Trucks, ...) but CATEGORY_FIELDS
+ * only has one shared "vehicles" field set -- Cars gets a real Type dimension via
+ * body_type, but the other leaves (a boat, a bicycle, a repair service) have no
+ * equivalent attribute at all. This adds a single leaf-specific "Type" field for those,
+ * spliced into the shared vehicles fields by getFieldsForCategory below. Options are
+ * sourced from Tonaton's category structure (the closest Ghanaian reference site). */
+const LEAF_TYPE_FIELD: Record<string, { label: string; options: string[] }> = {
+  "motorcycles-scooters": {
+    label: "Type",
+    options: ["Cruiser", "Dual Sport", "Motocross", "Quad (ATV)", "Scooter", "Sport Bike", "Standard"],
+  },
+  "trucks-trailers": {
+    label: "Type",
+    options: ["Mini Truck", "Dump Truck", "Food Truck", "Trailer", "Heavy-Duty Truck"],
+  },
+  "construction-heavy-machinery": {
+    label: "Type",
+    options: ["Excavator", "Wheel Loader", "Forklift", "Tractor", "Grader", "Backhoe Loader", "Bulldozer"],
+  },
+  "watercraft-boats": {
+    label: "Type",
+    options: ["Bow Rider Boat", "Banana Boat", "Barge & Pontoon", "Bass Boat", "Cabin Cruiser Boat", "Canoe"],
+  },
+  "personal-mobility": {
+    label: "Type",
+    options: ["Bicycle", "Electric Bicycle", "Hoverboard", "Electric Scooter", "Accessories"],
+  },
+  "vehicle-parts-accessories": {
+    label: "Type",
+    options: [
+      "Exterior Accessories",
+      "Engine & Drivetrain",
+      "Headlights & Lighting",
+      "Brakes, Suspension & Steering",
+      "Wheels & Parts",
+      "Interior Accessories",
+      "Audio Parts",
+    ],
+  },
+  "vehicle-car-services": {
+    label: "Type of Services",
+    options: ["Tuning Services", "Detailing Services", "Car Repair", "Other"],
+  },
+};
+
+export function getFieldsForCategory(
+  topLevelSlug: string | undefined,
+  leafSlug?: string
+): ListingFieldDef[] {
   if (!topLevelSlug) return [];
-  return CATEGORY_FIELDS[topLevelSlug] ?? [];
+  const fields = CATEGORY_FIELDS[topLevelSlug] ?? [];
+  const leafType = leafSlug && LEAF_TYPE_FIELD[leafSlug];
+  if (!leafType) return fields;
+
+  // Inserted right after Trim (the last of the make/model/year/trim cascade) so it
+  // reads as part of "what this vehicle is" rather than getting buried lower down.
+  const trimIndex = fields.findIndex((f) => f.key === "trim");
+  const typeField: ListingFieldDef = {
+    key: "vehicle_type",
+    label: leafType.label,
+    type: "select",
+    options: leafType.options,
+    required: true,
+  };
+  const insertAt = trimIndex === -1 ? fields.length : trimIndex + 1;
+  return [...fields.slice(0, insertAt), typeField, ...fields.slice(insertAt)];
 }
 
 /** The 1-2 most important attributes per category, surfaced as icon badges above the spec table. */

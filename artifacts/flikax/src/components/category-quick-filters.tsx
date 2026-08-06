@@ -4,6 +4,7 @@ import { getQuickFilterStyle, getBrandColor, getTypeIcon } from "@/lib/category-
 export function CategoryQuickFilters({
   items,
   topLevelSlug,
+  leafSlug,
   attributeKey,
   activeValue,
   baseHref,
@@ -11,6 +12,7 @@ export function CategoryQuickFilters({
 }: {
   items: { value: string; count: number }[];
   topLevelSlug: string | undefined;
+  leafSlug?: string;
   attributeKey: string;
   activeValue?: string;
   baseHref: string;
@@ -19,7 +21,7 @@ export function CategoryQuickFilters({
   // Not worth a filter row for a single (or no) distinct value in this category.
   if (items.length < 2) return null;
 
-  const style = getQuickFilterStyle(topLevelSlug);
+  const style = getQuickFilterStyle(topLevelSlug, leafSlug);
 
   return (
     <div className="mb-4">
@@ -33,6 +35,7 @@ export function CategoryQuickFilters({
             item={item}
             style={style}
             topLevelSlug={topLevelSlug}
+            leafSlug={leafSlug}
             attributeKey={attributeKey}
             activeValue={activeValue}
             baseHref={baseHref}
@@ -51,6 +54,7 @@ export function CategoryQuickFilters({
             item={item}
             style={style}
             topLevelSlug={topLevelSlug}
+            leafSlug={leafSlug}
             attributeKey={attributeKey}
             activeValue={activeValue}
             baseHref={baseHref}
@@ -66,6 +70,7 @@ function QuickFilterTile({
   item,
   style,
   topLevelSlug,
+  leafSlug,
   attributeKey,
   activeValue,
   baseHref,
@@ -75,6 +80,7 @@ function QuickFilterTile({
   item: { value: string; count: number };
   style: "brand" | "type";
   topLevelSlug: string | undefined;
+  leafSlug?: string;
   attributeKey: string;
   activeValue?: string;
   baseHref: string;
@@ -88,7 +94,7 @@ function QuickFilterTile({
   else params.set(`attr_${attributeKey}`, item.value);
   const qs = params.toString();
 
-  const Icon = style === "type" ? getTypeIcon(topLevelSlug, item.value) : null;
+  const Icon = style === "type" ? getTypeIcon(topLevelSlug, item.value, leafSlug) : null;
   const brandColor = style === "brand" ? getBrandColor(item.value) : null;
 
   return (

@@ -53,7 +53,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
     if (parent) topLevelSlug = parent.slug;
   }
 
-  const fields = getFieldsForCategory(topLevelSlug ?? undefined);
+  const fields = getFieldsForCategory(topLevelSlug ?? undefined, category?.slug);
   const attributes = (listing.attributes ?? {}) as Record<string, string | string[]>;
 
   const specs = fields

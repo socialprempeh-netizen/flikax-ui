@@ -491,7 +491,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
   const parentCategory = parentResult.data as { name: string; slug: string } | null;
   const topLevelSlug = parentCategory?.slug ?? category?.slug;
 
-  const fields = getFieldsForCategory(topLevelSlug ?? undefined);
+  const fields = getFieldsForCategory(topLevelSlug ?? undefined, category?.slug);
   const attributes = (listing.attributes ?? {}) as Record<string, string | string[]>;
 
   const allSpecs = fields

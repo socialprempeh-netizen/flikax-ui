@@ -1,5 +1,24 @@
-import { Home, Building2, Trees, Building, type LucideIcon } from "lucide-react";
-import { CATEGORY_FIELDS } from "@/lib/listing-fields";
+import {
+  Home,
+  Building2,
+  Trees,
+  Building,
+  Bike,
+  Scooter,
+  Truck,
+  Caravan,
+  HardHat,
+  Forklift,
+  Tractor,
+  Ship,
+  Sailboat,
+  Package,
+  Wrench,
+  Cog,
+  Settings2,
+  type LucideIcon,
+} from "lucide-react";
+import { getFieldsForCategory } from "@/lib/listing-fields";
 
 export type SidebarFieldType = "select" | "text" | "range";
 
@@ -22,6 +41,22 @@ const SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
   "home-furniture-appliances": ["material", "condition"],
 };
 
+/** Overrides SIDEBAR_FIELD_KEYS per vehicle leaf subcategory (Cars, Motorcycles, ...) --
+ * Tonaton shows a different filter set per leaf (a boat has no "transmission"), whereas
+ * the top-level "vehicles" set above is really just the Cars-shaped default. Keyed by
+ * leaf slug rather than nested under "vehicles" since leaf slugs are unique site-wide. */
+const LEAF_SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
+  cars: ["make", "body_type", "year", "condition", "transmission", "mileage", "fuel_type", "exchange_possible"],
+  "motorcycles-scooters": ["vehicle_type", "make", "year", "powertrain_type", "condition", "color", "exchange_possible"],
+  "buses-microbuses": ["make", "transmission", "condition", "color", "fuel_type", "exchange_possible"],
+  "trucks-trailers": ["vehicle_type", "make", "year", "condition", "exchange_possible"],
+  "construction-heavy-machinery": ["vehicle_type", "make", "condition", "year", "exchange_possible"],
+  "watercraft-boats": ["vehicle_type", "year", "condition", "exchange_possible"],
+  "personal-mobility": ["vehicle_type", "color", "condition", "exchange_possible"],
+  "vehicle-parts-accessories": ["vehicle_type", "make", "condition"],
+  "vehicle-car-services": ["vehicle_type"],
+};
+
 // "range" for number fields (rendered as min/max inputs, filtered numerically),
 // "select" for anything with a fixed option list, "text" (substring search) otherwise.
 function resolveFieldType(key: string, formType: string): SidebarFieldType {
@@ -30,11 +65,14 @@ function resolveFieldType(key: string, formType: string): SidebarFieldType {
   return "text";
 }
 
-export function getSidebarFields(topLevelSlug: string | undefined): SidebarFilterField[] {
+export function getSidebarFields(
+  topLevelSlug: string | undefined,
+  leafSlug?: string
+): SidebarFilterField[] {
   if (!topLevelSlug) return [];
-  const keys = SIDEBAR_FIELD_KEYS[topLevelSlug];
+  const keys = (leafSlug && LEAF_SIDEBAR_FIELD_KEYS[leafSlug]) ?? SIDEBAR_FIELD_KEYS[topLevelSlug];
   if (!keys) return [];
-  const defs = CATEGORY_FIELDS[topLevelSlug] ?? [];
+  const defs = getFieldsForCategory(topLevelSlug, leafSlug);
   return keys
     .map((key) => defs.find((f) => f.key === key))
     .filter((f): f is NonNullable<typeof f> => Boolean(f))
@@ -51,7 +89,21 @@ const QUICK_FILTER_KEY: Record<string, string> = {
   electronics: "brand",
 };
 
-export function getQuickFilterKey(topLevelSlug: string | undefined): string | undefined {
+/** Leaf overrides: Cars/Buses still lead with Make (there's a real brand identity to
+ * show), but the other vehicle leaves have no meaningful "make" filter -- their most
+ * useful quick filter is the new leaf-specific Type field instead. */
+const LEAF_QUICK_FILTER_KEY: Record<string, string> = {
+  "motorcycles-scooters": "vehicle_type",
+  "trucks-trailers": "vehicle_type",
+  "construction-heavy-machinery": "vehicle_type",
+  "watercraft-boats": "vehicle_type",
+  "personal-mobility": "vehicle_type",
+  "vehicle-parts-accessories": "vehicle_type",
+  "vehicle-car-services": "vehicle_type",
+};
+
+export function getQuickFilterKey(topLevelSlug: string | undefined, leafSlug?: string): string | undefined {
+  if (leafSlug && LEAF_QUICK_FILTER_KEY[leafSlug]) return LEAF_QUICK_FILTER_KEY[leafSlug];
   if (!topLevelSlug) return undefined;
   return QUICK_FILTER_KEY[topLevelSlug];
 }
@@ -67,7 +119,18 @@ const QUICK_FILTER_STYLE: Record<string, QuickFilterStyle> = {
   electronics: "brand",
 };
 
-export function getQuickFilterStyle(topLevelSlug: string | undefined): QuickFilterStyle {
+const LEAF_QUICK_FILTER_STYLE: Record<string, QuickFilterStyle> = {
+  "motorcycles-scooters": "type",
+  "trucks-trailers": "type",
+  "construction-heavy-machinery": "type",
+  "watercraft-boats": "type",
+  "personal-mobility": "type",
+  "vehicle-parts-accessories": "type",
+  "vehicle-car-services": "type",
+};
+
+export function getQuickFilterStyle(topLevelSlug: string | undefined, leafSlug?: string): QuickFilterStyle {
+  if (leafSlug && LEAF_QUICK_FILTER_STYLE[leafSlug]) return LEAF_QUICK_FILTER_STYLE[leafSlug];
   return (topLevelSlug && QUICK_FILTER_STYLE[topLevelSlug]) || "type";
 }
 
@@ -132,7 +195,70 @@ const TYPE_ICON_BY_CATEGORY: Record<string, Record<string, LucideIcon>> = {
   property: PROPERTY_TYPE_ICONS,
 };
 
-export function getTypeIcon(topLevelSlug: string | undefined, value: string): LucideIcon {
+/** Icon per "Type" value for the 7 vehicle leaves that use the vehicle_type field as
+ * their quick filter (see LEAF_TYPE_FIELD in listing-fields.ts for the option lists
+ * these keys must match). Keyed by leaf slug, checked before TYPE_ICON_BY_CATEGORY. */
+const TYPE_ICON_BY_LEAF: Record<string, Record<string, LucideIcon>> = {
+  "motorcycles-scooters": {
+    Scooter: Scooter,
+    Cruiser: Bike,
+    "Dual Sport": Bike,
+    Motocross: Bike,
+    "Quad (ATV)": Bike,
+    "Sport Bike": Bike,
+    Standard: Bike,
+  },
+  "trucks-trailers": {
+    "Mini Truck": Truck,
+    "Dump Truck": Truck,
+    "Food Truck": Truck,
+    "Heavy-Duty Truck": Truck,
+    Trailer: Caravan,
+  },
+  "construction-heavy-machinery": {
+    Forklift: Forklift,
+    Tractor: Tractor,
+    Excavator: HardHat,
+    "Wheel Loader": HardHat,
+    Grader: HardHat,
+    "Backhoe Loader": HardHat,
+    Bulldozer: HardHat,
+  },
+  "watercraft-boats": {
+    Canoe: Sailboat,
+    "Bow Rider Boat": Ship,
+    "Banana Boat": Ship,
+    "Barge & Pontoon": Ship,
+    "Bass Boat": Ship,
+    "Cabin Cruiser Boat": Ship,
+  },
+  "personal-mobility": {
+    Bicycle: Bike,
+    "Electric Bicycle": Bike,
+    "Electric Scooter": Scooter,
+    Hoverboard: Scooter,
+    Accessories: Package,
+  },
+  "vehicle-parts-accessories": {
+    "Wheels & Parts": Cog,
+    "Engine & Drivetrain": Cog,
+    "Exterior Accessories": Wrench,
+    "Headlights & Lighting": Wrench,
+    "Brakes, Suspension & Steering": Wrench,
+    "Interior Accessories": Wrench,
+    "Audio Parts": Wrench,
+  },
+  "vehicle-car-services": {
+    "Tuning Services": Settings2,
+    "Detailing Services": Wrench,
+    "Car Repair": Wrench,
+    Other: Wrench,
+  },
+};
+
+export function getTypeIcon(topLevelSlug: string | undefined, value: string, leafSlug?: string): LucideIcon {
+  const leafMap = leafSlug ? TYPE_ICON_BY_LEAF[leafSlug] : undefined;
+  if (leafMap?.[value]) return leafMap[value];
   const map = (topLevelSlug && TYPE_ICON_BY_CATEGORY[topLevelSlug]) || {};
   return map[value] ?? Building;
 }

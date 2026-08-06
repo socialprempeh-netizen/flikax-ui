@@ -112,8 +112,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         .then((r) => r.data)
     : null;
   const topLevelSlug = parentCategory?.slug;
-  const sidebarFields = getSidebarFields(topLevelSlug);
-  const quickFilterKey = getQuickFilterKey(topLevelSlug);
+  const sidebarFields = getSidebarFields(topLevelSlug, category.slug);
+  const quickFilterKey = getQuickFilterKey(topLevelSlug, category.slug);
 
   const attributeFilters: AttributeFilter[] = [];
   for (const field of sidebarFields) {
@@ -205,6 +205,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
               <CategoryQuickFilters
                 items={quickFilterValues}
                 topLevelSlug={topLevelSlug}
+                leafSlug={category.slug}
                 attributeKey={quickFilterKey}
                 activeValue={activeQuickFilterValue}
                 baseHref={`/${category.slug}`}
