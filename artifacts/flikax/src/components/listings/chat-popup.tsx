@@ -123,16 +123,16 @@ export function ChatPopupButton({
 
   return (
     <>
-      {/* Light orange fill, not brand-blue -- matches Post Ad's orange accent
-          rather than the site's blue system, since "Send Message" sits next
-          to a solid blue "Contact Seller" button and needs its own distinct
-          color to read as a separate action, not a fainter version of it. */}
+      {/* Solid green, not brand-blue -- "Send Message" sits next to a solid
+          blue "Contact Seller" button and needs its own distinct color to
+          read as a separate action, not a fainter version of it. Solid
+          (not a light tint) so it carries the same visual weight as
+          Contact Seller instead of reading as the secondary/lesser option. */}
       <Button
         type="button"
         onClick={handleOpen}
         disabled={phase === "loading"}
-        variant="outline"
-        className={`h-11 border-2 border-orange-400 bg-orange-100 text-orange-700 hover:bg-orange-200 hover:text-orange-800 ${compact ? "flex-1" : "w-full"}`}
+        className={`h-11 bg-green-600 text-white hover:bg-green-700 ${compact ? "flex-1" : "w-full"}`}
       >
         <MessageCircle className="size-4" />
         {phase === "loading" ? "Opening…" : "Send Message"}

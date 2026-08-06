@@ -76,14 +76,19 @@ export function ListingGrid({
               {/* rounded-none, not rounded-lg -- Card's own base class is
                   rounded-xl, and a smaller radius is still a rounded corner.
                   The reference grid (Jiji-style) uses flat, perfectly square
-                  tiles with hairline borders between them instead. */}
+                  tiles with hairline borders between them instead.
+                  bg-white, not bg-neutral-200 -- that grey was nearly the
+                  exact same shade as the page's own --background (#e4e7eb
+                  vs #e5e5e5), which is why cards barely stood out from the
+                  page. A white card + a slightly stronger border/shadow
+                  reads as a clearly separate surface instead. */}
               <Card
-                className={`gap-0 overflow-hidden rounded-none bg-neutral-200 p-0 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-shadow duration-200 group-hover:shadow-lg ${
+                className={`gap-0 overflow-hidden rounded-none bg-white p-0 shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-shadow duration-200 group-hover:shadow-lg ${
                   listing.isFeatured
                     ? "border-amber-300"
                     : listing.isBumped
                       ? "border-blue-300"
-                      : "border-neutral-200"
+                      : "border-neutral-300"
                 }`}
               >
                 {/* Square, not the image's natural aspect ratio -- keeps every
