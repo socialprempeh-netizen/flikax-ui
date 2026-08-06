@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { markListingUnavailableAction } from "@/app/listings/actions";
 import { withAuthRetry } from "@/lib/auth-retry";
 
+// Separate from DeleteListingButton -- this sets status to "removed" (a
+// column update) rather than deleting the row, so it gets its own wording
+// and server action instead of sharing one generic "are you sure" button.
+// NOTE for whoever picks this up: nothing in the app currently sets a
+// listing's status back to "active" after this -- there's no seller-facing
+// "relist" action and no admin mutation for it either (see BUGS_AND_TODO.md).
+// The label implies this is reversible; today it effectively isn't.
 export function MarkUnavailableButton({ listingId }: { listingId: string }) {
   const [isPending, startTransition] = useTransition();
   const [done, setDone] = useState(false);

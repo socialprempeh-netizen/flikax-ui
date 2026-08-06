@@ -2,7 +2,7 @@ import { getAllFeatureFlags } from "@/lib/feature-flags";
 import { getAllSiteSettings } from "@/lib/site-settings";
 import { FlagToggle } from "@/components/admin/flag-toggle";
 import { SiteSettingField } from "@/components/admin/site-setting-field";
-import { requireSuperAdmin } from "@/lib/admin-auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { Card } from "@/components/ui/card";
 
 export default async function AdminSettingsPage() {

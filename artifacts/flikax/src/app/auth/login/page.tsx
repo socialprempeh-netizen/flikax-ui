@@ -2,6 +2,12 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/lib/supabase/server";
 import { LoginCardBody } from "@/components/auth/login-card-body";
 
+// Server-rendered gate: an already-logged-in visitor who lands here (stale
+// bookmark, back button, a stray link) is bounced straight to `redirect`
+// before any of the sign-in UI renders, rather than showing a login form
+// they don't need. All the actual sign-in flow (method tabs, OTP, OAuth)
+// lives in LoginCardBody -- this file only owns the redirect gate + the
+// gradient-card page frame.
 export default async function LoginPage({
   searchParams,
 }: {

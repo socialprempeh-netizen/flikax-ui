@@ -7,6 +7,12 @@ import { toggleSavedListingAction } from "@/app/listings/actions";
 import { withAuthRetry } from "@/lib/auth-retry";
 import { useSavedListingIds } from "@/lib/use-saved-listing-ids";
 
+// Labeled pill variant for the ad detail page's action column, where there's
+// room for a text label and a surfaced error message -- CompactSaveButton is
+// the icon-only variant used as a grid-card overlay, where there isn't.
+// Both call the same toggleSavedListingAction; this one isn't a wrapper
+// around that component because the detail page's error UI (the <p> below)
+// has nowhere equivalent to render inside a small floating circle.
 export function SaveListingButton({ listingId }: { listingId: string }) {
   const savedIds = useSavedListingIds();
   const [saved, setSaved] = useState(false);

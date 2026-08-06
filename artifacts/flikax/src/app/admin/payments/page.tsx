@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Banknote, CalendarDays, CalendarClock } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { buildAdminPaymentsHref, type AdminPaymentFilters } from "@/lib/admin-payments-filters";
+import { buildAdminPaymentsHref, type AdminPaymentFilters } from "@/lib/admin/payments-filters";
 import {
   ADMIN_PLAN_TYPE_LABELS,
   purchaseDisplayStatus,
   isStuckPending,
-} from "@/lib/admin-payments";
+} from "@/lib/admin/payments";
 import { PaymentsFilterBar } from "@/components/admin/payments-filter-bar";
 import { PaymentsTable, type AdminPurchaseRow } from "@/components/admin/payments-table";
 import { Card } from "@/components/ui/card";

@@ -5,7 +5,7 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { markPaymentSuccess } from "@/lib/payments/mark-payment-success";
 import { clearFeaturedAction, clearBumpAction } from "@/app/admin/listings/actions";
-import { logAdminAction } from "@/lib/admin-audit-log";
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 // purchases/payments have no admin-read/write RLS policy for plain "admin"
 // (only "Super admins can view all purchases" exists, and payments has no

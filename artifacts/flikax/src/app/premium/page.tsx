@@ -10,6 +10,9 @@ import { PlanPurchaseButton } from "@/components/premium/plan-purchase-button";
 
 const currency = new Intl.NumberFormat("en-GH", { style: "currency", currency: "GHS" });
 
+// Fixed display order, independent of whatever order plans happen to be
+// inserted into the DB in -- SECTION_LABELS below is keyed the same way so
+// the two stay in sync if a new PlanType is ever added.
 const SECTION_ORDER: PlanType[] = ["featured_spot", "bump_fee", "pay_per_ad", "subscription"];
 
 const SECTION_LABELS: Record<PlanType, string> = {
@@ -27,6 +30,11 @@ export default async function PremiumPage() {
     featuredTierEnabled,
   ] = await Promise.all([getUser(), getFeatureFlag("featured_tier_enabled")]);
 
+  // This is a separate, DB-driven flag from PAYMENTS_ENABLED (see
+  // src/lib/payments/config.ts) -- that one is the env-var kill switch the
+  // checkout/webhook routes themselves check; this one just controls
+  // whether this page shows real plans or the "coming soon" placeholder.
+  // Both need to be on for a paying customer to reach a working checkout.
   if (!featuredTierEnabled) {
     return (
       <div className="flex flex-1 flex-col bg-background">

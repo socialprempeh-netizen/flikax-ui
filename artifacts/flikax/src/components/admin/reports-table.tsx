@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Flag, TriangleAlert } from "lucide-react";
-import { ADMIN_REPORT_STATUS_LABELS, ADMIN_REPORT_STATUS_STYLES } from "@/lib/admin-reports";
+import { ADMIN_REPORT_STATUS_LABELS, ADMIN_REPORT_STATUS_STYLES } from "@/lib/admin/reports";
 import { REPORT_REASON_LABELS, type ReportReason } from "@/lib/report-reasons";
 import {
   updateReportStatusAction,

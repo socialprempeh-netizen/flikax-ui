@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient, getUser } from "@/lib/supabase/server";
-import { ADMIN_TICKET_STATUSES } from "@/lib/admin-support";
-import { logAdminAction } from "@/lib/admin-audit-log";
+import { ADMIN_TICKET_STATUSES } from "@/lib/admin/support";
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 async function requireAdminActor() {
   const {

@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { updateListingStatusAction } from "@/app/admin/listings/actions";
-import { ADMIN_MODERATION_STATUSES } from "@/lib/admin-moderation";
-import { logAdminAction } from "@/lib/admin-audit-log";
+import { ADMIN_MODERATION_STATUSES } from "@/lib/admin/moderation";
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 async function requireAdminActor() {
   const {

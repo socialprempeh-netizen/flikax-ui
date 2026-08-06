@@ -7,6 +7,10 @@ import { PhoneAuthForm } from "@/components/auth/phone-auth-form";
 
 type Method = "email" | "phone";
 
+// Tab state lives here (not in the parent card body) purely so the OAuth
+// buttons above this component and the "or continue with" divider don't
+// need to re-render when switching tabs -- EmailAuthForm/PhoneAuthForm each
+// own their own internal step state (OTP entry, etc.) independently.
 export function AuthMethodTabs({
   redirectTo,
   defaultEmailMode = "sign-in",

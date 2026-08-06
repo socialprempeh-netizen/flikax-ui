@@ -2,6 +2,10 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/lib/supabase/server";
 import { RegisterCardBody } from "@/components/auth/register-card-body";
 
+// Same already-logged-in gate as the login page -- see that file's comment.
+// `centered` tells RegisterCardBody it's the sole content of a standalone
+// page (vs. embedded in AuthModalProvider's floating overlay elsewhere),
+// which affects its internal spacing/heading treatment.
 export default async function RegisterPage({
   searchParams,
 }: {

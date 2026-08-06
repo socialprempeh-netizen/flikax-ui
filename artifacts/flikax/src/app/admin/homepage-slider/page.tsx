@@ -1,4 +1,4 @@
-import { requireSuperAdmin } from "@/lib/admin-auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAllHomepageSlides } from "@/lib/homepage-slides";
 import { HomepageSliderManager } from "@/components/admin/homepage-slider-manager";

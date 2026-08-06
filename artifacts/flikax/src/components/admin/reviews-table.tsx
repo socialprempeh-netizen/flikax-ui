@@ -7,7 +7,7 @@ import { Flag, Smile, Meh, Frown, type LucideIcon } from "lucide-react";
 import {
   ADMIN_FEEDBACK_REPORT_STATUS_LABELS,
   ADMIN_FEEDBACK_REPORT_STATUS_STYLES,
-} from "@/lib/admin-reviews";
+} from "@/lib/admin/reviews";
 import { FEEDBACK_REPORT_REASON_LABELS, type FeedbackReportReason } from "@/lib/feedback-report-reasons";
 import {
   updateFeedbackReportStatusAction,

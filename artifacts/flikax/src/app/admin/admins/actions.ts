@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { toGhanaE164 } from "@/lib/phone";
-import { logAdminAction } from "@/lib/admin-audit-log";
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 async function requireSuperAdminActor() {
   const {

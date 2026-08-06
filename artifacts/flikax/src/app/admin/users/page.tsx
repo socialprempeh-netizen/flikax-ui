@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { X } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { accountStatus, type AdminUserRow } from "@/lib/admin-users";
+import { accountStatus, type AdminUserRow } from "@/lib/admin/users";
 import { UsersRowActions } from "@/components/admin/users-row-actions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

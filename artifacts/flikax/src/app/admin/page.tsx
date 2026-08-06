@@ -13,7 +13,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { BUMP_BADGE_DISPLAY_HOURS } from "@/lib/premium-plans";
 import { TrendChart, RankBarChart } from "@/components/admin/dashboard-charts";
-import { bucketByDay } from "@/lib/admin-analytics";
+import { bucketByDay } from "@/lib/admin/analytics";
 import { Card } from "@/components/ui/card";
 
 const DAYS = 30;

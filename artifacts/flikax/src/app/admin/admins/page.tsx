@@ -1,4 +1,4 @@
-import { requireSuperAdmin } from "@/lib/admin-auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { createClient } from "@/lib/supabase/server";
 import { AdminRoleRow } from "@/components/admin/admin-role-row";
 import { GrantAdminForm } from "@/components/admin/grant-admin-form";

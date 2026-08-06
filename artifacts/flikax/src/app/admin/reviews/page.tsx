@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { buildAdminReviewsHref, type AdminReviewFilters } from "@/lib/admin-reviews-filters";
+import { buildAdminReviewsHref, type AdminReviewFilters } from "@/lib/admin/reviews-filters";
 import { ReviewsFilterBar } from "@/components/admin/reviews-filter-bar";
 import { ReviewsTable, type AdminReviewRow } from "@/components/admin/reviews-table";
 import { Button } from "@/components/ui/button";

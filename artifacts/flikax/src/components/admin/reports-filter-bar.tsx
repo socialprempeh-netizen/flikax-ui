@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { X } from "lucide-react";
-import { ADMIN_REPORT_STATUS_LABELS } from "@/lib/admin-reports";
+import { ADMIN_REPORT_STATUS_LABELS } from "@/lib/admin/reports";
 import { REPORT_REASON_LABELS } from "@/lib/report-reasons";
-import type { AdminReportFilters } from "@/lib/admin-report-filters";
+import type { AdminReportFilters } from "@/lib/admin/report-filters";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

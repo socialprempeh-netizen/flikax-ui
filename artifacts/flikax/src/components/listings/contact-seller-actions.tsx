@@ -3,6 +3,10 @@
 import { ChatPopupButton } from "@/components/listings/chat-popup";
 import { useSessionSummary } from "@/lib/use-session-summary";
 
+// Client component purely so `isOwner` can be resolved from the logged-in
+// user's session -- the server-rendered detail page around this doesn't
+// know who's viewing it (see [category]/[slug]/page.tsx's own comments on
+// why ownership-gated UI is resolved client-side rather than server-side).
 export function ContactSellerActions({
   listingId,
   sellerId,

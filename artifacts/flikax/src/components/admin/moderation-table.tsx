@@ -7,7 +7,7 @@ import {
   ADMIN_MODERATION_FLAG_TYPE_LABELS,
   ADMIN_MODERATION_STATUS_LABELS,
   ADMIN_MODERATION_STATUS_STYLES,
-} from "@/lib/admin-moderation";
+} from "@/lib/admin/moderation";
 import { updateModerationFlagStatusAction } from "@/app/admin/moderation/actions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

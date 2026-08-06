@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { suspendUserAction, logWarningAction } from "@/app/admin/users/actions";
 import { deleteListingsAction } from "@/app/admin/listings/actions";
-import { logAdminAction } from "@/lib/admin-audit-log";
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 const REPORT_STATUSES = ["open", "resolved", "dismissed"] as const;
 

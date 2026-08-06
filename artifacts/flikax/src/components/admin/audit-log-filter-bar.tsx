@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { X } from "lucide-react";
-import { ADMIN_AUDIT_ACTION_LABELS } from "@/lib/admin-audit-labels";
-import { ADMIN_AUDIT_TARGET_TYPE_LABELS, type AdminAuditLogFilters } from "@/lib/admin-audit-logs-filters";
+import { ADMIN_AUDIT_ACTION_LABELS } from "@/lib/admin/audit-labels";
+import { ADMIN_AUDIT_TARGET_TYPE_LABELS, type AdminAuditLogFilters } from "@/lib/admin/audit-logs-filters";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

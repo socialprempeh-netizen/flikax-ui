@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ADMIN_TICKET_STATUS_LABELS, ADMIN_TICKET_STATUS_STYLES } from "@/lib/admin-support";
+import { ADMIN_TICKET_STATUS_LABELS, ADMIN_TICKET_STATUS_STYLES } from "@/lib/admin/support";
 import { updateTicketStatusAction } from "@/app/admin/support/actions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { X } from "lucide-react";
-import { ADMIN_PURCHASE_STATUS_LABELS, ADMIN_PLAN_TYPE_LABELS } from "@/lib/admin-payments";
-import type { AdminPaymentFilters } from "@/lib/admin-payments-filters";
+import { ADMIN_PURCHASE_STATUS_LABELS, ADMIN_PLAN_TYPE_LABELS } from "@/lib/admin/payments";
+import type { AdminPaymentFilters } from "@/lib/admin/payments-filters";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

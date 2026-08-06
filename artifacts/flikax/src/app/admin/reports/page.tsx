@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { buildAdminReportsHref, type AdminReportFilters } from "@/lib/admin-report-filters";
+import { buildAdminReportsHref, type AdminReportFilters } from "@/lib/admin/report-filters";
 import { ReportsFilterBar } from "@/components/admin/reports-filter-bar";
 import { ReportsTable, type AdminReportRow } from "@/components/admin/reports-table";
 import { Button } from "@/components/ui/button";

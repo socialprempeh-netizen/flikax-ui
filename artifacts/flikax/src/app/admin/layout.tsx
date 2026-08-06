@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { requireAdmin } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin/auth";
 import { AdminShell } from "@/components/admin/admin-shell";
 
 export const metadata: Metadata = {

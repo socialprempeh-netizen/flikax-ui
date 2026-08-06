@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Eye, Bookmark } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { bucketByDay, bucketSumByDay } from "@/lib/admin-analytics";
-import { ANALYTICS_WINDOWS, buildAdminAnalyticsHref, type AdminAnalyticsFilters } from "@/lib/admin-analytics-filters";
+import { bucketByDay, bucketSumByDay } from "@/lib/admin/analytics";
+import { ANALYTICS_WINDOWS, buildAdminAnalyticsHref, type AdminAnalyticsFilters } from "@/lib/admin/analytics-filters";
 import { TrendChart, RankBarChart } from "@/components/admin/dashboard-charts";
 import { Card } from "@/components/ui/card";
 

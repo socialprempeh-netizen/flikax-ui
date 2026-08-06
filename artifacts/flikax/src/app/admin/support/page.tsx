@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { buildAdminSupportHref, type AdminSupportFilters } from "@/lib/admin-support-filters";
+import { buildAdminSupportHref, type AdminSupportFilters } from "@/lib/admin/support-filters";
 import { SupportFilterBar } from "@/components/admin/support-filter-bar";
 import { SupportTable, type AdminTicketRow } from "@/components/admin/support-table";
 import { Button } from "@/components/ui/button";

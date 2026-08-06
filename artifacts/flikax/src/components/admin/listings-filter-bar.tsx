@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { X } from "lucide-react";
-import { ADMIN_STATUS_LABELS } from "@/lib/admin-listings";
-import type { AdminListingFilters } from "@/lib/admin-listing-filters";
+import { ADMIN_STATUS_LABELS } from "@/lib/admin/listings";
+import type { AdminListingFilters } from "@/lib/admin/listing-filters";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -8,7 +8,7 @@ import {
   ADMIN_PURCHASE_STATUS_LABELS,
   ADMIN_PURCHASE_STATUS_STYLES,
   ADMIN_PLAN_TYPE_LABELS,
-} from "@/lib/admin-payments";
+} from "@/lib/admin/payments";
 import { markPurchaseActiveAction, revokePurchaseAction } from "@/app/admin/payments/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 import { Card } from "@/components/ui/card";

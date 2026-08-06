@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { resolveListingImageUrl } from "@/lib/images";
 import { isRecentlyBumped } from "@/lib/premium-plans";
 import { getFieldsForCategory, HEADLINE_FIELD_KEYS } from "@/lib/listing-fields";
-import { ADMIN_STATUS_LABELS, ADMIN_STATUS_STYLES, isListingExpired } from "@/lib/admin-listings";
+import { ADMIN_STATUS_LABELS, ADMIN_STATUS_STYLES, isListingExpired } from "@/lib/admin/listings";
 import { ListingGallery } from "@/components/listings/listing-gallery";
 import { ListingDetailActions } from "@/components/admin/listing-detail-actions";
 import { Card } from "@/components/ui/card";

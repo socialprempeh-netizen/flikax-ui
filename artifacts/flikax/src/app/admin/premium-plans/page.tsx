@@ -1,4 +1,4 @@
-import { requireSuperAdmin } from "@/lib/admin-auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { getAllPlans } from "@/lib/premium-plans";
 import { PremiumPlansManager } from "@/components/admin/premium-plans-manager";
 

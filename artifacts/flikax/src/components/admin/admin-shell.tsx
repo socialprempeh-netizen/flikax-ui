@@ -29,7 +29,7 @@ import {
 import { LogoutButton } from "@/components/auth/logout-button";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { AdminRole } from "@/lib/admin-auth";
+import type { AdminRole } from "@/lib/admin/auth";
 
 type NavItem = {
   label: string;

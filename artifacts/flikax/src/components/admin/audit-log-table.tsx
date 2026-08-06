@@ -1,5 +1,5 @@
-import { ADMIN_AUDIT_ACTION_LABELS } from "@/lib/admin-audit-labels";
-import { ADMIN_AUDIT_TARGET_TYPE_LABELS } from "@/lib/admin-audit-logs-filters";
+import { ADMIN_AUDIT_ACTION_LABELS } from "@/lib/admin/audit-labels";
+import { ADMIN_AUDIT_TARGET_TYPE_LABELS } from "@/lib/admin/audit-logs-filters";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 

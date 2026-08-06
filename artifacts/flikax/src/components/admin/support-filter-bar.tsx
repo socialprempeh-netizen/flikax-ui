@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { X } from "lucide-react";
-import { ADMIN_TICKET_STATUS_LABELS } from "@/lib/admin-support";
-import type { AdminSupportFilters } from "@/lib/admin-support-filters";
+import { ADMIN_TICKET_STATUS_LABELS } from "@/lib/admin/support";
+import type { AdminSupportFilters } from "@/lib/admin/support-filters";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

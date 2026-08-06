@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { buildAdminModerationHref, type AdminModerationFilters } from "@/lib/admin-moderation-filters";
+import { buildAdminModerationHref, type AdminModerationFilters } from "@/lib/admin/moderation-filters";
 import { ModerationFilterBar } from "@/components/admin/moderation-filter-bar";
 import { ModerationTable, type AdminModerationRow } from "@/components/admin/moderation-table";
 import { Button } from "@/components/ui/button";

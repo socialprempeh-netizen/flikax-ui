@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { requireSuperAdmin } from "@/lib/admin-auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { createClient } from "@/lib/supabase/server";
-import { buildAdminAuditLogsHref, type AdminAuditLogFilters } from "@/lib/admin-audit-logs-filters";
+import { buildAdminAuditLogsHref, type AdminAuditLogFilters } from "@/lib/admin/audit-logs-filters";
 import { AuditLogFilterBar } from "@/components/admin/audit-log-filter-bar";
 import { AuditLogTable, type AdminAuditLogRow } from "@/components/admin/audit-log-table";
 import { Button } from "@/components/ui/button";

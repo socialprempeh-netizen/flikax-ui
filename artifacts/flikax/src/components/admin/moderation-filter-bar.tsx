@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { X } from "lucide-react";
-import { ADMIN_MODERATION_FLAG_TYPE_LABELS, ADMIN_MODERATION_STATUS_LABELS } from "@/lib/admin-moderation";
-import type { AdminModerationFilters } from "@/lib/admin-moderation-filters";
+import { ADMIN_MODERATION_FLAG_TYPE_LABELS, ADMIN_MODERATION_STATUS_LABELS } from "@/lib/admin/moderation";
+import type { AdminModerationFilters } from "@/lib/admin/moderation-filters";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

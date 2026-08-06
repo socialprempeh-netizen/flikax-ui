@@ -8,6 +8,9 @@ import { submitReportAction } from "@/app/listings/actions";
 import { withAuthRetry } from "@/lib/auth-retry";
 import { REPORT_REASONS, REPORT_REASON_LABELS, type ReportReason } from "@/lib/report-reasons";
 
+// Reason is chosen via radio buttons from a fixed REPORT_REASONS list (not
+// free text) so admin moderation queues get consistent, filterable
+// categories instead of having to read/triage arbitrary prose per report.
 export function ReportListingButton({ listingId }: { listingId: string }) {
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState<ReportReason | null>(null);

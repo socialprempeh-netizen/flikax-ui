@@ -1,6 +1,12 @@
 import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
 import { FlikaxLogo } from "@/components/flikax-logo";
 
+// Thin page shell -- all the actual logic (sending the reset email, the
+// hash-fragment/PKCE redirect handling) lives in ForgotPasswordForm. This
+// gradient-card wrapper is duplicated across login/register/reset-password
+// instead of a shared `auth/layout.tsx` since each page's card has slightly
+// different width/centering needs; consolidating it is a reasonable future
+// cleanup but not done here to avoid touching four pages for a cosmetic win.
 export default function ForgotPasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-[#0B1B33] to-[#124F9E] p-4 sm:p-8">

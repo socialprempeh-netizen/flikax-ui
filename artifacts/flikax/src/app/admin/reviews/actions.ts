@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { logWarningAction } from "@/app/admin/users/actions";
-import { logAdminAction } from "@/lib/admin-audit-log";
+import { logAdminAction } from "@/lib/admin/audit-log";
 
 const FEEDBACK_REPORT_STATUSES = ["open", "resolved", "dismissed"] as const;
 

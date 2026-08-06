@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImageOff, Star, TrendingUp, AlertTriangle } from "lucide-react";
-import { ADMIN_STATUS_LABELS, ADMIN_STATUS_STYLES } from "@/lib/admin-listings";
+import { ADMIN_STATUS_LABELS, ADMIN_STATUS_STYLES } from "@/lib/admin/listings";
 import { updateListingStatusAction, deleteListingsAction } from "@/app/admin/listings/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 import { Card } from "@/components/ui/card";
