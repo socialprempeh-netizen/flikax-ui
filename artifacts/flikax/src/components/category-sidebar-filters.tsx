@@ -182,11 +182,11 @@ export function CategorySidebarFilters({
   }
 
   const body = (
-    <>
+    <div className="space-y-2.5">
       <button
         type="button"
         onClick={() => setLocationOpen(true)}
-        className="flex w-full items-center justify-between border-b border-neutral-100 py-3 text-left"
+        className="flex w-full items-center justify-between rounded-lg border border-neutral-200 bg-white px-3 py-3 text-left transition-colors hover:border-neutral-300"
       >
         <span className="text-sm font-semibold text-neutral-700">Location</span>
         <span className="flex items-center gap-1 text-sm font-normal text-neutral-500">
@@ -195,7 +195,7 @@ export function CategorySidebarFilters({
         </span>
       </button>
 
-      <div className="border-b border-neutral-100 py-3">
+      <div className="rounded-lg border border-neutral-200 bg-white p-3">
         <p className="mb-2 text-sm font-semibold text-neutral-700">Price, GH₵</p>
         <div className="flex items-center gap-2">
           <Input
@@ -219,11 +219,11 @@ export function CategorySidebarFilters({
       {fields.map((field) => {
         const isCollapsed = collapsedKeys[field.key] ?? false;
         return (
-          <div key={field.key} className="border-b border-neutral-100 py-1 last:border-b-0">
+          <div key={field.key} className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
             <button
               type="button"
               onClick={() => setCollapsedKeys((prev) => ({ ...prev, [field.key]: !isCollapsed }))}
-              className="flex w-full items-center justify-between py-2 text-left"
+              className="flex w-full items-center justify-between px-3 py-2.5 text-left transition-colors hover:bg-neutral-50"
             >
               <span className="text-sm font-semibold text-neutral-700">{field.label}</span>
               <ChevronDown
@@ -240,7 +240,7 @@ export function CategorySidebarFilters({
                   transition={{ duration: 0.18 }}
                   className="overflow-hidden"
                 >
-                  <div className="pb-3">
+                  <div className="border-t border-neutral-100 px-3 pb-3 pt-2.5">
                     {field.type === "range" && (
                       <div className="flex items-center gap-2">
                         <Input
@@ -310,7 +310,7 @@ export function CategorySidebarFilters({
           </div>
         );
       })}
-    </>
+    </div>
   );
 
   return (
@@ -320,8 +320,8 @@ export function CategorySidebarFilters({
           now has a dozen) scrolls with the page instead of being outrun by the
           results grid. */}
       <div className="hidden w-64 shrink-0 lg:sticky lg:top-20 lg:block lg:self-start">
-        <div className="max-h-[calc(100vh-6rem)] overflow-y-auto rounded-xl border border-neutral-300 bg-white p-3 shadow-md">
-          <div className="mb-1 flex items-center justify-between">
+        <div className="max-h-[calc(100vh-6rem)] overflow-y-auto rounded-xl border border-neutral-300 bg-neutral-50 p-3 shadow-md">
+          <div className="mb-2.5 flex items-center justify-between">
             <h3 className="text-sm font-bold text-neutral-800">Filters</h3>
             {activeCount > 0 && (
               <button type="button" onClick={clearAll} className="text-xs font-semibold text-brand hover:underline">
@@ -370,7 +370,7 @@ export function CategorySidebarFilters({
                 <X className="size-5 text-neutral-500" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto px-4">{body}</div>
+            <div className="flex-1 overflow-y-auto bg-neutral-50 px-4 py-3">{body}</div>
             <div className="flex gap-2 border-t border-neutral-200 p-4">
               {activeCount > 0 && (
                 <Button type="button" variant="outline" onClick={clearAll} className="flex-1">
@@ -424,7 +424,7 @@ function ChecklistOptions({
           />
         </div>
       )}
-      <div className="max-h-48 space-y-0.5 overflow-y-auto pr-1">
+      <div className={showSearch ? "max-h-48 space-y-0.5 overflow-y-auto pr-1" : "space-y-0.5"}>
         {visible.length === 0 && <p className="py-2 text-xs text-neutral-400">No matches.</p>}
         {visible.map((option) => {
           const checked = selected.includes(option);
