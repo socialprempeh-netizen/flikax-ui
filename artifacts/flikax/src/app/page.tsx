@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { SiteHeader } from "@/components/site-header";
-import { CategoryPillsRow } from "@/components/category-pills-row";
+import { CategoryIconGrid } from "@/components/category-icon-grid";
 import { HomeFilterBar } from "@/components/home-filter-bar";
 import { InfiniteListingGrid } from "@/components/infinite-listing-grid";
 import { HeroBanner } from "@/components/hero-banner";
@@ -104,9 +104,9 @@ export default async function Home({ searchParams }: PageProps) {
       {/* 1. Static hero band — full width, no container constraint */}
       <HeroBanner />
 
-      {/* 2. Category pills — replaces the old sidebar; sits full-width below the hero */}
+      {/* 2. Category icon grid — replaces the old sidebar; sits full-width below the hero */}
       <div className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-        <CategoryPillsRow categories={categories ?? []} selectedSlug={filters.category} filters={filters} />
+        <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} filters={filters} />
       </div>
 
       {/* A hairline divider between each macro section (categories/listings/top

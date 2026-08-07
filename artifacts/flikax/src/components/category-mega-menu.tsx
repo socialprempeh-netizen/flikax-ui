@@ -12,7 +12,7 @@ import { CategoryThumb } from "@/components/category-thumb";
  * Below `sm` this is a full-screen takeover (a small anchored dropdown isn't
  * usable at phone width); at `sm` and up it's a normal anchored dropdown
  * panel under the trigger button instead, positioned via plain CSS
- * `absolute` in the trigger's own `relative` wrapper (see CategoryPillsRow)
+ * `absolute` in the trigger's own `relative` wrapper (see CategoryIconGrid)
  * -- deliberately not a getBoundingClientRect()-measured `fixed` overlay,
  * which only computed its position once at click time and went stale
  * (rendering far from the button) on resize or once nearby content settled.
