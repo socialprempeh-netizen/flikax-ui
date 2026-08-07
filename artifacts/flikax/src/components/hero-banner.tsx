@@ -7,8 +7,8 @@ import { SearchBar } from "@/components/search-bar";
 // Background is a diagonal blue gradient (deep navy corner anchored to
 // --hero-bg so it still reads as part of the same palette, brightening
 // toward --brand in the opposite corner), not a flat fill -- this is
-// deliberately a different, richer surface than the sticky header above it
-// (--header-bg, solid black), so the two stay visually distinct bands.
+// deliberately a richer surface than the flat --header-bg above it, so the
+// two still read as distinct bands even though both are now solid blue.
 export function HeroBanner() {
   return (
     <div className="w-full bg-gradient-to-br from-[#0b1426] via-[#14276b] to-[#2554e8]">

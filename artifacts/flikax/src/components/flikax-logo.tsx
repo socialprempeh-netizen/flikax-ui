@@ -33,7 +33,7 @@ export function FlikaxLogo({
       className={`flex min-h-11 items-center gap-2 ${className}`.trim()}
       aria-label="Flikax home"
     >
-      {/* Orange rounded-square icon */}
+      {/* Brand-blue rounded-square icon */}
       <span
         className={`${iconSize} flex shrink-0 items-center justify-center rounded-lg bg-brand font-extrabold leading-none text-white`}
         style={{ fontSize: 17 }}

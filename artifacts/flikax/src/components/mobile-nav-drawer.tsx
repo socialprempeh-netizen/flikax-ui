@@ -27,9 +27,9 @@ const ACCOUNT_LINKS = [
   { label: "Help & Support", href: "/contact", icon: LifeBuoy },
 ];
 
-// No category links here -- the homepage's "All categories" mega-menu is
-// the one place to browse categories, so this drawer only holds account
-// pages that have nowhere else to live on mobile.
+// No category links here -- the homepage's category icon grid is the one
+// place to browse categories, so this drawer only holds account pages
+// that have nowhere else to live on mobile.
 export function MobileNavDrawer() {
   const [open, setOpen] = useState(false);
   const { isLoggedIn, hasUnreadMessages } = useSessionSummary();

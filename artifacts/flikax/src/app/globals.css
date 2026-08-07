@@ -18,10 +18,11 @@
   --brand: #2563eb;
   --brand-dark: #1d4ed8;
   --brand-light: #dbeafe;
-  /* Near-black shell reserved for the header bar -- distinct from --brand
-     so the brand-blue logo mark and CTA button still read as accents
-     against it (a flat --brand header would make them disappear into it). */
-  --header-bg: #000000;
+  /* Solid brand-blue shell for the sticky header -- one shade deeper than
+     --brand (not identical to it) so the brand-blue logo mark and other
+     --brand accents inside the header still read as distinct highlights
+     against it, instead of disappearing into a flat identical fill. */
+  --header-bg: var(--brand-dark);
   /* Homepage hero band + its attached search button -- deliberately a
      deeper, more muted navy-blue than --brand (which stays the vivid
      site-wide accent for buttons/links/active states elsewhere). Two
