@@ -118,9 +118,10 @@ type PageParams = { category: string; slug: string };
 type CategoryLocationSearchParams = { [key: string]: string | undefined };
 type PageProps = { params: Promise<PageParams>; searchParams: Promise<CategoryLocationSearchParams> };
 
-// A category slug that doesn't resolve to a real leaf category is never valid,
-// regardless of what the second segment looks like — checked first so a typo'd
-// category can't accidentally fall through to a coincidental short-id decode.
+// A category slug that doesn't resolve to a real category (leaf or top-level)
+// is never valid, regardless of what the second segment looks like — checked
+// first so a typo'd category can't accidentally fall through to a
+// coincidental short-id decode.
 const resolveRoute = cache(async (categorySlug: string, slug: string): Promise<Route> => {
   const supabase = createPublicClient();
 
@@ -128,7 +129,6 @@ const resolveRoute = cache(async (categorySlug: string, slug: string): Promise<R
     .from("categories")
     .select("id, name, slug, parent_id")
     .eq("slug", categorySlug)
-    .not("parent_id", "is", null)
     .maybeSingle();
 
   if (!category) return { kind: "not-found" };
@@ -285,6 +285,10 @@ async function CategoryLocationPage({
     ? (posted as DatePosted)
     : undefined;
 
+  // Same leaf-vs-top-level branching as [category]/page.tsx: a leaf's own slug is
+  // the more specific key, on top of its parent's; a top-level category (parent_id
+  // null, e.g. browsing "vehicles" itself by location) has no parent to look up and
+  // no leaf-level override -- its own slug *is* the top-level slug.
   const parentCategory = category.parent_id
     ? await supabase
         .from("categories")
@@ -293,9 +297,10 @@ async function CategoryLocationPage({
         .maybeSingle()
         .then((r) => r.data)
     : null;
-  const topLevelSlug = parentCategory?.slug;
-  const sidebarFields = getSidebarFields(topLevelSlug, category.slug);
-  const quickFilterKey = getQuickFilterKey(topLevelSlug, category.slug);
+  const topLevelSlug = category.parent_id ? parentCategory?.slug : category.slug;
+  const leafSlug = category.parent_id ? category.slug : undefined;
+  const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
+  const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
@@ -386,7 +391,7 @@ async function CategoryLocationPage({
                 <CategoryQuickFilters
                   items={quickFilterValues}
                   topLevelSlug={topLevelSlug}
-                  leafSlug={category.slug}
+                  leafSlug={leafSlug}
                   attributeKey={quickFilterKey}
                   activeValue={activeQuickFilterValue}
                   baseHref={`/${category.slug}/${location.district_slug}`}

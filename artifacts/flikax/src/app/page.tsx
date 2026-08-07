@@ -106,7 +106,7 @@ export default async function Home({ searchParams }: PageProps) {
 
       {/* 2. Category icon grid — replaces the old sidebar; sits full-width below the hero */}
       <div className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-        <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} filters={filters} />
+        <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} />
       </div>
 
       {/* A hairline divider between each macro section (categories/listings/top

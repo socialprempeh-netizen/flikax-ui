@@ -3,15 +3,19 @@ import { CategoryThumb } from "@/components/category-thumb";
 
 export type SiblingCategory = { id: string; name: string; slug: string; icon?: string | null };
 
-/** Quick lateral nav between sibling categories (children of the same parent) -- every
- * category in this app is exactly two levels deep, so a leaf page has no children of its
- * own to show here; these are its siblings instead. */
+/** Quick lateral nav between sibling categories: either other leaves under the same
+ * parent (on a leaf page), or other top-level categories (on a top-level category
+ * page) -- every sibling in one row is always at the same depth as the active
+ * category, so a single parentId (the active category's own parent_id) correctly
+ * describes the whole set for CategoryThumb's image lookup. */
 export function SiblingCategoryRow({
   siblings,
   activeSlug,
+  parentId,
 }: {
   siblings: SiblingCategory[];
   activeSlug: string;
+  parentId: string | null;
 }) {
   if (siblings.length === 0) return null;
 
@@ -21,12 +25,7 @@ export function SiblingCategoryRow({
         const isActive = sibling.slug === activeSlug;
         return (
           <Link key={sibling.id} href={`/${sibling.slug}`} className="flex w-16 shrink-0 flex-col items-center gap-1">
-            <CategoryThumb
-              // Siblings are always subcategories (every category is exactly
-              // two levels deep) -- a non-null placeholder is enough to
-              // resolve the subcategory branch without plumbing the real
-              // parent_id through this lightweight prop shape.
-              category={{ ...sibling, parent_id: "sibling" }}
+            <CategoryThumb category={{ ...sibling, parent_id: parentId }}
               size="size-12"
               iconSize="size-5"
               rounded="rounded-full"

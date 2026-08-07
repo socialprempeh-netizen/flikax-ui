@@ -42,18 +42,21 @@ type PageProps = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
-const getLeafCategory = unstable_cache(
+// Resolves a category at *either* level -- a leaf (e.g. "cars", parent_id
+// set) or a top-level category (e.g. "vehicles", parent_id null). Both get
+// the exact same listings-page treatment; see topLevelSlug/leafSlug below
+// for how the sidebar/quick-filter config picks the right field set for each.
+const getCategoryBySlug = unstable_cache(
   async (categorySlug: string) => {
     const supabase = createPublicClient();
     const { data: category } = await supabase
       .from("categories")
       .select("id, name, slug, parent_id")
       .eq("slug", categorySlug)
-      .not("parent_id", "is", null)
       .maybeSingle();
     return category;
   },
-  ["leaf-category"],
+  ["category-by-slug"],
   { revalidate: 300, tags: ["categories"] }
 );
 
@@ -72,7 +75,7 @@ const getCachedCategoryListings = unstable_cache(
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category: categorySlug } = await params;
-  const category = await getLeafCategory(categorySlug);
+  const category = await getCategoryBySlug(categorySlug);
   if (!category) return {};
 
   const title = `${category.name} for Sale in Ghana | Flikax`;
@@ -87,7 +90,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {
   const { category: categorySlug } = await params;
-  const category = await getLeafCategory(categorySlug);
+  const category = await getCategoryBySlug(categorySlug);
   if (!category) notFound();
 
   const supabase = createPublicClient();
@@ -101,8 +104,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     : undefined;
 
   // The top-level slug (e.g. "vehicles") drives which sidebar fields and quick-filter
-  // icon row this leaf category gets -- needs the parent's slug, not just its id, so
-  // this one lookup runs before the rest can be parallelized.
+  // icon row this category gets. For a leaf (parent_id set) that's the parent's own
+  // slug, with the leaf's own slug as the second, more specific key -- needs the
+  // parent's slug, not just its id, so this one lookup runs before the rest can be
+  // parallelized. For a top-level category (parent_id null, e.g. "vehicles" itself)
+  // there is no parent to look up and no leaf-level override: the category's own slug
+  // *is* the top-level slug, same as SIDEBAR_FIELD_KEYS/QUICK_FILTER_KEY expect.
   const parentCategory = category.parent_id
     ? await supabase
         .from("categories")
@@ -111,9 +118,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         .maybeSingle()
         .then((r) => r.data)
     : null;
-  const topLevelSlug = parentCategory?.slug;
-  const sidebarFields = getSidebarFields(topLevelSlug, category.slug);
-  const quickFilterKey = getQuickFilterKey(topLevelSlug, category.slug);
+  const topLevelSlug = category.parent_id ? parentCategory?.slug : category.slug;
+  const leafSlug = category.parent_id ? category.slug : undefined;
+  const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
+  const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
@@ -131,8 +139,16 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     attributeFilters,
   };
 
+  // Siblings are other categories at the same level: other leaves under the same
+  // parent for a leaf, or other top-level categories for a top-level category.
+  // `.eq("parent_id", null)` wouldn't match anything -- PostgREST/SQL never treats
+  // `= null` as `IS NULL` -- hence the explicit `.is()` branch.
+  const siblingsQuery = category.parent_id
+    ? supabase.from("categories").select("id, name, slug, icon").eq("parent_id", category.parent_id).order("name")
+    : supabase.from("categories").select("id, name, slug, icon").is("parent_id", null).order("name");
+
   const [{ data: siblings }, { listings, totalCount }, quickFilterValues] = await Promise.all([
-    supabase.from("categories").select("id, name, slug, icon").eq("parent_id", category.parent_id).order("name"),
+    siblingsQuery,
     getCachedCategoryListings({ ...listingsFilter, page: 1 }),
     quickFilterKey ? getTopAttributeValues(supabase, category.id, quickFilterKey) : Promise.resolve([]),
   ]);
@@ -184,13 +200,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           <CategorySidebarFilters categorySlug={category.slug} fields={sidebarFields} />
 
           <div className="min-w-0 flex-1">
-            <SiblingCategoryRow siblings={siblings ?? []} activeSlug={category.slug} />
+            <SiblingCategoryRow siblings={siblings ?? []} activeSlug={category.slug} parentId={category.parent_id} />
 
             {quickFilterKey && (
               <CategoryQuickFilters
                 items={quickFilterValues}
                 topLevelSlug={topLevelSlug}
-                leafSlug={category.slug}
+                leafSlug={leafSlug}
                 attributeKey={quickFilterKey}
                 activeValue={activeQuickFilterValue}
                 baseHref={`/${category.slug}`}
