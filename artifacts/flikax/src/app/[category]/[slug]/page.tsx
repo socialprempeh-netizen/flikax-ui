@@ -34,12 +34,14 @@ import {
   fetchCategoryListings,
   getTopAttributeValues,
   countCategoryListings,
+  getChildCategoryIds,
   parseAttributeFilters,
   MIN_INDEXABLE_LISTINGS,
+  type CategoryIdFilter,
   type CategorySort,
   type DatePosted,
 } from "@/lib/category-listings";
-import { getSidebarFields, getQuickFilterKey } from "@/lib/category-filters";
+import { getSidebarFields, getTopLevelDisplayFields, getQuickFilterKey } from "@/lib/category-filters";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
@@ -194,7 +196,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (route.kind === "location") {
     const supabase = createPublicClient();
-    const count = await countCategoryListings(supabase, route.category.id, route.location.district_name);
+    // Same aggregation as the page body below: a top-level category + location (e.g.
+    // /vehicles/accra) counts listings across its leaves too, not just ones tagged to
+    // the top-level category itself, or a real page could get wrongly marked noindex.
+    const childIds = route.category.parent_id ? [] : await getChildCategoryIds(supabase, route.category.id);
+    const categoryIds: CategoryIdFilter = childIds.length > 0 ? [route.category.id, ...childIds] : route.category.id;
+    const count = await countCategoryListings(supabase, categoryIds, route.location.district_name);
     const title = `${route.category.name} for Sale in ${route.location.district_name} | Flikax`;
     const description = `Browse ${route.category.name} listings in ${route.location.district_name}, Ghana on Flikax — Ghana's classifieds marketplace.`;
     return {
@@ -300,13 +307,19 @@ async function CategoryLocationPage({
   const topLevelSlug = category.parent_id ? parentCategory?.slug : category.slug;
   const leafSlug = category.parent_id ? category.slug : undefined;
   const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
+  const displayFields = leafSlug ? sidebarFields : getTopLevelDisplayFields(topLevelSlug);
   const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
 
+  // Same aggregation as [category]/page.tsx -- a top-level category + location (e.g.
+  // /vehicles/accra) shows listings from every leaf under it too.
+  const childIds = category.parent_id ? [] : await getChildCategoryIds(supabase, category.id);
+  const categoryIds: CategoryIdFilter = childIds.length > 0 ? [category.id, ...childIds] : category.id;
+
   const listingsFilter = {
-    categoryId: category.id,
+    categoryId: categoryIds,
     location: location.district_name,
     sort,
     datePosted,
@@ -317,7 +330,7 @@ async function CategoryLocationPage({
 
   const [{ listings, totalCount }, quickFilterValues] = await Promise.all([
     fetchCategoryListings(supabase, { ...listingsFilter, page: 1 }),
-    quickFilterKey ? getTopAttributeValues(supabase, category.id, quickFilterKey) : Promise.resolve([]),
+    quickFilterKey ? getTopAttributeValues(supabase, categoryIds, quickFilterKey) : Promise.resolve([]),
   ]);
 
   const belowThreshold = totalCount < MIN_INDEXABLE_LISTINGS;
@@ -382,7 +395,7 @@ async function CategoryLocationPage({
           <div className="flex gap-4">
             <CategorySidebarFilters
               categorySlug={category.slug}
-              fields={sidebarFields}
+              fields={displayFields}
               activeLocationSlug={location.district_slug}
             />
 

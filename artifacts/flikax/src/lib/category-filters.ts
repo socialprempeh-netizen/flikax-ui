@@ -34,15 +34,35 @@ export type SidebarFilterField = {
   arrayField?: boolean;
 };
 
-/** Curated, per-top-level-category subset of CATEGORY_FIELDS shown in the sidebar --
- * deliberately narrow (Location + Price are handled separately, always shown) rather
- * than dumping every attribute the listing form collects. */
+/** Curated, per-top-level-category subset of CATEGORY_FIELDS used to parse/filter a
+ * top-level category's own listing page (e.g. /vehicles) -- deliberately narrow
+ * (Location + Price are handled separately, always shown) rather than dumping every
+ * attribute the listing form collects. Still the full query-side field set (drives
+ * parseAttributeFilters, so a quick-filter chip like "Toyota" keeps working) even
+ * though the *rendered* sidebar on a top-level page shows a shorter subset of this --
+ * see TOP_LEVEL_SIDEBAR_FIELD_KEYS/getTopLevelDisplayFields below. */
 const SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
   vehicles: ["make", "year", "condition", "transmission", "mileage"],
   property: ["property_type", "bedrooms", "bathrooms", "furnished"],
   "phones-tablets": ["brand", "condition"],
   electronics: ["brand", "condition"],
   "home-furniture-appliances": ["material", "condition"],
+};
+
+/** Deliberately short subset of SIDEBAR_FIELD_KEYS actually *rendered* as checkboxes
+ * on a top-level category's own page (e.g. /vehicles) -- Tonaton shows just Location,
+ * Price, and one broad category-appropriate field there (Condition for vehicles),
+ * not the leaf's/top-level's full detailed field set. The quick-filter row (Make for
+ * vehicles) still works even though "make" isn't in this shorter list -- it's parsed
+ * via the full SIDEBAR_FIELD_KEYS set above, independent of what's rendered here. Any
+ * top-level category not listed gets no extra field, just the universal Location/
+ * Price/Verified sellers/Discount every category page already has. */
+const TOP_LEVEL_SIDEBAR_FIELD_KEYS: Record<string, string[]> = {
+  vehicles: ["condition"],
+  property: ["property_type"],
+  "phones-tablets": ["condition"],
+  electronics: ["condition"],
+  "home-furniture-appliances": ["condition"],
 };
 
 /** Overrides SIDEBAR_FIELD_KEYS per vehicle leaf subcategory (Cars, Motorcycles, ...) --
@@ -106,11 +126,11 @@ function resolveFieldType(formType: string): SidebarFieldType {
   return "text";
 }
 
-export function getSidebarFields(
+function resolveFieldsFromKeys(
+  keys: string[] | undefined,
   topLevelSlug: string | undefined,
-  leafSlug?: string
+  leafSlug: string | undefined
 ): SidebarFilterField[] {
-  const keys = (leafSlug ? LEAF_SIDEBAR_FIELD_KEYS[leafSlug] : undefined) ?? (topLevelSlug ? SIDEBAR_FIELD_KEYS[topLevelSlug] : undefined);
   const defs = topLevelSlug ? getFieldsForCategory(topLevelSlug, leafSlug) : [];
   const categoryFields = (keys ?? [])
     .map((key) => defs.find((f) => f.key === key))
@@ -124,6 +144,25 @@ export function getSidebarFields(
     }));
 
   return [...categoryFields, VERIFIED_SELLERS_FIELD, DISCOUNT_FIELD];
+}
+
+/** Full field set for a category page -- drives both the leaf sidebar's own checkbox
+ * list (rendered as-is) and, for a top-level page, query parsing only (see
+ * getTopLevelDisplayFields for what actually renders there). */
+export function getSidebarFields(
+  topLevelSlug: string | undefined,
+  leafSlug?: string
+): SidebarFilterField[] {
+  const keys = (leafSlug ? LEAF_SIDEBAR_FIELD_KEYS[leafSlug] : undefined) ?? (topLevelSlug ? SIDEBAR_FIELD_KEYS[topLevelSlug] : undefined);
+  return resolveFieldsFromKeys(keys, topLevelSlug, leafSlug);
+}
+
+/** The short field set actually rendered on a top-level category's own page (e.g.
+ * /vehicles) -- see TOP_LEVEL_SIDEBAR_FIELD_KEYS. Always leaf-less: a top-level page
+ * never has a more specific leaf override to apply. */
+export function getTopLevelDisplayFields(topLevelSlug: string | undefined): SidebarFilterField[] {
+  const keys = topLevelSlug ? TOP_LEVEL_SIDEBAR_FIELD_KEYS[topLevelSlug] : undefined;
+  return resolveFieldsFromKeys(keys, topLevelSlug, undefined);
 }
 
 /** The attribute that best represents "sub-type" for this category's quick-filter row

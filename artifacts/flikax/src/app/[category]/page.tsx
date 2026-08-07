@@ -6,11 +6,13 @@ import { createPublicClient } from "@/lib/supabase/public";
 import {
   fetchCategoryListings,
   getTopAttributeValues,
+  getSubcategoriesWithCounts,
   parseAttributeFilters,
+  type CategoryIdFilter,
   type CategorySort,
   type DatePosted,
 } from "@/lib/category-listings";
-import { getSidebarFields, getQuickFilterKey } from "@/lib/category-filters";
+import { getSidebarFields, getTopLevelDisplayFields, getQuickFilterKey } from "@/lib/category-filters";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
@@ -21,6 +23,7 @@ import { CategoryFilterRow } from "@/components/category-filter-row";
 import { CategorySidebarFilters } from "@/components/category-sidebar-filters";
 import { CategoryQuickFilters } from "@/components/category-quick-filters";
 import { SiblingCategoryRow } from "@/components/sibling-category-row";
+import { CategorySubcategoryListDesktop, CategorySubcategoryListMobile } from "@/components/category-subcategory-list";
 import { loadMoreCategoryListingsAction } from "@/app/[category]/actions";
 
 const VALID_SORTS: CategorySort[] = ["recommended", "newest", "price_asc", "price_desc"];
@@ -120,14 +123,26 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     : null;
   const topLevelSlug = category.parent_id ? parentCategory?.slug : category.slug;
   const leafSlug = category.parent_id ? category.slug : undefined;
+  // Full field set (drives parseAttributeFilters / the quick-filter row's query
+  // parsing) vs. what's actually rendered as checkboxes -- identical on a leaf page,
+  // shorter on a top-level page (see getTopLevelDisplayFields).
   const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
+  const displayFields = leafSlug ? sidebarFields : getTopLevelDisplayFields(topLevelSlug);
   const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
 
+  // A top-level category page (e.g. /vehicles) aggregates listings across every leaf
+  // under it (Cars, Motorcycles & Scooters, ...) instead of only ones tagged to
+  // "Vehicles" itself -- subcategories is only non-empty for a top-level category (see
+  // below), so categoryIds is just category.id, unchanged, on a leaf page.
+  const subcategories = category.parent_id ? [] : await getSubcategoriesWithCounts(supabase, category.id);
+  const categoryIds: CategoryIdFilter =
+    subcategories.length > 0 ? [category.id, ...subcategories.map((s) => s.id)] : category.id;
+
   const listingsFilter = {
-    categoryId: category.id,
+    categoryId: categoryIds,
     location,
     q,
     verifiedOnly,
@@ -139,18 +154,20 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     attributeFilters,
   };
 
-  // Siblings are other categories at the same level: other leaves under the same
-  // parent for a leaf, or other top-level categories for a top-level category.
-  // `.eq("parent_id", null)` wouldn't match anything -- PostgREST/SQL never treats
-  // `= null` as `IS NULL` -- hence the explicit `.is()` branch.
+  // Siblings (other leaves under the same parent) only matter on a leaf page --
+  // superseded on a top-level page by the subcategories list above (its own children,
+  // not its top-level siblings; previously this branched to fetch other top-level
+  // categories via `.is("parent_id", null)` instead, kept here commented in case that
+  // browsing pattern is wanted back:
+  //   const siblingsQuery = supabase.from("categories").select("id, name, slug, icon").is("parent_id", null).order("name");
   const siblingsQuery = category.parent_id
     ? supabase.from("categories").select("id, name, slug, icon").eq("parent_id", category.parent_id).order("name")
-    : supabase.from("categories").select("id, name, slug, icon").is("parent_id", null).order("name");
+    : Promise.resolve({ data: [] as { id: string; name: string; slug: string; icon: string | null }[] });
 
   const [{ data: siblings }, { listings, totalCount }, quickFilterValues] = await Promise.all([
     siblingsQuery,
     getCachedCategoryListings({ ...listingsFilter, page: 1 }),
-    quickFilterKey ? getTopAttributeValues(supabase, category.id, quickFilterKey) : Promise.resolve([]),
+    quickFilterKey ? getTopAttributeValues(supabase, categoryIds, quickFilterKey) : Promise.resolve([]),
   ]);
 
   const carryParams = new URLSearchParams();
@@ -197,10 +214,17 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         </h1>
 
         <div className="flex gap-4">
-          <CategorySidebarFilters categorySlug={category.slug} fields={sidebarFields} />
+          <div className="flex flex-col gap-4 lg:w-64 lg:shrink-0">
+            <CategorySubcategoryListDesktop parentId={category.id} subcategories={subcategories} />
+            <CategorySidebarFilters categorySlug={category.slug} fields={displayFields} />
+          </div>
 
           <div className="min-w-0 flex-1">
-            <SiblingCategoryRow siblings={siblings ?? []} activeSlug={category.slug} parentId={category.parent_id} />
+            {leafSlug ? (
+              <SiblingCategoryRow siblings={siblings ?? []} activeSlug={category.slug} parentId={category.parent_id} />
+            ) : (
+              <CategorySubcategoryListMobile parentId={category.id} subcategories={subcategories} />
+            )}
 
             {quickFilterKey && (
               <CategoryQuickFilters

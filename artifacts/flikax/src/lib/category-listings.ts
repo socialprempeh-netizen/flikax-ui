@@ -95,8 +95,14 @@ export function parseAttributeFilters(
   return { attributeFilters, verifiedOnly, discountOnly };
 }
 
+// A top-level category page (e.g. /vehicles) aggregates listings across every leaf
+// under it (Cars, Motorcycles & Scooters, ...), not just ones tagged to "Vehicles"
+// itself -- callers pass an array in that case. A leaf page keeps passing a single id,
+// unchanged, and every categoryId-scoped query below branches .eq vs .in accordingly.
+export type CategoryIdFilter = string | string[];
+
 type CategoryListingsFilter = {
-  categoryId: string;
+  categoryId: CategoryIdFilter;
   location?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -135,8 +141,8 @@ export async function fetchCategoryListings(
       "id, title, description, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, short_id, listing_images(storage_path, position, width, height), categories(slug)",
       { count: "exact" }
     )
-    .eq("category_id", categoryId)
     .eq("status", "active");
+  query = Array.isArray(categoryId) ? query.in("category_id", categoryId) : query.eq("category_id", categoryId);
 
   if (location) query = query.eq("location", location);
   if (minPrice !== undefined) query = query.gte("price", minPrice);
@@ -236,16 +242,13 @@ export async function fetchCategoryListings(
  * enough to matter, and it avoids a bespoke RPC just for this. */
 export async function getTopAttributeValues(
   supabase: SupabaseClient<Database>,
-  categoryId: string,
+  categoryId: CategoryIdFilter,
   attributeKey: string,
   limit = 7
 ): Promise<{ value: string; count: number }[]> {
-  const { data } = await supabase
-    .from("listings")
-    .select("attributes")
-    .eq("category_id", categoryId)
-    .eq("status", "active")
-    .limit(500);
+  let query = supabase.from("listings").select("attributes").eq("status", "active").limit(500);
+  query = Array.isArray(categoryId) ? query.in("category_id", categoryId) : query.eq("category_id", categoryId);
+  const { data } = await query;
 
   // Grouped by the *normalized* value -- "toyota" and "Toyota", or "2026 Cadillac" and
   // "Cadillac", are the same real value with inconsistent seller-typed formatting, and
@@ -267,17 +270,48 @@ export async function getTopAttributeValues(
 /** Cheap head-only count, for generateMetadata's noindex decision — doesn't need row data. */
 export async function countCategoryListings(
   supabase: SupabaseClient<Database>,
-  categoryId: string,
+  categoryId: CategoryIdFilter,
   location?: string
 ): Promise<number> {
-  let query = supabase
-    .from("listings")
-    .select("id", { count: "exact", head: true })
-    .eq("category_id", categoryId)
-    .eq("status", "active");
+  let query = supabase.from("listings").select("id", { count: "exact", head: true }).eq("status", "active");
+  query = Array.isArray(categoryId) ? query.in("category_id", categoryId) : query.eq("category_id", categoryId);
 
   if (location) query = query.eq("location", location);
 
   const { count } = await query;
   return count ?? 0;
+}
+
+/** Just the ids of a category's direct children -- the lean version of
+ * getSubcategoriesWithCounts below for call sites that only need to aggregate listings
+ * (e.g. a top-level category + location page) and don't render the "Categories" list,
+ * so don't need names/icons/counts or its N parallel count queries. */
+export async function getChildCategoryIds(supabase: SupabaseClient<Database>, parentId: string): Promise<string[]> {
+  const { data } = await supabase.from("categories").select("id").eq("parent_id", parentId);
+  return (data ?? []).map((c) => c.id);
+}
+
+export type SubcategoryWithCount = { id: string; name: string; slug: string; icon: string | null; count: number };
+
+/** A top-level category's direct children (leaves) with their real active-listing
+ * count each -- the "Categories" list Tonaton shows prominently on a top-level page
+ * (e.g. "Cars · 10,061 ads" under /vehicles). One head-only count query per child run
+ * in parallel -- a top-level category has at most ~9 children, cheap either way. */
+export async function getSubcategoriesWithCounts(
+  supabase: SupabaseClient<Database>,
+  parentId: string
+): Promise<SubcategoryWithCount[]> {
+  const { data: children } = await supabase
+    .from("categories")
+    .select("id, name, slug, icon")
+    .eq("parent_id", parentId)
+    .order("name");
+
+  if (!children || children.length === 0) return [];
+
+  const counts = await Promise.all(children.map((c) => countCategoryListings(supabase, c.id)));
+
+  return children
+    .map((c, i) => ({ ...c, count: counts[i] }))
+    .sort((a, b) => b.count - a.count);
 }
