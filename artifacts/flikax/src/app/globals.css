@@ -118,6 +118,13 @@
   --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-logo: var(--font-baloo-2);
+  /* Classic bold serif for the literal "Flikax" wordmark specifically (per
+     brand reference: bold Times/Georgia-style serif, not the rounded
+     sans-serif --font-logo uses for page headings elsewhere -- --font-logo
+     itself is unchanged and still drives all those headings). System serif
+     stack, not a webfont -- the reference names Times/Georgia directly, so
+     there's no need to license/load a display serif for this. */
+  --font-wordmark: Georgia, "Times New Roman", Times, serif;
 
   /* Between Tailwind's defaults and flat: the previous values (0.03-0.07
      opacity) were tuned down from harsh dark boxes but ended up reading as

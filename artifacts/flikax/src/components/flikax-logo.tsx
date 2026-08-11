@@ -41,8 +41,12 @@ export function FlikaxLogo({
       >
         F
       </span>
-      {/* Wordmark */}
-      <span className={`font-logo font-extrabold ${wordmarkSize} ${wordmarkColor}`}>
+      {/* Wordmark -- bold classic serif (Georgia/Times-style) per brand
+          reference, distinct from --font-logo's rounded sans used for page
+          headings elsewhere. Color is untouched by that reference (its
+          silver/blue is just showing the letterform, not a palette cue) --
+          wordmarkColor still drives brand-green vs. white same as before. */}
+      <span className={`font-wordmark font-extrabold ${wordmarkSize} ${wordmarkColor}`}>
         Flikax
       </span>
     </Link>

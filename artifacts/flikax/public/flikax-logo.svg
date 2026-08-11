@@ -1,8 +1,9 @@
 <svg viewBox="0 0 440 220" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&amp;display=swap');
-      .wordmark { font-family: 'Baloo 2', 'Nunito', sans-serif; font-weight: 800; }
+      /* Bold classic serif (Georgia/Times-style) per brand reference --
+         system fonts, no webfont import needed. */
+      .wordmark { font-family: Georgia, 'Times New Roman', Times, serif; font-weight: 800; }
     </style>
   </defs>
   <rect width="440" height="220" fill="#149777"/>
