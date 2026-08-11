@@ -9,9 +9,13 @@ import { useAuthModal } from "@/components/auth/auth-modal-provider";
 // update SELL_ROUTE here instead of hunting down every hardcoded link.
 const SELL_ROUTE = "/sell";
 
+// solid: bg-brand-dark, not bg-brand -- white text on #149777 is 3.67:1,
+// below WCAG AA's 4.5:1 floor; brand-dark clears it at 6.04:1. Same call as
+// --primary in globals.css. Border/outline keeps the vivid --brand (borders
+// only need 3:1), but its text is brand-dark for the same reason.
 const VARIANT_CLASSES = {
-  solid: "bg-brand text-white hover:bg-brand-dark",
-  outline: "border-2 border-brand text-brand hover:bg-brand-light",
+  solid: "bg-brand-dark text-white hover:brightness-110",
+  outline: "border-2 border-brand text-brand-dark hover:bg-brand-light",
   footer: "bg-white/10 text-white hover:bg-white/20",
 };
 

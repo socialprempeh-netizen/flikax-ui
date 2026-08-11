@@ -124,7 +124,7 @@ export function FeedbackForm({
 
       <Button
         type="submit"
-        className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+        className="w-full rounded-xl bg-brand-dark py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
       >
         Send Feedback
       </Button>

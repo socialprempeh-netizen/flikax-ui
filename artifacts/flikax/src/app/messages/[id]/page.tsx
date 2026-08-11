@@ -85,7 +85,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
         {/* Back navigation */}
         <Link
           href="/messages"
-          className="flex w-fit items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-brand"
+          className="flex w-fit items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-brand-dark"
         >
           <ArrowLeft className="size-4" />
           All messages
@@ -102,7 +102,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
             })}
             className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
           >
-            <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand/40">
+            <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand-dark/40">
               {coverUrl ? (
                 <Image
                   src={coverUrl}
@@ -118,7 +118,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-bold text-neutral-800">{conversation.listing.title}</p>
-              <p className="text-sm font-extrabold text-brand">{currency.format(conversation.listing.price)}</p>
+              <p className="text-sm font-extrabold text-brand-dark">{currency.format(conversation.listing.price)}</p>
               {conversation.listing.status !== "active" && (
                 <p className="text-xs font-medium text-neutral-400">This listing is no longer active.</p>
               )}
@@ -128,7 +128,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
 
         {/* Chat header */}
         <div className="flex items-center gap-3 rounded-xl border border-neutral-100 bg-white px-4 py-3 shadow-sm">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-dark text-sm font-bold text-white">
             {(otherParty?.full_name || "F")[0].toUpperCase()}
           </span>
           <div>

@@ -284,7 +284,7 @@ export function CategorySidebarFilters({
                             onClick={() => setToggleValues((v) => ({ ...v, [field.key]: opt }))}
                             className={`flex-1 rounded-lg border px-2 py-1.5 text-xs font-semibold transition-colors ${
                               (toggleValues[field.key] ?? "") === opt
-                                ? "border-brand bg-brand text-white"
+                                ? "border-brand bg-brand-dark text-white"
                                 : "border-neutral-200 text-neutral-600 hover:border-brand/40"
                             }`}
                           >
@@ -324,7 +324,7 @@ export function CategorySidebarFilters({
           <div className="mb-2.5 flex items-center justify-between">
             <h3 className="text-sm font-bold text-neutral-800">Filters</h3>
             {activeCount > 0 && (
-              <button type="button" onClick={clearAll} className="text-xs font-semibold text-brand hover:underline">
+              <button type="button" onClick={clearAll} className="text-xs font-semibold text-brand-dark hover:underline">
                 Clear all
               </button>
             )}
@@ -344,12 +344,12 @@ export function CategorySidebarFilters({
       <button
         type="button"
         onClick={() => setMobileOpen(true)}
-        className="fixed bottom-20 right-4 z-40 flex items-center gap-1.5 rounded-full bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-lg lg:hidden"
+        className="fixed bottom-20 right-4 z-40 flex items-center gap-1.5 rounded-full bg-brand-dark px-4 py-2.5 text-sm font-semibold text-white shadow-lg lg:hidden"
       >
         <SlidersHorizontal className="size-4" />
         Filters
         {activeCount > 0 && (
-          <span className="flex size-5 items-center justify-center rounded-full bg-white text-2xs font-bold text-brand">
+          <span className="flex size-5 items-center justify-center rounded-full bg-white text-2xs font-bold text-brand-dark">
             {activeCount}
           </span>
         )}

@@ -131,7 +131,7 @@ export function LocationPickerModal({
             <button
               type="button"
               onClick={goBack}
-              className="flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-brand"
+              className="flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-brand-dark"
             >
               <ChevronLeft className="size-4" />
               Back
@@ -208,7 +208,7 @@ export function LocationPickerModal({
               <button
                 type="button"
                 onClick={() => selectLocation(activeDistrict.name)}
-                className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand transition-colors hover:bg-brand-light"
+                className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
               >
                 All {activeDistrict.name}
               </button>
@@ -237,7 +237,7 @@ export function LocationPickerModal({
                 <button
                   type="button"
                   onClick={() => selectLocation(activeRegion.name)}
-                  className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand transition-colors hover:bg-brand-light"
+                  className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
                 >
                   All {activeRegion.name}
                 </button>
@@ -282,7 +282,7 @@ export function LocationPickerModal({
                 <button
                   type="button"
                   onClick={() => selectLocation(undefined)}
-                  className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand transition-colors hover:bg-brand-light"
+                  className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
                 >
                   All Ghana
                 </button>

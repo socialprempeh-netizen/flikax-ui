@@ -74,7 +74,7 @@ export function AvatarUpload({
 
   return (
     <div className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-md">
-      <span className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-2xl font-bold text-white ring-4 ring-brand-light">
+      <span className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-dark text-2xl font-bold text-white ring-4 ring-brand-light">
         {uploading ? (
           <Loader2 className="size-6 animate-spin" />
         ) : (

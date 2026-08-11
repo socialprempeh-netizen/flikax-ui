@@ -74,7 +74,7 @@ export function SellerStoreListings({
             type="button"
             onClick={() => setActiveCategory(null)}
             className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
-              activeCategory === null ? "bg-brand text-white" : "border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
+              activeCategory === null ? "bg-brand-dark text-white" : "border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
             }`}
           >
             All ({listings.length})
@@ -88,7 +88,7 @@ export function SellerStoreListings({
                 type="button"
                 onClick={() => setActiveCategory(cat.slug)}
                 className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
-                  isActive ? "bg-brand text-white" : "border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
+                  isActive ? "bg-brand-dark text-white" : "border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
                 }`}
               >
                 {cat.name} ({count})
@@ -113,7 +113,7 @@ export function SellerStoreListings({
               aria-label="Grid view"
               aria-pressed={view === "grid"}
               className={`flex size-9 items-center justify-center transition-colors ${
-                view === "grid" ? "bg-brand text-white" : "bg-white text-neutral-500 hover:bg-neutral-50"
+                view === "grid" ? "bg-brand-dark text-white" : "bg-white text-neutral-500 hover:bg-neutral-50"
               }`}
             >
               <Grid2x2 className="size-4" />
@@ -124,7 +124,7 @@ export function SellerStoreListings({
               aria-label="List view"
               aria-pressed={view === "list"}
               className={`flex size-9 items-center justify-center transition-colors ${
-                view === "list" ? "bg-brand text-white" : "bg-white text-neutral-500 hover:bg-neutral-50"
+                view === "list" ? "bg-brand-dark text-white" : "bg-white text-neutral-500 hover:bg-neutral-50"
               }`}
             >
               <List className="size-4" />
@@ -154,7 +154,7 @@ export function SellerStoreListings({
                         setSortOpen(false);
                       }}
                       className={`flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm ${
-                        opt.value === sort ? "bg-brand-light font-semibold text-brand" : "text-neutral-700 hover:bg-neutral-50"
+                        opt.value === sort ? "bg-brand-light font-semibold text-brand-dark" : "text-neutral-700 hover:bg-neutral-50"
                       }`}
                     >
                       {opt.label}
@@ -178,7 +178,7 @@ export function SellerStoreListings({
         <div className="-mx-4 divide-y divide-neutral-100 overflow-hidden rounded-none border-y border-neutral-100 bg-white sm:mx-0 sm:rounded-xl sm:border">
           {visible.map((listing) => (
             <Link key={listing.id} href={listing.href} className="flex items-center gap-3 p-3 hover:bg-neutral-50">
-              <div className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-cream text-brand/40">
+              <div className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-cream text-brand-dark/40">
                 {listing.imageUrl ? (
                   <Image src={listing.imageUrl} alt={listing.title} fill sizes="80px" quality={82} className="object-cover" />
                 ) : (
@@ -186,7 +186,7 @@ export function SellerStoreListings({
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-base font-extrabold tracking-tight text-brand">{currency.format(listing.price)}</p>
+                <p className="text-base font-extrabold tracking-tight text-brand-dark">{currency.format(listing.price)}</p>
                 <p className="line-clamp-1 text-sm font-bold text-neutral-900">{listing.title}</p>
                 <div className="mt-0.5 flex items-center gap-1 text-xs text-neutral-500">
                   <MapPin className="size-3 shrink-0" />

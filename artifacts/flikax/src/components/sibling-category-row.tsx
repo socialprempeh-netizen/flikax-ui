@@ -35,7 +35,7 @@ export function SiblingCategoryRow({
             />
             <span
               className={`line-clamp-2 text-center text-2xs leading-tight ${
-                isActive ? "font-bold text-brand" : "font-medium text-neutral-600"
+                isActive ? "font-bold text-brand-dark" : "font-medium text-neutral-600"
               }`}
             >
               {sibling.name}

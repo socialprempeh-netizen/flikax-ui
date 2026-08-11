@@ -145,7 +145,7 @@ export function AdminShell({
                 title={collapsed ? item.label : undefined}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-brand text-white shadow-sm"
+                    ? "bg-brand-dark text-white shadow-sm"
                     : "text-white/60 hover:bg-white/10 hover:text-white"
                 }`}
               >
@@ -166,7 +166,7 @@ export function AdminShell({
                 {crumb.isLast ? (
                   <span className="font-semibold text-slate-800">{crumb.label}</span>
                 ) : (
-                  <Link href={crumb.href} className="hover:text-brand">
+                  <Link href={crumb.href} className="hover:text-brand-dark">
                     {crumb.label}
                   </Link>
                 )}

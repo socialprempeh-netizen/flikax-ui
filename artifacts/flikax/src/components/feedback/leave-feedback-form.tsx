@@ -66,7 +66,7 @@ export function LeaveFeedbackForm({ profileId }: { profileId: string }) {
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
+        className="rounded-lg bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:brightness-110 disabled:opacity-60"
       >
         {isPending ? "Submitting..." : "Submit feedback"}
       </button>

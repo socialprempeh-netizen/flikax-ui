@@ -54,7 +54,7 @@ export function ReviewsFilterBar({ filters }: { filters: AdminReviewFilters }) {
         <Button type="submit">Apply</Button>
 
         {hasFilters && (
-          <Button asChild variant="ghost" className="text-slate-500 hover:text-brand">
+          <Button asChild variant="ghost" className="text-slate-500 hover:text-brand-dark">
             <Link href="/admin/reviews">
               <X className="size-3.5" />
               Clear

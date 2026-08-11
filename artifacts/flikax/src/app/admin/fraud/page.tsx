@@ -52,7 +52,7 @@ export default async function AdminFraudPage() {
                 <ul className="mt-2 space-y-1">
                   {group.listings.map((listing) => (
                     <li key={listing.id} className="text-sm text-slate-600">
-                      <Link href={`/admin/users/${listing.userId}`} className="text-brand hover:underline">
+                      <Link href={`/admin/users/${listing.userId}`} className="text-brand-dark hover:underline">
                         {listing.sellerName ?? listing.userId}
                       </Link>{" "}
                       —{" "}
@@ -84,7 +84,7 @@ export default async function AdminFraudPage() {
               <div key={poster.userId} className="flex items-center justify-between p-4">
                 <Link
                   href={`/admin/users/${poster.userId}`}
-                  className="flex items-center gap-1.5 text-sm font-bold text-slate-800 hover:text-brand hover:underline"
+                  className="flex items-center gap-1.5 text-sm font-bold text-slate-800 hover:text-brand-dark hover:underline"
                 >
                   <TriangleAlert className="size-4 text-amber-600" />
                   {poster.sellerName ?? poster.userId}
@@ -122,7 +122,7 @@ export default async function AdminFraudPage() {
                 <ul className="mt-2 space-y-1">
                   {group.users.map((user) => (
                     <li key={user.id} className="text-sm text-slate-600">
-                      <Link href={`/admin/users/${user.id}`} className="text-brand hover:underline">
+                      <Link href={`/admin/users/${user.id}`} className="text-brand-dark hover:underline">
                         {user.email}
                       </Link>{" "}
                       <span className="text-slate-400">

@@ -105,7 +105,7 @@ export function CategoriesTree({
                 >
                   {isOpen ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
                 </button>
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand-dark">
                   {renderIcon(parent.icon)}
                 </span>
                 <span className="flex-1 text-sm font-bold text-slate-800">{parent.name}</span>
@@ -314,7 +314,7 @@ function CategoryFormModal({
                 type="button"
                 onClick={() => setIcon(iconName)}
                 className={`flex size-8 items-center justify-center rounded-lg border ${
-                  icon === iconName ? "border-brand bg-brand-light text-brand" : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                  icon === iconName ? "border-brand bg-brand-light text-brand-dark" : "border-slate-200 text-slate-500 hover:bg-slate-50"
                 }`}
               >
                 <Icon className="size-4" />

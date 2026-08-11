@@ -35,7 +35,7 @@ export function SettingsSidebar() {
     <div className="flex w-full shrink-0 flex-col gap-4 sm:w-72">
       <Link
         href="/dashboard"
-        className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-bold text-neutral-800 shadow-lg hover:text-brand"
+        className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-bold text-neutral-800 shadow-lg hover:text-brand-dark"
       >
         <ChevronLeft className="size-4" />
         Settings
@@ -51,7 +51,7 @@ export function SettingsSidebar() {
                   key={item.href}
                   href={item.href}
                   className={`flex items-center justify-between gap-2 px-4 py-3 text-sm font-medium ${
-                    isActive ? "bg-brand text-white" : "text-neutral-700 hover:bg-brand-light hover:text-brand"
+                    isActive ? "bg-brand-dark text-white" : "text-neutral-700 hover:bg-brand-light hover:text-brand-dark"
                   }`}
                 >
                   <span className="truncate">{item.label}</span>

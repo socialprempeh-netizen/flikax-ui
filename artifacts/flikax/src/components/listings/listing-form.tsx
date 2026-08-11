@@ -120,7 +120,7 @@ const SELECT = INPUT + " appearance-none";
 function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex items-center gap-2 pb-3">
-      <span className="flex size-7 items-center justify-center rounded-lg bg-brand-light text-brand">
+      <span className="flex size-7 items-center justify-center rounded-lg bg-brand-light text-brand-dark">
         {icon}
       </span>
       <span className="text-xs font-bold uppercase tracking-wider text-neutral-700">{label}</span>
@@ -145,9 +145,9 @@ function StepBar({ step }: { step: 1 | 2 }) {
               <div
                 className={`flex size-8 items-center justify-center rounded-full text-sm font-bold transition-colors ${
                   done
-                    ? "bg-brand text-white"
+                    ? "bg-brand-dark text-white"
                     : active
-                    ? "border-2 border-brand bg-white text-brand ring-4 ring-brand/20"
+                    ? "border-2 border-brand bg-white text-brand-dark ring-4 ring-brand/20"
                     : "bg-neutral-200 text-neutral-500"
                 }`}
               >
@@ -155,7 +155,7 @@ function StepBar({ step }: { step: 1 | 2 }) {
               </div>
               <span
                 className={`text-xs font-semibold ${
-                  active ? "text-neutral-800" : done ? "text-brand" : "text-neutral-400"
+                  active ? "text-neutral-800" : done ? "text-brand-dark" : "text-neutral-400"
                 }`}
               >
                 {s.label}
@@ -525,7 +525,7 @@ export function ListingForm({
         <div className="h-1.5 w-full bg-brand" />
         <div className="flex flex-col items-center px-8 py-12 text-center">
           <div className="flex size-16 items-center justify-center rounded-full bg-brand/10 ring-8 ring-brand/5">
-            <CheckCircle2 className="size-8 text-brand" />
+            <CheckCircle2 className="size-8 text-brand-dark" />
           </div>
           <h1 className="mt-5 text-2xl font-extrabold text-neutral-900">
             {isEditing ? "Listing updated!" : "Ad posted successfully!"}
@@ -718,8 +718,8 @@ export function ListingForm({
                                   aria-pressed={isSelected}
                                   className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
                                     isSelected
-                                      ? "border-brand bg-brand text-white"
-                                      : "border-slate-400 bg-neutral-50 text-neutral-600 hover:border-brand/40 hover:text-brand"
+                                      ? "border-brand bg-brand-dark text-white"
+                                      : "border-slate-400 bg-neutral-50 text-neutral-600 hover:border-brand/40 hover:text-brand-dark"
                                   }`}
                                 >
                                   {opt}
@@ -787,7 +787,7 @@ export function ListingForm({
                         key={opt.value}
                         className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-3 py-2.5 text-xs font-semibold transition-colors ${
                           negotiable === opt.value
-                            ? "border-brand bg-brand text-white"
+                            ? "border-brand bg-brand-dark text-white"
                             : "border-slate-400 bg-neutral-50 text-neutral-600 hover:border-brand/40"
                         }`}
                       >
@@ -856,7 +856,7 @@ export function ListingForm({
               </p>
               {posterName && (
                 <div className="mt-4 flex items-center gap-2.5 rounded-xl border border-slate-200 bg-neutral-50 px-4 py-3">
-                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-white">
+                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-dark text-xs font-bold text-white">
                     {posterName.charAt(0).toUpperCase()}
                   </div>
                   <p className="text-xs text-slate-500">
@@ -924,7 +924,7 @@ export function ListingForm({
                     className="flex w-full items-center justify-between rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
                   >
                     <span className="flex items-center gap-2">
-                      <MapPin className="size-4 text-brand" />
+                      <MapPin className="size-4 text-brand-dark" />
                       {location}
                     </span>
                     <ChevronRight className="size-4 shrink-0 text-neutral-400" />
@@ -970,7 +970,7 @@ export function ListingForm({
                       JPEG, PNG or WebP Â· up to {MAX_IMAGES} photos Â· auto-watermarked
                     </p>
                   </div>
-                  <span className="rounded-lg bg-brand px-5 py-2 text-xs font-bold text-white hover:bg-brand-dark">
+                  <span className="rounded-lg bg-brand-dark px-5 py-2 text-xs font-bold text-white hover:brightness-110">
                     Choose files
                   </span>
                   <input
@@ -1022,7 +1022,7 @@ export function ListingForm({
                   ))}
 
                   {images.length < MAX_IMAGES && (
-                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-400 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand">
+                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-400 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand-dark">
                       <ImagePlus className="size-5" />
                       <span className="text-xs font-medium">Add more</span>
                       <input

@@ -7,7 +7,7 @@ type Badge = {
 };
 
 const TONE_CLASSES = {
-  brand: "bg-brand-light text-brand",
+  brand: "bg-brand-light text-brand-dark",
   amber: "bg-amber-50 text-amber-600",
 };
 
@@ -42,7 +42,7 @@ export function IllustrationCard({
           key={badge.label}
           className={`absolute flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-neutral-700 shadow-lg ${POSITION_CLASSES[badge.position]}`}
         >
-          {badge.icon && <badge.icon className="size-3.5 text-brand" />}
+          {badge.icon && <badge.icon className="size-3.5 text-brand-dark" />}
           {badge.label}
         </div>
       ))}

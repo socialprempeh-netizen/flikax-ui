@@ -173,7 +173,7 @@ export function ListingsTable({ listings }: { listings: AdminListingRow[] }) {
               className="shrink-0"
             />
 
-            <div className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand/40">
+            <div className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand-dark/40">
               {listing.imageUrl ? (
                 <Image src={listing.imageUrl} alt={listing.title} fill sizes="64px" quality={82} className="object-cover" />
               ) : (
@@ -185,7 +185,7 @@ export function ListingsTable({ listings }: { listings: AdminListingRow[] }) {
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href={`/admin/listings/${listing.id}`}
-                  className="truncate text-sm font-bold text-slate-800 hover:text-brand hover:underline"
+                  className="truncate text-sm font-bold text-slate-800 hover:text-brand-dark hover:underline"
                 >
                   {listing.title}
                 </Link>

@@ -53,7 +53,7 @@ export function DashboardSidebar({
   return (
     <div className="flex w-full shrink-0 flex-col gap-4 sm:w-72">
       <div className="flex flex-col items-center gap-2 rounded-xl border-t-4 border-brand bg-white p-5 text-center shadow-lg">
-        <span className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-brand text-xl font-bold text-white ring-4 ring-brand-light">
+        <span className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-brand-dark text-xl font-bold text-white ring-4 ring-brand-light">
           {avatarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={avatarUrl} alt="" className="size-full object-cover" />
@@ -88,8 +88,8 @@ export function DashboardSidebar({
               href={item.href}
               className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium shadow-sm sm:rounded-none sm:border-b sm:border-neutral-50 sm:shadow-none sm:last:border-b-0 ${
                 isActive
-                  ? "bg-brand text-white"
-                  : "bg-white text-neutral-700 hover:bg-brand-light hover:text-brand"
+                  ? "bg-brand-dark text-white"
+                  : "bg-white text-neutral-700 hover:bg-brand-light hover:text-brand-dark"
               }`}
             >
               <item.icon className="size-4.5 shrink-0" />

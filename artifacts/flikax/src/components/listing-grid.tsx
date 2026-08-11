@@ -79,7 +79,7 @@ export function ListingGrid({
           isHome ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
         }`}
       >
-        {listings.map((listing) => {
+        {listings.map((listing, index) => {
           return (
             <ListingCardHover key={listing.id}>
               {/* relative: anchors CompactSaveButton, which needs to be a
@@ -114,12 +114,20 @@ export function ListingGrid({
                       card in the grid the same shape (Jiji-style), even though
                       imageWidth/imageHeight are still tracked for other uses
                       (e.g. the detail page gallery). */}
-                  <div className="relative aspect-square w-full overflow-hidden bg-cream text-brand/40">
+                  <div className="relative aspect-square w-full overflow-hidden bg-cream text-brand-dark/40">
                     {listing.imageUrl ? (
                       <Image
                         src={listing.imageUrl}
                         alt={listing.title}
                         fill
+                        // The first card is consistently the page's LCP
+                        // element (it's the largest thing painted, above the
+                        // fold on every breakpoint) -- priority drops the
+                        // default loading="lazy" and adds fetchpriority="high"
+                        // so the browser requests it immediately instead of
+                        // waiting on layout to confirm it's in the viewport.
+                        // Every other card keeps the default lazy loading.
+                        priority={index === 0}
                         sizes={
                           isHome
                             ? "(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
@@ -158,7 +166,7 @@ export function ListingGrid({
                   </div>
                   <CardContent className="space-y-1 p-3.5">
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-lg font-extrabold tracking-tight text-brand">
+                      <span className="text-lg font-extrabold tracking-tight text-brand-dark">
                         {currency.format(listing.price)}
                       </span>
                       {listing.originalPrice != null && (

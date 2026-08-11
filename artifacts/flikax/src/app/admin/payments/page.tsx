@@ -145,7 +145,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
         <Card className="gap-2 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total revenue</span>
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Banknote className="size-4" />
             </span>
           </div>
@@ -154,7 +154,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
         <Card className="gap-2 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">This month</span>
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <CalendarDays className="size-4" />
             </span>
           </div>
@@ -163,7 +163,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
         <Card className="gap-2 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Today</span>
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <CalendarClock className="size-4" />
             </span>
           </div>

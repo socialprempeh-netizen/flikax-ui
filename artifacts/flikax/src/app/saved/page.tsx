@@ -58,7 +58,7 @@ export default async function SavedListingsPage() {
         <h1 className="mb-6 border-l-4 border-brand pl-3 text-xl font-bold text-neutral-800">Saved listings</h1>
         {listings.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 rounded-2xl bg-white py-20 text-center shadow-md">
-            <span className="flex size-16 items-center justify-center rounded-full bg-brand text-white shadow-lg">
+            <span className="flex size-16 items-center justify-center rounded-full bg-brand-dark text-white shadow-lg">
               <Bookmark className="size-7" />
             </span>
             <p className="text-base font-semibold text-neutral-700">No saved listings yet</p>
@@ -67,7 +67,7 @@ export default async function SavedListingsPage() {
             </p>
             <Link
               href="/"
-              className="mt-1 rounded-lg bg-brand px-5 py-2 text-sm font-bold text-white hover:bg-brand-dark"
+              className="mt-1 rounded-lg bg-brand-dark px-5 py-2 text-sm font-bold text-white hover:brightness-110"
             >
               Browse listings
             </Link>

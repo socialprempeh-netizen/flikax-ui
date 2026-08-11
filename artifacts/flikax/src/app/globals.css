@@ -22,7 +22,13 @@
      is proportionally darkened the same way as before (~9 pts of HSL
      lightness, +3 saturation), landing at 6.04:1 on white -- comfortably
      AA-safe -- so header-bg and other solid text-bearing brand fills stay
-     legible. --brand-light follows the same light-tint derivation. */
+     legible. --brand-light follows the same light-tint derivation.
+     axe/Lighthouse later confirmed the 3.67:1 gap as a real, widespread AA
+     failure (~100+ nodes: card prices, buttons, links). Fix was to route
+     every TEXT use of the brand color through --brand-dark instead of
+     --brand (text-brand-dark, --primary below, SellCta's solid variant,
+     etc.) -- --brand itself is untouched and still exact-spec, still used
+     for borders/rings/icon fills/hover backgrounds where only 3:1 applies. */
   --brand: #149777;
   --brand-dark: #0d7058;
   --brand-light: #eaf6f3;
@@ -51,13 +57,15 @@
 
   /* shadcn/ui base theme (new-york, neutral). Brand color doubles as the
      shadcn "primary" so Button/Card/Dialog/DropdownMenu/Input match
-     --brand instead of shadcn's default. */
+     --brand instead of shadcn's default. --primary is --brand-dark, not
+     --brand: shadcn's default Button variant is a solid fill with white
+     text on top, and white-on-#149777 fails WCAG AA (see note above). */
   --radius: 0.625rem;
   --card: #ffffff;
   --card-foreground: var(--foreground);
   --popover: #ffffff;
   --popover-foreground: var(--foreground);
-  --primary: var(--brand);
+  --primary: var(--brand-dark);
   --primary-foreground: #ffffff;
   --secondary: #f5f5f5;
   --secondary-foreground: #171717;
@@ -93,7 +101,7 @@
   --card-foreground: #f5f5f5;
   --popover: #1c1c1c;
   --popover-foreground: #f5f5f5;
-  --primary: var(--brand);
+  --primary: var(--brand-dark);
   --primary-foreground: #ffffff;
   --secondary: #262626;
   --secondary-foreground: #f5f5f5;

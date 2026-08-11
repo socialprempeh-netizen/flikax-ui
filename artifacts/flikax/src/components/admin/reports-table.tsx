@@ -144,7 +144,7 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href={`/admin/listings/${report.listingId}`}
-                  className="truncate text-sm font-bold text-slate-800 hover:text-brand hover:underline"
+                  className="truncate text-sm font-bold text-slate-800 hover:text-brand-dark hover:underline"
                 >
                   {report.listingTitle}
                 </Link>
@@ -161,7 +161,7 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
               <p className="mt-0.5 text-sm text-slate-500">
                 {REPORT_REASON_LABELS[report.reason as ReportReason] ?? report.reason} · Reported by{" "}
                 {report.reporterName ?? "Unknown"} · Seller:{" "}
-                <Link href={`/admin/users/${report.sellerId}`} className="hover:text-brand hover:underline">
+                <Link href={`/admin/users/${report.sellerId}`} className="hover:text-brand-dark hover:underline">
                   {report.sellerName ?? "Unknown"}
                 </Link>{" "}
                 · {new Date(report.createdAt).toLocaleDateString()}

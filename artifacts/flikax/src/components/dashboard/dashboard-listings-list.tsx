@@ -59,7 +59,7 @@ export function DashboardListingsList({
       {listings.map((listing) => (
         <div key={listing.id} className="relative flex gap-4 p-4 hover:bg-brand-light/30">
           <Link href={listing.href} aria-label={listing.title} className="absolute inset-0 z-0" />
-          <div className="relative flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand/40">
+          <div className="relative flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand-dark/40">
             {listing.imageUrl ? (
               <Image src={listing.imageUrl} alt={listing.title} fill sizes="96px" quality={82} className="object-cover" />
             ) : (
@@ -77,7 +77,7 @@ export function DashboardListingsList({
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-xl font-extrabold text-brand">{currency.format(listing.price)}</p>
+              <p className="text-xl font-extrabold text-brand-dark">{currency.format(listing.price)}</p>
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-bold ${
                   STATUS_STYLES[listing.status] ?? "bg-neutral-100 text-neutral-600"
@@ -99,7 +99,7 @@ export function DashboardListingsList({
             <div className="relative z-10 mt-2 flex items-center gap-4">
               <Link
                 href={`/my-adverts/${listing.id}/edit`}
-                className="text-sm font-medium text-brand hover:underline"
+                className="text-sm font-medium text-brand-dark hover:underline"
               >
                 Edit
               </Link>

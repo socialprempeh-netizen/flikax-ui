@@ -49,7 +49,7 @@ export function FeedbackList({
 
             {entry.replies.map((reply) => (
               <div key={reply.id} className="ml-4 mt-3 rounded-xl bg-brand-light p-3">
-                <p className="text-xs font-bold text-brand">Seller reply</p>
+                <p className="text-xs font-bold text-brand-dark">Seller reply</p>
                 <p className="mt-1 text-sm text-neutral-700">{reply.message}</p>
               </div>
             ))}

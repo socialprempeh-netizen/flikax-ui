@@ -35,11 +35,11 @@ export function LoginCardBody({
     <p className="text-sm text-neutral-600">
       Don&apos;t have an account?{" "}
       {onSwitchToRegister ? (
-        <button type="button" onClick={onSwitchToRegister} className="font-semibold text-brand hover:underline">
+        <button type="button" onClick={onSwitchToRegister} className="font-semibold text-brand-dark hover:underline">
           Registration
         </button>
       ) : (
-        <Link href="/auth/register" className="font-semibold text-brand hover:underline">
+        <Link href="/auth/register" className="font-semibold text-brand-dark hover:underline">
           Registration
         </Link>
       )}
@@ -49,7 +49,7 @@ export function LoginCardBody({
   return (
     <>
       <div className={centered ? "flex flex-col items-center text-center" : undefined}>
-        <FlikaxLogo wordmarkColor="text-brand" iconSize="size-7" wordmarkSize="text-lg sm:text-xl" />
+        <FlikaxLogo wordmarkColor="text-brand-dark" iconSize="size-7" wordmarkSize="text-lg sm:text-xl" />
         <h1 className="mt-2 text-lg font-bold text-slate-950">
           {view === "options" ? "Sign in" : "Sign in via email or phone"}
         </h1>
@@ -73,7 +73,7 @@ export function LoginCardBody({
           <Button
             type="button"
             onClick={() => setView("form")}
-            className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             Email or phone
           </Button>

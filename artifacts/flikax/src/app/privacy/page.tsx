@@ -26,7 +26,7 @@ export default async function PrivacyPolicyPage() {
 
       <TocLayout toc={TOC}>
         <div className="mb-8 flex items-center gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
             <Lock className="size-5" />
           </span>
           <div>
@@ -65,7 +65,7 @@ export default async function PrivacyPolicyPage() {
               <div className="flex gap-2">
                 <dt className="font-semibold">Support Email:</dt>
                 <dd>
-                  <a href="mailto:flikaxsupport@gmail.com" className="text-brand hover:underline">
+                  <a href="mailto:flikaxsupport@gmail.com" className="text-brand-dark hover:underline">
                     flikaxsupport@gmail.com
                   </a>
                 </dd>
@@ -225,7 +225,7 @@ export default async function PrivacyPolicyPage() {
               <li>Request a copy of the personal data we hold about you.</li>
               <li>
                 Request deletion of your account and associated personal data by contacting{" "}
-                <a href="mailto:flikaxsupport@gmail.com" className="text-brand hover:underline">
+                <a href="mailto:flikaxsupport@gmail.com" className="text-brand-dark hover:underline">
                   flikaxsupport@gmail.com
                 </a>{" "}
                 or using the delete-account option in Settings.
@@ -238,7 +238,7 @@ export default async function PrivacyPolicyPage() {
             </ul>
             <p className="mt-3 text-neutral-700">
               To exercise any of these rights, contact us at{" "}
-              <a href="mailto:flikaxsupport@gmail.com" className="text-brand hover:underline">
+              <a href="mailto:flikaxsupport@gmail.com" className="text-brand-dark hover:underline">
                 flikaxsupport@gmail.com
               </a>
               .
@@ -260,7 +260,7 @@ export default async function PrivacyPolicyPage() {
               Flikax is not intended for use by anyone under 18 years of age, consistent with our Terms of
               Service. We do not knowingly collect personal data from anyone under 18. If you believe a
               minor has provided us with personal data, please contact us at{" "}
-              <a href="mailto:flikaxsupport@gmail.com" className="text-brand hover:underline">
+              <a href="mailto:flikaxsupport@gmail.com" className="text-brand-dark hover:underline">
                 flikaxsupport@gmail.com
               </a>{" "}
               so we can remove it.
@@ -295,7 +295,7 @@ export default async function PrivacyPolicyPage() {
               <div className="flex gap-2">
                 <dt className="font-semibold">Support Email:</dt>
                 <dd>
-                  <a href="mailto:flikaxsupport@gmail.com" className="text-brand hover:underline">
+                  <a href="mailto:flikaxsupport@gmail.com" className="text-brand-dark hover:underline">
                     flikaxsupport@gmail.com
                   </a>
                 </dd>

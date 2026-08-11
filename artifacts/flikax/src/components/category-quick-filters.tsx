@@ -112,10 +112,10 @@ function QuickFilterTile({
           {item.value[0]?.toUpperCase()}
         </span>
       ) : (
-        Icon && <Icon className={`size-7 shrink-0 ${isActive ? "text-brand" : "text-neutral-600"}`} />
+        Icon && <Icon className={`size-7 shrink-0 ${isActive ? "text-brand-dark" : "text-neutral-600"}`} />
       )}
       <span
-        className={`w-full truncate text-xs font-semibold ${isActive ? "text-brand" : "text-neutral-700"}`}
+        className={`w-full truncate text-xs font-semibold ${isActive ? "text-brand-dark" : "text-neutral-700"}`}
       >
         {item.value}
       </span>

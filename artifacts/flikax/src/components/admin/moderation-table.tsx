@@ -131,7 +131,7 @@ export function ModerationTable({ flags }: { flags: AdminModerationRow[] }) {
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href={`/admin/listings/${flag.listingId}`}
-                  className="truncate text-sm font-bold text-slate-800 hover:text-brand hover:underline"
+                  className="truncate text-sm font-bold text-slate-800 hover:text-brand-dark hover:underline"
                 >
                   {flag.listingTitle}
                 </Link>
@@ -150,7 +150,7 @@ export function ModerationTable({ flags }: { flags: AdminModerationRow[] }) {
                   Matches:{" "}
                   <Link
                     href={`/admin/listings/${flag.duplicateOfListingId}`}
-                    className="text-brand hover:underline"
+                    className="text-brand-dark hover:underline"
                   >
                     {flag.duplicateOfListingTitle ?? flag.duplicateOfListingId}
                   </Link>

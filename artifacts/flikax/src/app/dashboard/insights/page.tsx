@@ -69,7 +69,7 @@ export default async function PerformanceInsightsPage() {
                   <tr key={row.id} className="hover:bg-brand-light/20">
                     <td className="px-4 py-3">
                       <Link href={href} className="flex items-center gap-3">
-                        <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand/40">
+                        <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand-dark/40">
                           {imageUrl ? (
                             <Image src={imageUrl} alt={row.title} fill sizes="48px" quality={82} className="object-cover" />
                           ) : (
@@ -77,7 +77,7 @@ export default async function PerformanceInsightsPage() {
                           )}
                         </span>
                         <span className="min-w-0">
-                          <span className="block max-w-56 truncate font-semibold text-neutral-800 hover:text-brand">
+                          <span className="block max-w-56 truncate font-semibold text-neutral-800 hover:text-brand-dark">
                             {row.title}
                           </span>
                           <span className="block text-xs text-neutral-400">{row.category_name}</span>
@@ -100,7 +100,7 @@ export default async function PerformanceInsightsPage() {
                     <td className="px-4 py-3 font-semibold text-neutral-700">{row.conversation_count}</td>
                     <td className="px-4 py-3 text-neutral-700">
                       {row.rank && row.total_in_category ? (
-                        <span className="font-semibold text-brand">
+                        <span className="font-semibold text-brand-dark">
                           #{row.rank} of {row.total_in_category}
                         </span>
                       ) : (

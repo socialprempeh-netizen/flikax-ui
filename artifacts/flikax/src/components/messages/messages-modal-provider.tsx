@@ -209,7 +209,7 @@ function MessagesPanelBody() {
   if (status === "signed-out" || status === "error") {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 p-8 text-center">
-        <span className="flex size-12 items-center justify-center rounded-full bg-brand-light text-brand">
+        <span className="flex size-12 items-center justify-center rounded-full bg-brand-light text-brand-dark">
           <MessageSquare className="size-5" />
         </span>
         <p className="text-sm font-medium text-neutral-600">
@@ -231,7 +231,7 @@ function MessagesPanelBody() {
           >
             <ArrowLeft className="size-4" />
           </button>
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-white">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-dark text-xs font-bold text-white">
             {thread.otherPartyName[0]?.toUpperCase() ?? "F"}
           </span>
           <p className="truncate text-sm font-bold text-white">{thread.otherPartyName}</p>
@@ -254,7 +254,7 @@ function MessagesPanelBody() {
   if (conversations.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 p-8 text-center">
-        <span className="flex size-12 items-center justify-center rounded-full bg-brand-light text-brand">
+        <span className="flex size-12 items-center justify-center rounded-full bg-brand-light text-brand-dark">
           <MessageSquare className="size-5" />
         </span>
         <p className="text-sm font-medium text-neutral-600">No messages yet</p>
@@ -285,7 +285,7 @@ function MessagesPanelBody() {
               disabled={threadLoading}
               className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left transition-colors hover:bg-slate-50 disabled:opacity-60"
             >
-              <div className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand/40">
+              <div className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand-dark/40">
                 {coverUrl ? (
                   <Image src={coverUrl} alt="" fill sizes="48px" quality={82} className="object-cover" />
                 ) : (
@@ -311,7 +311,7 @@ function MessagesPanelBody() {
       <div className="shrink-0 border-t border-neutral-100 p-2">
         <Link
           href="/messages"
-          className="block rounded-lg px-3 py-2 text-center text-xs font-semibold text-neutral-500 hover:bg-slate-50 hover:text-brand"
+          className="block rounded-lg px-3 py-2 text-center text-xs font-semibold text-neutral-500 hover:bg-slate-50 hover:text-brand-dark"
         >
           Open full inbox
         </Link>

@@ -360,19 +360,19 @@ async function CategoryLocationPage({
       <SiteHeader />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 flex flex-wrap items-center gap-1 text-sm text-neutral-500">
-          <Link href="/" className="flex min-h-11 min-w-11 items-center hover:text-brand">
+          <Link href="/" className="flex min-h-11 min-w-11 items-center hover:text-brand-dark">
             Home
           </Link>
           {parentCategory && (
             <>
               <span>/</span>
-              <Link href={`/${parentCategory.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
+              <Link href={`/${parentCategory.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand-dark">
                 {parentCategory.name}
               </Link>
             </>
           )}
           <span>/</span>
-          <Link href={`/${category.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
+          <Link href={`/${category.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand-dark">
             {category.name}
           </Link>
           <span>/</span>
@@ -388,7 +388,7 @@ async function CategoryLocationPage({
             <p className="text-sm font-medium text-neutral-600">
               No {category.name} listings in {location.district_name} yet.
             </p>
-            <Link href={`/${category.slug}`} className="text-sm font-bold text-brand hover:underline">
+            <Link href={`/${category.slug}`} className="text-sm font-bold text-brand-dark hover:underline">
               Browse {category.name} nationwide
             </Link>
           </div>
@@ -632,13 +632,13 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 flex flex-wrap items-center gap-1 text-sm text-neutral-500">
-          <Link href="/" className="flex min-h-11 min-w-11 items-center hover:text-brand">
+          <Link href="/" className="flex min-h-11 min-w-11 items-center hover:text-brand-dark">
             All ads
           </Link>
           {parentCategory && (
             <>
               <span>/</span>
-              <Link href={`/${parentCategory.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
+              <Link href={`/${parentCategory.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand-dark">
                 {parentCategory.name}
               </Link>
             </>
@@ -646,7 +646,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
           {category && (
             <>
               <span>/</span>
-              <Link href={`/${category.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand">
+              <Link href={`/${category.slug}`} className="flex min-h-11 min-w-11 items-center hover:text-brand-dark">
                 {category.name}
               </Link>
             </>
@@ -709,7 +709,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                     const Icon = FIELD_ICONS[spec.key] ?? Sparkles;
                     return (
                       <div key={spec.key} className="flex items-center gap-2">
-                        <span className="flex size-8 items-center justify-center rounded-full bg-brand-light text-brand">
+                        <span className="flex size-8 items-center justify-center rounded-full bg-brand-light text-brand-dark">
                           <Icon className="size-4" />
                         </span>
                         <span className="text-base font-medium text-neutral-700">{spec.value}</span>
@@ -779,7 +779,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 column. */}
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex flex-wrap items-baseline gap-2">
-                <p className="text-2xl font-bold tracking-tight text-brand">
+                <p className="text-2xl font-bold tracking-tight text-brand-dark">
                   {currency.format(listing.price)}
                 </p>
                 {listing.is_discounted && listing.original_price != null && (
@@ -800,7 +800,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex items-center gap-3">
-                <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-light text-lg font-bold text-brand">
+                <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-light text-lg font-bold text-brand-dark">
                   <AvatarContent
                     avatarUrl={sellerProfile?.avatar_url ?? listing.profiles?.avatar_url}
                     initials={sellerName[0]?.toUpperCase() ?? "F"}
@@ -810,7 +810,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 <div className="min-w-0">
                   <Link
                     href={`/u/${listing.user_id}`}
-                    className="flex min-h-11 items-center gap-1 truncate text-base font-bold text-neutral-800 hover:text-brand hover:underline"
+                    className="flex min-h-11 items-center gap-1 truncate text-base font-bold text-neutral-800 hover:text-brand-dark hover:underline"
                   >
                     <span className="truncate">{sellerName}</span>
                     {(sellerProfile?.verified ?? listing.profiles?.verified) && (
@@ -826,7 +826,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                   storefront of everything else they're currently selling. */}
               <Link
                 href={`/seller/${listing.user_id}`}
-                className="mt-3 flex min-h-11 items-center justify-between rounded-lg border border-neutral-200 px-3 text-sm font-semibold text-neutral-700 hover:border-brand hover:text-brand"
+                className="mt-3 flex min-h-11 items-center justify-between rounded-lg border border-neutral-200 px-3 text-sm font-semibold text-neutral-700 hover:border-brand hover:text-brand-dark"
               >
                 <span className="flex items-center gap-2">
                   <Store className="size-4" />
@@ -871,7 +871,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
             <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
               <h3 className="mb-3 text-sm font-bold text-neutral-800">Safety First - Read This Before Proceeding</h3>
-              <ul className="list-disc space-y-2 pl-4 marker:text-brand">
+              <ul className="list-disc space-y-2 pl-4 marker:text-brand-dark">
                 {SAFETY_TIPS.map((tip) => (
                   <li key={tip} className="text-xs font-bold text-neutral-700">
                     {tip}

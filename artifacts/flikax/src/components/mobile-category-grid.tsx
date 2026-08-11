@@ -20,7 +20,7 @@ export function MobileCategoryGrid({
 
   const postAdTile = (
     <>
-      <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+      <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-dark text-white">
         <Plus className="size-5" />
       </span>
       <span className="line-clamp-2 text-2xs font-semibold leading-tight text-neutral-800">

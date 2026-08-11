@@ -137,7 +137,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
           <Button type="submit">Apply</Button>
 
           {hasFilters && (
-            <Button asChild variant="ghost" className="text-slate-500 hover:text-brand">
+            <Button asChild variant="ghost" className="text-slate-500 hover:text-brand-dark">
               <Link href="/admin/users">
                 <X className="size-3.5" />
                 Clear
@@ -159,7 +159,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
                   <div className="flex flex-wrap items-center gap-2">
                     <Link
                       href={`/admin/users/${row.id}`}
-                      className="text-sm font-bold text-slate-800 hover:text-brand hover:underline"
+                      className="text-sm font-bold text-slate-800 hover:text-brand-dark hover:underline"
                     >
                       {row.fullName || "Unnamed user"}
                     </Link>

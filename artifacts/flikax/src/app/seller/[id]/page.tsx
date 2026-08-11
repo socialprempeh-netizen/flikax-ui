@@ -75,7 +75,7 @@ export default async function SellerStorePage({ params }: { params: Promise<{ id
         <div className="overflow-hidden rounded-2xl bg-white shadow-md">
           <div className="h-2 bg-brand" />
           <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:p-6">
-            <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-2xl font-bold text-white ring-4 ring-brand-light">
+            <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-dark text-2xl font-bold text-white ring-4 ring-brand-light">
               <AvatarContent avatarUrl={profile.avatar_url} initials={initials} sizes="64px" />
             </span>
 
@@ -97,7 +97,7 @@ export default async function SellerStorePage({ params }: { params: Promise<{ id
               {profile.bio && <p className="mt-2 text-sm text-neutral-600">{profile.bio}</p>}
 
               {feedbackTotal > 0 && (
-                <Link href={`/u/${profile.id}`} className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-brand hover:underline">
+                <Link href={`/u/${profile.id}`} className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-brand-dark hover:underline">
                   {feedbackTotal} feedback{feedbackTotal === 1 ? "" : "s"} &rsaquo;
                 </Link>
               )}
@@ -123,7 +123,7 @@ export default async function SellerStorePage({ params }: { params: Promise<{ id
 
               <Link
                 href={`/u/${profile.id}`}
-                className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-brand"
+                className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-brand-dark"
               >
                 <MessageSquareWarning className="size-4" />
                 Leave feedback

@@ -24,7 +24,7 @@ export function RevealPhoneButton({
   // The "outline" variant here means brand-tinted-at-rest (not shadcn's
   // generic neutral outline), so its own colors are layered on top.
   const outlineClasses =
-    variant === "outline" ? "border-brand/30 bg-brand-light text-brand hover:bg-brand/10 hover:text-brand" : "";
+    variant === "outline" ? "border-brand/30 bg-brand-light text-brand-dark hover:bg-brand/10 hover:text-brand-dark" : "";
   const sizeClasses = compact ? "h-11 flex-1" : "h-11 w-full";
 
   if (revealed) {

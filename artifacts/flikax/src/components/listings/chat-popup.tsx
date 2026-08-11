@@ -183,7 +183,7 @@ function ChatPopupOverlay({
       {/* ── Header ── */}
       <div className="flex shrink-0 items-center gap-3 bg-[#1a1f2e] px-4 py-3">
         {/* Avatar */}
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-dark text-sm font-bold text-white">
           {initial}
         </span>
 

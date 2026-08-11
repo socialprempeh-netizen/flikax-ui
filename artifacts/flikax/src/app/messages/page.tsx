@@ -55,7 +55,7 @@ export default async function MessagesPage() {
 
         {!conversations || conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 rounded-2xl bg-white py-20 text-center shadow-md">
-            <span className="flex size-16 items-center justify-center rounded-full bg-brand text-white shadow-lg">
+            <span className="flex size-16 items-center justify-center rounded-full bg-brand-dark text-white shadow-lg">
               <MessageSquare className="size-7" />
             </span>
             <p className="text-base font-semibold text-neutral-700">No messages yet</p>
@@ -64,7 +64,7 @@ export default async function MessagesPage() {
             </p>
             <Link
               href="/"
-              className="mt-1 rounded-lg bg-brand px-5 py-2 text-sm font-bold text-white hover:bg-brand-dark"
+              className="mt-1 rounded-lg bg-brand-dark px-5 py-2 text-sm font-bold text-white hover:brightness-110"
             >
               Browse listings
             </Link>
@@ -90,7 +90,7 @@ export default async function MessagesPage() {
                   }`}
                 >
                   {/* Thumbnail */}
-                  <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand/40">
+                  <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand-dark/40">
                     {coverUrl ? (
                       <Image src={coverUrl} alt="" fill sizes="56px" quality={82} className="object-cover" />
                     ) : (

@@ -218,7 +218,7 @@ export function EmailAuthForm({
         )}
 
         {mode === "sign-in" && (
-          <Link href="/auth/forgot-password" className="block text-right text-sm font-medium text-brand hover:underline">
+          <Link href="/auth/forgot-password" className="block text-right text-sm font-medium text-brand-dark hover:underline">
             Forgot password?
           </Link>
         )}
@@ -232,7 +232,7 @@ export function EmailAuthForm({
         <Button
           type="submit"
           disabled={loading}
-          className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+          className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
         >
           {loading ? "Please wait..." : mode === "sign-in" ? "Sign in" : "Create account"}
         </Button>

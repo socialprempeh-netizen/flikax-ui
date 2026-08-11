@@ -108,7 +108,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
+          className="rounded-lg bg-brand-dark px-5 py-2.5 text-sm font-bold text-white hover:brightness-110 disabled:opacity-60"
         >
           {isPending ? "Sending..." : "Send message"}
         </button>

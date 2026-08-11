@@ -65,7 +65,7 @@ export function ScrollableSidebarColumn({ children }: { children: React.ReactNod
             type="button"
             onClick={handleArrowClick}
             aria-label="Scroll to see more categories"
-            className="pointer-events-auto relative flex size-7 items-center justify-center rounded-full border border-slate-200/80 bg-white text-neutral-500 shadow-md transition-all hover:scale-110 hover:text-brand hover:shadow-lg"
+            className="pointer-events-auto relative flex size-7 items-center justify-center rounded-full border border-slate-200/80 bg-white text-neutral-500 shadow-md transition-all hover:scale-110 hover:text-brand-dark hover:shadow-lg"
           >
             <ChevronDown className="size-4" />
           </button>

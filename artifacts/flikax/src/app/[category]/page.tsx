@@ -195,13 +195,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       <CategorySearchHeader categoryName={category.name} categorySlug={category.slug} query={q} />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 hidden flex-wrap items-center gap-1 text-sm text-neutral-500 lg:flex">
-          <Link href="/" className="hover:text-brand">
+          <Link href="/" className="hover:text-brand-dark">
             Home
           </Link>
           {parentCategory && (
             <>
               <span>/</span>
-              <Link href={`/${parentCategory.slug}`} className="hover:text-brand">
+              <Link href={`/${parentCategory.slug}`} className="hover:text-brand-dark">
                 {parentCategory.name}
               </Link>
             </>

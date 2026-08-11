@@ -1,3 +1,10 @@
+// UNUSED / SUPERSEDED -- zero import sites anywhere in the app as of the
+// homepage rebuild (commit 451cc23 dropped this from src/app/page.tsx in
+// favor of the pill/mega-menu redesign, which was itself later replaced by
+// the icon-grid + CategorySidebarFilters/CategoryNav combo those pages use
+// today). Kept on disk per this repo's "preserve reversed code, don't
+// delete" convention rather than removed outright -- safe to delete once
+// confirmed nobody wants this exact sidebar layout back.
 import Link from "next/link";
 import { buildListingsHref, type ListingFilters } from "@/lib/filters";
 import { ScrollableSidebarColumn } from "@/components/scrollable-sidebar-column";
@@ -67,7 +74,7 @@ export function CategorySidebar({
           <MobileCategoryGrid parents={parents} filters={filters} />
         </div>
 
-        <div className="hidden rounded-2xl bg-brand p-4 text-white shadow-sm lg:block">
+        <div className="hidden rounded-2xl bg-brand-dark p-4 text-white shadow-sm lg:block">
           <h3 className="text-sm font-bold tracking-wide">Sell Something?</h3>
           <p className="mt-1.5 text-xs leading-relaxed text-white/80">
             Post your ad free and reach thousands of buyers across Ghana.
@@ -76,7 +83,7 @@ export function CategorySidebar({
             label="Post Ad"
             variant="footer"
             size="sm"
-            className="mt-4 w-full !bg-white !text-brand hover:!bg-brand-light"
+            className="mt-4 w-full !bg-white !text-brand-dark hover:!bg-brand-light"
           />
         </div>
       </ScrollableSidebarColumn>
@@ -91,11 +98,11 @@ export function CategorySidebar({
         <h3 className="mb-2 text-sm font-bold tracking-tight text-neutral-800">Categories</h3>
         <Link
           href={buildListingsHref({ ...filters, category: undefined })}
-          className="mb-1 block text-xs font-medium text-neutral-500 hover:text-brand"
+          className="mb-1 block text-xs font-medium text-neutral-500 hover:text-brand-dark"
         >
           All categories
         </Link>
-        <p className="mb-2 truncate text-sm font-semibold text-brand">{activeParent.name}</p>
+        <p className="mb-2 truncate text-sm font-semibold text-brand-dark">{activeParent.name}</p>
         <div className="flex flex-col divide-y divide-neutral-200">
           {children.map((child) => {
             const isActive = child.slug === selectedSlug;
@@ -104,7 +111,7 @@ export function CategorySidebar({
                 key={child.id}
                 href={`/${child.slug}`}
                 className={`group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors ${
-                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-neutral-200"
+                  isActive ? "bg-brand-light font-semibold text-brand-dark" : "text-neutral-600 hover:bg-neutral-200"
                 }`}
               >
                 <CategoryThumb
@@ -118,7 +125,7 @@ export function CategorySidebar({
                 <span className="min-w-0 flex-1 truncate">{child.name}</span>
                 <span
                   className={`ml-2 shrink-0 rounded-full px-1.5 py-0.5 text-2xs font-medium ${
-                    isActive ? "bg-white/60 text-brand" : "bg-slate-100 text-neutral-500"
+                    isActive ? "bg-white/60 text-brand-dark" : "bg-slate-100 text-neutral-500"
                   }`}
                 >
                   {counts.get(child.id) ?? 0}
@@ -133,12 +140,12 @@ export function CategorySidebar({
         <div className="mb-2 flex items-center gap-2 px-1">
           <Link
             href={buildListingsHref({ ...filters, category: undefined })}
-            className="text-xs font-medium text-neutral-500 hover:text-brand"
+            className="text-xs font-medium text-neutral-500 hover:text-brand-dark"
           >
             All categories
           </Link>
           <span className="text-xs text-neutral-300">/</span>
-          <span className="truncate text-xs font-semibold text-brand">{activeParent.name}</span>
+          <span className="truncate text-xs font-semibold text-brand-dark">{activeParent.name}</span>
         </div>
         <MobileCategoryList categories={children} counts={counts} />
       </div>
@@ -171,7 +178,7 @@ export function CategorySidebar({
           />
           <button
             type="submit"
-            className="shrink-0 rounded-lg bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-dark"
+            className="shrink-0 rounded-lg bg-brand-dark px-3 py-1.5 text-sm font-medium text-white hover:brightness-110"
           >
             Go
           </button>
@@ -185,7 +192,7 @@ export function CategorySidebar({
                 key={bucket.label}
                 href={buildListingsHref({ ...filters, minPrice: bucket.minPrice, maxPrice: bucket.maxPrice })}
                 className={`rounded-lg px-2 py-1 text-sm transition-colors ${
-                  isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-600 hover:bg-slate-50"
+                  isActive ? "bg-brand-light font-semibold text-brand-dark" : "text-neutral-600 hover:bg-slate-50"
                 }`}
               >
                 {bucket.label}

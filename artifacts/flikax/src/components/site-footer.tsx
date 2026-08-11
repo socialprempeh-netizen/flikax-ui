@@ -69,6 +69,7 @@ export function SiteFooter() {
             {socialIcons.map(({ label, icon: Icon, badge }) => (
               <span
                 key={label}
+                role="img"
                 title={label}
                 aria-label={label}
                 className={cn(

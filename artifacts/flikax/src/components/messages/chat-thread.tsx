@@ -161,7 +161,7 @@ export function ChatThread({
         {bothRevealed && otherPartyPhone ? (
           <a
             href={`tel:${otherPartyPhone}`}
-            className="flex items-center justify-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-dark"
+            className="flex items-center justify-center gap-2 rounded-lg bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:brightness-110"
           >
             <Phone className="size-4" />
             Call {otherPartyName} — {otherPartyPhone}
@@ -194,7 +194,7 @@ export function ChatThread({
             <div key={message.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
               <div
                 className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm ${
-                  isMine ? "bg-brand text-white" : "bg-neutral-100 text-neutral-800"
+                  isMine ? "bg-brand-dark text-white" : "bg-neutral-100 text-neutral-800"
                 }`}
               >
                 <p className="whitespace-pre-wrap">{message.body}</p>
@@ -248,7 +248,7 @@ export function ChatThread({
               disabled={isSending}
               variant="outline"
               size="sm"
-              className="shrink-0 rounded-full border-brand/30 bg-brand-light text-brand hover:bg-brand/10 hover:text-brand"
+              className="shrink-0 rounded-full border-brand/30 bg-brand-light text-brand-dark hover:bg-brand/10 hover:text-brand-dark"
             >
               <Tag className="size-3" />
               Make an offer
@@ -265,7 +265,7 @@ export function ChatThread({
                 disabled={isSending}
                 variant="outline"
                 size="sm"
-                className="shrink-0 rounded-full border-neutral-200 bg-neutral-100 text-neutral-700 hover:border-brand/40 hover:bg-brand-light hover:text-brand"
+                className="shrink-0 rounded-full border-neutral-200 bg-neutral-100 text-neutral-700 hover:border-brand/40 hover:bg-brand-light hover:text-brand-dark"
               >
                 {text}
               </Button>

@@ -43,7 +43,7 @@ export function CategoryIconGrid({
             />
             <span
               className={`line-clamp-2 text-2xs font-medium leading-tight transition-colors sm:text-xs ${
-                isActive ? "text-brand" : "text-neutral-700 group-hover:text-brand"
+                isActive ? "text-brand-dark" : "text-neutral-700 group-hover:text-brand-dark"
               }`}
             >
               {cat.name}

@@ -33,7 +33,7 @@ export function ResetPasswordGate() {
         <p className="text-sm text-neutral-600">This reset link is invalid or has expired.</p>
         <Link
           href="/auth/forgot-password"
-          className="mt-3 inline-block text-sm font-bold text-brand hover:underline"
+          className="mt-3 inline-block text-sm font-bold text-brand-dark hover:underline"
         >
           Request a new link
         </Link>

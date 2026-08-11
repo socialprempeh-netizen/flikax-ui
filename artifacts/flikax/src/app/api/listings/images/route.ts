@@ -118,7 +118,11 @@ export async function POST(request: Request) {
   const path = `${user.id}/${randomUUID()}.webp`;
   const { error: uploadError } = await storageClient.storage
     .from("listing-images")
-    .upload(path, watermarked, { contentType: "image/webp", upsert: false });
+    // cacheControl: a random-UUID path with upsert:false is never
+    // overwritten, so this file is immutable for its whole lifetime --
+    // Supabase's default (3600s = 1 hour) was making viewers re-download
+    // full-size photos on every repeat visit. 31536000s = 1 year.
+    .upload(path, watermarked, { contentType: "image/webp", upsert: false, cacheControl: "31536000" });
 
   if (uploadError) {
     return NextResponse.json({ error: uploadError.message }, { status: 500 });

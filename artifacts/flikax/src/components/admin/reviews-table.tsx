@@ -150,7 +150,7 @@ export function ReviewsTable({ reviews }: { reviews: AdminReviewRow[] }) {
                   <span className="text-xs text-slate-400">on</span>
                   <Link
                     href={`/u/${review.targetProfileId}`}
-                    className="text-sm text-slate-600 hover:text-brand hover:underline"
+                    className="text-sm text-slate-600 hover:text-brand-dark hover:underline"
                   >
                     {review.targetProfileName ?? "Unknown profile"}
                   </Link>

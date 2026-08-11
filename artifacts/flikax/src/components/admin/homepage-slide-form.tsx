@@ -168,7 +168,7 @@ export function HomepageSlideForm({
           type="checkbox"
           checked={form.is_active}
           onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))}
-          className="size-4 rounded border-slate-300 text-brand focus:ring-brand"
+          className="size-4 rounded border-slate-300 text-brand-dark focus:ring-brand"
         />
         <span className="text-sm font-medium text-slate-700">Active</span>
       </label>

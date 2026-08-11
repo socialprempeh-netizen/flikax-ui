@@ -52,7 +52,7 @@ export function SaveListingButton({ listingId }: { listingId: string }) {
         error
           ? "border-red-200 text-red-500 hover:bg-red-50"
           : saved
-            ? "border-brand bg-brand-light text-brand hover:bg-brand-light"
+            ? "border-brand bg-brand-light text-brand-dark hover:bg-brand-light"
             : "text-neutral-700"
       }`}
     >

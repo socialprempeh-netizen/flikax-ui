@@ -102,7 +102,7 @@ export function PaymentsTable({ purchases }: { purchases: AdminPurchaseRow[] }) 
               {p.listingId && p.listingTitle && (
                 <p className="mt-0.5 text-sm text-slate-500">
                   Listing:{" "}
-                  <Link href={`/admin/listings/${p.listingId}`} className="text-brand hover:underline">
+                  <Link href={`/admin/listings/${p.listingId}`} className="text-brand-dark hover:underline">
                     {p.listingTitle}
                   </Link>
                 </p>

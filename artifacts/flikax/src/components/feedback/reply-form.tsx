@@ -37,7 +37,7 @@ export function ReplyForm({ feedbackId, profileId }: { feedbackId: string; profi
         <button
           type="submit"
           disabled={isPending}
-          className="shrink-0 rounded-lg bg-brand px-3 py-1.5 text-sm font-bold text-white hover:bg-brand-dark disabled:opacity-60"
+          className="shrink-0 rounded-lg bg-brand-dark px-3 py-1.5 text-sm font-bold text-white hover:brightness-110 disabled:opacity-60"
         >
           {isPending ? "..." : "Reply"}
         </button>

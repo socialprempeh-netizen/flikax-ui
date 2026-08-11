@@ -81,7 +81,7 @@ export default async function DashboardFeedbackPage({
             href={`/dashboard/feedback?tab=${t.key}`}
             className={`border-b-2 pb-3 text-sm font-medium ${
               tab === t.key
-                ? "border-brand text-brand"
+                ? "border-brand text-brand-dark"
                 : "border-transparent text-neutral-500 hover:text-neutral-700"
             }`}
           >
@@ -106,7 +106,7 @@ export default async function DashboardFeedbackPage({
                 {entry.sentiment === "negative" && <Frown className="size-4 text-red-600" />}
                 <p className="text-xs text-neutral-400">
                   To{" "}
-                  <Link href={`/u/${entry.profile?.id}`} className="font-semibold text-brand hover:underline">
+                  <Link href={`/u/${entry.profile?.id}`} className="font-semibold text-brand-dark hover:underline">
                     {entry.profile?.full_name || "Flikax user"}
                   </Link>
                 </p>

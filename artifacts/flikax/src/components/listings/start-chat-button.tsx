@@ -28,7 +28,7 @@ export function StartChatButton({
         type="submit"
         disabled={pending}
         variant="outline"
-        className="flex-1 border-2 border-brand text-brand hover:bg-brand-light hover:text-brand"
+        className="flex-1 border-2 border-brand text-brand-dark hover:bg-brand-light hover:text-brand-dark"
       >
         <MessageCircle className="size-4" />
         {pending ? "Opening…" : "Send Message"}

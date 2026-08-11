@@ -17,7 +17,7 @@ type FlikaxLogoProps = {
  * Flikax brand logo: brand-green rounded-square icon containing a white "F",
  * followed by the "flikax" wordmark.
  *
- * Use wordmarkColor="text-brand" on light/white backgrounds.
+ * Use wordmarkColor="text-brand-dark" on light/white backgrounds.
  * Default wordmarkColor="text-white" suits dark backgrounds.
  */
 export function FlikaxLogo({
@@ -33,7 +33,11 @@ export function FlikaxLogo({
       className={`flex min-h-11 items-center gap-2 ${className}`.trim()}
       aria-label="Flikax home"
     >
-      {/* Brand-green rounded-square icon */}
+      {/* Brand-green rounded-square icon -- stays exact-spec bg-brand, not
+          bg-brand-dark: it's aria-hidden (the link's own aria-label carries
+          its name), so darkening it for text contrast would serve no
+          accessibility purpose while giving up the one place the true
+          brand color is most worth keeping literal. */}
       <span
         className={`${iconSize} flex shrink-0 items-center justify-center rounded-lg bg-brand font-extrabold leading-none text-white`}
         style={{ fontSize: 17 }}

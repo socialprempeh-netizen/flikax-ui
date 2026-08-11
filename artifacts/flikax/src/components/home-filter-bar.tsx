@@ -52,7 +52,7 @@ export function HomeFilterBar({ filters }: { filters: ListingFilters }) {
                       router.push(buildListingsHref({ ...filters, sort: opt.value }));
                     }}
                     className={`flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm transition-colors ${
-                      isActive ? "bg-brand-light font-semibold text-brand" : "text-neutral-700 hover:bg-neutral-50"
+                      isActive ? "bg-brand-light font-semibold text-brand-dark" : "text-neutral-700 hover:bg-neutral-50"
                     }`}
                   >
                     {opt.label}

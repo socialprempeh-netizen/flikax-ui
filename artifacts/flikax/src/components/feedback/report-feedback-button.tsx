@@ -62,7 +62,7 @@ export function ReportFeedbackButton({ feedbackId }: { feedbackId: string }) {
                 <button
                   type="button"
                   onClick={close}
-                  className="mt-5 w-full rounded-lg bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-dark"
+                  className="mt-5 w-full rounded-lg bg-brand-dark py-2.5 text-sm font-bold text-white hover:brightness-110"
                 >
                   Close
                 </button>

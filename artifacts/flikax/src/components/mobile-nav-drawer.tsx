@@ -97,7 +97,7 @@ export function MobileNavDrawer() {
                 <button
                   type="button"
                   onClick={() => openAuthModal("/")}
-                  className="flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-brand hover:bg-brand-light"
+                  className="flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-brand-dark hover:bg-brand-light"
                 >
                   <LogIn className="size-4.5 shrink-0" />
                   Log in

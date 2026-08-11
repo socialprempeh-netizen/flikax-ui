@@ -6,8 +6,8 @@ import { Mail } from "lucide-react";
 export const SUPPORT_EMAIL = "flikaxsupport@gmail.com";
 
 const VARIANT_CLASSES = {
-  solid: "bg-brand text-white hover:bg-brand-dark",
-  outline: "border-2 border-brand text-brand hover:bg-brand-light",
+  solid: "bg-brand-dark text-white hover:brightness-110",
+  outline: "border-2 border-brand text-brand-dark hover:bg-brand-light",
 };
 
 export function SupportCta({

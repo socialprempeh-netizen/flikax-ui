@@ -112,7 +112,7 @@ export function HomepageSlideRow({
       </div>
 
       <div className="flex shrink-0 items-center gap-3">
-        <Button type="button" variant="link" onClick={onEdit} className="h-auto p-0 text-brand">
+        <Button type="button" variant="link" onClick={onEdit} className="h-auto p-0 text-brand-dark">
           Edit
         </Button>
         <Button

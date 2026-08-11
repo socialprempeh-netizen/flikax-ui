@@ -77,12 +77,12 @@ export function ForgotPasswordForm() {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-brand py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+        className="w-full rounded-xl bg-brand-dark py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
       >
         {loading ? "Sending..." : "Send reset link"}
       </Button>
 
-      <Link href="/auth/login" className="block text-center text-sm font-medium text-brand hover:underline">
+      <Link href="/auth/login" className="block text-center text-sm font-medium text-brand-dark hover:underline">
         Back to login
       </Link>
     </form>

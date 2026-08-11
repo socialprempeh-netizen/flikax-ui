@@ -214,7 +214,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading}
-            className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             {loading ? "Sending code..." : "Send code"}
           </Button>
@@ -247,7 +247,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading || otp.length !== OTP_LENGTH}
-            className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             {loading ? "Verifying..." : "Confirm OTP"}
           </Button>
@@ -263,7 +263,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
                 onClick={resendOtp}
                 disabled={loading}
                 variant="ghost"
-                className="h-auto p-0 text-sm font-semibold text-brand hover:bg-transparent hover:text-brand-dark"
+                className="h-auto p-0 text-sm font-semibold text-brand-dark hover:bg-transparent hover:text-brand-dark"
               >
                 Resend OTP
               </Button>
@@ -306,7 +306,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading}
-            className="h-11 w-full rounded-xl bg-brand font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:bg-brand-dark"
+            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             {loading ? "Saving..." : "Continue"}
           </Button>

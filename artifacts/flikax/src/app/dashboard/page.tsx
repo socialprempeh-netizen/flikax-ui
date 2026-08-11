@@ -123,14 +123,14 @@ export default async function DashboardPage({ searchParams }: PageProps) {
               href={tabHref(t.key)}
               className={`flex-1 border-b-2 py-3 text-center text-sm font-semibold transition-colors ${
                 tab === t.key
-                  ? "border-brand bg-brand-light text-brand"
+                  ? "border-brand bg-brand-light text-brand-dark"
                   : "border-transparent text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
               }`}
             >
               {t.label}
               <span
                 className={`ml-1.5 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-3xs font-bold leading-none ${
-                  tab === t.key ? "bg-brand text-white" : "bg-neutral-100 text-neutral-500"
+                  tab === t.key ? "bg-brand-dark text-white" : "bg-neutral-100 text-neutral-500"
                 }`}
               >
                 {grouped[t.key].length}

@@ -111,7 +111,7 @@ export default async function AdminDashboardPage() {
           <Card key={stat.label} className="gap-2 rounded-2xl p-4 shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">{stat.label}</span>
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
                 <stat.icon className="size-4" />
               </span>
             </div>

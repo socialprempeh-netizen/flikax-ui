@@ -69,7 +69,7 @@ export function PaymentsFilterBar({ filters }: { filters: AdminPaymentFilters })
         <Button type="submit">Apply</Button>
 
         {hasFilters && (
-          <Button asChild variant="ghost" className="text-slate-500 hover:text-brand">
+          <Button asChild variant="ghost" className="text-slate-500 hover:text-brand-dark">
             <Link href="/admin/payments">
               <X className="size-3.5" />
               Clear

@@ -178,7 +178,7 @@ export function PremiumPlanForm({
         <span className="mb-1 block text-xs font-medium text-slate-600">Features</span>
         <div className="flex flex-wrap gap-2">
           {form.features.map((feature, i) => (
-            <Badge key={`${feature}-${i}`} className="gap-1 bg-brand-light px-3 py-1 text-brand">
+            <Badge key={`${feature}-${i}`} className="gap-1 bg-brand-light px-3 py-1 text-brand-dark">
               {feature}
               <button type="button" onClick={() => removeFeature(i)} aria-label={`Remove ${feature}`} className="hover:text-brand-dark">
                 <X className="size-3" />

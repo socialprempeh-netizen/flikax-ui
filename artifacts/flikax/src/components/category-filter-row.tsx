@@ -63,7 +63,7 @@ export function CategoryFilterRow({
               // (30px visual pill + 7px above/below) without growing the chip.
               className={`relative shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap before:absolute before:-inset-[7px] before:content-[''] ${
                 isActive
-                  ? "border-brand bg-brand-light text-brand"
+                  ? "border-brand bg-brand-light text-brand-dark"
                   : "border-neutral-300 text-neutral-600 hover:bg-neutral-50"
               }`}
             >
@@ -80,6 +80,7 @@ export function CategoryFilterRow({
 
         <div className="flex items-center gap-2">
           <select
+            aria-label="Date posted"
             value={datePosted ?? ""}
             onChange={(e) => router.push(hrefWith(searchParams, { posted: e.target.value || undefined }))}
             className="rounded-lg border border-neutral-200 bg-white px-2 py-1.5 text-sm text-neutral-700 outline-none focus:border-brand"
@@ -92,6 +93,7 @@ export function CategoryFilterRow({
           </select>
 
           <select
+            aria-label="Sort by"
             value={sort}
             onChange={(e) => router.push(hrefWith(searchParams, { sort: e.target.value }))}
             className="rounded-lg border border-neutral-200 bg-white px-2 py-1.5 text-sm text-neutral-700 outline-none focus:border-brand"

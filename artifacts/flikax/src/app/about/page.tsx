@@ -85,7 +85,7 @@ function StepList({ steps }: { steps: { title: string; body: string }[] }) {
     <ol className="space-y-5">
       {steps.map((step, i) => (
         <li key={step.title} className="flex gap-4">
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-dark text-sm font-bold text-white">
             {i + 1}
           </span>
           <div>
@@ -104,7 +104,7 @@ export default async function AboutPage() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="bg-brand px-4 py-16 text-center text-white sm:px-6">
+      <section className="bg-brand-dark px-4 py-16 text-center text-white sm:px-6">
         <div className="mx-auto max-w-3xl">
           <h1 className="font-logo text-4xl font-extrabold sm:text-5xl">Buy. Sell. Discover.</h1>
           <p className="mx-auto mt-5 max-w-2xl text-base text-white/90 sm:text-lg">
@@ -115,7 +115,7 @@ export default async function AboutPage() {
             Our mission is to make local commerce faster, safer, and more accessible for everyone.
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <SellCta label="Start Selling" size="lg" className="bg-white !text-brand hover:bg-brand-light" />
+            <SellCta label="Start Selling" size="lg" className="bg-white !text-brand-dark hover:bg-brand-light" />
             <Link
               href="/"
               className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-6 py-3 text-base font-bold text-white hover:bg-white/10"
@@ -133,7 +133,7 @@ export default async function AboutPage() {
             <a
               key={item.href}
               href={item.href}
-              className="rounded-full px-3 py-1.5 text-sm font-medium text-neutral-600 hover:bg-brand-light hover:text-brand"
+              className="rounded-full px-3 py-1.5 text-sm font-medium text-neutral-600 hover:bg-brand-light hover:text-brand-dark"
             >
               {item.label}
             </a>
@@ -145,7 +145,7 @@ export default async function AboutPage() {
         {/* Mission & Vision */}
         <section className="grid gap-6 sm:grid-cols-2">
           <div className="rounded-2xl bg-white p-6 shadow-md">
-            <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Rocket className="size-5" />
             </span>
             <h2 className="mt-4 font-logo text-xl font-bold text-neutral-800">Our Mission</h2>
@@ -155,7 +155,7 @@ export default async function AboutPage() {
             </p>
           </div>
           <div className="rounded-2xl bg-white p-6 shadow-md">
-            <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Compass className="size-5" />
             </span>
             <h2 className="mt-4 font-logo text-xl font-bold text-neutral-800">Our Vision</h2>
@@ -197,7 +197,7 @@ export default async function AboutPage() {
                 {CATEGORIES.map((cat) => (
                   <span
                     key={cat}
-                    className="rounded-full bg-brand-light px-3 py-1 text-xs font-semibold text-brand"
+                    className="rounded-full bg-brand-light px-3 py-1 text-xs font-semibold text-brand-dark"
                   >
                     {cat}
                   </span>
@@ -227,7 +227,7 @@ export default async function AboutPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {WHY_CHOOSE.map((item) => (
               <div key={item.title} className="rounded-2xl bg-white p-6 shadow-md">
-                <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand">
+                <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand-dark">
                   <item.icon className="size-5" />
                 </span>
                 <h3 className="mt-4 font-bold text-neutral-800">{item.title}</h3>
@@ -261,7 +261,7 @@ export default async function AboutPage() {
             </div>
             <Link
               href="/"
-              className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-brand px-4 py-2.5 text-sm font-bold text-brand hover:bg-brand-light"
+              className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-brand px-4 py-2.5 text-sm font-bold text-brand-dark hover:bg-brand-light"
             >
               Browse Listings
             </Link>
@@ -283,7 +283,7 @@ export default async function AboutPage() {
             <ul className="mt-5 space-y-2.5">
               {SAFETY_TIPS.map((tip) => (
                 <li key={tip} className="flex items-start gap-2 text-sm text-neutral-700">
-                  <ShieldCheck className="mt-0.5 size-4 shrink-0 text-brand" />
+                  <ShieldCheck className="mt-0.5 size-4 shrink-0 text-brand-dark" />
                   {tip}
                 </li>
               ))}
@@ -337,7 +337,7 @@ export default async function AboutPage() {
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {PRO_TIPS.map((tip, i) => (
               <div key={tip.title} className="rounded-2xl bg-white p-5 shadow-md">
-                <span className="flex size-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
+                <span className="flex size-8 items-center justify-center rounded-full bg-brand-dark text-sm font-bold text-white">
                   {i + 1}
                 </span>
                 <h3 className="mt-3 font-bold text-neutral-800">{tip.title}</h3>
@@ -364,7 +364,7 @@ export default async function AboutPage() {
       </main>
 
       {/* Closing CTA */}
-      <section className="bg-brand px-4 py-14 text-center text-white sm:px-6">
+      <section className="bg-brand-dark px-4 py-14 text-center text-white sm:px-6">
         <div className="mx-auto max-w-2xl">
           <span className="flex size-12 items-center justify-center rounded-full bg-white/15 mx-auto">
             <Handshake className="size-6" />
@@ -377,7 +377,7 @@ export default async function AboutPage() {
           </p>
           <p className="mt-2 font-logo text-lg font-bold">Flikax — Buy. Sell. Discover.</p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <SellCta label="Start Selling" size="lg" className="bg-white !text-brand hover:bg-brand-light" />
+            <SellCta label="Start Selling" size="lg" className="bg-white !text-brand-dark hover:bg-brand-light" />
             <Link
               href="/"
               className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-6 py-3 text-base font-bold text-white hover:bg-white/10"

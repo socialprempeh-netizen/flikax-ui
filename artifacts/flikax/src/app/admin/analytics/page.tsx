@@ -73,7 +73,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             href={buildAdminAnalyticsHref({ ...filters, window: w })}
             className={`rounded-lg border px-3 py-1.5 text-sm font-medium ${
               String(windowDays) === w
-                ? "border-brand bg-brand-light text-brand"
+                ? "border-brand bg-brand-light text-brand-dark"
                 : "border-slate-200 text-slate-600 hover:bg-slate-50"
             }`}
           >
@@ -106,7 +106,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
         <Card className="gap-2 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total views (all time)</span>
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Eye className="size-4" />
             </span>
           </div>
@@ -115,7 +115,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
         <Card className="gap-2 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total saves</span>
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Bookmark className="size-4" />
             </span>
           </div>

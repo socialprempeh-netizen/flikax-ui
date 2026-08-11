@@ -60,7 +60,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           {/* Brand accent strip */}
           <div className="h-2 bg-brand" />
           <div className="flex items-center gap-4 p-6">
-            <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand text-xl font-bold text-white ring-4 ring-brand-light">
+            <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-dark text-xl font-bold text-white ring-4 ring-brand-light">
               <AvatarContent avatarUrl={profile.avatar_url} initials={getInitials(profile.full_name) || "F"} sizes="64px" />
             </span>
             <div className="min-w-0">
@@ -110,7 +110,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
         {!viewerId && (
           <p className="rounded-2xl bg-white p-5 text-sm text-neutral-500 shadow-md">
-            <Link href={`/auth/login?redirect=/u/${profile.id}`} className="font-bold text-brand hover:underline">
+            <Link href={`/auth/login?redirect=/u/${profile.id}`} className="font-bold text-brand-dark hover:underline">
               Log in
             </Link>{" "}
             to leave feedback for {profile.full_name || "this seller"}.

@@ -112,7 +112,7 @@ export function SupportTable({ tickets }: { tickets: AdminTicketRow[] }) {
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-bold text-slate-800">{ticket.name}</span>
-                <a href={`mailto:${ticket.email}`} className="text-sm text-brand hover:underline">
+                <a href={`mailto:${ticket.email}`} className="text-sm text-brand-dark hover:underline">
                   {ticket.email}
                 </a>
                 <Badge className={`shrink-0 ${ADMIN_TICKET_STATUS_STYLES[ticket.status] ?? "bg-slate-100 text-slate-600"}`}>

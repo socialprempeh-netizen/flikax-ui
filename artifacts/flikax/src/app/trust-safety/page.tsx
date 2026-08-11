@@ -88,7 +88,7 @@ export default async function TrustSafetyPage() {
 
       <TocLayout toc={TOC}>
         <div className="mb-8 flex items-center gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
             <Shield className="size-5" />
           </span>
           <h1 className="font-logo text-3xl font-bold text-neutral-800">Trust &amp; Safety</h1>

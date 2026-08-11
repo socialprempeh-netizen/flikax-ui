@@ -90,7 +90,7 @@ export default async function PremiumPage() {
                   >
                     <p className="font-bold text-neutral-800">{plan.name}</p>
                     {plan.description && <p className="mt-1 text-sm text-neutral-500">{plan.description}</p>}
-                    <p className="mt-3 text-2xl font-extrabold text-brand">
+                    <p className="mt-3 text-2xl font-extrabold text-brand-dark">
                       {currency.format(plan.price)}
                       {plan.duration && (
                         <span className="text-sm font-medium text-neutral-400"> / {plan.duration}</span>
@@ -104,7 +104,7 @@ export default async function PremiumPage() {
                       <ul className="mt-4 flex-1 space-y-1.5">
                         {plan.features.map((feature) => (
                           <li key={feature} className="flex items-start gap-1.5 text-sm text-neutral-600">
-                            <Check className="mt-0.5 size-3.5 shrink-0 text-brand" />
+                            <Check className="mt-0.5 size-3.5 shrink-0 text-brand-dark" />
                             {feature}
                           </li>
                         ))}
@@ -115,7 +115,7 @@ export default async function PremiumPage() {
                       {listingScoped ? (
                         <Link
                           href={user ? "/dashboard" : "/auth/login?redirect=/dashboard"}
-                          className="block rounded-lg bg-brand px-3 py-2 text-center text-xs font-bold text-white hover:bg-brand-dark"
+                          className="block rounded-lg bg-brand-dark px-3 py-2 text-center text-xs font-bold text-white hover:brightness-110"
                         >
                           Choose a listing
                         </Link>
@@ -124,7 +124,7 @@ export default async function PremiumPage() {
                       ) : (
                         <Link
                           href="/auth/login?redirect=/premium"
-                          className="block rounded-lg bg-brand px-3 py-2 text-center text-xs font-bold text-white hover:bg-brand-dark"
+                          className="block rounded-lg bg-brand-dark px-3 py-2 text-center text-xs font-bold text-white hover:brightness-110"
                         >
                           Log in to buy
                         </Link>

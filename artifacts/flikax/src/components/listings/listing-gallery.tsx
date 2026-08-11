@@ -21,7 +21,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
     // Leaving width unset lets it resolve from the margin equation instead,
     // which extends evenly on both sides.
     return (
-      <div className="-mx-4 flex aspect-[4/3] items-center justify-center rounded-none border-0 bg-cream text-brand/40 sm:mx-0 sm:rounded-2xl sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand">
+      <div className="-mx-4 flex aspect-[4/3] items-center justify-center rounded-none border-0 bg-cream text-brand-dark/40 sm:mx-0 sm:rounded-2xl sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand">
         <ImageOff className="size-10" />
       </div>
     );
@@ -97,8 +97,13 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
                 src={url}
                 alt={index === activeIndex ? title : ""}
                 fill
+                // Only the first (LCP) image should skip lazy-loading.
+                // This used to force loading="eager" on every *other* image
+                // in the filmstrip too, which meant the browser preloaded
+                // every photo in the gallery (10+ on a fully-populated
+                // listing) at once, diluting bandwidth/priority away from
+                // the one image that's actually above the fold on load.
                 priority={index === 0}
-                loading={index === 0 ? undefined : "eager"}
                 sizes="(min-width: 640px) 75vw, 100vw"
                 quality={82}
                 className="object-cover"

@@ -37,7 +37,7 @@ export function ConfirmDialog({
         <AlertDialogHeader>
           <span
             className={`flex size-9 shrink-0 items-center justify-center rounded-full ${
-              danger ? "bg-red-100 text-red-600" : "bg-brand-light text-brand"
+              danger ? "bg-red-100 text-red-600" : "bg-brand-light text-brand-dark"
             }`}
           >
             <AlertTriangle className="size-5" />
@@ -61,7 +61,7 @@ export function ConfirmDialog({
               e.preventDefault();
               onConfirm();
             }}
-            className={danger ? "bg-red-600 text-white hover:bg-red-700" : "bg-brand text-white hover:bg-brand-dark"}
+            className={danger ? "bg-red-600 text-white hover:bg-red-700" : "bg-brand-dark text-white hover:brightness-110"}
           >
             {pending ? "Working..." : confirmLabel}
           </AlertDialogAction>

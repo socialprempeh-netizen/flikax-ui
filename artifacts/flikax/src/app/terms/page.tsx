@@ -29,7 +29,7 @@ export default async function TermsPage() {
 
       <TocLayout toc={TOC}>
         <div className="mb-8 flex items-center gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
             <Scale className="size-5" />
           </span>
           <div>
@@ -238,7 +238,7 @@ export default async function TermsPage() {
               <div className="flex gap-2">
                 <dt className="font-semibold">Support Email:</dt>
                 <dd>
-                  <a href="mailto:vonfon41@gmail.com" className="text-brand hover:underline">
+                  <a href="mailto:vonfon41@gmail.com" className="text-brand-dark hover:underline">
                     vonfon41@gmail.com
                   </a>
                 </dd>

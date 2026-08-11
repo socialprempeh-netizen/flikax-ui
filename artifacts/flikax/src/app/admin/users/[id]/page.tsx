@@ -60,7 +60,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
     <div>
       <Link
         href="/admin/users"
-        className="mb-4 flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-brand"
+        className="mb-4 flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-brand-dark"
       >
         <ChevronLeft className="size-4" />
         Back to users
@@ -109,7 +109,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                   <div key={listing.id} className="flex items-center justify-between py-2.5">
                     <Link
                       href={`/admin/listings/${listing.id}`}
-                      className="truncate text-sm font-medium text-slate-700 hover:text-brand hover:underline"
+                      className="truncate text-sm font-medium text-slate-700 hover:text-brand-dark hover:underline"
                     >
                       {listing.title}
                     </Link>

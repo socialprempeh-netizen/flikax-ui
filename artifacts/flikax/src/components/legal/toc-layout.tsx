@@ -9,7 +9,7 @@ function TocNav({ toc }: { toc: TocItem[] }) {
         <li key={item.id}>
           <a
             href={`#${item.id}`}
-            className="block rounded-lg px-3 py-1.5 text-sm text-neutral-600 hover:bg-brand-light hover:text-brand"
+            className="block rounded-lg px-3 py-1.5 text-sm text-neutral-600 hover:bg-brand-light hover:text-brand-dark"
           >
             {item.title}
           </a>

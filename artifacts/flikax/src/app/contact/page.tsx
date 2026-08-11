@@ -50,13 +50,13 @@ export default async function ContactPage() {
         {/* Customer Support */}
         <section className="rounded-2xl bg-white p-6 shadow-md sm:p-8">
           <div className="flex items-center gap-3">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Mail className="size-5" />
             </span>
             <h2 className="font-logo text-xl font-bold text-neutral-800">Customer Support</h2>
           </div>
           <p className="mt-4 text-sm text-neutral-500">Email us anytime at</p>
-          <a href={`mailto:${supportEmail}`} className="text-base font-semibold text-brand hover:underline">
+          <a href={`mailto:${supportEmail}`} className="text-base font-semibold text-brand-dark hover:underline">
             {supportEmail}
           </a>
           <div className="mt-5">
@@ -70,7 +70,7 @@ export default async function ContactPage() {
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {HELP_TOPICS.map((topic) => (
               <div key={topic.label} className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-md">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
                   <topic.icon className="size-4" />
                 </span>
                 <span className="text-sm font-medium text-neutral-700">{topic.label}</span>
@@ -102,7 +102,7 @@ export default async function ContactPage() {
           <p className="mt-3 text-sm text-neutral-700">
             For partnerships, advertising, or media enquiries, contact:
           </p>
-          <a href={`mailto:${supportEmail}`} className="mt-1 block text-base font-semibold text-brand hover:underline">
+          <a href={`mailto:${supportEmail}`} className="mt-1 block text-base font-semibold text-brand-dark hover:underline">
             {supportEmail}
           </a>
           <div className="mt-5">

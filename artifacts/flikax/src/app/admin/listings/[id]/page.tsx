@@ -83,7 +83,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
     <div>
       <Link
         href="/admin/listings"
-        className="mb-4 flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-brand"
+        className="mb-4 flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-brand-dark"
       >
         <ChevronLeft className="size-4" />
         Back to listings
@@ -119,7 +119,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
               )}
             </div>
 
-            <p className="mt-3 text-3xl font-extrabold text-brand">{currency.format(listing.price)}</p>
+            <p className="mt-3 text-3xl font-extrabold text-brand-dark">{currency.format(listing.price)}</p>
 
             {listing.declined_reason && (
               <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -180,7 +180,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
             {listing.profiles?.id && (
               <Link
                 href={`/admin/users/${listing.profiles.id}`}
-                className="inline-block text-sm font-medium text-brand hover:underline"
+                className="inline-block text-sm font-medium text-brand-dark hover:underline"
               >
                 View user profile
               </Link>

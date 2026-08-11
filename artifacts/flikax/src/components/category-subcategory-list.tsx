@@ -41,7 +41,7 @@ export function CategorySubcategoryListDesktop({ parentId, subcategories }: Prop
             <Link
               key={sub.id}
               href={`/${sub.slug}`}
-              className="flex items-center gap-2.5 rounded-md px-1.5 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-brand"
+              className="flex items-center gap-2.5 rounded-md px-1.5 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-brand-dark"
             >
               <CategoryThumb
                 category={{ ...sub, parent_id: parentId }}
@@ -60,7 +60,7 @@ export function CategorySubcategoryListDesktop({ parentId, subcategories }: Prop
           <button
             type="button"
             onClick={() => setExpanded(true)}
-            className="mt-1 flex items-center gap-0.5 px-1.5 text-xs font-semibold text-brand hover:underline"
+            className="mt-1 flex items-center gap-0.5 px-1.5 text-xs font-semibold text-brand-dark hover:underline"
           >
             Show all {subcategories.length}
             <ChevronRight className="size-3.5" />
