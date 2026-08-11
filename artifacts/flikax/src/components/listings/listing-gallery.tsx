@@ -21,7 +21,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
     // Leaving width unset lets it resolve from the margin equation instead,
     // which extends evenly on both sides.
     return (
-      <div className="-mx-4 flex aspect-[4/3] items-center justify-center rounded-none border-0 bg-cream text-brand-dark/40 sm:mx-0 sm:rounded-2xl sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand">
+      <div className="-mx-4 flex aspect-[4/3] items-center justify-center rounded-none border-0 bg-cream text-brand-dark/40 sm:mx-0 sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand">
         <ImageOff className="size-10" />
       </div>
     );
@@ -61,19 +61,23 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
     <div>
       {/* -mx-4 cancels the detail page's own px-4 edge padding below sm, so
           the hero photo runs flush to both screen edges (Jiji-style) --
-          sm:mx-0 (plus the sm:rounded-2xl/sm:border below) hands the card
-          treatment back once there's room for it to read as a bordered
-          card rather than a full-bleed photo. Deliberately no `w-full`:
-          with an explicit width AND both margins specified, CSS treats the
-          box as over-constrained and (in LTR) silently discards the
-          specified margin-right to rebalance the equation, so only the left
-          edge would actually reach the screen edge. Leaving width unset
-          lets it resolve from the margin equation instead, extending it
-          evenly on both sides -- same reasoning as ListingGrid's card
-          columns, which never set an explicit width on the -mx-4 element. */}
+          sm:mx-0 (plus the sm:border below) hands the card treatment back
+          once there's room for it to read as a bordered card rather than a
+          full-bleed photo. Deliberately no `w-full`: with an explicit width
+          AND both margins specified, CSS treats the box as over-constrained
+          and (in LTR) silently discards the specified margin-right to
+          rebalance the equation, so only the left edge would actually reach
+          the screen edge. Leaving width unset lets it resolve from the
+          margin equation instead, extending it evenly on both sides --
+          same reasoning as ListingGrid's card columns, which never set an
+          explicit width on the -mx-4 element.
+          rounded-none stays rounded-none at every breakpoint now -- this
+          used to pick up sm:rounded-2xl on desktop, the one place a listing
+          photo broke from the flat, square-cornered tile look every other
+          image on the site (grid cards, thumbnails) already uses. */}
       <div
         ref={mainRef}
-        className="relative -mx-4 aspect-[4/3] touch-pan-y select-none overflow-hidden rounded-none border-0 bg-cream sm:mx-0 sm:rounded-2xl sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand"
+        className="relative -mx-4 aspect-[4/3] touch-pan-y select-none overflow-hidden rounded-none border-0 bg-cream sm:mx-0 sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {

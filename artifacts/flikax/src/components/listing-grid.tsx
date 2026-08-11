@@ -126,8 +126,15 @@ export function ListingGrid({
                         // default loading="lazy" and adds fetchpriority="high"
                         // so the browser requests it immediately instead of
                         // waiting on layout to confirm it's in the viewport.
-                        // Every other card keeps the default lazy loading.
-                        priority={index === 0}
+                        // On home specifically, measured LCP showed the
+                        // *second* card was large enough to become the new
+                        // candidate once the first stopped being the
+                        // bottleneck (home's 5-column grid keeps more cards
+                        // above the fold than category's 3/4-column one) --
+                        // so home prioritizes the first two; category still
+                        // only needs the first. Every other card keeps the
+                        // default lazy loading.
+                        priority={isHome ? index < 2 : index === 0}
                         sizes={
                           isHome
                             ? "(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
