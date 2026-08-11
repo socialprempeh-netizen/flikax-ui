@@ -123,8 +123,8 @@ export function ChatPopupButton({
 
   return (
     <>
-      {/* Solid green, not brand-blue -- "Send Message" sits next to a solid
-          blue "Contact Seller" button and needs its own distinct color to
+      {/* Solid green, not brand-teal -- "Send Message" sits next to a solid
+          teal "Contact Seller" button and needs its own distinct color to
           read as a separate action, not a fainter version of it. Solid
           (not a light tint) so it carries the same visual weight as
           Contact Seller instead of reading as the secondary/lesser option. */}

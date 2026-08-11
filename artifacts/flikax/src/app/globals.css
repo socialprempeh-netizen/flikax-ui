@@ -9,29 +9,43 @@
      bg-background instead of hardcoding a neutral-* shade. */
   --background: #e4e7eb;
   --foreground: #171717;
-  /* Single-brand-color system: one deep corporate blue drives every
-     interactive element site-wide (buttons, links, active states,
-     highlights, focus rings) via these three tokens -- nothing else should
-     introduce a second accent color. Post Ad is the one deliberate
-     exception (hardcoded orange, see header-user-actions.tsx) so it still
-     reads as the primary conversion action against this blue. */
-  --brand: #2563eb;
-  --brand-dark: #1d4ed8;
-  --brand-light: #dbeafe;
-  /* Solid brand-blue shell for the sticky header -- one shade deeper than
-     --brand (not identical to it) so the brand-blue logo mark and other
+  /* Single-brand-color system: one teal drives every interactive element
+     site-wide (buttons, links, active states, highlights, focus rings) via
+     these three tokens -- nothing else should introduce a second accent
+     color. Post Ad is the one deliberate exception (hardcoded orange, see
+     header-user-actions.tsx) so it still reads as the primary conversion
+     action against this teal.
+     Rebranded from the original corporate blue (#2563eb/#1d4ed8/#dbeafe)
+     to teal per brand spec. --brand is the exact requested #06949E --
+     checked against WCAG AA: white text on #06949E is 3.66:1, which clears
+     the 3:1 bar for large/bold text and all non-text UI (icons, borders,
+     focus rings) but falls short of the 4.5:1 bar for small body/link text
+     (this codebase's `text-brand` is used for both). Kept the exact spec
+     hex rather than quietly darkening it -- deviating from an explicitly
+     given hex felt like the wrong call to make silently. --brand-dark is
+     proportionally darkened the same way the old brand-dark related to
+     brand (~9 pts of HSL lightness), which lands at 6.17:1 on white --
+     comfortably AA-safe -- so header-bg and other solid text-bearing brand
+     fills stay legible. */
+  --brand: #06949e;
+  --brand-dark: #036c74;
+  --brand-light: #e7f7f8;
+  /* Solid brand-teal shell for the sticky header -- one shade deeper than
+     --brand (not identical to it) so the brand-teal logo mark and other
      --brand accents inside the header still read as distinct highlights
      against it, instead of disappearing into a flat identical fill. */
   --header-bg: var(--brand-dark);
   /* Homepage hero band + its attached search button -- deliberately a
-     deeper, more muted navy-blue than --brand (which stays the vivid
+     deeper, more muted near-black teal than --brand (which stays the vivid
      site-wide accent for buttons/links/active states elsewhere). Two
      distinct shades so the search button still reads as a separate,
      darker element against the hero band behind it, per the reference.
-     --hero-bg is the exact hex picked off the reference screenshot
-     (rgb(11,20,38)) -- don't drift it back toward a lighter blue. */
-  --hero-bg: #0b1426;
-  --hero-search-btn: #060c18;
+     Rebranded from navy (#0b1426/#060c18) to the same hue as --brand
+     (183.9deg) at low lightness/high saturation, preserving the original's
+     near-black anchor + darker-still button relationship -- don't drift
+     these back toward navy or toward a lighter, more saturated teal. */
+  --hero-bg: #081f21;
+  --hero-search-btn: #041516;
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
      as a deliberate tint, not just an off-white. */

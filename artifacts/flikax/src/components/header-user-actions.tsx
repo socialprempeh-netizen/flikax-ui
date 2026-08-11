@@ -64,7 +64,7 @@ export function HeaderUserActions() {
           same orange Post Ad CTA as desktop. This used to be a "Sign up"
           button that forced openAuthModal(..., "register") -- skipping
           straight to the expanded create-account form and, being the site's
-          one non-brand button, rendering in --brand blue instead of orange.
+          one non-brand button, rendering in --brand teal instead of orange.
           Post Ad here calls openAuthModal(SELL_ROUTE) with no mode override,
           same as the desktop button and the Sell bottom-tab, so a logged-out
           tap opens the compact sign-in chooser first, not the register form. */}
@@ -156,7 +156,7 @@ export function HeaderUserActions() {
           <span className="text-sm font-medium">Account</span>
         </GatedIconLink>
 
-        {/* Post Ad is the one deliberate exception to the site's single-blue-
+        {/* Post Ad is the one deliberate exception to the site's single-teal-
             accent system -- stays orange regardless of --brand so it keeps
             reading as the primary conversion action. */}
         {isLoggedIn ? (
