@@ -123,11 +123,15 @@ export function ChatPopupButton({
 
   return (
     <>
-      {/* Solid green, not brand-teal -- "Send Message" sits next to a solid
-          teal "Contact Seller" button and needs its own distinct color to
-          read as a separate action, not a fainter version of it. Solid
-          (not a light tint) so it carries the same visual weight as
-          Contact Seller instead of reading as the secondary/lesser option. */}
+      {/* Solid green-600 -- "Send Message" sits next to a solid brand-colored
+          "Contact Seller" button and needs a visibly different color to read
+          as a separate action, not a fainter version of it. Now that --brand
+          is itself a green (#149777, a jade/teal-leaning green vs. this
+          grass-green), the two are closer in hue than when brand was teal --
+          still distinguishable (23deg apart) but worth a look if they ever
+          read as too similar in practice. Solid (not a light tint) so it
+          carries the same visual weight as Contact Seller instead of
+          reading as the secondary/lesser option. */}
       <Button
         type="button"
         onClick={handleOpen}

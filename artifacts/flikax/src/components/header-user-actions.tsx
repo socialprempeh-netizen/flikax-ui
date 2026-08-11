@@ -61,10 +61,10 @@ export function HeaderUserActions() {
     <>
       {/* Mobile: everything else lives in the hamburger drawer already, so the
           header itself only needs the account avatar (logged in) plus the
-          same orange Post Ad CTA as desktop. This used to be a "Sign up"
+          same yellow Post Ad CTA as desktop. This used to be a "Sign up"
           button that forced openAuthModal(..., "register") -- skipping
           straight to the expanded create-account form and, being the site's
-          one non-brand button, rendering in --brand teal instead of orange.
+          one non-brand button, rendering in --brand instead of yellow.
           Post Ad here calls openAuthModal(SELL_ROUTE) with no mode override,
           same as the desktop button and the Sell bottom-tab, so a logged-out
           tap opens the compact sign-in chooser first, not the register form. */}
@@ -81,7 +81,7 @@ export function HeaderUserActions() {
         )}
 
         {isLoggedIn ? (
-          <Button asChild size="sm" className="h-9 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600">
+          <Button asChild size="sm" className="h-9 rounded-full bg-[#FFC800] px-3 text-xs font-bold text-black shadow-sm hover:bg-[#e6b400]">
             <Link href="/sell">
               <Plus className="size-3.5" />
               Post Ad
@@ -91,7 +91,7 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="sm"
-            className="h-9 rounded-full bg-orange-500 px-3 text-xs font-bold text-white shadow-sm hover:bg-orange-600"
+            className="h-9 rounded-full bg-[#FFC800] px-3 text-xs font-bold text-black shadow-sm hover:bg-[#e6b400]"
             onClick={() => openAuthModal("/sell")}
           >
             <Plus className="size-3.5" />
@@ -156,14 +156,17 @@ export function HeaderUserActions() {
           <span className="text-sm font-medium">Account</span>
         </GatedIconLink>
 
-        {/* Post Ad is the one deliberate exception to the site's single-teal-
-            accent system -- stays orange regardless of --brand so it keeps
-            reading as the primary conversion action. */}
+        {/* Post Ad is the one deliberate exception to the site's single-brand-
+            color accent system -- stays yellow (#FFC800, was orange)
+            regardless of --brand so it keeps reading as the primary
+            conversion action. Black text/icon (not white): white on
+            #FFC800 measures 1.55:1, badly failing WCAG's 3:1 floor even for
+            large text/icons -- black clears it at 11.54:1. */}
         {isLoggedIn ? (
           <Button
             asChild
             size="lg"
-            className="rounded-full bg-orange-500 px-5 font-bold text-white shadow-sm hover:bg-orange-600"
+            className="rounded-full bg-[#FFC800] px-5 font-bold text-black shadow-sm hover:bg-[#e6b400]"
           >
             <Link href="/sell">
               <Plus className="size-4" />
@@ -174,7 +177,7 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="lg"
-            className="rounded-full bg-orange-500 px-5 font-bold text-white shadow-sm hover:bg-orange-600"
+            className="rounded-full bg-[#FFC800] px-5 font-bold text-black shadow-sm hover:bg-[#e6b400]"
             onClick={() => openAuthModal("/sell")}
           >
             <Plus className="size-4" />

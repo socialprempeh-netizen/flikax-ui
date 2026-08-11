@@ -7,8 +7,9 @@ import { LoginCardBody } from "@/components/auth/login-card-body";
 // before any of the sign-in UI renders, rather than showing a login form
 // they don't need. All the actual sign-in flow (method tabs, OTP, OAuth)
 // lives in LoginCardBody -- this file only owns the redirect gate + the
-// flat brand-teal page frame (previously a dark-navy-to-blue gradient,
-// dropped in favor of a flat #06949E fill).
+// flat brand-color page frame (previously a dark-navy-to-blue gradient,
+// dropped in favor of a flat bg-brand fill -- see globals.css for the
+// current --brand value).
 export default async function LoginPage({
   searchParams,
 }: {

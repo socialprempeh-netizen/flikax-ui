@@ -14,7 +14,7 @@ type FlikaxLogoProps = {
 };
 
 /**
- * Flikax brand logo: brand-teal rounded-square icon containing a white "F",
+ * Flikax brand logo: brand-green rounded-square icon containing a white "F",
  * followed by the "flikax" wordmark.
  *
  * Use wordmarkColor="text-brand" on light/white backgrounds.
@@ -33,7 +33,7 @@ export function FlikaxLogo({
       className={`flex min-h-11 items-center gap-2 ${className}`.trim()}
       aria-label="Flikax home"
     >
-      {/* Brand-teal rounded-square icon */}
+      {/* Brand-green rounded-square icon */}
       <span
         className={`${iconSize} flex shrink-0 items-center justify-center rounded-lg bg-brand font-extrabold leading-none text-white`}
         style={{ fontSize: 17 }}

@@ -9,47 +9,44 @@
      bg-background instead of hardcoding a neutral-* shade. */
   --background: #e4e7eb;
   --foreground: #171717;
-  /* Single-brand-color system: one teal drives every interactive element
+  /* Single-brand-color system: one green drives every interactive element
      site-wide (buttons, links, active states, highlights, focus rings) via
      these three tokens -- nothing else should introduce a second accent
-     color. Post Ad is the one deliberate exception (hardcoded orange, see
-     header-user-actions.tsx) so it still reads as the primary conversion
-     action against this teal.
-     Rebranded from the original corporate blue (#2563eb/#1d4ed8/#dbeafe)
-     to teal per brand spec. --brand is the exact requested #06949E --
-     checked against WCAG AA: white text on #06949E is 3.66:1, which clears
-     the 3:1 bar for large/bold text and all non-text UI (icons, borders,
-     focus rings) but falls short of the 4.5:1 bar for small body/link text
-     (this codebase's `text-brand` is used for both). Kept the exact spec
-     hex rather than quietly darkening it -- deviating from an explicitly
-     given hex felt like the wrong call to make silently. --brand-dark is
-     proportionally darkened the same way the old brand-dark related to
-     brand (~9 pts of HSL lightness), which lands at 6.17:1 on white --
-     comfortably AA-safe -- so header-bg and other solid text-bearing brand
-     fills stay legible. */
-  --brand: #06949e;
-  --brand-dark: #036c74;
-  --brand-light: #e7f7f8;
-  /* Solid brand-teal shell for the sticky header -- one shade deeper than
-     --brand (not identical to it) so the brand-teal logo mark and other
-     --brand accents inside the header still read as distinct highlights
-     against it, instead of disappearing into a flat identical fill. */
+     color.
+     Second rebrand: --brand is the exact requested #149777 (was teal
+     #06949E, originally corporate blue #2563eb before that). Checked
+     against WCAG AA: white text on #149777 is 3.67:1 -- clears the 3:1 bar
+     for large/bold text and non-text UI (icons, borders, focus rings) but
+     falls short of 4.5:1 for small body/link text. Kept the exact spec hex
+     rather than quietly darkening it, same call as last time. --brand-dark
+     is proportionally darkened the same way as before (~9 pts of HSL
+     lightness, +3 saturation), landing at 6.04:1 on white -- comfortably
+     AA-safe -- so header-bg and other solid text-bearing brand fills stay
+     legible. --brand-light follows the same light-tint derivation. */
+  --brand: #149777;
+  --brand-dark: #0d7058;
+  --brand-light: #eaf6f3;
+  /* Solid brand-color shell for the sticky header -- one shade deeper than
+     --brand (not identical to it) so the brand logo mark and other --brand
+     accents inside the header still read as distinct highlights against
+     it, instead of disappearing into a flat identical fill. */
   --header-bg: var(--brand-dark);
-  /* Search button attached to the hero band's search bar -- deliberately
-     darker than --brand so it still reads as a distinct, clickable accent
-     against the (now flat --brand) hero behind it. Same teal hue as
-     --brand, just much lower lightness. --hero-bg (a near-black anchor for
-     what used to be the hero's gradient) was removed along with the
-     gradient itself -- see hero-banner.tsx. */
-  --hero-search-btn: #041516;
+  /* Search button attached to the hero band's search bar. Previously a
+     near-black tint of --brand (deliberately darker so it read as a
+     distinct accent against the hero); now the exact requested #FFC800
+     yellow, same treatment as the Post Ad CTA (see header-user-actions.tsx)
+     -- both are the site's one deliberate non-brand accent. Text/icon on
+     this button is black, not white: white on #FFC800 is 1.55:1, far below
+     WCAG's 3:1 floor even for icons; black clears it at 11.54:1. */
+  --hero-search-btn: #ffc800;
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
      as a deliberate tint, not just an off-white. */
   --cream: #f7ecd6;
 
   /* shadcn/ui base theme (new-york, neutral). Brand color doubles as the
-     shadcn "primary" so Button/Card/Dialog/DropdownMenu/Input match the
-     existing --brand orange instead of shadcn's default. */
+     shadcn "primary" so Button/Card/Dialog/DropdownMenu/Input match
+     --brand instead of shadcn's default. */
   --radius: 0.625rem;
   --card: #ffffff;
   --card-foreground: var(--foreground);

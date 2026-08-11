@@ -3,7 +3,7 @@ import { FlikaxLogo } from "@/components/flikax-logo";
 
 // Thin page shell -- all the actual logic (sending the reset email, the
 // hash-fragment/PKCE redirect handling) lives in ForgotPasswordForm. This
-// flat brand-teal card wrapper (previously a dark-navy-to-blue gradient) is
+// flat brand-color card wrapper (previously a dark-navy-to-blue gradient) is
 // duplicated across login/register/reset-password instead of a shared
 // `auth/layout.tsx` since each page's card has slightly different
 // width/centering needs; consolidating it is a reasonable future cleanup

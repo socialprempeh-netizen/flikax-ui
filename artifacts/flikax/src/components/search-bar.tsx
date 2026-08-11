@@ -27,12 +27,14 @@ export function SearchBar({
       {/* Flush with the pill's right edge (clipped by the form's own
           rounded-full + overflow-hidden) rather than a floating circle --
           matches the reference's two-tone attached search button. Uses the
-          dedicated --hero-search-btn token (deliberately darker than
-          --brand) so it reads as its own accent against the hero band. */}
+          dedicated --hero-search-btn token (currently yellow #FFC800, same
+          as Post Ad) so it reads as its own accent against the hero band.
+          Black text/icon, not white -- see globals.css for the contrast
+          numbers behind that call. */}
       <button
         type="submit"
         aria-label="Search"
-        className="flex shrink-0 items-center gap-1.5 bg-hero-search-btn px-4 text-sm font-semibold text-white transition-colors hover:brightness-110"
+        className="flex shrink-0 items-center gap-1.5 bg-hero-search-btn px-4 text-sm font-semibold text-black transition-colors hover:bg-[#e6b400]"
       >
         <Search className="size-3.5" />
         <span className="hidden sm:inline">Search</span>
