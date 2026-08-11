@@ -16,6 +16,14 @@ export function ListingCardHover({ children }: { children: ReactNode }) {
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      // whileTap makes Framer Motion auto-inject tabIndex={0} (so the
+      // "tap" gesture is Enter/Space-operable) -- correct for a real
+      // control, but this div has no onClick/onTap of its own: the actual
+      // link and save button inside it are already independently tabbable.
+      // Left as-is, that auto tabIndex was a real, purposeless third tab
+      // stop per card (flagged as "tabindex on the wrapper" alongside the
+      // save-button nesting bug) -- explicit -1 opts back out of it.
+      tabIndex={-1}
     >
       {children}
     </motion.div>

@@ -25,11 +25,12 @@ import { CategoryQuickFilters } from "@/components/category-quick-filters";
 import { SiblingCategoryRow } from "@/components/sibling-category-row";
 import { CategorySubcategoryListDesktop, CategorySubcategoryListMobile } from "@/components/category-subcategory-list";
 import { loadMoreCategoryListingsAction } from "@/app/[category]/actions";
+import { getSiteUrl } from "@/lib/site-url";
 
 const VALID_SORTS: CategorySort[] = ["recommended", "newest", "price_asc", "price_desc"];
 const VALID_DATE_POSTED: DatePosted[] = ["24h", "7d", "30d"];
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = getSiteUrl();
 
 // Same caveat as the homepage: this route reads searchParams (q/sort/page),
 // which forces it dynamic regardless of this export -- the actual "results

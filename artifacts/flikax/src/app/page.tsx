@@ -13,6 +13,7 @@ import { getCategories } from "@/lib/categories";
 import { fetchHomeListings } from "@/lib/home-listings";
 import type { ListingFilters } from "@/lib/filters";
 import { loadMoreHomeListingsAction } from "@/app/actions";
+import { getSiteUrl } from "@/lib/site-url";
 
 const HOME_MAX_LISTINGS = 100;
 
@@ -20,7 +21,7 @@ const VALID_SORTS = ["recommended", "newest", "price_asc", "price_desc"];
 
 export const revalidate = 60;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = getSiteUrl();
 
 // Homepage-specific metadata, richer than the generic fallback in the root
 // layout -- keyword-relevant title/description and (until a purpose-made

@@ -198,7 +198,7 @@ export function ChatThread({
                 }`}
               >
                 <p className="whitespace-pre-wrap">{message.body}</p>
-                <p className={`mt-1 text-[10px] ${isMine ? "text-white/70" : "text-neutral-400"}`}>
+                <p className={`mt-1 text-3xs ${isMine ? "text-white/70" : "text-neutral-400"}`}>
                   {formatRelativeTime(new Date(message.created_at))}
                 </p>
               </div>

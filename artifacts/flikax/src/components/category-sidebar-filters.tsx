@@ -349,7 +349,7 @@ export function CategorySidebarFilters({
         <SlidersHorizontal className="size-4" />
         Filters
         {activeCount > 0 && (
-          <span className="flex size-5 items-center justify-center rounded-full bg-white text-[11px] font-bold text-brand">
+          <span className="flex size-5 items-center justify-center rounded-full bg-white text-2xs font-bold text-brand">
             {activeCount}
           </span>
         )}

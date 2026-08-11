@@ -23,7 +23,7 @@ export function MobileCategoryGrid({
       <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand text-white">
         <Plus className="size-5" />
       </span>
-      <span className="line-clamp-2 text-[11px] font-semibold leading-tight text-neutral-800">
+      <span className="line-clamp-2 text-2xs font-semibold leading-tight text-neutral-800">
         Post an Ad
       </span>
     </>
@@ -52,7 +52,7 @@ export function MobileCategoryGrid({
           className="flex min-h-14 flex-col items-center justify-start gap-1 text-center"
         >
           <CategoryThumb category={cat} size="size-12" iconSize="size-5" rounded="rounded-full" sizes="48px" />
-          <span className="line-clamp-2 text-[11px] font-medium leading-tight text-neutral-700">
+          <span className="line-clamp-2 text-2xs font-medium leading-tight text-neutral-700">
             {cat.name}
           </span>
         </Link>

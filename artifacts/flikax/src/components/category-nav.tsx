@@ -131,7 +131,7 @@ export function CategoryNav({
                 <span className="block truncate text-sm font-semibold tracking-tight text-neutral-800">
                   {cat.name}
                 </span>
-                <span className="mt-0.5 inline-block rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-neutral-500">
+                <span className="mt-0.5 inline-block rounded-full bg-slate-100 px-1.5 py-0.5 text-2xs font-medium text-neutral-500">
                   {totalFor(cat)} ads
                 </span>
               </span>

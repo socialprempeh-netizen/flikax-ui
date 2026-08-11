@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthModalProvider } from "@/components/auth/auth-modal-provider";
 import { MessagesModalProvider } from "@/components/messages/messages-modal-provider";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const baloo2 = Baloo_2({
@@ -16,7 +17,7 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = getSiteUrl();
 
 const DEFAULT_TITLE = "Flikax";
 const DEFAULT_DESCRIPTION = "Buy and sell anything in Ghana — free classifieds.";

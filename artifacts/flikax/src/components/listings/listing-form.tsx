@@ -994,7 +994,7 @@ export function ListingForm({
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={img.previewUrl} alt="" className="size-full object-cover" />
                       {i === 0 && (
-                        <span className="absolute bottom-1 left-1 rounded bg-black/70 px-1.5 py-0.5 text-[9px] font-bold text-white">
+                        <span className="absolute bottom-1 left-1 rounded bg-black/70 px-1.5 py-0.5 text-4xs font-bold text-white">
                           COVER
                         </span>
                       )}
@@ -1004,7 +1004,7 @@ export function ListingForm({
                         </div>
                       )}
                       {img.status === "error" && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-red-600/80 p-2 text-center text-[10px] font-medium text-white">
+                        <div className="absolute inset-0 flex items-center justify-center bg-red-600/80 p-2 text-center text-3xs font-medium text-white">
                           {img.error ?? "Failed"}
                         </div>
                       )}

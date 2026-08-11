@@ -81,7 +81,7 @@ export function HeaderUserActions() {
         )}
 
         {isLoggedIn ? (
-          <Button asChild size="sm" className="h-9 rounded-none bg-[#FFC800] px-3 text-xs font-bold text-black shadow-sm hover:bg-[#e6b400]">
+          <Button asChild size="sm" className="h-9 rounded-none bg-cta-yellow px-3 text-xs font-bold text-black shadow-sm hover:bg-cta-yellow-hover">
             <Link href="/sell">
               <Plus className="size-3.5" />
               Post Ad
@@ -91,7 +91,7 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="sm"
-            className="h-9 rounded-none bg-[#FFC800] px-3 text-xs font-bold text-black shadow-sm hover:bg-[#e6b400]"
+            className="h-9 rounded-none bg-cta-yellow px-3 text-xs font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
             onClick={() => openAuthModal("/sell")}
           >
             <Plus className="size-3.5" />
@@ -166,7 +166,7 @@ export function HeaderUserActions() {
           <Button
             asChild
             size="lg"
-            className="rounded-none bg-[#FFC800] px-5 font-bold text-black shadow-sm hover:bg-[#e6b400]"
+            className="rounded-none bg-cta-yellow px-5 font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
           >
             <Link href="/sell">
               <Plus className="size-4" />
@@ -177,7 +177,7 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="lg"
-            className="rounded-none bg-[#FFC800] px-5 font-bold text-black shadow-sm hover:bg-[#e6b400]"
+            className="rounded-none bg-cta-yellow px-5 font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
             onClick={() => openAuthModal("/sell")}
           >
             <Plus className="size-4" />

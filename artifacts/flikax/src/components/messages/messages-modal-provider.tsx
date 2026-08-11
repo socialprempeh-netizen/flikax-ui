@@ -297,7 +297,7 @@ function MessagesPanelBody() {
                   <p className={`truncate text-sm ${unread ? "font-bold text-neutral-900" : "font-semibold text-neutral-700"}`}>
                     {otherParty?.full_name || "Flikax user"}
                   </p>
-                  <span className="shrink-0 text-[11px] text-neutral-400">
+                  <span className="shrink-0 text-2xs text-neutral-400">
                     {formatRelativeTime(new Date(conversation.last_message_at))}
                   </span>
                 </div>

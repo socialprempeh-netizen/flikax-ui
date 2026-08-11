@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { buildUrlsetXml, XML_HEADERS } from "@/lib/sitemap-xml";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 3600;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = getSiteUrl();
 
 const STATIC_PAGES = ["", "/about", "/contact", "/privacy", "/terms", "/trust-safety"];
 

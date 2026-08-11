@@ -85,7 +85,7 @@ export function CategorySubcategoryListMobile({ parentId, subcategories }: Props
             rounded="rounded-full"
             sizes="48px"
           />
-          <span className="line-clamp-2 text-center text-[11px] font-medium leading-tight text-neutral-600">
+          <span className="line-clamp-2 text-center text-2xs font-medium leading-tight text-neutral-600">
             {sub.name}
           </span>
         </Link>

@@ -34,7 +34,7 @@ export function SearchBar({
       <button
         type="submit"
         aria-label="Search"
-        className="flex shrink-0 items-center gap-1.5 bg-hero-search-btn px-4 text-sm font-semibold text-black transition-colors hover:bg-[#e6b400]"
+        className="flex shrink-0 items-center gap-1.5 bg-hero-search-btn px-4 text-sm font-semibold text-black transition-colors hover:bg-cta-yellow-hover"
       >
         <Search className="size-3.5" />
         <span className="hidden sm:inline">Search</span>

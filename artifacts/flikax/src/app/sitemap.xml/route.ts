@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { buildSitemapIndexXml, XML_HEADERS } from "@/lib/sitemap-xml";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 3600;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = getSiteUrl();
 
 export async function GET() {
   const supabase = await createClient();

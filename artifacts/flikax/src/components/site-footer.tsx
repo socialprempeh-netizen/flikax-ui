@@ -6,8 +6,9 @@ import { FacebookIcon, XIcon, TikTokIcon } from "@/components/icons/social-icons
 import { SellCta } from "@/components/cta/sell-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { cn } from "@/lib/utils";
+import { getSiteUrl } from "@/lib/site-url";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = getSiteUrl();
 
 const localBusinessJsonLd = {
   "@context": "https://schema.org",
@@ -138,14 +139,14 @@ export function SiteFooter() {
               <span className="flex cursor-default items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1">
                 <FaApple className="size-4 shrink-0" />
                 <span className="leading-tight">
-                  <span className="block text-[9px] text-white/50">Coming Soon</span>
+                  <span className="block text-4xs text-white/50">Coming Soon</span>
                   <span className="block text-xs font-semibold">App Store</span>
                 </span>
               </span>
               <span className="flex cursor-default items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1">
                 <FaGooglePlay className="size-3.5 shrink-0" />
                 <span className="leading-tight">
-                  <span className="block text-[9px] text-white/50">Coming Soon</span>
+                  <span className="block text-4xs text-white/50">Coming Soon</span>
                   <span className="block text-xs font-semibold">Google Play</span>
                 </span>
               </span>

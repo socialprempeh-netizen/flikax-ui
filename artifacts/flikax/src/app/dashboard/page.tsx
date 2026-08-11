@@ -129,7 +129,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             >
               {t.label}
               <span
-                className={`ml-1.5 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
+                className={`ml-1.5 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-3xs font-bold leading-none ${
                   tab === t.key ? "bg-brand text-white" : "bg-neutral-100 text-neutral-500"
                 }`}
               >

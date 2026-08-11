@@ -132,7 +132,7 @@ export function AdminShell({
                   {!collapsed && (
                     <span className="flex flex-1 items-center justify-between">
                       {item.label}
-                      <Badge className="bg-white/10 text-[10px] tracking-wide text-white/70">Soon</Badge>
+                      <Badge className="bg-white/10 text-3xs tracking-wide text-white/70">Soon</Badge>
                     </span>
                   )}
                 </span>

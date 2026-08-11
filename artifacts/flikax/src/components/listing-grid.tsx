@@ -37,12 +37,17 @@ const currency = new Intl.NumberFormat("en-GH", {
   maximumFractionDigits: 0,
 });
 
-// CSS multi-column masonry, not a CSS Grid: every card's image is a fixed
-// square, but the text block below it (title can wrap 1 or 2 lines) still
-// varies in height -- a strict grid forces every row to the height of its
-// tallest cell, which is what left gaps under the shorter cards. `columns`
-// lays cards out column-by-column instead, so each column packs tightly
-// regardless of what height the others' cards end up at.
+// CSS Grid, not CSS multi-column masonry (`columns-*`) -- multi-column lays
+// items out column-by-column (fills column 1 top-to-bottom, then column 2,
+// ...), which packs variable-height cards tightly, but it also means the
+// *visual* reading order no longer matches the DOM/query order: with 5
+// columns, a human scanning left-to-right across the top row sees items
+// 1, N+1, 2N+1, ... instead of 1, 2, 3, ... -- exactly backwards from what
+// "recommended"/"newest" sort implies, and it desyncs keyboard tab order
+// from visual position too. Grid keeps DOM order == visual reading order
+// (row by row, left to right) at the cost of some unused space under
+// shorter cards in a row -- a small visual tradeoff, since card height here
+// is already fairly bounded (fixed square image + line-clamp'd title).
 export function ListingGrid({
   listings,
   variant = "default",
@@ -70,116 +75,126 @@ export function ListingGrid({
           hands padding back to the page container once it's no longer just
           a hairline gap. */}
       <div
-        className={`-mx-4 sm:mx-0 ${
-          isHome ? "columns-2 gap-2 sm:columns-3 lg:columns-4 xl:columns-5" : "columns-2 gap-2 sm:columns-2 lg:columns-3"
+        className={`grid -mx-4 gap-2 sm:mx-0 ${
+          isHome ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
         }`}
       >
         {listings.map((listing) => {
           return (
-            <Link key={listing.id} href={listing.href} className="mb-2 block break-inside-avoid">
-              <ListingCardHover>
-              {/* rounded-none, not rounded-lg -- Card's own base class is
-                  rounded-xl, and a smaller radius is still a rounded corner.
-                  The reference grid (Jiji-style) uses flat, perfectly square
-                  tiles with hairline borders between them instead.
-                  bg-white, not bg-neutral-200 -- that grey was nearly the
-                  exact same shade as the page's own --background (#e4e7eb
-                  vs #e5e5e5), which is why cards barely stood out from the
-                  page. A white card + a slightly stronger border/shadow
-                  reads as a clearly separate surface instead. */}
-              <Card
-                className={`gap-0 overflow-hidden rounded-none bg-white p-0 shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-shadow duration-200 group-hover:shadow-lg ${
-                  listing.isFeatured
-                    ? "border-amber-300"
-                    : listing.isBumped
-                      ? "border-blue-300"
-                      : "border-neutral-300"
-                }`}
-              >
-                {/* Square, not the image's natural aspect ratio -- keeps every
-                    card in the grid the same shape (Jiji-style), even though
-                    imageWidth/imageHeight are still tracked for other uses
-                    (e.g. the detail page gallery). */}
-                <div className="relative aspect-square w-full overflow-hidden bg-cream text-brand/40">
-                  {listing.imageUrl ? (
-                    <Image
-                      src={listing.imageUrl}
-                      alt={listing.title}
-                      fill
-                      sizes={
-                        isHome
-                          ? "(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
-                          : "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 45vw"
-                      }
-                      quality={82}
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="flex size-full items-center justify-center">
-                      <ImageOff className="size-8" />
-                    </div>
-                  )}
-                  {(listing.isFeatured || listing.isBumped) && (
-                    <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
-                      {listing.isFeatured && (
-                        <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 shadow-sm ring-1 ring-inset ring-amber-300">
-                          <Star className="size-3 fill-amber-500 text-amber-500" />
-                          Featured
-                        </span>
-                      )}
-                      {listing.isBumped && (
-                        <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 shadow-sm ring-1 ring-inset ring-blue-300">
-                          <TrendingUp className="size-3 text-blue-600" />
-                          Bumped
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  {listing.originalPrice != null && (
-                    <span className="absolute right-2 top-2 flex items-center gap-0.5 rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
-                      <BadgePercent className="size-3" />
-                      {Math.round((1 - listing.price / listing.originalPrice) * 100)}% OFF
-                    </span>
-                  )}
-                  <CompactSaveButton listingId={listing.id} />
-                </div>
-                <CardContent className="space-y-1 p-3.5">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-lg font-extrabold tracking-tight text-brand">
-                      {currency.format(listing.price)}
-                    </span>
+            <ListingCardHover key={listing.id}>
+              {/* relative: anchors CompactSaveButton, which needs to be a
+                  sibling of the Link (not a descendant) -- a <button>
+                  nested inside an <a> is invalid HTML (interactive content
+                  can't nest), and browsers/screen readers surfaced it as two
+                  separate tab stops for what should read as one card + one
+                  overlay control. Positioned the same as before (top-1
+                  right-1) since this div, like the old Link, sits flush
+                  against the image with zero padding above/around it. */}
+              <div className="relative">
+                <Link href={listing.href} className="block">
+                {/* rounded-none, not rounded-lg -- Card's own base class is
+                    rounded-xl, and a smaller radius is still a rounded corner.
+                    The reference grid (Jiji-style) uses flat, perfectly square
+                    tiles with hairline borders between them instead.
+                    bg-white, not bg-neutral-200 -- that grey was nearly the
+                    exact same shade as the page's own --background (#e4e7eb
+                    vs #e5e5e5), which is why cards barely stood out from the
+                    page. A white card + a slightly stronger border/shadow
+                    reads as a clearly separate surface instead. */}
+                <Card
+                  className={`gap-0 overflow-hidden rounded-none bg-white p-0 shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-shadow duration-200 group-hover:shadow-lg ${
+                    listing.isFeatured
+                      ? "border-amber-300"
+                      : listing.isBumped
+                        ? "border-blue-300"
+                        : "border-neutral-300"
+                  }`}
+                >
+                  {/* Square, not the image's natural aspect ratio -- keeps every
+                      card in the grid the same shape (Jiji-style), even though
+                      imageWidth/imageHeight are still tracked for other uses
+                      (e.g. the detail page gallery). */}
+                  <div className="relative aspect-square w-full overflow-hidden bg-cream text-brand/40">
+                    {listing.imageUrl ? (
+                      <Image
+                        src={listing.imageUrl}
+                        alt={listing.title}
+                        fill
+                        sizes={
+                          isHome
+                            ? "(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
+                            : "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 45vw"
+                        }
+                        quality={82}
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex size-full items-center justify-center">
+                        <ImageOff className="size-8" />
+                      </div>
+                    )}
+                    {(listing.isFeatured || listing.isBumped) && (
+                      <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
+                        {listing.isFeatured && (
+                          <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-3xs font-bold text-amber-700 shadow-sm ring-1 ring-inset ring-amber-300">
+                            <Star className="size-3 fill-amber-500 text-amber-500" />
+                            Featured
+                          </span>
+                        )}
+                        {listing.isBumped && (
+                          <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-3xs font-bold text-blue-700 shadow-sm ring-1 ring-inset ring-blue-300">
+                            <TrendingUp className="size-3 text-blue-600" />
+                            Bumped
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {listing.originalPrice != null && (
-                      <span className="text-[11px] font-medium text-neutral-400 line-through">
-                        {currency.format(listing.originalPrice)}
+                      <span className="absolute right-2 top-2 flex items-center gap-0.5 rounded-full bg-rose-600 px-2 py-0.5 text-3xs font-bold text-white shadow-sm">
+                        <BadgePercent className="size-3" />
+                        {Math.round((1 - listing.price / listing.originalPrice) * 100)}% OFF
                       </span>
                     )}
-                    {listing.negotiable && (
-                      <span className="text-[11px] font-medium text-neutral-400">Neg.</span>
-                    )}
                   </div>
-                  <p className="line-clamp-2 text-[13px] font-bold leading-snug text-neutral-900">
-                    {listing.title}
-                  </p>
-                  <div className="flex items-center gap-1 pt-0.5 text-[11px] text-neutral-500">
-                    <MapPin className="size-3 shrink-0" />
-                    <span className="min-w-0 truncate">{listing.location}</span>
-                    {listing.isVerifiedSeller && (
-                      <ShieldCheck className="size-3 shrink-0 fill-blue-100 text-blue-600" aria-label="Verified seller" />
-                    )}
-                    {listing.createdAt && (
-                      <>
-                        <span className="shrink-0 text-neutral-300">•</span>
-                        <span className="flex shrink-0 items-center gap-0.5">
-                          <Clock className="size-3" />
-                          {formatRelativeTime(new Date(listing.createdAt))}
+                  <CardContent className="space-y-1 p-3.5">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-lg font-extrabold tracking-tight text-brand">
+                        {currency.format(listing.price)}
+                      </span>
+                      {listing.originalPrice != null && (
+                        <span className="text-2xs font-medium text-neutral-400 line-through">
+                          {currency.format(listing.originalPrice)}
                         </span>
-                      </>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-              </ListingCardHover>
-            </Link>
+                      )}
+                      {listing.negotiable && (
+                        <span className="text-2xs font-medium text-neutral-400">Neg.</span>
+                      )}
+                    </div>
+                    <p className="line-clamp-2 text-13 font-bold leading-snug text-neutral-900">
+                      {listing.title}
+                    </p>
+                    <div className="flex items-center gap-1 pt-0.5 text-2xs text-neutral-500">
+                      <MapPin className="size-3 shrink-0" />
+                      <span className="min-w-0 truncate">{listing.location}</span>
+                      {listing.isVerifiedSeller && (
+                        <ShieldCheck className="size-3 shrink-0 fill-blue-100 text-blue-600" aria-label="Verified seller" />
+                      )}
+                      {listing.createdAt && (
+                        <>
+                          <span className="shrink-0 text-neutral-300">•</span>
+                          <span className="flex shrink-0 items-center gap-0.5">
+                            <Clock className="size-3" />
+                            {formatRelativeTime(new Date(listing.createdAt))}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+                </Link>
+                <CompactSaveButton listingId={listing.id} />
+              </div>
+            </ListingCardHover>
           );
         })}
       </div>

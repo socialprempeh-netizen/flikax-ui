@@ -57,7 +57,7 @@ export function SettingsSidebar() {
                   <span className="truncate">{item.label}</span>
                   <span className="flex shrink-0 items-center gap-2">
                     {item.badge && (
-                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">
+                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-3xs font-bold text-amber-700">
                         {item.badge}
                       </span>
                     )}

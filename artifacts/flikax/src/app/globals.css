@@ -31,14 +31,19 @@
      accents inside the header still read as distinct highlights against
      it, instead of disappearing into a flat identical fill. */
   --header-bg: var(--brand-dark);
-  /* Search button attached to the hero band's search bar. Previously a
-     near-black tint of --brand (deliberately darker so it read as a
-     distinct accent against the hero); now the exact requested #FFC800
-     yellow, same treatment as the Post Ad CTA (see header-user-actions.tsx)
-     -- both are the site's one deliberate non-brand accent. Text/icon on
-     this button is black, not white: white on #FFC800 is 1.55:1, far below
-     WCAG's 3:1 floor even for icons; black clears it at 11.54:1. */
-  --hero-search-btn: #ffc800;
+  /* The site's one deliberate non-brand accent -- Post Ad (see
+     header-user-actions.tsx) and the hero search button (see
+     search-bar.tsx) both use this exact requested yellow instead of
+     --brand, so they keep reading as the primary conversion action.
+     Single source of truth: previously this hex (and its hover shade) was
+     copy-pasted directly into 5 separate class names across those two
+     files -- same failure mode as the --brand tokens existing in the first
+     place, just for this second color. Text/icon on both buttons is
+     black, not white: white on #FFC800 is 1.55:1, far below WCAG's 3:1
+     floor even for icons; black clears it at 11.54:1. */
+  --cta-yellow: #ffc800;
+  --cta-yellow-hover: #e6b400;
+  --hero-search-btn: var(--cta-yellow);
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
      as a deliberate tint, not just an off-white. */
@@ -114,6 +119,8 @@
   --color-brand-light: var(--brand-light);
   --color-header-bg: var(--header-bg);
   --color-hero-search-btn: var(--hero-search-btn);
+  --color-cta-yellow: var(--cta-yellow);
+  --color-cta-yellow-hover: var(--cta-yellow-hover);
   --color-cream: var(--cream);
   --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -125,6 +132,24 @@
      stack, not a webfont -- the reference names Times/Georgia directly, so
      there's no need to license/load a display serif for this. */
   --font-wordmark: Georgia, "Times New Roman", Times, serif;
+
+  /* Tailwind's default type scale jumps text-xs(12px) -> text-sm(14px) ->
+     text-base(16px) with nothing smaller than 12px -- but meta/badge text
+     across the site (card prices' "Neg." suffix, location rows, tab-bar
+     labels, app-store badges, etc.) genuinely needs to go smaller than
+     that, and until now every call site just wrote its own text-[Npx]
+     arbitrary value rather than sharing one. That's the same duplication
+     problem --brand/--brand-dark/--brand-light solve for color, applied to
+     type: 30+ scattered one-off pixel values across 20 files, several
+     repeating the exact same size (11px alone: 12 call sites). These name
+     and share the actual sizes in use rather than inventing new ones --
+     no rendered text changed size, every text-[Npx] call site was swapped
+     for the matching named class below. */
+  --text-2xs: 0.6875rem; /* 11px */
+  --text-3xs: 0.625rem; /* 10px */
+  --text-4xs: 0.5625rem; /* 9px */
+  --text-13: 0.8125rem; /* 13px -- sits between xs/sm, one call site (listing card title) */
+  --text-15: 0.9375rem; /* 15px -- sits between sm/base, one call site (listing description) */
 
   /* Between Tailwind's defaults and flat: the previous values (0.03-0.07
      opacity) were tuned down from harsh dark boxes but ended up reading as

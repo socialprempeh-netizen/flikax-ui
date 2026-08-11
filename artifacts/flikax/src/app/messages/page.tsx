@@ -109,7 +109,7 @@ export default async function MessagesPage() {
                         {otherParty?.full_name || "Flikax user"}
                       </p>
                       {conversation.last_message_at && (
-                        <span className="shrink-0 text-[11px] text-neutral-400">
+                        <span className="shrink-0 text-2xs text-neutral-400">
                           {formatRelativeTime(new Date(conversation.last_message_at))}
                         </span>
                       )}

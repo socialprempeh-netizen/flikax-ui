@@ -34,7 +34,7 @@ export function SiblingCategoryRow({
               className={isActive ? "ring-2 ring-brand ring-offset-1" : ""}
             />
             <span
-              className={`line-clamp-2 text-center text-[11px] leading-tight ${
+              className={`line-clamp-2 text-center text-2xs leading-tight ${
                 isActive ? "font-bold text-brand" : "font-medium text-neutral-600"
               }`}
             >

@@ -68,7 +68,7 @@ export function DashboardListingsList({
             {listing.status === "declined" && (
               <Link
                 href={`/my-adverts/${listing.id}/edit`}
-                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1 bg-neutral-900/60 px-1 text-center text-[10px] font-bold leading-tight text-white hover:bg-neutral-900/70"
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1 bg-neutral-900/60 px-1 text-center text-3xs font-bold leading-tight text-white hover:bg-neutral-900/70"
               >
                 <RefreshCw className="size-4" />
                 Re-upload Photo
@@ -86,7 +86,7 @@ export function DashboardListingsList({
                 {STATUS_LABELS[listing.status] ?? listing.status}
               </span>
               {listing.isFeatured && (
-                <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">
+                <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-3xs font-bold text-amber-700">
                   <Star className="size-3 fill-amber-500 text-amber-500" />
                   Featured
                 </span>

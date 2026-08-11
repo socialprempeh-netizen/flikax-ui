@@ -63,13 +63,14 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { TrackRecentlyViewed } from "@/components/track-recently-viewed";
 import { AvatarContent } from "@/components/avatar-content";
 import { loadMoreCategoryListingsAction } from "@/app/[category]/actions";
+import { getSiteUrl } from "@/lib/site-url";
 
 // Only actually applies to the listing-detail branch of this route (the
 // location-scoped listing branch reads searchParams for sort/date filters,
 // which forces it dynamic regardless of this export -- see CategoryLocationPage).
 export const revalidate = 60;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = getSiteUrl();
 
 const SIMILAR_LIMIT = 8;
 const VALID_SORTS: CategorySort[] = ["recommended", "newest", "price_asc", "price_desc"];
@@ -728,7 +729,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                       {specs.map((spec) => (
                         <div key={spec.key} className="py-2.5 pr-2">
                           <p className="text-sm font-semibold text-neutral-800 sm:text-base">{spec.value}</p>
-                          <p className="text-[11px] font-medium text-neutral-400 sm:text-xs">{spec.label}</p>
+                          <p className="text-2xs font-medium text-neutral-400 sm:text-xs">{spec.label}</p>
                         </div>
                       ))}
                     </div>
@@ -757,7 +758,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 {listing.description && (
                   <div className={specs.length > 0 || tagSpecs.length > 0 ? "mt-4 border-t border-neutral-200 pt-4" : ""}>
                     <h2 className="mb-2.5 text-lg font-bold tracking-tight text-neutral-900">Description</h2>
-                    <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-neutral-600">
+                    <p className="whitespace-pre-wrap text-15 leading-relaxed text-neutral-600">
                       {listing.description}
                     </p>
                   </div>
