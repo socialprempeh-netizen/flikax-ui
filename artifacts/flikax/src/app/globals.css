@@ -35,16 +35,12 @@
      --brand accents inside the header still read as distinct highlights
      against it, instead of disappearing into a flat identical fill. */
   --header-bg: var(--brand-dark);
-  /* Homepage hero band + its attached search button -- deliberately a
-     deeper, more muted near-black teal than --brand (which stays the vivid
-     site-wide accent for buttons/links/active states elsewhere). Two
-     distinct shades so the search button still reads as a separate,
-     darker element against the hero band behind it, per the reference.
-     Rebranded from navy (#0b1426/#060c18) to the same hue as --brand
-     (183.9deg) at low lightness/high saturation, preserving the original's
-     near-black anchor + darker-still button relationship -- don't drift
-     these back toward navy or toward a lighter, more saturated teal. */
-  --hero-bg: #081f21;
+  /* Search button attached to the hero band's search bar -- deliberately
+     darker than --brand so it still reads as a distinct, clickable accent
+     against the (now flat --brand) hero behind it. Same teal hue as
+     --brand, just much lower lightness. --hero-bg (a near-black anchor for
+     what used to be the hero's gradient) was removed along with the
+     gradient itself -- see hero-banner.tsx. */
   --hero-search-btn: #041516;
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
@@ -120,7 +116,6 @@
   --color-brand-dark: var(--brand-dark);
   --color-brand-light: var(--brand-light);
   --color-header-bg: var(--header-bg);
-  --color-hero-bg: var(--hero-bg);
   --color-hero-search-btn: var(--hero-search-btn);
   --color-cream: var(--cream);
   --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,

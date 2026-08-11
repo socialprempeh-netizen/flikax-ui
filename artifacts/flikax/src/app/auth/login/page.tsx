@@ -7,7 +7,8 @@ import { LoginCardBody } from "@/components/auth/login-card-body";
 // before any of the sign-in UI renders, rather than showing a login form
 // they don't need. All the actual sign-in flow (method tabs, OTP, OAuth)
 // lives in LoginCardBody -- this file only owns the redirect gate + the
-// gradient-card page frame.
+// flat brand-teal page frame (previously a dark-navy-to-blue gradient,
+// dropped in favor of a flat #06949E fill).
 export default async function LoginPage({
   searchParams,
 }: {
@@ -25,7 +26,7 @@ export default async function LoginPage({
   }
 
   return (
-    <div className="flex min-h-screen min-w-0 items-center justify-center bg-gradient-to-br from-slate-900 via-[#0B1B33] to-[#124F9E] p-4 sm:p-8">
+    <div className="flex min-h-screen min-w-0 items-center justify-center bg-brand p-4 sm:p-8">
       <div className="flex w-full min-w-0 max-w-sm flex-col gap-3 rounded-3xl border border-neutral-300 bg-white p-5 shadow-2xl sm:p-6">
         <LoginCardBody redirectTo={redirectTo} error={error} />
       </div>

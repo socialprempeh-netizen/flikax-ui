@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
@@ -27,19 +27,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-// ─── ListingForm: the "post an ad" / "edit an ad" wizard ──────────────────────
+// â”€â”€â”€ ListingForm: the "post an ad" / "edit an ad" wizard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // This one component drives both the create flow (rendered from app/sell/page.tsx,
 // no `existingListing` prop) and the edit flow (`existingListing` supplied,
-// `isEditing` derived from it) — the two only diverge at submit time, in how
+// `isEditing` derived from it) â€” the two only diverge at submit time, in how
 // the listing + image rows are written.
 //
 // Shape of the form, top to bottom:
-//   Step 1 "Item Details" — category pickers, then category-specific fields
+//   Step 1 "Item Details" â€” category pickers, then category-specific fields
 //     (either the hand-built VehicleSpecFields cascade for Vehicles, or the
 //     generic field loop driven by listing-fields.ts for everything else),
 //     description, price/negotiable, contact phone. handleNext() validates
 //     this step and advances `step` to 2; nothing is persisted yet.
-//   Step 2 "Photos & Title" — title, location, photo grid, optional video
+//   Step 2 "Photos & Title" â€” title, location, photo grid, optional video
 //     link. Photos are uploaded eagerly as soon as they're picked (see
 //     handleFiles/uploadOne below), *before* the seller presses submit, so
 //     by the time handleSubmit() runs, each photo already has a Storage path
@@ -47,7 +47,7 @@ import { Textarea } from "@/components/ui/textarea";
 //     updates it, if editing) and the `listing_images` rows in one go.
 //
 // State is a flat list of useState hooks mirroring each form field, rather
-// than a single reducer or form-library instance — this is a linear two-step
+// than a single reducer or form-library instance â€” this is a linear two-step
 // wizard with no nested routing or deeply shared cross-field logic, so the
 // extra structure wouldn't pay for itself. `attributes` is the one exception:
 // it's a single Record because the fields it holds are fully dynamic
@@ -99,7 +99,7 @@ const NEGOTIABLE_OPTIONS = [
   { value: "not_sure", label: "Not sure" },
 ];
 
-// ─── Shared input class ───────────────────────────────────────────────────────
+// â”€â”€â”€ Shared input class â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Layered on top of the shadcn Input/Textarea base classes -- rounder and
 // roomier than the shadcn default (h-9/rounded-md) to match this form's
 // larger, card-based visual language; h-auto lets padding drive height
@@ -116,7 +116,7 @@ const INPUT =
   "h-auto w-full rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
 const SELECT = INPUT + " appearance-none";
 
-// ─── Section header ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Section header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex items-center gap-2 pb-3">
@@ -128,7 +128,7 @@ function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }
   );
 }
 
-// ─── Step indicator ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Step indicator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StepBar({ step }: { step: 1 | 2 }) {
   const steps = [
     { n: 1, label: "Item Details" },
@@ -243,7 +243,7 @@ export function ListingForm({
     : dynamicFields;
 
   // Generic setter for the dynamic `attributes` fields (listing-fields.ts /
-  // VehicleSpecFields both call this) — one function handles every category's
+  // VehicleSpecFields both call this) â€” one function handles every category's
   // scalar fields since the field set itself isn't known until a category is
   // picked.
   function setAttribute(key: string, value: string) {
@@ -261,9 +261,9 @@ export function ListingForm({
     });
   }
 
-  // ─── Photo upload (client side) ────────────────────────────────────────────
+  // â”€â”€â”€ Photo upload (client side) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // uploadOne() POSTs a single file to app/api/listings/images/route.ts,
-  // which does the real work (validate, watermark, hash, push to Storage —
+  // which does the real work (validate, watermark, hash, push to Storage â€”
   // see that file). It retries once on a 401: that route accepts a bearer
   // token specifically so a batch of these requests firing back-to-back
   // doesn't race the cookie-session refresh (see the route's own comment),
@@ -290,15 +290,15 @@ export function ListingForm({
     return { ok: false as const, body: lastBody };
   }
 
-  // Fires the moment the seller picks/drops files in the Photos step — each
+  // Fires the moment the seller picks/drops files in the Photos step â€” each
   // file starts uploading immediately (not deferred to the final "Publish"
   // submit), so `images` is the source of truth for what's actually landed
   // in Storage by the time handleSubmit() runs. Each file gets its own
   // ImageSlot with independent uploading/done/error status so one bad photo
   // (wrong type, too large, failed watermark) doesn't block or roll back the
-  // others — the seller can just remove that slot and keep going. The access
+  // others â€” the seller can just remove that slot and keep going. The access
   // token is fetched once per batch, up front, and reused for every file in
-  // it (rather than re-fetched per file) — see uploadOne's comment for why
+  // it (rather than re-fetched per file) â€” see uploadOne's comment for why
   // that matters for a fast multi-photo batch.
   async function handleFiles(fileList: FileList | null) {
     if (!fileList) return;
@@ -348,12 +348,12 @@ export function ListingForm({
     }
   }
 
-  // Removing a slot never deletes anything in Storage/DB here — for a
+  // Removing a slot never deletes anything in Storage/DB here â€” for a
   // pre-existing image (edit flow) it just records the id in
   // removedExistingIds so handleSubmit() can delete the listing_images row
   // (and only that row) once the edit is actually saved; for a
   // freshly-uploaded-but-not-yet-submitted image it's dropped from local
-  // state only, leaving an orphaned file in Storage (accepted tradeoff —
+  // state only, leaving an orphaned file in Storage (accepted tradeoff â€”
   // simpler than wiring a delete call into every discard path).
   function removeImage(id: string) {
     setImages((prev) => {
@@ -365,10 +365,10 @@ export function ListingForm({
     });
   }
 
-  // ─── Step 1 -> Step 2 ───────────────────────────────────────────────────────
+  // â”€â”€â”€ Step 1 -> Step 2 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Validates everything collected in "Item Details" (category, the
   // category's required dynamic fields, price, contact phone) and advances
-  // the wizard. Nothing is written to the network here — this step is pure
+  // the wizard. Nothing is written to the network here â€” this step is pure
   // client-side gating before the seller reaches the photo upload step.
   function handleNext(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -398,9 +398,9 @@ export function ListingForm({
     setStep(2);
   }
 
-  // ─── Final submit: persist the listing ─────────────────────────────────────
+  // â”€â”€â”€ Final submit: persist the listing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // By this point every photo has already been uploaded to Storage (see
-  // handleFiles above) — this function's only job is writing the `listings`
+  // handleFiles above) â€” this function's only job is writing the `listings`
   // row and the matching `listing_images` rows (each carrying the phash/
   // blurScore/dimensions the upload route computed) directly via the
   // cookie-authenticated `supabase` client, since RLS already scopes those
@@ -517,12 +517,12 @@ export function ListingForm({
     setPosted(true);
   }
 
-  // ─── Success screen ──────────────────────────────────────────────────────────
+  // â”€â”€â”€ Success screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (posted) {
     return (
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
         {/* Top accent strip */}
-        <div className="h-1.5 w-full bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
+        <div className="h-1.5 w-full bg-brand" />
         <div className="flex flex-col items-center px-8 py-12 text-center">
           <div className="flex size-16 items-center justify-center rounded-full bg-brand/10 ring-8 ring-brand/5">
             <CheckCircle2 className="size-8 text-brand" />
@@ -551,7 +551,7 @@ export function ListingForm({
     );
   }
 
-  // ─── Main form ───────────────────────────────────────────────────────────────
+  // â”€â”€â”€ Main form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   return (
     <div className="space-y-7">
       {/* Page title + step bar */}
@@ -560,7 +560,7 @@ export function ListingForm({
           {isEditing ? "Edit listing" : "Post a free ad"}
         </h1>
         <p className="mt-0.5 text-sm text-neutral-500">
-          {isEditing ? "Update your listing details below." : "Reach thousands of buyers across Ghana — no fees."}
+          {isEditing ? "Update your listing details below." : "Reach thousands of buyers across Ghana â€” no fees."}
         </p>
       </div>
 
@@ -568,15 +568,15 @@ export function ListingForm({
         <StepBar step={step} />
       </div>
 
-      {/* ── STEP 1 ── */}
+      {/* â”€â”€ STEP 1 â”€â”€ */}
       {step === 1 && (
         <form onSubmit={handleNext} className="space-y-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
           {/* Card header accent */}
-          <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
+          <div className="h-1.5 bg-brand" />
 
           <div className="space-y-7 p-8 sm:p-10">
 
-            {/* ── Category ── */}
+            {/* â”€â”€ Category â”€â”€ */}
             <section>
               <SectionHeader icon={<Tag className="size-3.5" />} label="Category" />
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -594,7 +594,7 @@ export function ListingForm({
                     }}
                     className={SELECT}
                   >
-                    <option value="" disabled>Select category…</option>
+                    <option value="" disabled>Select categoryâ€¦</option>
                     {parentCategories.map((cat) => (
                       <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
@@ -612,7 +612,7 @@ export function ListingForm({
                     className={SELECT}
                   >
                     <option value="" disabled>
-                      {parentId ? "Select subcategory…" : "Choose category first"}
+                      {parentId ? "Select subcategoryâ€¦" : "Choose category first"}
                     </option>
                     {childCategories.map((cat) => (
                       <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -622,7 +622,7 @@ export function ListingForm({
               </div>
             </section>
 
-            {/* ── Dynamic / vehicle fields ── */}
+            {/* â”€â”€ Dynamic / vehicle fields â”€â”€ */}
             {isVehicles && categoryId && (
               <section className="border-t border-slate-200 pt-7">
                 <SectionHeader icon={<Tag className="size-3.5" />} label="Vehicle details" />
@@ -683,7 +683,7 @@ export function ListingForm({
                             onChange={(e) => setAttribute(field.key, e.target.value)}
                             className={SELECT}
                           >
-                            <option value="" disabled>Select {field.label.toLowerCase()}…</option>
+                            <option value="" disabled>Select {field.label.toLowerCase()}â€¦</option>
                             {field.options?.map((opt) => (
                               <option key={opt} value={opt}>{opt}</option>
                             ))}
@@ -735,7 +735,7 @@ export function ListingForm({
               </section>
             )}
 
-            {/* ── Description ── */}
+            {/* â”€â”€ Description â”€â”€ */}
             <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<FileText className="size-3.5" />} label="Description" />
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
@@ -745,15 +745,15 @@ export function ListingForm({
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe the condition, key features, reason for selling, included accessories…"
+                placeholder="Describe the condition, key features, reason for selling, included accessoriesâ€¦"
                 className={`${INPUT} resize-none`}
               />
               <p className="mt-1.5 text-xs text-slate-500">
-                A detailed description gets 3× more enquiries.
+                A detailed description gets 3Ã— more enquiries.
               </p>
             </section>
 
-            {/* ── Pricing ── */}
+            {/* â”€â”€ Pricing â”€â”€ */}
             <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<DollarSign className="size-3.5" />} label="Pricing" />
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -763,7 +763,7 @@ export function ListingForm({
                   </label>
                   <div className="relative">
                     <span className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-sm font-bold text-neutral-400">
-                      GH₵
+                      GHâ‚µ
                     </span>
                     <Input
                       type="number"
@@ -810,7 +810,7 @@ export function ListingForm({
                   </label>
                   <div className="relative">
                     <span className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-sm font-bold text-neutral-400">
-                      GH₵
+                      GHâ‚µ
                     </span>
                     <Input
                       type="number"
@@ -831,7 +831,7 @@ export function ListingForm({
               </div>
             </section>
 
-            {/* ── Contact ── */}
+            {/* â”€â”€ Contact â”€â”€ */}
             <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<Phone className="size-3.5" />} label="Contact" />
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
@@ -868,7 +868,7 @@ export function ListingForm({
               )}
             </section>
 
-            {/* ── Error + CTA ── */}
+            {/* â”€â”€ Error + CTA â”€â”€ */}
             {error && (
               <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                 {error}
@@ -883,17 +883,17 @@ export function ListingForm({
         </form>
       )}
 
-      {/* ── STEP 2 ── */}
+      {/* â”€â”€ STEP 2 â”€â”€ */}
       {step === 2 && (
         <form
           onSubmit={handleSubmit}
           className="space-y-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
         >
-          <div className="h-1.5 bg-gradient-to-r from-[#0B1B33] via-[#124F9E] to-brand" />
+          <div className="h-1.5 bg-brand" />
 
           <div className="space-y-7 p-8 sm:p-10">
 
-            {/* ── Title & Location ── */}
+            {/* â”€â”€ Title & Location â”€â”€ */}
             <section>
               <SectionHeader icon={<FileText className="size-3.5" />} label="Title & Location" />
               <div className="space-y-4">
@@ -906,11 +906,11 @@ export function ListingForm({
                     required
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. iPhone 13 Pro 256GB – Excellent condition"
+                    placeholder="e.g. iPhone 13 Pro 256GB â€“ Excellent condition"
                     className={INPUT}
                   />
                   <p className="mt-1.5 text-xs text-slate-500">
-                    Be specific — include model, size, colour, or condition.
+                    Be specific â€” include model, size, colour, or condition.
                   </p>
                 </div>
 
@@ -939,7 +939,7 @@ export function ListingForm({
                   <div className="flex items-center justify-between rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm">
                     <span className="text-neutral-700">
                       {parentCategory?.name}
-                      {selectedCategory ? ` › ${selectedCategory.name}` : ""}
+                      {selectedCategory ? ` â€º ${selectedCategory.name}` : ""}
                     </span>
                     <Button type="button" onClick={() => setStep(1)} variant="link" className="h-auto p-0 text-xs">
                       Change
@@ -949,7 +949,7 @@ export function ListingForm({
               </div>
             </section>
 
-            {/* ── Photos ── */}
+            {/* â”€â”€ Photos â”€â”€ */}
             <section className="border-t border-slate-200 pt-7">
               <div className="mb-3 flex items-center justify-between">
                 <SectionHeader icon={<ImageIcon className="size-3.5" />} label="Photos" />
@@ -967,7 +967,7 @@ export function ListingForm({
                   <div>
                     <p className="text-sm font-semibold text-neutral-700">Upload photos</p>
                     <p className="mt-0.5 text-xs text-slate-500">
-                      JPEG, PNG or WebP · up to {MAX_IMAGES} photos · auto-watermarked
+                      JPEG, PNG or WebP Â· up to {MAX_IMAGES} photos Â· auto-watermarked
                     </p>
                   </div>
                   <span className="rounded-lg bg-brand px-5 py-2 text-xs font-bold text-white hover:bg-brand-dark">
@@ -1038,7 +1038,7 @@ export function ListingForm({
               )}
             </section>
 
-            {/* ── Video link ── */}
+            {/* â”€â”€ Video link â”€â”€ */}
             <section className="border-t border-slate-200 pt-7">
               <SectionHeader icon={<Video className="size-3.5" />} label="Video (optional)" />
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
@@ -1048,7 +1048,7 @@ export function ListingForm({
                 type="url"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
-                placeholder="https://youtube.com/watch?v=…"
+                placeholder="https://youtube.com/watch?v=â€¦"
                 className={INPUT}
               />
               <p className="mt-1.5 text-xs text-slate-500">
@@ -1056,7 +1056,7 @@ export function ListingForm({
               </p>
             </section>
 
-            {/* ── Error + Submit ── */}
+            {/* â”€â”€ Error + Submit â”€â”€ */}
             {error && (
               <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                 {error}
@@ -1065,13 +1065,13 @@ export function ListingForm({
 
             <div className="flex gap-3">
               <Button type="button" onClick={() => setStep(1)} variant="outline" size="lg" className="rounded-xl">
-                ← Back
+                â† Back
               </Button>
               <Button type="submit" disabled={submitting} size="lg" className="flex-1 rounded-xl">
                 {submitting ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
-                    {isEditing ? "Saving…" : "Publishing…"}
+                    {isEditing ? "Savingâ€¦" : "Publishingâ€¦"}
                   </>
                 ) : isEditing ? (
                   "Save changes"
