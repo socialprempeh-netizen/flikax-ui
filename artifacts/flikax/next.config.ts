@@ -12,7 +12,15 @@ function getSupabaseHostname(): string {
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,
+    // Next's built-in image optimizer was off (a Replit-era default from
+    // this repo's initial commit) despite `sharp` already being a real
+    // dependency and `qualities` already being configured -- both signals
+    // this was meant to be on. With it off, every listing photo/hero image
+    // was served at its raw uploaded resolution regardless of its actual
+    // display size (a Lighthouse-measured example: a 960x959 source image
+    // rendered at 350x467, ~137KB heavier than it needed to be) -- a real
+    // contributor to the site's LCP failure. Vercel's deployment runs this
+    // optimizer natively, no extra infra needed.
     qualities: [75, 82],
     remotePatterns: [
       {

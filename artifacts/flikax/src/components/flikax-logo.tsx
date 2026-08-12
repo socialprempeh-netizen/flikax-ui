@@ -28,20 +28,18 @@ export function FlikaxLogo({
   wordmarkSize = "text-2xl",
 }: FlikaxLogoProps) {
   return (
-    <Link
-      href={href}
-      className={`flex min-h-11 items-center gap-2 ${className}`.trim()}
-      aria-label="Flikax home"
-    >
-      {/* Brand-green rounded-square icon -- stays exact-spec bg-brand, not
-          bg-brand-dark: it's aria-hidden (the link's own aria-label carries
-          its name), so darkening it for text contrast would serve no
-          accessibility purpose while giving up the one place the true
-          brand color is most worth keeping literal. */}
+    // No aria-label here -- previously "Flikax home", which failed WCAG
+    // 2.5.3 (Label in Name): the "F" icon square's letter is real visible
+    // text (not decorative), so a sighted screen-reader/voice-control user
+    // sees "F Flikax" but would only ever hear/target "Flikax home", a
+    // mismatch either way an aria-label override goes. Dropping both the
+    // aria-label AND the icon's aria-hidden lets the browser compute the
+    // accessible name naturally from the link's actual visible content
+    // ("F" + "Flikax"), so the two are guaranteed to always match exactly.
+    <Link href={href} className={`flex min-h-11 items-center gap-2 ${className}`.trim()}>
       <span
         className={`${iconSize} flex shrink-0 items-center justify-center bg-brand font-extrabold leading-none text-white`}
         style={{ fontSize: 17 }}
-        aria-hidden="true"
       >
         F
       </span>

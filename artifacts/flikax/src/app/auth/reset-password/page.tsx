@@ -8,9 +8,10 @@ import { FlikaxLogo } from "@/components/flikax-logo";
 // vs. PKCE distinction).
 export default function ResetPasswordPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-brand p-4 sm:p-8">
+    // main, not div -- see auth/login/page.tsx's comment on the same pattern.
+    <main className="flex min-h-screen flex-col items-center justify-center gap-8 bg-brand p-4 sm:p-8">
       <FlikaxLogo wordmarkColor="text-white" iconSize="size-10" wordmarkSize="text-3xl" />
       <ResetPasswordGate />
-    </div>
+    </main>
   );
 }

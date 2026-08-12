@@ -125,6 +125,28 @@ automatically via Vercel's GitHub integration. Remember to add every
 environment variable above to the Vercel project's own env settings — it
 does not read `.env.local`.
 
+## Documentation
+
+Deeper reference docs live alongside the app in `artifacts/flikax/`:
+
+- **[ARCHITECTURE.md](artifacts/flikax/ARCHITECTURE.md)** — how the app is
+  put together: rendering model, the Supabase client layer (which of the
+  five client factories to use where), root middleware, the category
+  system, and other cross-cutting patterns.
+- **[DATABASE.md](artifacts/flikax/DATABASE.md)** — every table, column,
+  index, RPC, and Storage bucket, reconstructed from migrations +
+  generated types (with an important caveat about what isn't committed to
+  this repo — read the top of that doc before trusting it blindly).
+- **[API.md](artifacts/flikax/API.md)** — every Route Handler and Server
+  Action: what it does, what it expects, auth requirements.
+- **[DESIGN_SYSTEM.md](artifacts/flikax/DESIGN_SYSTEM.md)** — color/type/
+  spacing tokens and the standing UI rules (square corners, visible
+  dividers, icon conventions) new work is expected to follow.
+- **[INTEGRATIONS.md](artifacts/flikax/INTEGRATIONS.md)** — every
+  third-party service (Supabase, Paystack, Flutterwave, Resend/SMTP,
+  Vercel), exactly which env vars each needs, and what's actually
+  configured today vs. what's declared-but-unset.
+
 ## Where to start
 
 See **[`BUGS_AND_TODO.md`](BUGS_AND_TODO.md)** for a punch-list of known

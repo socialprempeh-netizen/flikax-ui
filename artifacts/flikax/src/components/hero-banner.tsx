@@ -15,7 +15,14 @@ export function HeroBanner() {
   return (
     <div className="w-full bg-brand">
       <div className="mx-auto flex max-w-7xl flex-col items-center px-4 pt-10 pb-20 text-center sm:px-6 sm:pt-14 sm:pb-24">
-        <h1 className="text-lg font-extrabold leading-tight text-white drop-shadow-sm sm:text-xl lg:text-2xl xl:text-3xl">
+        {/* text-xl, not text-lg, at the base size -- white-on-brand here
+            measures 3.66:1, which clears WCAG's 3:1 floor for bold "large
+            text" (>=14pt/18.66px bold) but not the 4.5:1 floor for normal-
+            size text. text-lg (18px) sits just under that large-text cutoff;
+            text-xl (20px) clears it, so the same white-on-brand pairing
+            passes without darkening the band (see the comment above about
+            --header-bg staying visually distinct from this band's --brand). */}
+        <h1 className="text-xl font-extrabold leading-tight text-white drop-shadow-sm sm:text-2xl lg:text-3xl xl:text-4xl">
           Ghana&apos;s Premium Marketplace
         </h1>
         <div className="mt-5 w-full max-w-xl sm:mt-6">

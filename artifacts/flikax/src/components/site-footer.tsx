@@ -79,9 +79,16 @@ export function SiteFooter() {
           </div>
         </div>
 
+        {/* h2, not h3 -- these five are the footer's own only headings, and
+            since the footer renders identically at the end of every page's
+            DOM regardless of that page's own heading depth, h2 is the one
+            level that's never an invalid skip no matter what came before it
+            (dropping to h2 from any deeper heading is always valid; landing
+            on h2 as the page's first heading is valid too). h3 broke this on
+            pages whose own content never used an h2. */}
         <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-5">
           <div>
-            <h3 className="mb-2 text-sm font-bold text-neutral-800">Explore</h3>
+            <h2 className="mb-2 text-sm font-bold text-neutral-800">Explore</h2>
             <ul className="space-y-0.5">
               {exploreLinks.map((link) => (
                 <li key={link.label}>
@@ -94,7 +101,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-neutral-800">Post an Ad</h3>
+            <h2 className="mb-2 text-sm font-bold text-neutral-800">Post an Ad</h2>
             <SellCta
               label="Create Your Listing"
               variant="footer"
@@ -105,7 +112,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-neutral-800">Company</h3>
+            <h2 className="mb-2 text-sm font-bold text-neutral-800">Company</h2>
             <ul className="space-y-0.5">
               {companyLinks.map((link) => (
                 <li key={link.label}>
@@ -118,7 +125,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-neutral-800">Legal</h3>
+            <h2 className="mb-2 text-sm font-bold text-neutral-800">Legal</h2>
             <ul className="space-y-0.5">
               {legalLinks.map((link) => (
                 <li key={link.label}>
@@ -131,7 +138,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-neutral-800">Get the App</h3>
+            <h2 className="mb-2 text-sm font-bold text-neutral-800">Get the App</h2>
             <div className="flex flex-col gap-1.5">
               <span className="flex cursor-default items-center gap-2 border border-black/10 bg-black/5 px-2.5 py-1">
                 <FaApple className="size-4 shrink-0" />
