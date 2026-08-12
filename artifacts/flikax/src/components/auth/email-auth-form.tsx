@@ -79,10 +79,18 @@ export function EmailAuthForm({
     }
 
     setLoading(true);
+    // Pin the confirmation link's destination to this app's own OAuth
+    // callback route (which already exchanges a `?code=` for a session via
+    // exchangeCodeForSession -- the @supabase/ssr browser client defaults to
+    // the PKCE flow, so email-confirmation links use the same `?code=`
+    // mechanism as Google/Facebook sign-in) instead of leaving it to
+    // Supabase's dashboard-configured Site URL, which isn't necessarily kept
+    // in sync with this app's actual deployment domain.
+    const emailRedirectTo = `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`;
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName.trim() } },
+      options: { data: { full_name: fullName.trim() }, emailRedirectTo },
     });
     setLoading(false);
 
