@@ -16,7 +16,7 @@ const SELL_ROUTE = "/sell";
 const VARIANT_CLASSES = {
   solid: "bg-brand-dark text-white hover:brightness-110",
   outline: "border-2 border-brand text-brand-dark hover:bg-brand-light",
-  footer: "bg-white/10 text-white hover:bg-white/20",
+  footer: "bg-black/10 text-neutral-900 hover:bg-black/15",
 };
 
 const SIZE_CLASSES = {

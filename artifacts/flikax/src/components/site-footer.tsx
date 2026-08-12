@@ -40,9 +40,10 @@ const legalLinks = [
 
 // No real social accounts exist yet -- these render as plain icons (not
 // links to profiles that don't exist). X, Facebook, and TikTok render as
-// self-contained colored circle badges; Instagram/LinkedIn have no brand
-// badge yet and keep their monotone react-icons glyphs inside a translucent
-// pill so they stay visible against the dark footer.
+// self-contained colored circle badges (own solid bg, unaffected by the
+// footer's own background); Instagram/LinkedIn have no brand badge yet and
+// keep their monotone react-icons glyphs inside a dark-tinted pill so they
+// stay visible against the light footer.
 const socialIcons = [
   { label: "X", icon: XIcon, badge: true },
   { label: "Facebook", icon: FacebookIcon, badge: true },
@@ -53,14 +54,14 @@ const socialIcons = [
 
 export function SiteFooter() {
   return (
-    <footer className="-[2.5rem] bg-[#0F172A] px-6 py-5 text-white sm:px-10 sm:py-6">
+    <footer className="-[2.5rem] bg-[#C3EEB9] px-6 py-5 text-neutral-900 sm:px-10 sm:py-6">
       <JsonLd data={localBusinessJsonLd} />
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col items-center gap-2 text-center">
           <FlikaxLogo />
           <div>
-            <p className="text-sm text-white/70">Your Trusted Classifieds Marketplace.</p>
-            <p className="text-xs text-white/50">
+            <p className="text-sm text-neutral-700">Your Trusted Classifieds Marketplace.</p>
+            <p className="text-xs text-neutral-600">
               Accra, Ghana <span className="px-1">•</span> © 2026 Flikax Inc.
             </p>
           </div>
@@ -74,7 +75,7 @@ export function SiteFooter() {
                 aria-label={label}
                 className={cn(
                   "flex size-8 items-center justify-center rounded-full transition-transform duration-200 hover:scale-110",
-                  !badge && "bg-white/10 text-white/80 hover:bg-white/20",
+                  !badge && "bg-black/10 text-neutral-700 hover:bg-black/15",
                 )}
               >
                 <Icon className={badge ? "size-8" : "size-4"} />
@@ -85,11 +86,11 @@ export function SiteFooter() {
 
         <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-5">
           <div>
-            <h3 className="mb-2 text-sm font-bold text-white/90">Explore</h3>
+            <h3 className="mb-2 text-sm font-bold text-neutral-800">Explore</h3>
             <ul className="space-y-0.5">
               {exploreLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-white/70 hover:text-white">
+                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-neutral-700 hover:text-neutral-900">
                     {link.label}
                   </Link>
                 </li>
@@ -98,7 +99,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-white/90">Post an Ad</h3>
+            <h3 className="mb-2 text-sm font-bold text-neutral-800">Post an Ad</h3>
             <SellCta
               label="Create Your Listing"
               variant="footer"
@@ -109,11 +110,11 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-white/90">Company</h3>
+            <h3 className="mb-2 text-sm font-bold text-neutral-800">Company</h3>
             <ul className="space-y-0.5">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-white/70 hover:text-white">
+                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-neutral-700 hover:text-neutral-900">
                     {link.label}
                   </Link>
                 </li>
@@ -122,11 +123,11 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-white/90">Legal</h3>
+            <h3 className="mb-2 text-sm font-bold text-neutral-800">Legal</h3>
             <ul className="space-y-0.5">
               {legalLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-white/70 hover:text-white">
+                  <Link href={link.href} className="flex min-h-11 items-center text-sm text-neutral-700 hover:text-neutral-900">
                     {link.label}
                   </Link>
                 </li>
@@ -135,19 +136,19 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-bold text-white/90">Get the App</h3>
+            <h3 className="mb-2 text-sm font-bold text-neutral-800">Get the App</h3>
             <div className="flex flex-col gap-1.5">
-              <span className="flex cursor-default items-center gap-2 border border-white/15 bg-white/5 px-2.5 py-1">
+              <span className="flex cursor-default items-center gap-2 border border-black/10 bg-black/5 px-2.5 py-1">
                 <FaApple className="size-4 shrink-0" />
                 <span className="leading-tight">
-                  <span className="block text-4xs text-white/50">Coming Soon</span>
+                  <span className="block text-4xs text-neutral-500">Coming Soon</span>
                   <span className="block text-xs font-semibold">App Store</span>
                 </span>
               </span>
-              <span className="flex cursor-default items-center gap-2 border border-white/15 bg-white/5 px-2.5 py-1">
+              <span className="flex cursor-default items-center gap-2 border border-black/10 bg-black/5 px-2.5 py-1">
                 <FaGooglePlay className="size-3.5 shrink-0" />
                 <span className="leading-tight">
-                  <span className="block text-4xs text-white/50">Coming Soon</span>
+                  <span className="block text-4xs text-neutral-500">Coming Soon</span>
                   <span className="block text-xs font-semibold">Google Play</span>
                 </span>
               </span>
