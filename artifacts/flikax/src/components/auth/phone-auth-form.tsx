@@ -12,7 +12,7 @@ import { OtpInput } from "@/components/auth/otp-input";
 const OTP_LENGTH = 6;
 
 const FIELD_CLASS =
-  "h-11 w-full rounded-xl border-slate-300 px-4 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
+  "h-11 w-full border-slate-300 px-4 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 const RESEND_SECONDS = 30;
 
@@ -188,7 +188,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
             <span className="mb-1.5 block text-sm font-medium text-neutral-700">
               Phone number
             </span>
-            <div className="flex h-11 min-w-0 items-center rounded-xl border border-slate-300 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
+            <div className="flex h-11 min-w-0 items-center border border-slate-300 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
               <span className="flex h-full items-center border-r border-slate-300 px-3.5 text-sm text-neutral-500">
                 +233
               </span>
@@ -200,7 +200,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
                 value={rawPhone}
                 onChange={(e) => setRawPhone(e.target.value)}
                 placeholder="024 123 4567"
-                className="h-full min-w-0 flex-1 rounded-l-none border-none px-4 text-sm shadow-none focus-visible:ring-0"
+                className="h-full min-w-0 flex-1 border-none px-4 text-sm shadow-none focus-visible:ring-0"
               />
             </div>
           </label>
@@ -214,7 +214,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading}
-            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+            className="h-11 w-full bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             {loading ? "Sending code..." : "Send code"}
           </Button>
@@ -224,7 +224,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
       {step === "otp" && (
         <form
           onSubmit={verifyOtp}
-          className="space-y-4 rounded-2xl border border-neutral-300 bg-white p-5 shadow-lg"
+          className="space-y-4 border border-neutral-300 bg-white p-5 shadow-lg"
         >
           <div>
             <h1 className="text-xl font-bold text-slate-950">OTP Validation</h1>
@@ -247,7 +247,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading || otp.length !== OTP_LENGTH}
-            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+            className="h-11 w-full bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             {loading ? "Verifying..." : "Confirm OTP"}
           </Button>
@@ -306,7 +306,7 @@ export function PhoneAuthForm({ redirectTo = "/" }: { redirectTo?: string }) {
           <Button
             type="submit"
             disabled={loading}
-            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+            className="h-11 w-full bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             {loading ? "Saving..." : "Continue"}
           </Button>

@@ -41,7 +41,7 @@ export function ForgotPasswordForm() {
           If an account exists for <span className="font-medium text-neutral-700">{email}</span>, we&apos;ve
           sent a link to reset your password.
         </p>
-        <Button asChild variant="outline" className="mt-4 w-full rounded-xl">
+        <Button asChild variant="outline" className="mt-4 w-full ">
           <Link href="/auth/login">Back to login</Link>
         </Button>
       </div>
@@ -69,7 +69,7 @@ export function ForgotPasswordForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="h-auto w-full rounded-xl border-slate-300 px-4 py-3 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10"
+            className="h-auto w-full border-slate-300 px-4 py-3 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10"
           />
         </div>
       </label>
@@ -77,7 +77,7 @@ export function ForgotPasswordForm() {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-brand-dark py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+        className="w-full bg-brand-dark py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
       >
         {loading ? "Sending..." : "Send reset link"}
       </Button>

@@ -35,15 +35,15 @@ export function SettingsSidebar() {
     <div className="flex w-full shrink-0 flex-col gap-4 sm:w-72">
       <Link
         href="/dashboard"
-        className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-bold text-neutral-800 shadow-lg hover:text-brand-dark"
+        className="flex items-center gap-2 bg-white px-4 py-3 text-sm font-bold text-neutral-800 shadow-lg hover:text-brand-dark"
       >
         <ChevronLeft className="size-4" />
         Settings
       </Link>
 
-      <nav className="flex flex-col overflow-hidden rounded-xl bg-white shadow-lg">
+      <nav className="flex flex-col overflow-hidden bg-white shadow-lg">
         {NAV_GROUPS.map((group, i) => (
-          <div key={i} className={i > 0 ? "border-t border-neutral-100" : undefined}>
+          <div key={i} className={i > 0 ? "border-t border-neutral-300" : undefined}>
             {group.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -68,7 +68,7 @@ export function SettingsSidebar() {
             })}
           </div>
         ))}
-        <div className="border-t border-neutral-100">
+        <div className="border-t border-neutral-300">
           <LogoutButton className="w-full px-4 py-3 text-left text-sm font-medium text-red-600 hover:bg-red-50" />
         </div>
       </nav>

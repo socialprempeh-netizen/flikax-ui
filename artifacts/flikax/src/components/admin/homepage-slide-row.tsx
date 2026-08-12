@@ -96,7 +96,7 @@ export function HomepageSlideRow({
       </div>
 
       {/* eslint-disable-next-line @next/next/no-img-element -- already-optimized storage image in an admin list, not worth next/image here */}
-      <img src={imageUrl} alt="" className="h-16 w-28 shrink-0 rounded-lg border border-slate-200 object-cover" />
+      <img src={imageUrl} alt="" className="h-16 w-28 shrink-0 border border-slate-200 object-cover" />
 
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-slate-800">{slide.headline || "(no headline)"}</p>

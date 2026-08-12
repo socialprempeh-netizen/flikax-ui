@@ -62,7 +62,7 @@ export function CategoryFilterRow({
               href={hrefWith(searchParams, { minPrice: bucket.minPrice, maxPrice: bucket.maxPrice })}
               // relative + before:-inset expands the real hit area to 44px tall
               // (30px visual pill + 7px above/below) without growing the chip.
-              className={`relative shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap before:absolute before:-inset-[7px] before:content-[''] ${
+              className={`relative shrink-0 border px-3 py-1.5 text-xs font-medium whitespace-nowrap before:absolute before:-inset-[7px] before:content-[''] ${
                 isActive
                   ? "border-brand bg-brand-light text-brand-dark"
                   : "border-neutral-300 text-neutral-600 hover:bg-neutral-50"
@@ -85,7 +85,7 @@ export function CategoryFilterRow({
               aria-label="Date posted"
               value={datePosted ?? ""}
               onChange={(e) => router.push(hrefWith(searchParams, { posted: e.target.value || undefined }))}
-              className="appearance-none rounded-lg border border-neutral-200 bg-white py-1.5 pl-2 pr-7 text-sm text-neutral-700 outline-none focus:border-brand"
+              className="appearance-none border border-neutral-200 bg-white py-1.5 pl-2 pr-7 text-sm text-neutral-700 outline-none focus:border-brand"
             >
               {DATE_POSTED_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -101,7 +101,7 @@ export function CategoryFilterRow({
               aria-label="Sort by"
               value={sort}
               onChange={(e) => router.push(hrefWith(searchParams, { sort: e.target.value }))}
-              className="appearance-none rounded-lg border border-neutral-200 bg-white py-1.5 pl-2 pr-7 text-sm text-neutral-700 outline-none focus:border-brand"
+              className="appearance-none border border-neutral-200 bg-white py-1.5 pl-2 pr-7 text-sm text-neutral-700 outline-none focus:border-brand"
             >
               {SORT_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>

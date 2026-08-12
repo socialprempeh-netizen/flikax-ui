@@ -30,7 +30,7 @@ export default async function SellPage() {
       <SiteHeader />
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 sm:px-6">
         {isSuspended ? (
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center">
+          <div className="border border-amber-200 bg-amber-50 p-6 text-center">
             <h1 className="text-lg font-bold text-amber-800">Posting is temporarily suspended</h1>
             <p className="mt-2 text-sm text-amber-700">
               Your account can&apos;t post new listings until{" "}

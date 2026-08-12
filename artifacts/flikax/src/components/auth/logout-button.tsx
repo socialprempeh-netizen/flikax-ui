@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
 export function LogoutButton({
-  className = "rounded-full px-3 py-1.5 text-sm font-medium text-white hover:bg-white/10 disabled:opacity-60",
+  className = "px-3 py-1.5 text-sm font-medium text-white hover:bg-white/10 disabled:opacity-60",
 }: {
   // Default className assumes a dark/translucent parent (header, drawer) --
   // callers on a light background (e.g. inside a white dropdown) always

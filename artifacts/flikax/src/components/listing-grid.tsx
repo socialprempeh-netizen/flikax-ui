@@ -58,7 +58,7 @@ export function ListingGrid({
   if (listings.length === 0) {
     return (
       <section className="flex-1">
-        <div className="flex flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-neutral-300 bg-white py-16 text-center">
+        <div className="flex flex-col items-center justify-center gap-1 border border-dashed border-neutral-300 bg-white py-16 text-center">
           <p className="text-sm font-medium text-neutral-600">No listings match your filters.</p>
           <p className="text-sm text-neutral-400">Try a different search, category, or price range.</p>
         </div>
@@ -102,7 +102,7 @@ export function ListingGrid({
                     page. A white card + a slightly stronger border/shadow
                     reads as a clearly separate surface instead. */}
                 <Card
-                  className={`gap-0 overflow-hidden rounded-none bg-white p-0 shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-shadow duration-200 group-hover:shadow-lg ${
+                  className={`gap-0 overflow-hidden bg-white p-0 shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-shadow duration-200 group-hover:shadow-lg ${
                     listing.isFeatured
                       ? "border-amber-300"
                       : listing.isBumped

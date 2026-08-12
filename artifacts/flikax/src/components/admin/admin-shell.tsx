@@ -99,7 +99,7 @@ export function AdminShell({
         <div className="flex h-14 items-center justify-between border-b border-white/10 px-3">
           {!collapsed && (
             <span className="flex items-center gap-2 text-sm font-extrabold tracking-wide">
-              <span className="flex size-6 items-center justify-center rounded-md bg-brand text-xs font-extrabold">
+              <span className="flex size-6 items-center justify-center bg-brand text-xs font-extrabold">
                 F
               </span>
               FLIKAX ADMIN
@@ -126,7 +126,7 @@ export function AdminShell({
                 <span
                   key={item.label}
                   title="Coming soon"
-                  className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-white/30"
+                  className="flex cursor-not-allowed items-center gap-3 px-3 py-2 text-sm font-medium text-white/30"
                 >
                   <item.icon className="size-4.5 shrink-0" />
                   {!collapsed && (
@@ -143,7 +143,7 @@ export function AdminShell({
                 key={item.label}
                 href={item.href}
                 title={collapsed ? item.label : undefined}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-brand-dark text-white shadow-sm"
                     : "text-white/60 hover:bg-white/10 hover:text-white"
@@ -179,7 +179,7 @@ export function AdminShell({
               {role === "super_admin" ? "Super Admin" : "Admin"}
             </Badge>
             <span className="text-sm text-slate-600">{adminName || "Admin"}</span>
-            <LogoutButton className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" />
+            <LogoutButton className="border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" />
           </div>
         </header>
 

@@ -29,7 +29,7 @@ export default async function FeedbackPage({
     <div className="flex flex-1 flex-col bg-background pb-16 lg:pb-0">
       <SiteHeader />
       <main className="mx-auto w-full max-w-lg flex-1 px-4 py-8 sm:px-6">
-        <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm sm:p-8">
+        <div className="border border-slate-200/80 bg-white p-6 shadow-sm sm:p-8">
           <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand-dark">
             <MessageSquareWarning className="size-5" />
           </span>
@@ -40,7 +40,7 @@ export default async function FeedbackPage({
           </p>
 
           {listingTitle && (
-            <p className="mt-4 truncate rounded-xl bg-brand-light px-3 py-2 text-sm font-medium text-brand-dark">
+            <p className="mt-4 truncate bg-brand-light px-3 py-2 text-sm font-medium text-brand-dark">
               Re: {listingTitle}
             </p>
           )}

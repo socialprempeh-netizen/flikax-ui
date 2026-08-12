@@ -28,7 +28,7 @@ export function ChangeEmailForm({ currentEmail }: { currentEmail: string | null 
   }
 
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-md">
+    <div className="bg-white p-5 shadow-md">
       <h2 className="text-sm font-bold text-neutral-800">Change email</h2>
       <p className="mt-1 text-sm text-neutral-500">Current: {currentEmail ?? "Not set"}</p>
 
@@ -43,7 +43,7 @@ export function ChangeEmailForm({ currentEmail }: { currentEmail: string | null 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="h-auto w-auto rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand"
+          className="h-auto w-auto border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand"
         />
         <Button type="submit" disabled={loading}>
           {loading ? "Sending..." : "Update email"}

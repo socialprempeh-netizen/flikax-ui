@@ -107,7 +107,7 @@ export async function TopSellers() {
   if (sellers.length === 0) return null;
 
   return (
-    <section className="overflow-hidden rounded-xl bg-[#1a1f2e] shadow-md">
+    <section className="overflow-hidden bg-[#1a1f2e] shadow-md">
       <div className="flex items-center gap-2 border-b border-white/10 px-5 py-4">
         <Star className="size-4 fill-amber-400 text-amber-400" />
         <h2 className="text-sm font-bold text-white">Top sellers this week</h2>

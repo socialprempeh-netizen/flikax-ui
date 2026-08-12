@@ -28,7 +28,7 @@ export function SupportCta({
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-bold transition-colors ${VARIANT_CLASSES[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-bold transition-colors ${VARIANT_CLASSES[variant]} ${className}`}
     >
       <Mail className="size-4" />
       {label}

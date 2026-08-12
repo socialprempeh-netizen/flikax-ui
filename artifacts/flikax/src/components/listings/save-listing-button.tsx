@@ -48,7 +48,7 @@ export function SaveListingButton({ listingId }: { listingId: string }) {
       title={error ?? undefined}
       variant="outline"
       size="sm"
-      className={`h-11 rounded-full ${
+      className={`h-11 ${
         error
           ? "border-red-200 text-red-500 hover:bg-red-50"
           : saved

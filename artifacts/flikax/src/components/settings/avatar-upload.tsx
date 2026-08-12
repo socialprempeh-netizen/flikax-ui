@@ -73,7 +73,7 @@ export function AvatarUpload({
   }
 
   return (
-    <div className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-md">
+    <div className="flex items-center gap-4 bg-white p-5 shadow-md">
       <span className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-dark text-2xl font-bold text-white ring-4 ring-brand-light">
         {uploading ? (
           <Loader2 className="size-6 animate-spin" />
@@ -91,7 +91,7 @@ export function AvatarUpload({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
-            className="flex min-h-11 items-center gap-1.5 rounded-full border border-neutral-300 px-3 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
+            className="flex min-h-11 items-center gap-1.5 border border-neutral-300 px-3 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
           >
             <Camera className="size-4" />
             {avatarUrl ? "Change photo" : "Upload photo"}

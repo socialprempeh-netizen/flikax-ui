@@ -46,7 +46,7 @@ export function GrantAdminForm() {
         <select
           value={role}
           onChange={(e) => setRole(e.target.value as "admin" | "super_admin")}
-          className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-800 outline-none focus:border-brand"
+          className="border border-slate-200 px-3 py-1.5 text-sm text-slate-800 outline-none focus:border-brand"
         >
           <option value="admin">Admin</option>
           <option value="super_admin">Super Admin</option>

@@ -87,7 +87,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
       <h1 className="text-xl font-bold text-slate-800">Users</h1>
       <p className="mt-1 text-sm text-slate-500">{rows.length} user{rows.length === 1 ? "" : "s"}.</p>
 
-      <Card className="mt-6 mb-4 gap-0 rounded-2xl p-4 shadow-sm">
+      <Card className="mt-6 mb-4 gap-0 p-4 shadow-sm">
         <form method="get" className="flex flex-wrap items-end gap-3">
           <label className="block">
             <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -109,7 +109,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
             <select
               name="role"
               defaultValue={roleFilter ?? ""}
-              className="h-9 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="h-9 border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             >
               <option value="">All</option>
               <option value="user">User</option>
@@ -125,7 +125,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
             <select
               name="status"
               defaultValue={statusFilter ?? ""}
-              className="h-9 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="h-9 border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             >
               <option value="">All</option>
               <option value="active">Active</option>
@@ -147,7 +147,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
         </form>
       </Card>
 
-      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+      <Card className="gap-0 divide-y divide-slate-300 overflow-hidden p-0 shadow-sm">
         {rows.length === 0 ? (
           <p className="p-6 text-sm text-slate-400">No users match these filters.</p>
         ) : (

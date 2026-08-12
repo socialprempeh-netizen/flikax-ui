@@ -70,11 +70,11 @@ export function CategorySidebar({
         {/* Deliberately its own paler, less-saturated shade rather than the
             shared --cream token used behind listing-card photos and the
             gallery -- this panel needed toning down without affecting those. */}
-        <div className="rounded-xl bg-[#f6f3ec] p-3 lg:hidden">
+        <div className="bg-[#f6f3ec] p-3 lg:hidden">
           <MobileCategoryGrid parents={parents} filters={filters} />
         </div>
 
-        <div className="hidden rounded-2xl bg-brand-dark p-4 text-white shadow-sm lg:block">
+        <div className="hidden bg-brand-dark p-4 text-white shadow-sm lg:block">
           <h3 className="text-sm font-bold tracking-wide">Sell Something?</h3>
           <p className="mt-1.5 text-xs leading-relaxed text-white/80">
             Post your ad free and reach thousands of buyers across Ghana.
@@ -94,7 +94,7 @@ export function CategorySidebar({
 
   return (
     <ScrollableSidebarColumn>
-      <div className="hidden lg:block rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm">
+      <div className="hidden lg:block border border-slate-200/80 bg-white p-3 shadow-sm">
         <h3 className="mb-2 text-sm font-bold tracking-tight text-neutral-800">Categories</h3>
         <Link
           href={buildListingsHref({ ...filters, category: undefined })}
@@ -103,14 +103,14 @@ export function CategorySidebar({
           All categories
         </Link>
         <p className="mb-2 truncate text-sm font-semibold text-brand-dark">{activeParent.name}</p>
-        <div className="flex flex-col divide-y divide-neutral-200">
+        <div className="flex flex-col divide-y divide-neutral-300">
           {children.map((child) => {
             const isActive = child.slug === selectedSlug;
             return (
               <Link
                 key={child.id}
                 href={`/${child.slug}`}
-                className={`group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors ${
+                className={`group flex items-center gap-2.5 px-2 py-1.5 text-sm transition-colors ${
                   isActive ? "bg-brand-light font-semibold text-brand-dark" : "text-neutral-600 hover:bg-neutral-200"
                 }`}
               >
@@ -150,12 +150,12 @@ export function CategorySidebar({
         <MobileCategoryList categories={children} counts={counts} />
       </div>
 
-      <div className="divide-y divide-neutral-100 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+      <div className="divide-y divide-neutral-300 border border-slate-200/80 bg-white shadow-sm">
         <LocationPicker filters={filters} />
         <ExcludeLocationPicker filters={filters} />
       </div>
 
-      <div className="rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm">
+      <div className="border border-slate-200/80 bg-white p-3 shadow-sm">
         <h3 className="mb-2 text-sm font-bold tracking-tight text-neutral-800">Price, GH₵</h3>
         <form action="/" method="get" className="mb-3 flex items-center gap-2">
           <input type="hidden" name="q" value={filters.q ?? ""} />
@@ -166,7 +166,7 @@ export function CategorySidebar({
             name="minPrice"
             placeholder="min"
             defaultValue={filters.minPrice}
-            className="w-full min-w-0 rounded-lg border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
+            className="w-full min-w-0 border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
           />
           <span className="shrink-0 text-neutral-400">–</span>
           <input
@@ -174,11 +174,11 @@ export function CategorySidebar({
             name="maxPrice"
             placeholder="max"
             defaultValue={filters.maxPrice}
-            className="w-full min-w-0 rounded-lg border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
+            className="w-full min-w-0 border border-neutral-200 px-2 py-1.5 text-sm outline-none focus:border-brand"
           />
           <button
             type="submit"
-            className="shrink-0 rounded-lg bg-brand-dark px-3 py-1.5 text-sm font-medium text-white hover:brightness-110"
+            className="shrink-0 bg-brand-dark px-3 py-1.5 text-sm font-medium text-white hover:brightness-110"
           >
             Go
           </button>
@@ -191,7 +191,7 @@ export function CategorySidebar({
               <Link
                 key={bucket.label}
                 href={buildListingsHref({ ...filters, minPrice: bucket.minPrice, maxPrice: bucket.maxPrice })}
-                className={`rounded-lg px-2 py-1 text-sm transition-colors ${
+                className={`px-2 py-1 text-sm transition-colors ${
                   isActive ? "bg-brand-light font-semibold text-brand-dark" : "text-neutral-600 hover:bg-slate-50"
                 }`}
               >

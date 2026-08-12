@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import type { HomepageSlide } from "@/lib/homepage-slides";
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand";
+  "w-full border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand";
 
 // Slots straight into a datetime-local input, which needs "YYYY-MM-DDTHH:mm" -- an
 // ISO timestamp's trailing "Z"/offset and seconds aren't valid there.
@@ -106,7 +106,7 @@ export function HomepageSlideForm({
           Banner image (auto-cropped to 1600×480)
         </span>
         <div className="flex items-center gap-4">
-          <div className="relative flex h-24 w-40 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50">
+          <div className="relative flex h-24 w-40 shrink-0 items-center justify-center overflow-hidden border border-dashed border-slate-300 bg-slate-50">
             {imageToShow ? (
               // eslint-disable-next-line @next/next/no-img-element -- local blob preview / already-optimized storage image, not worth next/image here
               <img src={imageToShow} alt="" className="size-full object-cover" />
@@ -114,7 +114,7 @@ export function HomepageSlideForm({
               <Upload className="size-5 text-slate-300" />
             )}
           </div>
-          <label className="cursor-pointer rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+          <label className="cursor-pointer border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
             {isUploading ? "Uploading..." : "Choose image"}
             <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleFileSelect} className="hidden" />
           </label>
@@ -168,7 +168,7 @@ export function HomepageSlideForm({
           type="checkbox"
           checked={form.is_active}
           onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))}
-          className="size-4 rounded border-slate-300 text-brand-dark focus:ring-brand"
+          className="size-4 border-slate-300 text-brand-dark focus:ring-brand"
         />
         <span className="text-sm font-medium text-slate-700">Active</span>
       </label>

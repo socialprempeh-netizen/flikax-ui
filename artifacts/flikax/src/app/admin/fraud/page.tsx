@@ -24,11 +24,11 @@ export default async function AdminFraudPage() {
       <p className="mt-1 text-sm text-slate-500">
         Read-only investigation view. Take action (warn, suspend, ban) from the linked account pages.
       </p>
-      <p className="mt-2 max-w-3xl rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">
+      <p className="mt-2 max-w-3xl bg-slate-50 px-3 py-2 text-xs text-slate-500">
         Same-phone-across-accounts as requested isn&apos;t possible on this schema —{" "}
-        <code className="rounded bg-slate-200 px-1 py-0.5">profiles.phone</code> has a database-level
+        <code className="bg-slate-200 px-1 py-0.5">profiles.phone</code> has a database-level
         unique constraint, so no two accounts can ever share it. Shown below instead:{" "}
-        <code className="rounded bg-slate-200 px-1 py-0.5">listings.contact_phone</code> (no such
+        <code className="bg-slate-200 px-1 py-0.5">listings.contact_phone</code> (no such
         constraint) reused across different accounts, which is what that pattern actually looks like here.
         Same-IP detection is not shown: no IP address is captured anywhere in this app today (checked
         Supabase&apos;s own auth audit log too — empty), so building it means adding capture from scratch,
@@ -39,7 +39,7 @@ export default async function AdminFraudPage() {
         <h2 className="text-sm font-bold text-slate-800">
           Duplicate contact phone across accounts ({duplicatePhones.length})
         </h2>
-        <Card className="mt-2 gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <Card className="mt-2 gap-0 divide-y divide-slate-300 overflow-hidden p-0 shadow-sm">
           {duplicatePhones.length === 0 ? (
             <p className="p-6 text-sm text-slate-400">No matches.</p>
           ) : (
@@ -76,7 +76,7 @@ export default async function AdminFraudPage() {
           High-frequency posting — {FREQUENCY_THRESHOLD}+ listings in the last {FREQUENCY_WINDOW_HOURS}h (
           {highFrequencyPosters.length})
         </h2>
-        <Card className="mt-2 gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <Card className="mt-2 gap-0 divide-y divide-slate-300 overflow-hidden p-0 shadow-sm">
           {highFrequencyPosters.length === 0 ? (
             <p className="p-6 text-sm text-slate-400">No matches.</p>
           ) : (
@@ -104,7 +104,7 @@ export default async function AdminFraudPage() {
           Gmail dot/plus-variant addresses (e.g. j.doe@gmail.com and jdoe+2@gmail.com) that normalize to
           the same inbox. Best-effort — won&apos;t catch every alias trick.
         </p>
-        <Card className="mt-2 gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+        <Card className="mt-2 gap-0 divide-y divide-slate-300 overflow-hidden p-0 shadow-sm">
           {!adminClient ? (
             <p className="p-6 text-sm text-red-600">
               Not available — admin operations aren&apos;t configured on this environment (missing service

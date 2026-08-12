@@ -7,12 +7,12 @@ import { useRegions } from "@/lib/use-regions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
+const FIELD_CLASS = "h-auto w-full border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
 // appearance-none + pr-9: strips the native select arrow so the custom
 // ChevronDown overlay (see the two <select> usages below) is the only one
 // shown -- matches every other select on the site (e.g. feedback-form.tsx).
 const SELECT_CLASS =
-  "w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-2 pr-9 text-sm text-neutral-800 outline-none focus:border-brand";
+  "w-full appearance-none border border-neutral-200 bg-white px-3 py-2 pr-9 text-sm text-neutral-800 outline-none focus:border-brand";
 
 type Profile = {
   full_name: string | null;
@@ -74,7 +74,7 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 rounded-2xl bg-white p-5 shadow-md"
+      className="space-y-4 bg-white p-5 shadow-md"
     >
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-bold text-neutral-800">Personal details</h2>
@@ -161,7 +161,7 @@ export function PersonalDetailsForm({ profile }: { profile: Profile }) {
           onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX_LENGTH))}
           placeholder="A short line about what you sell, e.g. 'Trusted phone dealer in Accra since 2019.'"
           rows={3}
-          className="w-full resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand"
+          className="w-full resize-none border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand"
         />
         <span className="mt-1 block text-xs text-neutral-400">
           Shown on your public seller page, visible to anyone who views your ads.

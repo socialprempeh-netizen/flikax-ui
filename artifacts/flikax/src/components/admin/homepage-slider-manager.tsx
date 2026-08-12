@@ -28,7 +28,7 @@ export function HomepageSliderManager({ initialSlides }: { initialSlides: Homepa
 
   return (
     <>
-      <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+      <Card className="gap-0 p-5 shadow-sm">
         <h2 className="text-sm font-bold text-slate-800">
           {editingSlide ? "Edit slide" : "Add a slide"}
         </h2>
@@ -42,7 +42,7 @@ export function HomepageSliderManager({ initialSlides }: { initialSlides: Homepa
         </div>
       </Card>
 
-      <Card className="mt-6 gap-0 divide-y divide-slate-100 rounded-2xl p-0 shadow-sm">
+      <Card className="mt-6 gap-0 divide-y divide-slate-300 p-0 shadow-sm">
         {slides.length === 0 ? (
           <p className="p-6 text-sm text-slate-400">
             No slides yet. Add one above — it appears on the homepage as soon as it&apos;s active.

@@ -90,7 +90,7 @@ export function CategoriesTree({
         Add top-level category
       </Button>
 
-      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+      <Card className="gap-0 divide-y divide-slate-300 overflow-hidden p-0 shadow-sm">
         {parents.map((parent, index) => {
           const children = childrenOf(parent.id);
           const isOpen = expanded.has(parent.id);
@@ -101,11 +101,11 @@ export function CategoriesTree({
                 <button
                   type="button"
                   onClick={() => toggle(parent.id)}
-                  className="flex size-7 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
+                  className="flex size-7 shrink-0 items-center justify-center text-slate-500 hover:bg-slate-100"
                 >
                   {isOpen ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
                 </button>
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand-dark">
+                <span className="flex size-8 shrink-0 items-center justify-center bg-brand-light text-brand-dark">
                   {renderIcon(parent.icon)}
                 </span>
                 <span className="flex-1 text-sm font-bold text-slate-800">{parent.name}</span>
@@ -116,7 +116,7 @@ export function CategoriesTree({
                     type="button"
                     disabled={isPending || index === 0}
                     onClick={() => run(() => reorderCategoryAction(parent.id, "up"))}
-                    className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30"
+                    className="flex size-7 items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ChevronUp className="size-4" />
                   </button>
@@ -124,28 +124,28 @@ export function CategoriesTree({
                     type="button"
                     disabled={isPending || index === parents.length - 1}
                     onClick={() => run(() => reorderCategoryAction(parent.id, "down"))}
-                    className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30"
+                    className="flex size-7 items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ChevronDown className="size-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setFormTarget({ mode: "create", parentId: parent.id })}
-                    className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                    className="border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
                   >
                     <Plus className="size-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setFormTarget({ mode: "edit", category: parent })}
-                    className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                    className="border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
                   >
                     <Pencil className="size-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setDeleteTarget(parent)}
-                    className="rounded-lg border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-red-50"
+                    className="border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-red-50"
                   >
                     <Trash2 className="size-3.5" />
                   </button>
@@ -153,10 +153,10 @@ export function CategoriesTree({
               </div>
 
               {isOpen && children.length > 0 && (
-                <div className="divide-y divide-slate-50 bg-slate-50/50 pl-12">
+                <div className="divide-y divide-slate-300 bg-slate-50/50 pl-12">
                   {children.map((child, childIndex) => (
-                    <div key={child.id} className="flex items-center gap-2 py-2 pr-3">
-                      <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-white text-slate-500">
+                    <div key={child.id} className="flex items-center gap-2 py-2.5 pr-3">
+                      <span className="flex size-6 shrink-0 items-center justify-center bg-white text-slate-500">
                         {renderIcon(child.icon)}
                       </span>
                       <span className="flex-1 text-sm text-slate-700">{child.name}</span>
@@ -166,7 +166,7 @@ export function CategoriesTree({
                           type="button"
                           disabled={isPending || childIndex === 0}
                           onClick={() => run(() => reorderCategoryAction(child.id, "up"))}
-                          className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-white disabled:opacity-30"
+                          className="flex size-6 items-center justify-center text-slate-500 hover:bg-white disabled:opacity-30"
                         >
                           <ChevronUp className="size-3.5" />
                         </button>
@@ -174,21 +174,21 @@ export function CategoriesTree({
                           type="button"
                           disabled={isPending || childIndex === children.length - 1}
                           onClick={() => run(() => reorderCategoryAction(child.id, "down"))}
-                          className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-white disabled:opacity-30"
+                          className="flex size-6 items-center justify-center text-slate-500 hover:bg-white disabled:opacity-30"
                         >
                           <ChevronDown className="size-3.5" />
                         </button>
                         <button
                           type="button"
                           onClick={() => setFormTarget({ mode: "edit", category: child })}
-                          className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-white"
+                          className="border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-white"
                         >
                           <Pencil className="size-3.5" />
                         </button>
                         <button
                           type="button"
                           onClick={() => setDeleteTarget(child)}
-                          className="rounded-lg border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-white"
+                          className="border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-white"
                         >
                           <Trash2 className="size-3.5" />
                         </button>
@@ -292,7 +292,7 @@ function CategoryFormModal({
             <select
               value={parentId ?? ""}
               onChange={(e) => setParentId(e.target.value || null)}
-              className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="h-9 w-full border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             >
               {parents
                 .filter((p) => p.id !== editing?.id)
@@ -313,7 +313,7 @@ function CategoryFormModal({
                 key={iconName}
                 type="button"
                 onClick={() => setIcon(iconName)}
-                className={`flex size-8 items-center justify-center rounded-lg border ${
+                className={`flex size-8 items-center justify-center border ${
                   icon === iconName ? "border-brand bg-brand-light text-brand-dark" : "border-slate-200 text-slate-500 hover:bg-slate-50"
                 }`}
               >

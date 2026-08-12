@@ -34,7 +34,7 @@ export function IllustrationCard({
 }) {
   return (
     <div className={`relative mx-auto w-full max-w-sm ${className}`}>
-      <div className={`flex aspect-square items-center justify-center rounded-3xl ${TONE_CLASSES[tone]}`}>
+      <div className={`flex aspect-square items-center justify-center ${TONE_CLASSES[tone]}`}>
         <Icon className="size-20 sm:size-24" strokeWidth={1.5} />
       </div>
       {badges.map((badge) => (

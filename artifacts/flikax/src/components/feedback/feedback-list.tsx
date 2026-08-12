@@ -30,7 +30,7 @@ export function FeedbackList({
 }) {
   if (entries.length === 0) {
     return (
-      <div className="rounded-2xl bg-white p-8 text-center text-sm text-neutral-500 shadow-md">No feedback yet.</div>
+      <div className="bg-white p-8 text-center text-sm text-neutral-500 shadow-md">No feedback yet.</div>
     );
   }
 
@@ -39,7 +39,7 @@ export function FeedbackList({
       {entries.map((entry) => {
         const Icon = SENTIMENT_ICON[entry.sentiment] ?? Meh;
         return (
-          <div key={entry.id} className="rounded-2xl bg-white p-5 shadow-md">
+          <div key={entry.id} className="bg-white p-5 shadow-md">
             <div className="flex items-center gap-2">
               <Icon className={`size-4 ${SENTIMENT_COLOR[entry.sentiment] ?? "text-neutral-500"}`} />
               <p className="text-sm font-bold text-neutral-800">{entry.author?.full_name || "Flikax user"}</p>
@@ -48,7 +48,7 @@ export function FeedbackList({
             <p className="mt-2 text-sm text-neutral-700">{entry.message}</p>
 
             {entry.replies.map((reply) => (
-              <div key={reply.id} className="ml-4 mt-3 rounded-xl bg-brand-light p-3">
+              <div key={reply.id} className="ml-4 mt-3 bg-brand-light p-3">
                 <p className="text-xs font-bold text-brand-dark">Seller reply</p>
                 <p className="mt-1 text-sm text-neutral-700">{reply.message}</p>
               </div>

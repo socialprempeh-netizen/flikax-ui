@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const SELECT_CLASS =
-  "h-9 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
+  "h-9 border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
 
 export function SupportFilterBar({ filters }: { filters: AdminSupportFilters }) {
   const hasFilters = Boolean(filters.q || filters.status);
 
   return (
-    <Card className="mb-4 gap-0 rounded-2xl p-4 shadow-sm">
+    <Card className="mb-4 gap-0 p-4 shadow-sm">
       <form method="get" className="flex flex-wrap items-end gap-3">
         <label className="block">
           <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">

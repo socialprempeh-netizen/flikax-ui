@@ -15,7 +15,7 @@ export default async function AdminSettingsPage() {
       <p className="mt-1 text-sm text-slate-500">Feature flags and site configuration, editable without a redeploy.</p>
 
       <h2 className="mt-6 text-sm font-bold text-slate-800">Feature flags</h2>
-      <Card className="mt-2 gap-0 divide-y divide-slate-100 rounded-2xl p-0 shadow-sm">
+      <Card className="mt-2 gap-0 divide-y divide-slate-300 p-0 shadow-sm">
         {flags.length === 0 ? (
           <p className="p-6 text-sm text-slate-400">No flags yet.</p>
         ) : (
@@ -24,7 +24,7 @@ export default async function AdminSettingsPage() {
       </Card>
 
       <h2 className="mt-6 text-sm font-bold text-slate-800">Site settings</h2>
-      <Card className="mt-2 gap-0 divide-y divide-slate-100 rounded-2xl p-0 shadow-sm">
+      <Card className="mt-2 gap-0 divide-y divide-slate-300 p-0 shadow-sm">
         {settings.length === 0 ? (
           <p className="p-6 text-sm text-slate-400">No settings yet.</p>
         ) : (

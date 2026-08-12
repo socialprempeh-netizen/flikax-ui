@@ -40,7 +40,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
 
   if (success) {
     return (
-      <section className="rounded-2xl bg-green-50 p-6 text-center sm:p-8">
+      <section className="bg-green-50 p-6 text-center sm:p-8">
         <h2 className="font-logo text-xl font-bold text-neutral-800">Message sent</h2>
         <p className="mt-2 text-sm text-neutral-600">
           Thanks — our support team will get back to you soon.
@@ -50,7 +50,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
   }
 
   return (
-    <section className="rounded-2xl bg-white p-6 shadow-md sm:p-8">
+    <section className="bg-white p-6 shadow-md sm:p-8">
       <h2 className="font-logo text-xl font-bold text-neutral-800">Send us a message</h2>
       <p className="mt-1 text-sm text-neutral-500">We&apos;ll get back to you by email.</p>
 
@@ -63,7 +63,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+              className="w-full border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
             />
           </label>
           <label className="block">
@@ -73,7 +73,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+              className="w-full border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
             />
           </label>
         </div>
@@ -84,7 +84,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
             <select
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-2 pr-9 text-sm text-neutral-800 outline-none focus:border-brand"
+              className="w-full appearance-none border border-neutral-200 bg-white px-3 py-2 pr-9 text-sm text-neutral-800 outline-none focus:border-brand"
             >
               {TOPICS.map((t) => (
                 <option key={t} value={t}>
@@ -103,7 +103,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
             rows={4}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+            className="w-full border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
           />
         </label>
 
@@ -112,7 +112,7 @@ export function SupportTicketForm({ defaultEmail }: { defaultEmail?: string }) {
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-brand-dark px-5 py-2.5 text-sm font-bold text-white hover:brightness-110 disabled:opacity-60"
+          className="bg-brand-dark px-5 py-2.5 text-sm font-bold text-white hover:brightness-110 disabled:opacity-60"
         >
           {isPending ? "Sending..." : "Send message"}
         </button>

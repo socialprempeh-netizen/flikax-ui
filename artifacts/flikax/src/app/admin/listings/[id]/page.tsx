@@ -93,7 +93,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
         <div className="sm:col-span-2">
           <ListingGallery images={images} title={listing.title} />
 
-          <Card className="mt-6 gap-0 rounded-2xl p-5 shadow-sm">
+          <Card className="mt-6 gap-0 p-5 shadow-sm">
             <div className="flex flex-wrap items-center gap-2">
               <Badge className={ADMIN_STATUS_STYLES[listing.status] ?? "bg-slate-100 text-slate-600"}>
                 {ADMIN_STATUS_LABELS[listing.status] ?? listing.status}
@@ -122,7 +122,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
             <p className="mt-3 text-3xl font-extrabold text-brand-dark">{currency.format(listing.price)}</p>
 
             {listing.declined_reason && (
-              <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p className="mt-3 bg-red-50 px-3 py-2 text-sm text-red-700">
                 Decline reason: {listing.declined_reason}
               </p>
             )}
@@ -138,7 +138,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
             )}
 
             {specs.length > 0 && (
-              <div className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-slate-200 bg-slate-200 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-2 gap-px overflow-hidden border border-slate-300 bg-slate-300 sm:grid-cols-3">
                 {specs.map((spec) => (
                   <div key={spec.key} className="bg-white px-3 py-2.5">
                     <p className="text-sm font-semibold text-slate-800">{spec.value}</p>
@@ -171,7 +171,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
         </div>
 
         <div className="flex flex-col gap-4 sm:col-span-1">
-          <Card className="gap-2 rounded-2xl p-5 shadow-sm">
+          <Card className="gap-2 p-5 shadow-sm">
             <h2 className="text-sm font-bold text-slate-800">Seller</h2>
             <p className="text-sm text-slate-700">{listing.profiles?.full_name || "Unnamed user"}</p>
             {(listingContactPhone || listing.profiles?.phone) && (

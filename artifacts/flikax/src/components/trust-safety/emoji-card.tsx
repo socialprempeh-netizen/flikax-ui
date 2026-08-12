@@ -8,7 +8,7 @@ export function EmojiCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-md">
+    <div className="bg-white p-5 shadow-md">
       <div className="flex items-center gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-light text-lg">
           {emoji}

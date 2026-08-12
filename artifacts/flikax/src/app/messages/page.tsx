@@ -54,7 +54,7 @@ export default async function MessagesPage() {
         <h1 className="mb-6 border-l-4 border-brand pl-3 text-xl font-bold text-neutral-800">Messages</h1>
 
         {!conversations || conversations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-3 rounded-2xl bg-white py-20 text-center shadow-md">
+          <div className="flex flex-col items-center justify-center gap-3 bg-white py-20 text-center shadow-md">
             <span className="flex size-16 items-center justify-center rounded-full bg-brand-dark text-white shadow-lg">
               <MessageSquare className="size-7" />
             </span>
@@ -64,7 +64,7 @@ export default async function MessagesPage() {
             </p>
             <Link
               href="/"
-              className="mt-1 rounded-lg bg-brand-dark px-5 py-2 text-sm font-bold text-white hover:brightness-110"
+              className="mt-1 bg-brand-dark px-5 py-2 text-sm font-bold text-white hover:brightness-110"
             >
               Browse listings
             </Link>
@@ -85,12 +85,12 @@ export default async function MessagesPage() {
                 <Link
                   key={conversation.id}
                   href={`/messages/${conversation.id}`}
-                  className={`group flex items-center gap-3 rounded-xl border bg-white p-3 transition-shadow hover:shadow-md ${
-                    unread ? "border-brand/25 shadow-sm" : "border-neutral-100 shadow-sm"
+                  className={`group flex items-center gap-3 border bg-white p-3 transition-shadow hover:shadow-md ${
+                    unread ? "border-brand/25 shadow-sm" : "border-neutral-300 shadow-sm"
                   }`}
                 >
                   {/* Thumbnail */}
-                  <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand-dark/40">
+                  <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden bg-brand-light text-brand-dark/40">
                     {coverUrl ? (
                       <Image src={coverUrl} alt="" fill sizes="56px" quality={82} className="object-cover" />
                     ) : (

@@ -156,12 +156,12 @@ export function ChatThread({
   const bothRevealed = phoneRevealedByBuyer && phoneRevealedBySeller;
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-neutral-100 bg-white shadow-sm">
-      <div className="border-b border-neutral-100 p-4">
+    <div className="flex flex-1 flex-col overflow-hidden border border-neutral-300 bg-white shadow-sm">
+      <div className="border-b border-neutral-300 p-4">
         {bothRevealed && otherPartyPhone ? (
           <a
             href={`tel:${otherPartyPhone}`}
-            className="flex items-center justify-center gap-2 rounded-lg bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:brightness-110"
+            className="flex items-center justify-center gap-2 bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:brightness-110"
           >
             <Phone className="size-4" />
             Call {otherPartyName} — {otherPartyPhone}
@@ -193,7 +193,7 @@ export function ChatThread({
           return (
             <div key={message.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
               <div
-                className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm ${
+                className={`max-w-[75%] px-4 py-2 text-sm ${
                   isMine ? "bg-brand-dark text-white" : "bg-neutral-100 text-neutral-800"
                 }`}
               >
@@ -208,10 +208,10 @@ export function ChatThread({
         <div ref={bottomRef} />
       </div>
 
-      <div className="border-t border-neutral-100 p-3 pb-2">
+      <div className="border-t border-neutral-300 p-3 pb-2">
         {offerOpen ? (
           <form onSubmit={handleOfferSubmit} className="mb-2 flex items-center gap-2">
-            <span className="flex flex-1 items-center gap-1 rounded-full border border-brand/40 bg-brand-light px-4 py-2 text-sm font-semibold text-neutral-700 focus-within:border-brand">
+            <span className="flex flex-1 items-center gap-1 border border-brand/40 bg-brand-light px-4 py-2 text-sm font-semibold text-neutral-700 focus-within:border-brand">
               GH₵
               <input
                 autoFocus
@@ -225,7 +225,7 @@ export function ChatThread({
                 className="w-full min-w-0 bg-transparent outline-none placeholder:text-neutral-400"
               />
             </span>
-            <Button type="submit" disabled={isSending || !offerAmount.trim()} className="rounded-full">
+            <Button type="submit" disabled={isSending || !offerAmount.trim()}>
               Send
             </Button>
             <Button
@@ -248,7 +248,7 @@ export function ChatThread({
               disabled={isSending}
               variant="outline"
               size="sm"
-              className="shrink-0 rounded-full border-brand/30 bg-brand-light text-brand-dark hover:bg-brand/10 hover:text-brand-dark"
+              className="shrink-0 border-brand/30 bg-brand-light text-brand-dark hover:bg-brand/10 hover:text-brand-dark"
             >
               <Tag className="size-3" />
               Make an offer
@@ -265,7 +265,7 @@ export function ChatThread({
                 disabled={isSending}
                 variant="outline"
                 size="sm"
-                className="shrink-0 rounded-full border-neutral-200 bg-neutral-100 text-neutral-700 hover:border-brand/40 hover:bg-brand-light hover:text-brand-dark"
+                className="shrink-0 border-neutral-200 bg-neutral-100 text-neutral-700 hover:border-brand/40 hover:bg-brand-light hover:text-brand-dark"
               >
                 {text}
               </Button>
@@ -280,7 +280,7 @@ export function ChatThread({
             onChange={(event) => setDraft(event.target.value)}
             placeholder="Type a message..."
             maxLength={2000}
-            className="h-auto flex-1 rounded-full border-neutral-200 px-4 py-2 text-sm focus-visible:border-brand"
+            className="h-auto flex-1 border-neutral-200 px-4 py-2 text-sm focus-visible:border-brand"
           />
           <Button
             type="submit"

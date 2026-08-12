@@ -38,7 +38,7 @@ function SheetContent({
       <SheetOverlay />
       <SheetPrimitive.Content
         className={cn(
-          "fixed z-50 flex flex-col gap-4 border-neutral-100 bg-white p-0 shadow-xl transition-transform ease-in-out data-[state=closed]:duration-200 data-[state=open]:duration-300",
+          "fixed z-50 flex flex-col gap-4 border-neutral-300 bg-white p-0 shadow-xl transition-transform ease-in-out data-[state=closed]:duration-200 data-[state=open]:duration-300",
           SIDE_CLASSES[side],
           className
         )}
@@ -55,7 +55,7 @@ function SheetContent({
 }
 
 function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("flex flex-col gap-1 border-b border-neutral-100 px-4 py-4", className)} {...props} />;
+  return <div className={cn("flex flex-col gap-1 border-b border-neutral-300 px-4 py-4", className)} {...props} />;
 }
 
 function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {

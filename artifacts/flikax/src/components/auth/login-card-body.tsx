@@ -59,7 +59,7 @@ export function LoginCardBody({
       </div>
 
       {error && (
-        <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-600" role="alert">
+        <p className="bg-red-50 px-3 py-2 text-sm text-red-600" role="alert">
           {error}
         </p>
       )}
@@ -73,7 +73,7 @@ export function LoginCardBody({
           <Button
             type="button"
             onClick={() => setView("form")}
-            className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+            className="h-11 w-full bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
           >
             Email or phone
           </Button>

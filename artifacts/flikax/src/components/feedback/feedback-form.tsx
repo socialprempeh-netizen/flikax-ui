@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 const CATEGORIES = ["General feedback", "Bug report", "Listing issue", "Feature request", "Other"] as const;
 
 const FIELD_CLASS =
-  "h-auto w-full rounded-xl border-slate-300 px-4 py-2.5 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
+  "h-auto w-full border-slate-300 px-4 py-2.5 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 export function FeedbackForm({
   defaultCategory,
@@ -60,7 +60,7 @@ export function FeedbackForm({
             there to reach us.
           </p>
         </div>
-        <Button asChild variant="outline" className="mt-2 rounded-xl">
+        <Button asChild variant="outline" className="mt-2 ">
           <Link href="/">Back to browsing</Link>
         </Button>
       </div>
@@ -124,7 +124,7 @@ export function FeedbackForm({
 
       <Button
         type="submit"
-        className="w-full rounded-xl bg-brand-dark py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+        className="w-full bg-brand-dark py-3 font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
       >
         Send Feedback
       </Button>

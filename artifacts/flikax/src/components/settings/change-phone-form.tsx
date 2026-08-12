@@ -6,7 +6,7 @@ import { toGhanaE164 } from "@/lib/phone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const FIELD_CLASS = "h-auto w-auto rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
+const FIELD_CLASS = "h-auto w-auto border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
 
 export function ChangePhoneForm({ currentPhone }: { currentPhone: string | null }) {
   const [supabase] = useState(() => createClient());
@@ -59,7 +59,7 @@ export function ChangePhoneForm({ currentPhone }: { currentPhone: string | null 
   }
 
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-md">
+    <div className="bg-white p-5 shadow-md">
       <h2 className="text-sm font-bold text-neutral-800">Change phone number</h2>
       <p className="mt-1 text-sm text-neutral-500">Current: {currentPhone ?? "Not set"}</p>
 

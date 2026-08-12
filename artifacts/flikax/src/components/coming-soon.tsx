@@ -10,7 +10,7 @@ export function ComingSoon({
   description: string;
 }) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-3 rounded-xl bg-white py-20 text-center shadow-lg">
+    <div className="flex flex-1 flex-col items-center justify-center gap-3 bg-white py-20 text-center shadow-lg">
       <span className="flex size-14 items-center justify-center rounded-full bg-brand-dark text-white shadow-md">
         <Icon className="size-6" />
       </span>

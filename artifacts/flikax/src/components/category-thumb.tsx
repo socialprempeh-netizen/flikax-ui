@@ -12,7 +12,7 @@ export function CategoryThumb({
   category,
   size,
   iconSize,
-  rounded = "rounded-lg",
+  rounded = "",
   sizes,
   className = "",
   eager = false,

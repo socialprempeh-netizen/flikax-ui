@@ -61,7 +61,7 @@ export function MobileNavDrawer() {
                   <button
                     type="button"
                     onClick={openMessages}
-                    className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                    className="relative flex items-center gap-3 px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                   >
                     <item.icon className="size-4.5 shrink-0 text-neutral-600" />
                     {item.label}
@@ -70,7 +70,7 @@ export function MobileNavDrawer() {
                 ) : isLoggedIn ? (
                   <Link
                     href={item.href}
-                    className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                    className="relative flex items-center gap-3 px-2 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                   >
                     <item.icon className="size-4.5 shrink-0 text-neutral-600" />
                     {item.label}
@@ -79,7 +79,7 @@ export function MobileNavDrawer() {
                   <button
                     type="button"
                     onClick={() => openAuthModal(item.href)}
-                    className="relative flex items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                    className="relative flex items-center gap-3 px-2 py-2.5 text-left text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                   >
                     <item.icon className="size-4.5 shrink-0 text-neutral-600" />
                     {item.label}
@@ -89,15 +89,15 @@ export function MobileNavDrawer() {
             ))}
           </nav>
 
-          <div className="mt-3 border-t border-neutral-100 pt-3">
+          <div className="mt-3 border-t border-neutral-300 pt-3">
             {isLoggedIn ? (
-              <LogoutButton className="w-full rounded-lg px-2 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50" />
+              <LogoutButton className="w-full px-2 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50" />
             ) : (
               <SheetClose asChild>
                 <button
                   type="button"
                   onClick={() => openAuthModal("/")}
-                  className="flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-brand-dark hover:bg-brand-light"
+                  className="flex w-full items-center gap-3 px-2 py-2.5 text-left text-sm font-medium text-brand-dark hover:bg-brand-light"
                 >
                   <LogIn className="size-4.5 shrink-0" />
                   Log in

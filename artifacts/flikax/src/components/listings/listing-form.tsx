@@ -24,6 +24,7 @@ import { getFieldsForCategory } from "@/lib/listing-fields";
 import { toGhanaE164, toGhanaLocal } from "@/lib/phone";
 import { VehicleSpecFields } from "@/components/listings/vehicle-spec-fields";
 import { LocationPickerModal } from "@/components/location-picker-modal";
+import { CategoryPickerModal, type PickableCategory } from "@/components/category-picker-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -114,7 +115,7 @@ const NEGOTIABLE_OPTIONS = [
 // throughout this form) have no such base to inherit from, so they need it
 // spelled out here or they render as borderless, flat-looking boxes.
 const INPUT =
-  "h-auto w-full rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
+  "h-auto w-full border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
 // appearance-none strips the native dropdown arrow, but on its own that
 // leaves the select with *no* visible affordance that it's a dropdown at
 // all -- worse than the native default. pr-9 makes room for the
@@ -125,7 +126,7 @@ const SELECT = INPUT + " appearance-none pr-9";
 function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex items-center gap-2 pb-3">
-      <span className="flex size-7 items-center justify-center rounded-lg bg-brand-light text-brand-dark">
+      <span className="flex size-7 items-center justify-center bg-brand-light text-brand-dark">
         {icon}
       </span>
       <span className="text-xs font-bold uppercase tracking-wider text-neutral-700">{label}</span>
@@ -195,7 +196,6 @@ export function ListingForm({
   const [supabase] = useState(() => createClient());
   const isEditing = Boolean(existingListing);
 
-  const parentCategories = categories.filter((c) => c.parent_id === null);
   const initialCategory = existingListing
     ? categories.find((c) => c.id === existingListing.category_id)
     : undefined;
@@ -203,6 +203,7 @@ export function ListingForm({
   const [step, setStep] = useState<1 | 2>(1);
   const [parentId, setParentId] = useState(initialCategory?.parent_id ?? "");
   const [categoryId, setCategoryId] = useState(existingListing?.category_id ?? "");
+  const [categoryPickerOpen, setCategoryPickerOpen] = useState(false);
   const [attributes, setAttributes] = useState<Record<string, string | string[]>>(
     existingListing?.attributes ?? {}
   );
@@ -232,7 +233,6 @@ export function ListingForm({
   const [error, setError] = useState<string | null>(null);
   const [posted, setPosted] = useState(false);
 
-  const childCategories = categories.filter((c) => c.parent_id === parentId);
   const parentCategory = categories.find((c) => c.id === parentId);
   const selectedCategory = categories.find((c) => c.id === categoryId);
   const isVehicles = parentCategory?.slug === "vehicles";
@@ -243,6 +243,17 @@ export function ListingForm({
   const genericFields = isVehicles
     ? dynamicFields.filter((field) => !VEHICLE_CASCADE_KEYS.includes(field.key))
     : dynamicFields;
+
+  // Picking a leaf category from the modal sets both parentId (drives the
+  // Vehicles-cascade-vs-generic-fields branch below) and categoryId (the
+  // actual value submitted) in one go, and clears any attributes collected
+  // under a previously-selected category -- same reset the old subcategory
+  // <select>'s onChange did implicitly by remounting with an empty value.
+  function handleCategorySelect(category: PickableCategory) {
+    setParentId(category.parent_id ?? "");
+    setCategoryId(category.id);
+    setAttributes({});
+  }
 
   // Generic setter for the dynamic `attributes` fields (listing-fields.ts /
   // VehicleSpecFields both call this) — one function handles every category's
@@ -521,7 +532,7 @@ export function ListingForm({
   // ─── Success screen ──────────────────────────────────────────────────────────
   if (posted) {
     return (
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
+      <div className="overflow-hidden border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.1)]">
         {/* Top accent strip */}
         <div className="h-1.5 w-full bg-brand" />
         <div className="flex flex-col items-center px-8 py-12 text-center">
@@ -571,7 +582,7 @@ export function ListingForm({
 
       {/* ── STEP 1 ── */}
       {step === 1 && (
-        <form onSubmit={handleNext} className="space-y-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+        <form onSubmit={handleNext} className="space-y-0 overflow-hidden border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
           {/* Card header accent */}
           <div className="h-1.5 bg-brand" />
 
@@ -580,52 +591,25 @@ export function ListingForm({
             {/* ── Category ── */}
             <section>
               <SectionHeader icon={<Tag className="size-3.5" />} label="Category" />
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
-                    Main category <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <select
-                      required
-                      value={parentId}
-                      onChange={(e) => {
-                        setParentId(e.target.value);
-                        setCategoryId("");
-                        setAttributes({});
-                      }}
-                      className={SELECT}
-                    >
-                      <option value="" disabled>Select category…</option>
-                      {parentCategories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
-                  </div>
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
-                    Subcategory <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <select
-                      required
-                      disabled={!parentId}
-                      value={categoryId}
-                      onChange={(e) => setCategoryId(e.target.value)}
-                      className={SELECT}
-                    >
-                      <option value="" disabled>
-                        {parentId ? "Select subcategory…" : "Choose category first"}
-                      </option>
-                      {childCategories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
-                  </div>
-                </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
+                  Category <span className="text-red-500">*</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setCategoryPickerOpen(true)}
+                  className="flex w-full items-center justify-between border border-slate-400 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    <Tag className="size-4 shrink-0 text-brand-dark" />
+                    <span className="min-w-0 truncate">
+                      {selectedCategory
+                        ? `${parentCategory?.name} › ${selectedCategory.name}`
+                        : "Select a category…"}
+                    </span>
+                  </span>
+                  <ChevronRight className="size-4 shrink-0 text-neutral-400" />
+                </button>
               </div>
             </section>
 
@@ -706,7 +690,7 @@ export function ListingForm({
                               id={`attr-${field.key}`}
                               checked={scalarValue === "yes"}
                               onChange={(e) => setAttribute(field.key, e.target.checked ? "yes" : "no")}
-                              className="size-4 rounded accent-brand"
+                              className="size-4 accent-brand"
                             />
                             <label
                               htmlFor={`attr-${field.key}`}
@@ -726,7 +710,7 @@ export function ListingForm({
                                   type="button"
                                   onClick={() => toggleTagAttribute(field.key, opt)}
                                   aria-pressed={isSelected}
-                                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                                  className={`border px-3 py-1.5 text-xs font-semibold transition-colors ${
                                     isSelected
                                       ? "border-brand bg-brand-dark text-white"
                                       : "border-slate-400 bg-neutral-50 text-neutral-600 hover:border-brand/40 hover:text-brand-dark"
@@ -756,7 +740,11 @@ export function ListingForm({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe the condition, key features, reason for selling, included accessories…"
-                className={`${INPUT} resize-none`}
+                // text-15, not INPUT's text-sm -- matches the size the
+                // description actually renders at on the listing detail page
+                // (see text-15's definition in globals.css), so what the
+                // seller types looks the same size as what buyers will read.
+                className={`${INPUT} resize-none text-15`}
               />
               <p className="mt-1.5 text-xs text-slate-500">
                 A detailed description gets 3× more enquiries.
@@ -795,7 +783,7 @@ export function ListingForm({
                     {NEGOTIABLE_OPTIONS.map((opt) => (
                       <label
                         key={opt.value}
-                        className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-3 py-2.5 text-xs font-semibold transition-colors ${
+                        className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 border px-3 py-2.5 text-xs font-semibold transition-colors ${
                           negotiable === opt.value
                             ? "border-brand bg-brand-dark text-white"
                             : "border-slate-400 bg-neutral-50 text-neutral-600 hover:border-brand/40"
@@ -823,7 +811,7 @@ export function ListingForm({
               <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                 Contact phone number <span className="text-red-500">*</span>
               </label>
-              <div className="flex overflow-hidden rounded-lg border border-slate-400 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
+              <div className="flex overflow-hidden border border-slate-400 bg-neutral-50 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
                 <span className="flex items-center border-r border-slate-400 bg-neutral-100 px-3.5 text-sm font-semibold text-neutral-500">
                   +233
                 </span>
@@ -841,7 +829,7 @@ export function ListingForm({
                 Buyers see this when they tap &ldquo;Contact Seller.&rdquo; Can differ from your account phone.
               </p>
               {posterName && (
-                <div className="mt-4 flex items-center gap-2.5 rounded-xl border border-slate-200 bg-neutral-50 px-4 py-3">
+                <div className="mt-4 flex items-center gap-2.5 border border-slate-200 bg-neutral-50 px-4 py-3">
                   <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-dark text-xs font-bold text-white">
                     {posterName.charAt(0).toUpperCase()}
                   </div>
@@ -856,12 +844,12 @@ export function ListingForm({
 
             {/* ── Error + CTA ── */}
             {error && (
-              <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              <div className="border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                 {error}
               </div>
             )}
 
-            <Button type="submit" size="lg" className="w-full rounded-xl">
+            <Button type="submit" size="lg" className="w-full ">
               Continue to Photos &amp; Title
               <ChevronRight className="size-4" />
             </Button>
@@ -873,7 +861,7 @@ export function ListingForm({
       {step === 2 && (
         <form
           onSubmit={handleSubmit}
-          className="space-y-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
+          className="space-y-0 overflow-hidden border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
         >
           <div className="h-1.5 bg-brand" />
 
@@ -907,7 +895,7 @@ export function ListingForm({
                   <button
                     type="button"
                     onClick={() => setLocationPickerOpen(true)}
-                    className="flex w-full items-center justify-between rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
+                    className="flex w-full items-center justify-between border border-slate-400 bg-neutral-50 px-4 py-2.5 text-left text-sm text-neutral-800 transition-colors outline-none hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/10"
                   >
                     <span className="flex items-center gap-2">
                       <MapPin className="size-4 text-brand-dark" />
@@ -922,7 +910,7 @@ export function ListingForm({
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Category
                   </label>
-                  <div className="flex items-center justify-between rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm">
+                  <div className="flex items-center justify-between border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm">
                     <span className="text-neutral-700">
                       {parentCategory?.name}
                       {selectedCategory ? ` › ${selectedCategory.name}` : ""}
@@ -946,7 +934,7 @@ export function ListingForm({
 
               {/* Drop zone (shown when no images yet) */}
               {images.length === 0 && (
-                <label className="mb-4 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-400 bg-neutral-50 py-10 text-center transition-colors hover:border-brand/40 hover:bg-brand/5 cursor-pointer">
+                <label className="mb-4 flex flex-col items-center justify-center gap-3 border-2 border-dashed border-slate-400 bg-neutral-50 py-10 text-center transition-colors hover:border-brand/40 hover:bg-brand/5 cursor-pointer">
                   <div className="flex size-12 items-center justify-center rounded-full bg-neutral-100">
                     <ImagePlus className="size-6 text-neutral-400" />
                   </div>
@@ -956,7 +944,7 @@ export function ListingForm({
                       JPEG, PNG or WebP · up to {MAX_IMAGES} photos · auto-watermarked
                     </p>
                   </div>
-                  <span className="rounded-lg bg-brand-dark px-5 py-2 text-xs font-bold text-white hover:brightness-110">
+                  <span className="bg-brand-dark px-5 py-2 text-xs font-bold text-white hover:brightness-110">
                     Choose files
                   </span>
                   <input
@@ -975,12 +963,12 @@ export function ListingForm({
                   {images.map((img, i) => (
                     <div
                       key={img.id}
-                      className="relative aspect-square overflow-hidden rounded-xl border border-slate-400 bg-neutral-100"
+                      className="relative aspect-square overflow-hidden border border-slate-400 bg-neutral-100"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={img.previewUrl} alt="" className="size-full object-cover" />
                       {i === 0 && (
-                        <span className="absolute bottom-1 left-1 rounded bg-black/70 px-1.5 py-0.5 text-4xs font-bold text-white">
+                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 text-4xs font-bold text-white">
                           COVER
                         </span>
                       )}
@@ -1008,7 +996,7 @@ export function ListingForm({
                   ))}
 
                   {images.length < MAX_IMAGES && (
-                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-400 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand-dark">
+                    <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 border-2 border-dashed border-slate-400 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand/40 hover:text-brand-dark">
                       <ImagePlus className="size-5" />
                       <span className="text-xs font-medium">Add more</span>
                       <input
@@ -1044,16 +1032,16 @@ export function ListingForm({
 
             {/* ── Error + Submit ── */}
             {error && (
-              <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              <div className="border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                 {error}
               </div>
             )}
 
             <div className="flex gap-3">
-              <Button type="button" onClick={() => setStep(1)} variant="outline" size="lg" className="rounded-xl">
+              <Button type="button" onClick={() => setStep(1)} variant="outline" size="lg" className="">
                 ← Back
               </Button>
-              <Button type="submit" disabled={submitting} size="lg" className="flex-1 rounded-xl">
+              <Button type="submit" disabled={submitting} size="lg" className="flex-1 ">
                 {submitting ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
@@ -1075,6 +1063,13 @@ export function ListingForm({
         onClose={() => setLocationPickerOpen(false)}
         onSelect={(name) => name && setLocation(name)}
         allowBroadSelection={false}
+      />
+
+      <CategoryPickerModal
+        open={categoryPickerOpen}
+        onClose={() => setCategoryPickerOpen(false)}
+        categories={categories}
+        onSelect={handleCategorySelect}
       />
     </div>
   );

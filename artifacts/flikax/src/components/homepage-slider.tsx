@@ -1,5 +1,16 @@
 "use client";
 
+// UNUSED -- zero import sites in the app. This isn't a reversed decision:
+// the *admin* side of this feature is fully live (see
+// src/app/admin/homepage-slider/page.tsx, HomepageSliderManager, the
+// homepage_slides table + "homepage-slides" Storage bucket, and
+// src/app/api/admin/homepage-slides/upload/route.ts) -- an admin can
+// create/reorder/delete slides today. But nothing on the public homepage
+// (src/app/page.tsx) ever renders this component against that data, so
+// slides an admin sets up are invisible to real visitors. This looks like
+// an incomplete feature (wire this component into the homepage) rather
+// than dead code to delete -- flagged for a product decision, not touched
+// here since that's new functionality, not a polish fix.
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -39,7 +50,7 @@ export function HomepageSlider({ slides }: { slides: SliderSlide[] }) {
 
   const slide = slides[index];
   const content = (
-    <div className="relative aspect-[10/3] w-full overflow-hidden rounded-xl bg-neutral-100">
+    <div className="relative aspect-[10/3] w-full overflow-hidden bg-neutral-100">
       <Image
         src={slide.imageUrl}
         alt={slide.headline ?? ""}

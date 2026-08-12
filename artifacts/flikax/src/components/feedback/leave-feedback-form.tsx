@@ -36,7 +36,7 @@ export function LeaveFeedbackForm({ profileId }: { profileId: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 rounded-2xl bg-white p-5 shadow-md">
+    <form onSubmit={handleSubmit} className="space-y-3 bg-white p-5 shadow-md">
       <h2 className="text-sm font-bold text-neutral-800">Leave feedback</h2>
       <div className="flex gap-2">
         {OPTIONS.map((opt) => (
@@ -44,7 +44,7 @@ export function LeaveFeedbackForm({ profileId }: { profileId: string }) {
             key={opt.value}
             type="button"
             onClick={() => setSentiment(opt.value)}
-            className={`flex flex-1 flex-col items-center gap-1 rounded-lg border px-3 py-2 text-xs font-semibold ${
+            className={`flex flex-1 flex-col items-center gap-1 border px-3 py-2 text-xs font-semibold ${
               sentiment === opt.value ? opt.activeClass : "border-neutral-200 text-neutral-500 hover:bg-neutral-50"
             }`}
           >
@@ -59,14 +59,14 @@ export function LeaveFeedbackForm({ profileId }: { profileId: string }) {
         required
         rows={3}
         placeholder="Share your experience..."
-        className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
+        className="w-full border border-neutral-200 px-3 py-2 text-sm text-neutral-800 outline-none focus:border-brand"
       />
       {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
       {success && <p className="text-sm text-green-600">Thanks for your feedback!</p>}
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-lg bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:brightness-110 disabled:opacity-60"
+        className="bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:brightness-110 disabled:opacity-60"
       >
         {isPending ? "Submitting..." : "Submit feedback"}
       </button>

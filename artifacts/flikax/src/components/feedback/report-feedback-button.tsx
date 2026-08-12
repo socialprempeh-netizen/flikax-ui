@@ -54,7 +54,7 @@ export function ReportFeedbackButton({ feedbackId }: { feedbackId: string }) {
 
       {open && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-neutral-900/70 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl">
+          <div className="w-full max-w-md bg-white p-5 shadow-xl">
             {done ? (
               <>
                 <h2 className="text-base font-bold text-neutral-800">Report submitted</h2>
@@ -62,7 +62,7 @@ export function ReportFeedbackButton({ feedbackId }: { feedbackId: string }) {
                 <button
                   type="button"
                   onClick={close}
-                  className="mt-5 w-full rounded-lg bg-brand-dark py-2.5 text-sm font-bold text-white hover:brightness-110"
+                  className="mt-5 w-full bg-brand-dark py-2.5 text-sm font-bold text-white hover:brightness-110"
                 >
                   Close
                 </button>
@@ -83,7 +83,7 @@ export function ReportFeedbackButton({ feedbackId }: { feedbackId: string }) {
                   {FEEDBACK_REPORT_REASONS.map((value) => (
                     <label
                       key={value}
-                      className="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 has-[:checked]:border-brand has-[:checked]:bg-brand-light"
+                      className="flex items-center gap-2 border border-neutral-200 px-3 py-2 text-sm text-neutral-700 has-[:checked]:border-brand has-[:checked]:bg-brand-light"
                     >
                       <input
                         type="radio"
@@ -105,7 +105,7 @@ export function ReportFeedbackButton({ feedbackId }: { feedbackId: string }) {
                     type="button"
                     onClick={close}
                     disabled={isPending}
-                    className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
+                    className="border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
                   >
                     Cancel
                   </button>
@@ -113,7 +113,7 @@ export function ReportFeedbackButton({ feedbackId }: { feedbackId: string }) {
                     type="button"
                     onClick={submit}
                     disabled={isPending}
-                    className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-60"
+                    className="bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-60"
                   >
                     {isPending ? "Submitting..." : "Submit report"}
                   </button>

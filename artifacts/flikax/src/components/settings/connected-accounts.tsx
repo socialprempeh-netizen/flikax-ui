@@ -21,8 +21,8 @@ export function ConnectedAccounts({ connectedGoogle }: { connectedGoogle: boolea
   ];
 
   return (
-    <div className="space-y-3 rounded-2xl bg-white p-5 shadow-md">
-      <div className="flex items-center gap-3 rounded-xl bg-brand-light p-3">
+    <div className="space-y-3 bg-white p-5 shadow-md">
+      <div className="flex items-center gap-3 bg-brand-light p-3">
         <span className="text-lg">🤝</span>
         <p className="text-sm text-neutral-700">Connect your social media accounts for a smoother experience!</p>
       </div>

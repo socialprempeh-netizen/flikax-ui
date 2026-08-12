@@ -21,7 +21,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
     // Leaving width unset lets it resolve from the margin equation instead,
     // which extends evenly on both sides.
     return (
-      <div className="-mx-4 flex aspect-[4/3] items-center justify-center rounded-none border-0 bg-cream text-brand-dark/40 sm:mx-0 sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand">
+      <div className="-mx-4 flex aspect-[4/3] items-center justify-center border-0 bg-cream text-brand-dark/40 sm:mx-0 sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand">
         <ImageOff className="size-10" />
       </div>
     );
@@ -77,7 +77,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
           image on the site (grid cards, thumbnails) already uses. */}
       <div
         ref={mainRef}
-        className="relative -mx-4 aspect-[4/3] touch-pan-y select-none overflow-hidden rounded-none border-0 bg-cream sm:mx-0 sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand"
+        className="relative -mx-4 aspect-[4/3] touch-pan-y select-none overflow-hidden border-0 bg-cream sm:mx-0 sm:border sm:border-slate-200/80 sm:border-t-4 sm:border-t-brand"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {
@@ -152,7 +152,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
               type="button"
               onClick={() => selectImage(index)}
               aria-label={`View image ${index + 1}`}
-              className={`relative aspect-square w-full overflow-hidden rounded-sm border-2 transition-all ${
+              className={`relative aspect-square w-full overflow-hidden border-2 transition-all ${
                 index === activeIndex
                   ? "border-brand shadow-md"
                   : "border-transparent opacity-80 hover:opacity-100"

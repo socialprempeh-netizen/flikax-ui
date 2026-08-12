@@ -52,11 +52,11 @@ export function UserDetailActions({
   }
 
   return (
-    <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+    <Card className="gap-0 p-5 shadow-sm">
       <h2 className="text-sm font-bold text-slate-800">Account actions</h2>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
-      <div className="mt-3 border-t border-slate-100 pt-4">
+      <div className="mt-3 border-t border-slate-300 pt-4">
         <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Verification
         </span>
@@ -83,7 +83,7 @@ export function UserDetailActions({
         <p className="mt-1 text-xs text-slate-400">Shows a verified badge on their public profile.</p>
       </div>
 
-      <div className="mt-4 border-t border-slate-100 pt-4">
+      <div className="mt-4 border-t border-slate-300 pt-4">
         <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Suspend posting
         </span>
@@ -103,7 +103,7 @@ export function UserDetailActions({
             <select
               value={suspendDays}
               onChange={(e) => setSuspendDays(Number(e.target.value))}
-              className="h-9 rounded-md border border-input bg-transparent px-2 text-xs text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="h-9 border border-input bg-transparent px-2 text-xs text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             >
               {SUSPEND_DURATIONS.map((d) => (
                 <option key={d} value={d}>
@@ -125,7 +125,7 @@ export function UserDetailActions({
         <p className="mt-1 text-xs text-slate-400">Blocks new listings and plan purchases. Login stays open.</p>
       </div>
 
-      <div className="mt-4 border-t border-slate-100 pt-4">
+      <div className="mt-4 border-t border-slate-300 pt-4">
         <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Login access
         </span>
@@ -154,7 +154,7 @@ export function UserDetailActions({
         <p className="mt-1 text-xs text-slate-400">Blocks login entirely until unbanned.</p>
       </div>
 
-      <div className="mt-4 border-t border-slate-100 pt-4">
+      <div className="mt-4 border-t border-slate-300 pt-4">
         <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Log a warning
         </span>
@@ -177,7 +177,7 @@ export function UserDetailActions({
         </Button>
       </div>
 
-      <div className="mt-4 border-t border-slate-100 pt-4">
+      <div className="mt-4 border-t border-slate-300 pt-4">
         <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Danger zone
         </span>

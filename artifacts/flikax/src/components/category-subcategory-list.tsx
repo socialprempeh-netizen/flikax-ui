@@ -34,14 +34,14 @@ export function CategorySubcategoryListDesktop({ parentId, subcategories }: Prop
 
   return (
     <div className="hidden w-64 shrink-0 lg:block">
-      <div className="rounded-lg border-[1.5px] border-neutral-300 bg-white p-3">
+      <div className="border-[1.5px] border-neutral-300 bg-white p-3">
         <p className="mb-2 text-sm font-semibold text-neutral-700">Categories</p>
-        <div className="space-y-0.5">
+        <div className="divide-y divide-neutral-300">
           {visible.map((sub) => (
             <Link
               key={sub.id}
               href={`/${sub.slug}`}
-              className="flex items-center gap-2.5 rounded-md px-1.5 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-brand-dark"
+              className="flex items-center gap-2.5 px-1.5 py-3 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-brand-dark"
             >
               <CategoryThumb
                 category={{ ...sub, parent_id: parentId }}

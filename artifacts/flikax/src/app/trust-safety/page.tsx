@@ -190,7 +190,7 @@ export default async function TrustSafetyPage() {
           {/* Buying Safely */}
           <section id="buying-safely" className="scroll-mt-24">
             <h2 className="font-logo text-2xl font-bold text-neutral-800">Buying Safely</h2>
-            <div className="mt-5 rounded-2xl bg-white p-6 shadow-md">
+            <div className="mt-5 bg-white p-6 shadow-md">
               <p className="text-neutral-700">When buying through Flikax:</p>
               <ul className="mt-2 list-disc space-y-1.5 pl-5 text-neutral-700">
                 <li>Compare multiple listings before deciding.</li>
@@ -207,7 +207,7 @@ export default async function TrustSafetyPage() {
           {/* Selling Safely */}
           <section id="selling-safely" className="scroll-mt-24">
             <h2 className="font-logo text-2xl font-bold text-neutral-800">Selling Safely</h2>
-            <div className="mt-5 rounded-2xl bg-white p-6 shadow-md">
+            <div className="mt-5 bg-white p-6 shadow-md">
               <p className="text-neutral-700">When selling on Flikax:</p>
               <ul className="mt-2 list-disc space-y-1.5 pl-5 text-neutral-700">
                 <li>Meet buyers in safe public places.</li>
@@ -239,7 +239,7 @@ export default async function TrustSafetyPage() {
           {/* Reporting Suspicious Activity */}
           <section id="reporting-suspicious-activity" className="scroll-mt-24">
             <h2 className="font-logo text-2xl font-bold text-neutral-800">Reporting Suspicious Activity</h2>
-            <div className="mt-5 rounded-2xl bg-white p-6 shadow-md">
+            <div className="mt-5 bg-white p-6 shadow-md">
               <p className="text-neutral-700">Help keep the Flikax community safe by reporting:</p>
               <ul className="mt-2 grid list-disc grid-cols-2 gap-x-4 space-y-1.5 pl-5 text-neutral-700 sm:grid-cols-3">
                 <li>Fake listings</li>
@@ -261,7 +261,7 @@ export default async function TrustSafetyPage() {
           {/* How Flikax Helps Protect You */}
           <section id="how-flikax-helps" className="scroll-mt-24">
             <h2 className="font-logo text-2xl font-bold text-neutral-800">How Flikax Helps Protect You</h2>
-            <div className="mt-5 rounded-2xl bg-white p-6 shadow-md">
+            <div className="mt-5 bg-white p-6 shadow-md">
               <p className="text-neutral-700">We work continuously to improve marketplace safety by:</p>
               <ul className="mt-2 list-disc space-y-1.5 pl-5 text-neutral-700">
                 <li>Reviewing listings for compliance.</li>
@@ -282,7 +282,7 @@ export default async function TrustSafetyPage() {
           {/* Need Help */}
           <section id="need-help" className="scroll-mt-24">
             <h2 className="font-logo text-2xl font-bold text-neutral-800">Need Help?</h2>
-            <div className="mt-5 rounded-2xl bg-brand-light p-6">
+            <div className="mt-5 bg-brand-light p-6">
               <p className="text-neutral-700">
                 If you encounter suspicious activity or believe another user has violated our policies,
                 please report the listing or contact the Flikax Support team.

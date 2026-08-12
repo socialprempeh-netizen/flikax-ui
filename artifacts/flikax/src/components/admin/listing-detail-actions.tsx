@@ -124,7 +124,7 @@ export function ListingDetailActions({
   }
 
   return (
-    <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+    <Card className="gap-0 p-5 shadow-sm">
       <h2 className="text-sm font-bold text-slate-800">Moderation actions</h2>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
@@ -167,7 +167,7 @@ export function ListingDetailActions({
         </Button>
       </div>
 
-      <div className="mt-5 border-t border-slate-100 pt-4">
+      <div className="mt-5 border-t border-slate-300 pt-4">
         <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Category
         </span>
@@ -175,7 +175,7 @@ export function ListingDetailActions({
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="h-9 flex-1 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            className="h-9 flex-1 border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
@@ -195,7 +195,7 @@ export function ListingDetailActions({
         </div>
       </div>
 
-      <div className="mt-5 border-t border-slate-100 pt-4">
+      <div className="mt-5 border-t border-slate-300 pt-4">
         <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
           Expiry
         </span>
@@ -210,7 +210,7 @@ export function ListingDetailActions({
       </div>
 
       {(isFeatured || isBumped) && (
-        <div className="mt-5 border-t border-slate-100 pt-4">
+        <div className="mt-5 border-t border-slate-300 pt-4">
           <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
             Manual overrides
           </span>

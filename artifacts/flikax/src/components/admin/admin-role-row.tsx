@@ -46,7 +46,7 @@ export function AdminRoleRow({ admin, isSelf }: { admin: AdminListItem; isSelf: 
         disabled={isSelf || isPending}
         onChange={(e) => handleChange(e.target.value as "super_admin" | "admin" | "")}
         title={isSelf ? "You can't change your own role here" : undefined}
-        className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-800 outline-none focus:border-brand disabled:bg-slate-50 disabled:text-slate-400"
+        className="border border-slate-200 px-3 py-1.5 text-sm text-slate-800 outline-none focus:border-brand disabled:bg-slate-50 disabled:text-slate-400"
       >
         <option value="admin">Admin</option>
         <option value="super_admin">Super Admin</option>

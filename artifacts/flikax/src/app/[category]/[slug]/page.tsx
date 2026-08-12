@@ -384,7 +384,7 @@ async function CategoryLocationPage({
         </h1>
 
         {belowThreshold ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-neutral-200 bg-white py-16 text-center">
+          <div className="flex flex-col items-center justify-center gap-2 border border-dashed border-neutral-200 bg-white py-16 text-center">
             <p className="text-sm font-medium text-neutral-600">
               No {category.name} listings in {location.district_name} yet.
             </p>
@@ -667,7 +667,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
           <div className="sm:col-span-2">
             <ListingGallery images={images} title={listing.title} />
 
-            <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-5">
+            <Card className="mt-4 gap-0 border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-5">
               {(isFeatured || isBumped) && (
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   {isFeatured && (
@@ -721,7 +721,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
             </Card>
 
             {(specs.length > 0 || tagSpecs.length > 0 || listing.description) && (
-              <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
+              <Card className="mt-4 gap-0 border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
                 {specs.length > 0 && (
                   <div>
                     <h2 className="mb-3 text-lg font-bold tracking-tight text-neutral-900">Specifications</h2>
@@ -731,7 +731,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                         the first item of every row too (a ladder, not real
                         column gridlines). A border on every tile sidesteps that
                         and stays correct at every breakpoint/column count. */}
-                    <div className="grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-neutral-200 bg-neutral-200">
+                    <div className="grid grid-cols-3 gap-px overflow-hidden border border-neutral-300 bg-neutral-300">
                       {specs.map((spec) => (
                         <div key={spec.key} className="bg-white px-3 py-2.5">
                           <p className="text-sm font-semibold text-neutral-800 sm:text-base">{spec.value}</p>
@@ -772,7 +772,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               </Card>
             )}
 
-            <Card className="mt-4 gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
+            <Card className="mt-4 gap-0 border-slate-200/80 p-4 shadow-sm sm:mt-5 sm:p-6">
               <ShareButtons title={listing.title} priceLabel={currency.format(listing.price)} />
             </Card>
           </div>
@@ -783,7 +783,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 the top of the right column without needing the eye to find
                 it inside the (denser, text-heavier) title card in the main
                 column. */}
-            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
+            <Card className="gap-0 border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex flex-wrap items-baseline gap-2">
                 <p className="text-2xl font-bold tracking-tight text-brand-dark">
                   {currency.format(listing.price)}
@@ -804,7 +804,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               </div>
             </Card>
 
-            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
+            <Card className="gap-0 border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex items-center gap-3">
                 <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-light text-lg font-bold text-brand-dark">
                   <AvatarContent
@@ -832,7 +832,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                   storefront of everything else they're currently selling. */}
               <Link
                 href={`/seller/${listing.user_id}`}
-                className="mt-3 flex min-h-11 items-center justify-between rounded-lg border border-neutral-200 px-3 text-sm font-semibold text-neutral-700 hover:border-brand hover:text-brand-dark"
+                className="mt-3 flex min-h-11 items-center justify-between border border-neutral-200 px-3 text-sm font-semibold text-neutral-700 hover:border-brand hover:text-brand-dark"
               >
                 <span className="flex items-center gap-2">
                   <Store className="size-4" />
@@ -860,7 +860,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                   </a>
                 </Button>
 
-                <span className="flex items-center justify-center gap-2 rounded-lg bg-green-50 py-2 text-base font-bold text-green-700">
+                <span className="flex items-center justify-center gap-2 bg-green-50 py-2 text-base font-bold text-green-700">
                   <CheckCircle2 className="size-4" />
                   Status: {STATUS_LABELS[listing.status] ?? listing.status}
                 </span>
@@ -869,13 +869,13 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               </div>
             </Card>
 
-            <Card className="gap-1 rounded-2xl border-dashed border-brand/30 bg-brand-light p-4 text-center shadow-none sm:p-5">
+            <Card className="gap-1 border-dashed border-brand/30 bg-brand-light p-4 text-center shadow-none sm:p-5">
               <h3 className="text-sm font-bold text-neutral-800">Post an Ad Similar to This</h3>
               <p className="mt-1 text-xs text-neutral-500">Reach thousands of buyers across Ghana.</p>
               <SellCta className="mt-3 w-full" />
             </Card>
 
-            <Card className="gap-0 rounded-2xl border-slate-200/80 p-4 shadow-sm sm:p-5">
+            <Card className="gap-0 border-slate-200/80 p-4 shadow-sm sm:p-5">
               <h3 className="mb-3 text-sm font-bold text-neutral-800">Safety First - Read This Before Proceeding</h3>
               <ul className="list-disc space-y-2 pl-4 marker:text-brand-dark">
                 {SAFETY_TIPS.map((tip) => (

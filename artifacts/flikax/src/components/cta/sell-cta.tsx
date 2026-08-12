@@ -49,7 +49,7 @@ export function SellCta({
   // sign-in entry point in the header/nav.
   const { isLoggedIn } = useSessionSummary();
   const { openAuthModal } = useAuthModal();
-  const sharedClassName = `inline-flex items-center justify-center gap-2 rounded-lg font-bold transition-colors ${VARIANT_CLASSES[variant]} ${SIZE_CLASSES[size]} ${className}`;
+  const sharedClassName = `inline-flex items-center justify-center gap-2 font-bold transition-colors ${VARIANT_CLASSES[variant]} ${SIZE_CLASSES[size]} ${className}`;
 
   if (!isLoggedIn) {
     return (

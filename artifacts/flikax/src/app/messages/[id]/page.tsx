@@ -100,9 +100,9 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
               short_id: conversation.listing.short_id,
               categorySlug: conversation.listing.categories?.slug ?? "listing",
             })}
-            className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
+            className="flex items-center gap-3 border border-neutral-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
           >
-            <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand-dark/40">
+            <div className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden bg-brand-light text-brand-dark/40">
               {coverUrl ? (
                 <Image
                   src={coverUrl}
@@ -127,7 +127,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
         )}
 
         {/* Chat header */}
-        <div className="flex items-center gap-3 rounded-xl border border-neutral-100 bg-white px-4 py-3 shadow-sm">
+        <div className="flex items-center gap-3 border border-neutral-300 bg-white px-4 py-3 shadow-sm">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-dark text-sm font-bold text-white">
             {(otherParty?.full_name || "F")[0].toUpperCase()}
           </span>

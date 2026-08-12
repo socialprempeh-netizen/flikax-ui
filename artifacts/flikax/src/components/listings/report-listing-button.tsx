@@ -80,7 +80,7 @@ export function ReportListingButton({ listingId }: { listingId: string }) {
                 {REPORT_REASONS.map((value) => (
                   <label
                     key={value}
-                    className="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 has-[:checked]:border-brand has-[:checked]:bg-brand-light"
+                    className="flex items-center gap-2 border border-neutral-200 px-3 py-2 text-sm text-neutral-700 has-[:checked]:border-brand has-[:checked]:bg-brand-light"
                   >
                     <input
                       type="radio"

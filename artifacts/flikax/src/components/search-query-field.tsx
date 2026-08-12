@@ -37,12 +37,12 @@ export function SearchQueryField({ defaultQuery }: { defaultQuery?: string }) {
       />
 
       {open && recent.length > 0 && (
-        <div className="absolute left-0 right-0 top-full z-40 mt-3 rounded-xl border border-neutral-100 bg-white p-3 text-left shadow-lg">
+        <div className="absolute left-0 right-0 top-full z-40 mt-3 border border-neutral-300 bg-white p-3 text-left shadow-lg">
           <p className="mb-2 text-xs font-bold uppercase tracking-wide text-neutral-400">Recently Viewed</p>
           <div className="flex gap-3 overflow-x-auto pb-1">
             {recent.map((item) => (
               <Link key={item.id} href={item.href} className="w-24 shrink-0">
-                <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg bg-neutral-100 text-neutral-300">
+                <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-neutral-100 text-neutral-300">
                   {item.imageUrl ? (
                     <Image src={item.imageUrl} alt="" fill sizes="96px" quality={82} className="object-cover" />
                   ) : (

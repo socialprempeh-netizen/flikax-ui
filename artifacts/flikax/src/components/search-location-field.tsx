@@ -14,7 +14,7 @@ export function SearchLocationField({ defaultLocation }: { defaultLocation?: str
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="relative flex h-9 shrink-0 items-center gap-1 rounded-md bg-transparent pl-3.5 pr-6 text-sm font-normal text-neutral-700 outline-none"
+        className="relative flex h-9 shrink-0 items-center gap-1 bg-transparent pl-3.5 pr-6 text-sm font-normal text-neutral-700 outline-none"
       >
         <MapPin className="size-3.5 shrink-0 text-neutral-500" />
         {location || "All Ghana"}

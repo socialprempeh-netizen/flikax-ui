@@ -68,7 +68,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
 
       <div className="grid gap-6 sm:grid-cols-3">
         <div className="flex flex-col gap-4 sm:col-span-2">
-          <Card className="gap-2 rounded-2xl p-5 shadow-sm">
+          <Card className="gap-2 p-5 shadow-sm">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-xl font-bold text-slate-800">{profile.full_name || "Unnamed user"}</h1>
               <Badge className={STATUS_STYLES[status]}>{status.charAt(0).toUpperCase() + status.slice(1)}</Badge>
@@ -99,12 +99,12 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
             </div>
           </Card>
 
-          <Card className="gap-2 rounded-2xl p-5 shadow-sm">
+          <Card className="gap-2 p-5 shadow-sm">
             <h2 className="text-sm font-bold text-slate-800">Listings ({listings?.length ?? 0})</h2>
             {(listings ?? []).length === 0 ? (
               <p className="mt-2 text-sm text-slate-400">No listings yet.</p>
             ) : (
-              <div className="mt-1 divide-y divide-slate-100">
+              <div className="mt-1 divide-y divide-slate-300">
                 {(listings ?? []).map((listing) => (
                   <div key={listing.id} className="flex items-center justify-between py-2.5">
                     <Link
@@ -125,12 +125,12 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
             )}
           </Card>
 
-          <Card className="gap-2 rounded-2xl p-5 shadow-sm">
+          <Card className="gap-2 p-5 shadow-sm">
             <h2 className="text-sm font-bold text-slate-800">Purchases ({purchases?.length ?? 0})</h2>
             {(purchases ?? []).length === 0 ? (
               <p className="mt-2 text-sm text-slate-400">No purchases yet.</p>
             ) : (
-              <div className="mt-1 divide-y divide-slate-100">
+              <div className="mt-1 divide-y divide-slate-300">
                 {(purchases ?? []).map((purchase) => (
                   <div key={purchase.id} className="flex items-center justify-between py-2.5">
                     <span className="text-sm font-medium text-slate-700">
@@ -148,12 +148,12 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
             )}
           </Card>
 
-          <Card className="gap-2 rounded-2xl p-5 shadow-sm">
+          <Card className="gap-2 p-5 shadow-sm">
             <h2 className="text-sm font-bold text-slate-800">Warning log ({warnings?.length ?? 0})</h2>
             {(warnings ?? []).length === 0 ? (
               <p className="mt-2 text-sm text-slate-400">No warnings logged.</p>
             ) : (
-              <div className="mt-1 divide-y divide-slate-100">
+              <div className="mt-1 divide-y divide-slate-300">
                 {(warnings ?? []).map((warning) => (
                   <div key={warning.id} className="py-2.5">
                     <p className="text-sm text-slate-700">{warning.message}</p>

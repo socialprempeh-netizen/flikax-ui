@@ -53,7 +53,7 @@ const socialIcons = [
 
 export function SiteFooter() {
   return (
-    <footer className="rounded-t-[2.5rem] bg-[#0F172A] px-6 py-5 text-white sm:px-10 sm:py-6">
+    <footer className="-[2.5rem] bg-[#0F172A] px-6 py-5 text-white sm:px-10 sm:py-6">
       <JsonLd data={localBusinessJsonLd} />
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col items-center gap-2 text-center">
@@ -137,14 +137,14 @@ export function SiteFooter() {
           <div>
             <h3 className="mb-2 text-sm font-bold text-white/90">Get the App</h3>
             <div className="flex flex-col gap-1.5">
-              <span className="flex cursor-default items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1">
+              <span className="flex cursor-default items-center gap-2 border border-white/15 bg-white/5 px-2.5 py-1">
                 <FaApple className="size-4 shrink-0" />
                 <span className="leading-tight">
                   <span className="block text-4xs text-white/50">Coming Soon</span>
                   <span className="block text-xs font-semibold">App Store</span>
                 </span>
               </span>
-              <span className="flex cursor-default items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1">
+              <span className="flex cursor-default items-center gap-2 border border-white/15 bg-white/5 px-2.5 py-1">
                 <FaGooglePlay className="size-3.5 shrink-0" />
                 <span className="leading-tight">
                   <span className="block text-4xs text-white/50">Coming Soon</span>

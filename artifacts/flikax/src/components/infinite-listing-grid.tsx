@@ -118,7 +118,7 @@ export function InfiniteListingGrid({
             <button
               type="button"
               onClick={loadNext}
-              className="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+              className="border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
             >
               Couldn&apos;t load more — try again
             </button>

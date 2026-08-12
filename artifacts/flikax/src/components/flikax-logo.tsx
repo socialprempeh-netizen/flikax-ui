@@ -39,7 +39,7 @@ export function FlikaxLogo({
           accessibility purpose while giving up the one place the true
           brand color is most worth keeping literal. */}
       <span
-        className={`${iconSize} flex shrink-0 items-center justify-center rounded-lg bg-brand font-extrabold leading-none text-white`}
+        className={`${iconSize} flex shrink-0 items-center justify-center bg-brand font-extrabold leading-none text-white`}
         style={{ fontSize: 17 }}
         aria-hidden="true"
       >

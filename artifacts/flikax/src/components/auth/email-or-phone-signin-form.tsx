@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const FIELD_CLASS =
-  "h-11 w-full rounded-xl border-slate-300 px-4 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
+  "h-11 w-full border-slate-300 px-4 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 // One combined field standing in for either an email or a Ghana phone number
 // -- Jiji's exact sign-in shape, rather than our old separate Email/Phone
@@ -106,7 +106,7 @@ export function EmailOrPhoneSignInForm({ redirectTo = "/" }: { redirectTo?: stri
       <Button
         type="submit"
         disabled={loading}
-        className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+        className="h-11 w-full bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
       >
         {loading ? "Signing in..." : "Sign in"}
       </Button>

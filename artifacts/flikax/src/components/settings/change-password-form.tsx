@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const FIELD_CLASS = "h-auto w-full rounded-lg border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
+const FIELD_CLASS = "h-auto w-full border-neutral-200 px-3 py-2 text-sm focus-visible:border-brand";
 
 export function ChangePasswordForm({ redirectTo }: { redirectTo?: string } = {}) {
   const router = useRouter();
@@ -51,7 +51,7 @@ export function ChangePasswordForm({ redirectTo }: { redirectTo?: string } = {})
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-3 rounded-2xl bg-white p-5 shadow-md"
+      className="space-y-3 bg-white p-5 shadow-md"
     >
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-bold text-neutral-800">Change password</h2>

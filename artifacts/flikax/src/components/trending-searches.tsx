@@ -1,5 +1,11 @@
 import Link from "next/link";
 
+// UNUSED -- zero import sites in the app, and its data source
+// (fetchTrendingTerms in lib/trending.ts) has zero callers either, so this
+// is dead all the way down to the query. Unlike homepage-slider.tsx, there's
+// no admin UI depending on it -- this looks like scaffolding that was built
+// but never wired into a page, not a reversed decision. Safe to delete, or
+// wire into the homepage below the search bar if trending terms are wanted.
 /** `terms` is derived from real listing view activity (see fetchTrendingTerms
  * in lib/trending.ts) -- not a curated/hardcoded list. Renders nothing if
  * there isn't enough activity yet to populate it. */
@@ -13,7 +19,7 @@ export function TrendingSearches({ terms }: { terms: string[] }) {
         <Link
           key={term}
           href={`/?q=${encodeURIComponent(term)}`}
-          className="rounded-full bg-white/15 px-2.5 py-0.5 font-medium text-white hover:bg-white/25"
+          className="bg-white/15 px-2.5 py-0.5 font-medium text-white hover:bg-white/25"
         >
           {term}
         </Link>

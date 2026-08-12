@@ -23,7 +23,7 @@ const YEARS = Array.from({ length: CURRENT_YEAR - 1980 + 2 }, (_, i) => String(C
 // the raw <select> elements below (which have no such base), it's the only
 // thing giving them a visible border at all.
 const FIELD_CLASS =
-  "h-auto w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-neutral-800 outline-none focus-visible:border-brand disabled:bg-neutral-50";
+  "h-auto w-full border border-slate-300 px-3 py-2 text-sm text-neutral-800 outline-none focus-visible:border-brand disabled:bg-neutral-50";
 // appearance-none strips the native dropdown arrow; pr-9 makes room for the
 // ChevronDown each select below pairs it with (wrapped in a relative div) --
 // same pattern as listing-form.tsx's SELECT constant.

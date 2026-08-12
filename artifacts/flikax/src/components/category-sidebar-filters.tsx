@@ -10,7 +10,7 @@ import type { SidebarFilterField } from "@/lib/category-filters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const FIELD_CLASS = "h-auto w-full min-w-0 rounded-lg border-neutral-200 px-2 py-1.5 text-sm focus-visible:border-brand";
+const FIELD_CLASS = "h-auto w-full min-w-0 border-neutral-200 px-2 py-1.5 text-sm focus-visible:border-brand";
 
 // The "Verified sellers"/"Discount" toggle fields (see VERIFIED_SELLERS_FIELD/
 // DISCOUNT_FIELD in category-filters.ts) are backed by real listings columns, not a
@@ -186,7 +186,7 @@ export function CategorySidebarFilters({
       <button
         type="button"
         onClick={() => setLocationOpen(true)}
-        className="flex w-full items-center justify-between rounded-lg border-[1.5px] border-neutral-300 bg-white px-3 py-3 text-left transition-colors hover:border-neutral-400"
+        className="flex w-full items-center justify-between border-[1.5px] border-neutral-300 bg-white px-3 py-3 text-left transition-colors hover:border-neutral-400"
       >
         <span className="text-sm font-semibold text-neutral-700">Location</span>
         <span className="flex items-center gap-1 text-sm font-normal text-neutral-500">
@@ -195,7 +195,7 @@ export function CategorySidebarFilters({
         </span>
       </button>
 
-      <div className="rounded-lg border-[1.5px] border-neutral-300 bg-white p-3">
+      <div className="border-[1.5px] border-neutral-300 bg-white p-3">
         <p className="mb-2 text-sm font-semibold text-neutral-700">Price, GH₵</p>
         <div className="flex items-center gap-2">
           <Input
@@ -219,7 +219,7 @@ export function CategorySidebarFilters({
       {fields.map((field) => {
         const isCollapsed = collapsedKeys[field.key] ?? false;
         return (
-          <div key={field.key} className="overflow-hidden rounded-lg border-[1.5px] border-neutral-300 bg-white">
+          <div key={field.key} className="overflow-hidden border-[1.5px] border-neutral-300 bg-white">
             <button
               type="button"
               onClick={() => setCollapsedKeys((prev) => ({ ...prev, [field.key]: !isCollapsed }))}
@@ -240,7 +240,7 @@ export function CategorySidebarFilters({
                   transition={{ duration: 0.18 }}
                   className="overflow-hidden"
                 >
-                  <div className="border-t border-neutral-100 px-3 pb-3 pt-2.5">
+                  <div className="border-t border-neutral-300 px-3 pb-3 pt-2.5">
                     {field.type === "range" && (
                       <div className="flex items-center gap-2">
                         <Input
@@ -282,7 +282,7 @@ export function CategorySidebarFilters({
                             key={opt || "any"}
                             type="button"
                             onClick={() => setToggleValues((v) => ({ ...v, [field.key]: opt }))}
-                            className={`flex-1 rounded-lg border px-2 py-1.5 text-xs font-semibold transition-colors ${
+                            className={`flex-1 border px-2 py-1.5 text-xs font-semibold transition-colors ${
                               (toggleValues[field.key] ?? "") === opt
                                 ? "border-brand bg-brand-dark text-white"
                                 : "border-neutral-200 text-neutral-600 hover:border-brand/40"
@@ -320,7 +320,7 @@ export function CategorySidebarFilters({
           now has a dozen) scrolls with the page instead of being outrun by the
           results grid. */}
       <div className="hidden w-64 shrink-0 lg:sticky lg:top-20 lg:block lg:self-start">
-        <div className="thin-scrollbar max-h-[calc(100vh-6rem)] overflow-y-auto rounded-xl border border-neutral-300 bg-neutral-50 p-3 shadow-md">
+        <div className="thin-scrollbar max-h-[calc(100vh-6rem)] overflow-y-auto border border-neutral-300 bg-neutral-50 p-3 shadow-md">
           <div className="mb-2.5 flex items-center justify-between">
             <h3 className="text-sm font-bold text-neutral-800">Filters</h3>
             {activeCount > 0 && (
@@ -344,7 +344,7 @@ export function CategorySidebarFilters({
       <button
         type="button"
         onClick={() => setMobileOpen(true)}
-        className="fixed bottom-20 right-4 z-40 flex items-center gap-1.5 rounded-full bg-brand-dark px-4 py-2.5 text-sm font-semibold text-white shadow-lg lg:hidden"
+        className="fixed bottom-20 right-4 z-40 flex items-center gap-1.5 bg-brand-dark px-4 py-2.5 text-sm font-semibold text-white shadow-lg lg:hidden"
       >
         <SlidersHorizontal className="size-4" />
         Filters
@@ -420,7 +420,7 @@ function ChecklistOptions({
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={`Find ${field.label.toLowerCase()}`}
-            className="w-full rounded-lg border border-neutral-200 py-1.5 pl-8 pr-2 text-sm outline-none focus:border-brand"
+            className="w-full border border-neutral-200 py-1.5 pl-8 pr-2 text-sm outline-none focus:border-brand"
           />
         </div>
       )}
@@ -431,13 +431,13 @@ function ChecklistOptions({
           return (
             <label
               key={option}
-              className="flex cursor-pointer items-center gap-2 rounded-md px-1.5 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
+              className="flex cursor-pointer items-center gap-2 px-1.5 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
             >
               <input
                 type="checkbox"
                 checked={checked}
                 onChange={() => onToggle(option)}
-                className="size-4 rounded accent-brand"
+                className="size-4 accent-brand"
               />
               <span className="truncate">{option}</span>
             </label>

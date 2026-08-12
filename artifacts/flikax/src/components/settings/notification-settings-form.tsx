@@ -29,7 +29,7 @@ export function NotificationSettingsForm({
   }
 
   return (
-    <div className="space-y-3 rounded-2xl bg-white p-5 shadow-md">
+    <div className="space-y-3 bg-white p-5 shadow-md">
       <h2 className="text-sm font-bold text-neutral-800">Manage notifications</h2>
 
       <label className="flex items-center justify-between">

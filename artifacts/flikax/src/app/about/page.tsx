@@ -118,7 +118,7 @@ export default async function AboutPage() {
             <SellCta label="Start Selling" size="lg" className="bg-white !text-brand-dark hover:bg-brand-light" />
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-6 py-3 text-base font-bold text-white hover:bg-white/10"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white px-6 py-3 text-base font-bold text-white hover:bg-white/10"
             >
               Browse Listings
             </Link>
@@ -133,7 +133,7 @@ export default async function AboutPage() {
             <a
               key={item.href}
               href={item.href}
-              className="rounded-full px-3 py-1.5 text-sm font-medium text-neutral-600 hover:bg-brand-light hover:text-brand-dark"
+              className="px-3 py-1.5 text-sm font-medium text-neutral-600 hover:bg-brand-light hover:text-brand-dark"
             >
               {item.label}
             </a>
@@ -144,7 +144,7 @@ export default async function AboutPage() {
       <main className="mx-auto w-full max-w-5xl flex-1 space-y-20 px-4 py-16 sm:px-6">
         {/* Mission & Vision */}
         <section className="grid gap-6 sm:grid-cols-2">
-          <div className="rounded-2xl bg-white p-6 shadow-md">
+          <div className="bg-white p-6 shadow-md">
             <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Rocket className="size-5" />
             </span>
@@ -154,7 +154,7 @@ export default async function AboutPage() {
               confidently buy, sell, and connect within their communities.
             </p>
           </div>
-          <div className="rounded-2xl bg-white p-6 shadow-md">
+          <div className="bg-white p-6 shadow-md">
             <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Compass className="size-5" />
             </span>
@@ -226,7 +226,7 @@ export default async function AboutPage() {
           <h2 className="text-center font-logo text-3xl font-bold text-neutral-800">Why Choose Flikax?</h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {WHY_CHOOSE.map((item) => (
-              <div key={item.title} className="rounded-2xl bg-white p-6 shadow-md">
+              <div key={item.title} className="bg-white p-6 shadow-md">
                 <span className="flex size-11 items-center justify-center rounded-full bg-brand-light text-brand-dark">
                   <item.icon className="size-5" />
                 </span>
@@ -261,7 +261,7 @@ export default async function AboutPage() {
             </div>
             <Link
               href="/"
-              className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-brand px-4 py-2.5 text-sm font-bold text-brand-dark hover:bg-brand-light"
+              className="mt-6 inline-flex items-center justify-center gap-2 border-2 border-brand px-4 py-2.5 text-sm font-bold text-brand-dark hover:bg-brand-light"
             >
               Browse Listings
             </Link>
@@ -271,7 +271,7 @@ export default async function AboutPage() {
         {/* Safety */}
         <section
           id="safety"
-          className="scroll-mt-20 grid items-center gap-10 rounded-3xl bg-white p-8 shadow-lg sm:grid-cols-2 sm:p-10"
+          className="scroll-mt-20 grid items-center gap-10 bg-white p-8 shadow-lg sm:grid-cols-2 sm:p-10"
         >
           <div>
             <h2 className="font-logo text-3xl font-bold text-neutral-800">Safety Comes First</h2>
@@ -323,7 +323,7 @@ export default async function AboutPage() {
             </p>
             <Link
               href="/premium"
-              className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-amber-600"
+              className="mt-5 inline-flex items-center justify-center gap-2 bg-amber-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-amber-600"
             >
               <Gem className="size-4" />
               Go Premium
@@ -332,11 +332,11 @@ export default async function AboutPage() {
         </section>
 
         {/* Sell like a pro */}
-        <section className="rounded-3xl bg-brand-light p-8 sm:p-10">
+        <section className="bg-brand-light p-8 sm:p-10">
           <h2 className="text-center font-logo text-3xl font-bold text-neutral-800">Sell Like a Pro!</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {PRO_TIPS.map((tip, i) => (
-              <div key={tip.title} className="rounded-2xl bg-white p-5 shadow-md">
+              <div key={tip.title} className="bg-white p-5 shadow-md">
                 <span className="flex size-8 items-center justify-center rounded-full bg-brand-dark text-sm font-bold text-white">
                   {i + 1}
                 </span>
@@ -380,7 +380,7 @@ export default async function AboutPage() {
             <SellCta label="Start Selling" size="lg" className="bg-white !text-brand-dark hover:bg-brand-light" />
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-6 py-3 text-base font-bold text-white hover:bg-white/10"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white px-6 py-3 text-base font-bold text-white hover:bg-white/10"
             >
               Browse Listings
             </Link>

@@ -60,7 +60,7 @@ export function ScrollableSidebarColumn({ children }: { children: React.ReactNod
         // edge) over a soft upward fade so it reads as part of the panel's
         // own chrome rather than a stray badge clipped by the border.
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 hidden justify-center pb-3 lg:flex">
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 rounded-b-2xl bg-gradient-to-t from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent" />
           <button
             type="button"
             onClick={handleArrowClick}

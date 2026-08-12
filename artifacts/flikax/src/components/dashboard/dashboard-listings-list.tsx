@@ -48,18 +48,18 @@ export function DashboardListingsList({
 }) {
   if (listings.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-neutral-200 bg-white py-16 text-center">
+      <div className="border border-dashed border-neutral-200 bg-white py-16 text-center">
         <p className="text-sm font-medium text-neutral-600">No listings here yet.</p>
       </div>
     );
   }
 
   return (
-    <div className="divide-y divide-neutral-100 overflow-hidden rounded-xl border border-neutral-100 bg-white shadow-md">
+    <div className="divide-y divide-neutral-300 overflow-hidden border border-neutral-300 bg-white shadow-md">
       {listings.map((listing) => (
         <div key={listing.id} className="relative flex gap-4 p-4 hover:bg-brand-light/30">
           <Link href={listing.href} aria-label={listing.title} className="absolute inset-0 z-0" />
-          <div className="relative flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand-dark/40">
+          <div className="relative flex size-24 shrink-0 items-center justify-center overflow-hidden bg-brand-light text-brand-dark/40">
             {listing.imageUrl ? (
               <Image src={listing.imageUrl} alt={listing.title} fill sizes="96px" quality={82} className="object-cover" />
             ) : (

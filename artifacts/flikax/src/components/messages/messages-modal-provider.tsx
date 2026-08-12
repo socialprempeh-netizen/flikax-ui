@@ -74,7 +74,7 @@ export function MessagesModalProvider({ children }: { children: React.ReactNode 
           // sitting behind the keyboard -- full-screen sidesteps that: the
           // dialog IS the visible viewport, so the input (last, non-scrolling
           // flex child) always lands right above wherever the keyboard starts.
-          className="flex top-0 left-0 h-[var(--vvh,100dvh)] w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:top-[50%] sm:left-[50%] sm:h-[min(600px,calc(100dvh-4rem))] sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-slate-200/80"
+          className="flex top-0 left-0 h-[var(--vvh,100dvh)] w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden border-0 bg-white p-0 shadow-2xl sm:top-[50%] sm:left-[50%] sm:h-[min(600px,calc(100dvh-4rem))] sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:border sm:border-slate-200/80"
           style={visualViewportHeight ? ({ "--vvh": `${visualViewportHeight}px` } as React.CSSProperties) : undefined}
         >
           <DialogTitle className="sr-only">Messages</DialogTitle>
@@ -222,7 +222,7 @@ function MessagesPanelBody() {
   if (thread) {
     return (
       <>
-        <div className="flex shrink-0 items-center gap-3 border-b border-neutral-100 bg-[#1a1f2e] px-4 py-3">
+        <div className="flex shrink-0 items-center gap-3 border-b border-neutral-300 bg-[#1a1f2e] px-4 py-3">
           <button
             type="button"
             onClick={() => setThread(null)}
@@ -265,7 +265,7 @@ function MessagesPanelBody() {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="shrink-0 border-b border-neutral-100 px-4 py-3">
+      <div className="shrink-0 border-b border-neutral-300 px-4 py-3">
         <h2 className="text-sm font-bold text-neutral-800">Messages</h2>
       </div>
       <div className="flex-1 overflow-y-auto p-2">
@@ -283,9 +283,9 @@ function MessagesPanelBody() {
               type="button"
               onClick={() => openThread(conversation.id)}
               disabled={threadLoading}
-              className="flex w-full items-center gap-3 rounded-xl p-2.5 text-left transition-colors hover:bg-slate-50 disabled:opacity-60"
+              className="flex w-full items-center gap-3 p-2.5 text-left transition-colors hover:bg-slate-50 disabled:opacity-60"
             >
-              <div className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-light text-brand-dark/40">
+              <div className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden bg-brand-light text-brand-dark/40">
                 {coverUrl ? (
                   <Image src={coverUrl} alt="" fill sizes="48px" quality={82} className="object-cover" />
                 ) : (
@@ -308,10 +308,10 @@ function MessagesPanelBody() {
           );
         })}
       </div>
-      <div className="shrink-0 border-t border-neutral-100 p-2">
+      <div className="shrink-0 border-t border-neutral-300 p-2">
         <Link
           href="/messages"
-          className="block rounded-lg px-3 py-2 text-center text-xs font-semibold text-neutral-500 hover:bg-slate-50 hover:text-brand-dark"
+          className="block px-3 py-2 text-center text-xs font-semibold text-neutral-500 hover:bg-slate-50 hover:text-brand-dark"
         >
           Open full inbox
         </Link>

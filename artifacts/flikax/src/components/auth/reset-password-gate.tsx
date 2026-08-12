@@ -29,7 +29,7 @@ export function ResetPasswordGate() {
 
   if (status === "invalid") {
     return (
-      <div className="w-full max-w-sm rounded-3xl border border-slate-200/80 bg-white p-8 text-center shadow-2xl">
+      <div className="w-full max-w-sm border border-slate-200/80 bg-white p-8 text-center shadow-2xl">
         <p className="text-sm text-neutral-600">This reset link is invalid or has expired.</p>
         <Link
           href="/auth/forgot-password"

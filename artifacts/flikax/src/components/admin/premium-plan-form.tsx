@@ -15,7 +15,7 @@ const PLAN_TYPE_OPTIONS: { value: PlanType; label: string }[] = [
 ];
 
 const FIELD_CLASS =
-  "w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand";
+  "w-full border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand";
 
 function planToForm(plan: PremiumPlan | null): PlanFormInput {
   if (!plan) {

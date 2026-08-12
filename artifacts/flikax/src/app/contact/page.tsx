@@ -48,7 +48,7 @@ export default async function ContactPage() {
         <SupportTicketForm defaultEmail={user?.email} />
 
         {/* Customer Support */}
-        <section className="rounded-2xl bg-white p-6 shadow-md sm:p-8">
+        <section className="bg-white p-6 shadow-md sm:p-8">
           <div className="flex items-center gap-3">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
               <Mail className="size-5" />
@@ -69,7 +69,7 @@ export default async function ContactPage() {
           <h2 className="font-logo text-xl font-bold text-neutral-800">We Can Help With</h2>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {HELP_TOPICS.map((topic) => (
-              <div key={topic.label} className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-md">
+              <div key={topic.label} className="flex items-center gap-3 bg-white p-4 shadow-md">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
                   <topic.icon className="size-4" />
                 </span>
@@ -80,7 +80,7 @@ export default async function ContactPage() {
         </section>
 
         {/* Report a Listing */}
-        <section className="rounded-2xl bg-amber-50 p-6 sm:p-8">
+        <section className="bg-amber-50 p-6 sm:p-8">
           <div className="flex items-center gap-3">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
               <Flag className="size-5" />
@@ -97,7 +97,7 @@ export default async function ContactPage() {
         </section>
 
         {/* Business Enquiries */}
-        <section className="rounded-2xl bg-white p-6 shadow-md sm:p-8">
+        <section className="bg-white p-6 shadow-md sm:p-8">
           <h2 className="font-logo text-xl font-bold text-neutral-800">Business Enquiries</h2>
           <p className="mt-3 text-sm text-neutral-700">
             For partnerships, advertising, or media enquiries, contact:

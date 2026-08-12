@@ -28,7 +28,7 @@ export function DeleteAccountSection() {
   }
 
   return (
-    <div className="rounded-2xl border border-red-100 bg-red-50/50 p-5">
+    <div className="border border-red-100 bg-red-50/50 p-5">
       <h2 className="text-sm font-bold text-red-700">Delete my account permanently</h2>
       <p className="mt-1 text-sm text-red-600/80">
         This removes your profile and listings. This action can&apos;t be undone.

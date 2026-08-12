@@ -86,7 +86,7 @@ export default async function PremiumPage() {
                 {sectionPlans.map((plan) => (
                   <div
                     key={plan.id}
-                    className="flex flex-col rounded-2xl border border-neutral-100 bg-white p-5 shadow-sm"
+                    className="flex flex-col border border-neutral-300 bg-white p-5 shadow-sm"
                   >
                     <p className="font-bold text-neutral-800">{plan.name}</p>
                     {plan.description && <p className="mt-1 text-sm text-neutral-500">{plan.description}</p>}
@@ -115,7 +115,7 @@ export default async function PremiumPage() {
                       {listingScoped ? (
                         <Link
                           href={user ? "/dashboard" : "/auth/login?redirect=/dashboard"}
-                          className="block rounded-lg bg-brand-dark px-3 py-2 text-center text-xs font-bold text-white hover:brightness-110"
+                          className="block bg-brand-dark px-3 py-2 text-center text-xs font-bold text-white hover:brightness-110"
                         >
                           Choose a listing
                         </Link>
@@ -124,7 +124,7 @@ export default async function PremiumPage() {
                       ) : (
                         <Link
                           href="/auth/login?redirect=/premium"
-                          className="block rounded-lg bg-brand-dark px-3 py-2 text-center text-xs font-bold text-white hover:brightness-110"
+                          className="block bg-brand-dark px-3 py-2 text-center text-xs font-bold text-white hover:brightness-110"
                         >
                           Log in to buy
                         </Link>

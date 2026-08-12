@@ -1,6 +1,6 @@
 export function VerifiedIdBadge({ verified }: { verified: boolean }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-white p-5 shadow-md">
+    <div className="flex items-center justify-between bg-white p-5 shadow-md">
       <div>
         <h2 className="text-sm font-bold text-neutral-800">&quot;Verified ID&quot; badge</h2>
         <p className="mt-1 text-sm text-neutral-500">

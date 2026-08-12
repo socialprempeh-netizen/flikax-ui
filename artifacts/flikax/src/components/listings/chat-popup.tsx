@@ -176,7 +176,7 @@ function ChatPopupOverlay({
        non-scrolling child) could end up hidden behind the keyboard. sm+
        keeps the floating bottom-right panel. */
     <div
-      className="fixed inset-0 z-[9999] flex h-[var(--vvh,100dvh)] w-full flex-col overflow-hidden bg-white sm:inset-auto sm:bottom-20 sm:right-4 sm:h-[520px] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:rounded-xl sm:border sm:border-neutral-200 sm:shadow-2xl lg:bottom-6"
+      className="fixed inset-0 z-[9999] flex h-[var(--vvh,100dvh)] w-full flex-col overflow-hidden bg-white sm:inset-auto sm:bottom-20 sm:right-4 sm:h-[520px] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:border sm:border-neutral-200 sm:shadow-2xl lg:bottom-6"
       style={visualViewportHeight ? ({ "--vvh": `${visualViewportHeight}px` } as React.CSSProperties) : undefined}
     >
 

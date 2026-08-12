@@ -105,7 +105,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
       {/* Suspended warning */}
       {isSuspended && (
-        <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <div className="flex items-start gap-3 border border-amber-200 bg-amber-50 p-4">
           <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600" />
           <p className="text-sm text-amber-700">
             Your account is suspended. You can&apos;t post new listings or buy boosts until{" "}
@@ -115,8 +115,8 @@ export default async function DashboardPage({ searchParams }: PageProps) {
       )}
 
       {/* Tabs + category filter */}
-      <div className="overflow-hidden rounded-xl border border-neutral-100 bg-white shadow-sm">
-        <div className="flex border-b border-neutral-100">
+      <div className="overflow-hidden border border-neutral-300 bg-white shadow-sm">
+        <div className="flex border-b border-neutral-300">
           {tabs.map((t) => (
             <Link
               key={t.key}
@@ -145,7 +145,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             <select
               name="category"
               defaultValue={category ?? ""}
-              className="w-full appearance-none rounded-lg border border-neutral-200 bg-white py-1.5 pl-3 pr-8 text-sm text-neutral-700 outline-none focus:border-brand"
+              className="w-full appearance-none border border-neutral-200 bg-white py-1.5 pl-3 pr-8 text-sm text-neutral-700 outline-none focus:border-brand"
             >
               <option value="">All categories</option>
               {parentCategories.map((cat) => (

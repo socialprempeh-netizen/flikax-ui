@@ -56,7 +56,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-4 px-4 py-8 sm:px-6">
 
         {/* Profile card */}
-        <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+        <div className="overflow-hidden bg-white shadow-md">
           {/* Brand accent strip */}
           <div className="h-2 bg-brand" />
           <div className="flex items-center gap-4 p-6">
@@ -83,21 +83,21 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
         {/* Sentiment summary */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-3 py-4 shadow-md">
+          <div className="flex flex-col items-center gap-1.5 bg-white px-3 py-4 shadow-md">
             <span className="flex size-9 items-center justify-center rounded-full bg-green-100">
               <Smile className="size-5 text-green-600" />
             </span>
             <p className="text-lg font-extrabold text-green-700">{counts.positive}</p>
             <p className="text-xs font-medium text-neutral-500">Positive</p>
           </div>
-          <div className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-3 py-4 shadow-md">
+          <div className="flex flex-col items-center gap-1.5 bg-white px-3 py-4 shadow-md">
             <span className="flex size-9 items-center justify-center rounded-full bg-neutral-100">
               <Meh className="size-5 text-neutral-500" />
             </span>
             <p className="text-lg font-extrabold text-neutral-600">{counts.neutral}</p>
             <p className="text-xs font-medium text-neutral-500">Neutral</p>
           </div>
-          <div className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-3 py-4 shadow-md">
+          <div className="flex flex-col items-center gap-1.5 bg-white px-3 py-4 shadow-md">
             <span className="flex size-9 items-center justify-center rounded-full bg-red-100">
               <Frown className="size-5 text-red-500" />
             </span>
@@ -109,7 +109,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         {viewerId && !isOwner && <LeaveFeedbackForm profileId={profile.id} />}
 
         {!viewerId && (
-          <p className="rounded-2xl bg-white p-5 text-sm text-neutral-500 shadow-md">
+          <p className="bg-white p-5 text-sm text-neutral-500 shadow-md">
             <Link href={`/auth/login?redirect=/u/${profile.id}`} className="font-bold text-brand-dark hover:underline">
               Log in
             </Link>{" "}

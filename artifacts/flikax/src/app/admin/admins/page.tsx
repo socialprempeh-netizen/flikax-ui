@@ -18,13 +18,13 @@ export default async function AdminAdminsPage() {
       <h1 className="text-xl font-bold text-slate-800">Admins</h1>
       <p className="mt-1 text-sm text-slate-500">Manage who has admin access and at what level.</p>
 
-      <Card className="mt-6 gap-0 rounded-2xl p-5 shadow-sm">
+      <Card className="mt-6 gap-0 p-5 shadow-sm">
         <h2 className="text-sm font-bold text-slate-800">Grant admin access</h2>
         <p className="mt-0.5 text-sm text-slate-500">The user has to have signed up already.</p>
         <GrantAdminForm />
       </Card>
 
-      <Card className="mt-6 gap-0 divide-y divide-slate-100 rounded-2xl p-0 shadow-sm">
+      <Card className="mt-6 gap-0 divide-y divide-slate-300 p-0 shadow-sm">
         {(admins ?? []).length === 0 ? (
           <p className="p-6 text-sm text-slate-400">No admins yet.</p>
         ) : (

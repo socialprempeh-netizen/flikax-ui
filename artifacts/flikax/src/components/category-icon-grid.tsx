@@ -28,7 +28,7 @@ export function CategoryIconGrid({
             key={cat.id}
             href={`/${cat.slug}`}
             title={cat.name}
-            className="group flex w-[62px] shrink-0 flex-col items-center gap-1 rounded-lg p-1 text-center transition-colors hover:bg-neutral-100 sm:w-[76px]"
+            className="group flex w-[62px] shrink-0 flex-col items-center gap-1 p-1 text-center transition-colors hover:bg-neutral-100 sm:w-[76px]"
           >
             <CategoryThumb
               category={cat}

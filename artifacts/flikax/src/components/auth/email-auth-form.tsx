@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const FIELD_CLASS =
-  "h-11 w-full rounded-xl border-slate-300 px-4 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
+  "h-11 w-full border-slate-300 px-4 pl-10 text-sm shadow-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/10";
 
 type Mode = "sign-in" | "sign-up";
 
@@ -113,7 +113,7 @@ export function EmailAuthForm({
           type="button"
           onClick={() => switchMode("sign-in")}
           variant="outline"
-          className="mt-4 h-11 w-full rounded-xl"
+          className="mt-4 h-11 w-full "
         >
           Back to sign in
         </Button>
@@ -123,12 +123,12 @@ export function EmailAuthForm({
 
   return (
     <div className="w-full min-w-0">
-      <div className="mb-3 flex min-w-0 rounded-full bg-neutral-100 p-1 text-sm font-bold">
+      <div className="mb-3 flex min-w-0 bg-neutral-100 p-1 text-sm font-bold">
         <Button
           type="button"
           onClick={() => switchMode("sign-in")}
           variant="ghost"
-          className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
+          className={`h-auto min-w-0 !shrink flex-1 py-2 transition-all ${
             mode === "sign-in"
               ? "bg-white text-slate-950 shadow-sm hover:bg-white"
               : "text-neutral-600 hover:bg-transparent hover:text-neutral-800"
@@ -140,7 +140,7 @@ export function EmailAuthForm({
           type="button"
           onClick={() => switchMode("sign-up")}
           variant="ghost"
-          className={`h-auto min-w-0 !shrink flex-1 rounded-full py-2 transition-all ${
+          className={`h-auto min-w-0 !shrink flex-1 py-2 transition-all ${
             mode === "sign-up"
               ? "bg-white text-slate-950 shadow-sm hover:bg-white"
               : "text-neutral-600 hover:bg-transparent hover:text-neutral-800"
@@ -232,7 +232,7 @@ export function EmailAuthForm({
         <Button
           type="submit"
           disabled={loading}
-          className="h-11 w-full rounded-xl bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
+          className="h-11 w-full bg-brand-dark font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:brightness-110"
         >
           {loading ? "Please wait..." : mode === "sign-in" ? "Sign in" : "Create account"}
         </Button>

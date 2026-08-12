@@ -72,7 +72,7 @@ export default async function SellerStorePage({ params }: { params: Promise<{ id
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 px-4 py-6 sm:px-6">
         {/* Header card */}
-        <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+        <div className="overflow-hidden bg-white shadow-md">
           <div className="h-2 bg-brand" />
           <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:p-6">
             <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-dark text-2xl font-bold text-white ring-4 ring-brand-light">
@@ -113,7 +113,7 @@ export default async function SellerStorePage({ params }: { params: Promise<{ id
                     href={`https://wa.me/${whatsappDigits}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-11 flex-1 items-center justify-center gap-2 rounded-md border-2 border-[#25D366] px-4 text-sm font-medium text-[#128C7E] hover:bg-[#25D366]/10 sm:flex-none"
+                    className="flex h-11 flex-1 items-center justify-center gap-2 border-2 border-[#25D366] px-4 text-sm font-medium text-[#128C7E] hover:bg-[#25D366]/10 sm:flex-none"
                   >
                     <WhatsAppIcon className="size-5" />
                     WhatsApp

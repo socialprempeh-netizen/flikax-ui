@@ -30,7 +30,7 @@ export function PremiumPlansManager({ initialPlans }: { initialPlans: PremiumPla
 
   return (
     <>
-      <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+      <Card className="gap-0 p-5 shadow-sm">
         <h2 className="text-sm font-bold text-slate-800">
           {editingPlan ? `Edit "${editingPlan.name}"` : "Create a plan"}
         </h2>
@@ -44,7 +44,7 @@ export function PremiumPlansManager({ initialPlans }: { initialPlans: PremiumPla
         </div>
       </Card>
 
-      <Card className="mt-6 gap-0 divide-y divide-slate-100 rounded-2xl p-0 shadow-sm">
+      <Card className="mt-6 gap-0 divide-y divide-slate-300 p-0 shadow-sm">
         {plans.length === 0 ? (
           <p className="p-6 text-sm text-slate-400">No plans yet.</p>
         ) : (

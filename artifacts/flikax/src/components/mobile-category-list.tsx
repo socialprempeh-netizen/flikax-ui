@@ -22,8 +22,8 @@ export function MobileCategoryList({ categories, counts }: { categories: Categor
 
   return (
     <div className="-mx-4 sm:mx-0">
-      <div className="sticky top-[60px] z-10 border-b border-neutral-100 bg-white px-4 py-2.5 sm:top-[76px]">
-        <div className="flex items-center gap-2 rounded-lg bg-neutral-100 px-3 py-2">
+      <div className="sticky top-[60px] z-10 border-b border-neutral-300 bg-white px-4 py-2.5 sm:top-[76px]">
+        <div className="flex items-center gap-2 bg-neutral-100 px-3 py-2">
           <Search className="size-4 shrink-0 text-neutral-400" />
           <input
             type="text"
@@ -35,10 +35,10 @@ export function MobileCategoryList({ categories, counts }: { categories: Categor
         </div>
       </div>
 
-      <div className="divide-y divide-neutral-100 px-4">
+      <div className="divide-y divide-neutral-300 px-4">
         {filtered.map((child) => {
           return (
-            <Link key={child.id} href={`/${child.slug}`} className="flex items-center gap-3 py-2">
+            <Link key={child.id} href={`/${child.slug}`} className="flex items-center gap-3 py-4">
               <CategoryThumb category={child} size="size-11" iconSize="size-5" rounded="rounded-full" sizes="44px" />
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold text-neutral-800">{child.name}</span>

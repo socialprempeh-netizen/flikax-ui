@@ -31,7 +31,7 @@ export function HomeFilterBar({ filters }: { filters: ListingFilters }) {
         <button
           type="button"
           onClick={() => setSortOpen((v) => !v)}
-          className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white px-2.5 py-1 text-xs font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:bg-neutral-50 sm:text-sm"
+          className="flex items-center gap-1 border border-neutral-200 bg-white px-2.5 py-1 text-xs font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:bg-neutral-50 sm:text-sm"
         >
           {activeSort.label}
           <ChevronDown className={`size-3 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
@@ -40,7 +40,7 @@ export function HomeFilterBar({ filters }: { filters: ListingFilters }) {
         {sortOpen && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} aria-hidden="true" />
-            <div className="absolute right-0 top-full z-50 mt-1.5 w-44 overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 shadow-lg">
+            <div className="absolute right-0 top-full z-50 mt-1.5 w-44 overflow-hidden border border-neutral-200 bg-white py-1 shadow-lg">
               {SORT_OPTIONS.map((opt) => {
                 const isActive = opt.value === activeSort.value;
                 return (

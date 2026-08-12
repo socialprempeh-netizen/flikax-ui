@@ -100,7 +100,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
     <div>
       {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
-      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+      <Card className="gap-0 divide-y divide-slate-300 overflow-hidden p-0 shadow-sm">
         {regions.map((region, index) => {
           const districts = districtsOf(region.region_slug);
           const isOpen = expanded.has(region.region_slug);
@@ -112,7 +112,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                 <button
                   type="button"
                   onClick={() => toggle(region.region_slug)}
-                  className="flex size-7 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
+                  className="flex size-7 shrink-0 items-center justify-center text-slate-500 hover:bg-slate-100"
                 >
                   {isOpen ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
                 </button>
@@ -126,7 +126,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                     type="button"
                     disabled={isPending || index === 0}
                     onClick={() => run(() => reorderRegionAction(region.region_slug, "up"))}
-                    className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30"
+                    className="flex size-7 items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ChevronUp className="size-4" />
                   </button>
@@ -134,7 +134,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                     type="button"
                     disabled={isPending || index === regions.length - 1}
                     onClick={() => run(() => reorderRegionAction(region.region_slug, "down"))}
-                    className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30"
+                    className="flex size-7 items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ChevronDown className="size-4" />
                   </button>
@@ -144,7 +144,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                       setRenameTarget({ type: "region", slug: region.region_slug, name: region.region_name });
                       setRenameValue(region.region_name);
                     }}
-                    className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                    className="border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
                   >
                     <Pencil className="size-3.5" />
                   </button>
@@ -152,7 +152,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
               </div>
 
               {isOpen && (
-                <div className="divide-y divide-slate-50 bg-slate-50/50 pl-9">
+                <div className="divide-y divide-slate-300 bg-slate-50/50 pl-9">
                   {districts.map((district, districtIndex) => {
                     const suburbs = suburbsOf(district.region_slug, district.district_slug);
                     const isDistrictOpen = expandedDistricts.has(district.id);
@@ -164,7 +164,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                             <button
                               type="button"
                               onClick={() => toggleDistrict(district.id)}
-                              className="flex size-6 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-white"
+                              className="flex size-6 shrink-0 items-center justify-center text-slate-500 hover:bg-white"
                             >
                               {isDistrictOpen ? (
                                 <ChevronDown className="size-3.5" />
@@ -197,7 +197,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                               type="button"
                               disabled={isPending || districtIndex === 0}
                               onClick={() => run(() => reorderDistrictAction(district.id, "up"))}
-                              className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-white disabled:opacity-30"
+                              className="flex size-6 items-center justify-center text-slate-500 hover:bg-white disabled:opacity-30"
                             >
                               <ChevronUp className="size-3.5" />
                             </button>
@@ -205,7 +205,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                               type="button"
                               disabled={isPending || districtIndex === districts.length - 1}
                               onClick={() => run(() => reorderDistrictAction(district.id, "down"))}
-                              className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-white disabled:opacity-30"
+                              className="flex size-6 items-center justify-center text-slate-500 hover:bg-white disabled:opacity-30"
                             >
                               <ChevronDown className="size-3.5" />
                             </button>
@@ -215,14 +215,14 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                 setRenameTarget({ type: "district", id: district.id, name: district.district_name });
                                 setRenameValue(district.district_name);
                               }}
-                              className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-white"
+                              className="border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-white"
                             >
                               <Pencil className="size-3.5" />
                             </button>
                             <button
                               type="button"
                               onClick={() => setDeleteTarget(district)}
-                              className="rounded-lg border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-white"
+                              className="border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-white"
                             >
                               <Trash2 className="size-3.5" />
                             </button>
@@ -230,7 +230,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                         </div>
 
                         {isDistrictOpen && suburbs.length > 0 && (
-                          <div className="divide-y divide-slate-100 bg-white pl-8">
+                          <div className="divide-y divide-slate-300 bg-white pl-8">
                             {suburbs.map((suburb, suburbIndex) => (
                               <div key={suburb.id} className="flex items-center gap-2 py-1.5 pr-3">
                                 <Checkbox
@@ -250,7 +250,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                     type="button"
                                     disabled={isPending || suburbIndex === 0}
                                     onClick={() => run(() => reorderSuburbAction(suburb.id, "up"))}
-                                    className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-slate-50 disabled:opacity-30"
+                                    className="flex size-6 items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-30"
                                   >
                                     <ChevronUp className="size-3.5" />
                                   </button>
@@ -258,7 +258,7 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                     type="button"
                                     disabled={isPending || suburbIndex === suburbs.length - 1}
                                     onClick={() => run(() => reorderSuburbAction(suburb.id, "down"))}
-                                    className="flex size-6 items-center justify-center rounded-md text-slate-500 hover:bg-slate-50 disabled:opacity-30"
+                                    className="flex size-6 items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-30"
                                   >
                                     <ChevronDown className="size-3.5" />
                                   </button>
@@ -268,14 +268,14 @@ export function LocationsTree({ locations }: { locations: AdminLocation[] }) {
                                       setRenameTarget({ type: "suburb", id: suburb.id, name: suburb.suburb_name! });
                                       setRenameValue(suburb.suburb_name!);
                                     }}
-                                    className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                                    className="border border-slate-200 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-50"
                                   >
                                     <Pencil className="size-3.5" />
                                   </button>
                                   <button
                                     type="button"
                                     onClick={() => setDeleteTarget(suburb)}
-                                    className="rounded-lg border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-slate-50"
+                                    className="border border-red-200 px-2 py-1 text-xs font-bold text-red-600 hover:bg-slate-50"
                                   >
                                     <Trash2 className="size-3.5" />
                                   </button>

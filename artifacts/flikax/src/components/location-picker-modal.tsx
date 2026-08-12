@@ -123,15 +123,15 @@ export function LocationPickerModal({
       onClick={close}
     >
       <div
-        className="flex h-full w-full flex-col overflow-hidden bg-white sm:h-auto sm:max-h-[75vh] sm:w-full sm:max-w-3xl sm:rounded-2xl sm:shadow-xl"
+        className="flex h-full w-full flex-col overflow-hidden bg-white sm:h-auto sm:max-h-[75vh] sm:w-full sm:max-w-3xl sm:shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-2 border-b border-neutral-100 px-4 py-3">
+        <div className="flex items-center gap-2 border-b border-neutral-300 px-4 py-3">
           {activeRegion ? (
             <button
               type="button"
               onClick={goBack}
-              className="flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-brand-dark"
+              className="flex shrink-0 cursor-pointer items-center gap-1 px-2 py-1 text-base font-medium text-neutral-700 hover:bg-neutral-50 hover:text-brand-dark"
             >
               <ChevronLeft className="size-4" />
               Back
@@ -140,7 +140,7 @@ export function LocationPickerModal({
             <span className="shrink-0 text-base font-bold text-neutral-800">Select location</span>
           )}
 
-          <div className="ml-auto flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2">
+          <div className="ml-auto flex items-center gap-2 border border-neutral-200 px-3 py-2">
             <Search className="size-4 shrink-0 text-neutral-400" />
             <input
               autoFocus
@@ -163,7 +163,7 @@ export function LocationPickerModal({
 
         <div className="overflow-y-auto p-4">
           {searchResults ? (
-            <div className="flex flex-col divide-y divide-neutral-200">
+            <div className="flex flex-col divide-y divide-neutral-300">
               {searchResults.length === 0 && (
                 <p className="py-6 text-center text-base text-neutral-400">No matches found.</p>
               )}
@@ -214,14 +214,14 @@ export function LocationPickerModal({
               <button
                 type="button"
                 onClick={() => selectLocation(activeDistrict.name)}
-                className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
+                className="mb-2 block w-full cursor-pointer px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
               >
                 All {activeDistrict.name}
               </button>
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 {suburbColumns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-200">
+                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-300">
                     {column.map((suburb) => (
                       <button
                         key={suburb.slug}
@@ -246,7 +246,7 @@ export function LocationPickerModal({
                 <button
                   type="button"
                   onClick={() => selectLocation(activeRegion.name)}
-                  className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
+                  className="mb-2 block w-full cursor-pointer px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
                 >
                   All {activeRegion.name}
                 </button>
@@ -254,7 +254,7 @@ export function LocationPickerModal({
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 {districtColumns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-200">
+                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-300">
                     {column.map((district) =>
                       district.suburbs?.length ? (
                         <button
@@ -294,7 +294,7 @@ export function LocationPickerModal({
                 <button
                   type="button"
                   onClick={() => selectLocation(undefined)}
-                  className="mb-2 block w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
+                  className="mb-2 block w-full cursor-pointer px-3 py-1.5 text-left text-base font-semibold text-brand-dark transition-colors hover:bg-brand-light"
                 >
                   All Ghana
                 </button>
@@ -302,7 +302,7 @@ export function LocationPickerModal({
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 {regionColumns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-200">
+                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-300">
                     {column.map((region) => (
                       <button
                         key={region.slug}

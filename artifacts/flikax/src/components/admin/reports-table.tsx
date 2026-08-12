@@ -89,7 +89,7 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
 
   if (reports.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
+      <div className="border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
         No reports match these filters.
       </div>
     );
@@ -100,7 +100,7 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
       {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
       {selectedIds.length > 0 && (
-        <div className="sticky top-14 z-20 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-brand/30 bg-brand-light px-4 py-3">
+        <div className="sticky top-14 z-20 mb-3 flex flex-wrap items-center gap-2 border border-brand/30 bg-brand-light px-4 py-3">
           <span className="text-sm font-bold text-slate-800">{selectedIds.length} selected</span>
           <Button
             type="button"
@@ -123,7 +123,7 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
         </div>
       )}
 
-      <Card className="gap-0 divide-y divide-slate-100 overflow-hidden rounded-2xl p-0 shadow-sm">
+      <Card className="gap-0 divide-y divide-slate-300 overflow-hidden p-0 shadow-sm">
         <div className="flex items-center gap-3 bg-slate-50 px-4 py-2">
           <Checkbox checked={allSelected} onCheckedChange={toggleAll} aria-label="Select all" />
           <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -266,7 +266,7 @@ export function ReportsTable({ reports }: { reports: AdminReportRow[] }) {
           <select
             value={suspendDays}
             onChange={(e) => setSuspendDays(Number(e.target.value))}
-            className="h-9 rounded-md border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            className="h-9 border border-input bg-transparent px-3 text-sm text-slate-800 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
             {[3, 7, 14, 30].map((d) => (
               <option key={d} value={d}>

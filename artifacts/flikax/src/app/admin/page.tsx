@@ -108,7 +108,7 @@ export default async function AdminDashboardPage() {
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className="gap-2 rounded-2xl p-4 shadow-sm">
+          <Card key={stat.label} className="gap-2 p-4 shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">{stat.label}</span>
               <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
@@ -122,7 +122,7 @@ export default async function AdminDashboardPage() {
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <Link href="/admin/listings?status=pending">
-          <Card className="flex-row items-center justify-between gap-3 rounded-2xl p-5 shadow-sm transition-colors hover:border-brand/40 hover:bg-brand-light/20">
+          <Card className="flex-row items-center justify-between gap-3 p-5 shadow-sm transition-colors hover:border-brand/40 hover:bg-brand-light/20">
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
                 <Clock3 className="size-5" />
@@ -137,7 +137,7 @@ export default async function AdminDashboardPage() {
         </Link>
 
         <Link href="/admin/reports">
-          <Card className="flex-row items-center justify-between gap-3 rounded-2xl p-5 shadow-sm transition-colors hover:border-brand/40 hover:bg-brand-light/20">
+          <Card className="flex-row items-center justify-between gap-3 p-5 shadow-sm transition-colors hover:border-brand/40 hover:bg-brand-light/20">
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-full bg-red-100 text-red-600">
                 <Flag className="size-5" />

@@ -81,7 +81,7 @@ export function HeaderUserActions() {
         )}
 
         {isLoggedIn ? (
-          <Button asChild size="sm" className="h-9 rounded-none bg-cta-yellow px-3 text-xs font-bold text-black shadow-sm hover:bg-cta-yellow-hover">
+          <Button asChild size="sm" className="h-9 bg-cta-yellow px-3 text-xs font-bold text-black shadow-sm hover:bg-cta-yellow-hover">
             <Link href="/sell">
               <Plus className="size-3.5" />
               Post Ad
@@ -91,7 +91,7 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="sm"
-            className="h-9 rounded-none bg-cta-yellow px-3 text-xs font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
+            className="h-9 bg-cta-yellow px-3 text-xs font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
             onClick={() => openAuthModal("/sell")}
           >
             <Plus className="size-3.5" />
@@ -148,7 +148,7 @@ export function HeaderUserActions() {
           gated={!isLoggedIn}
           onOpenModal={() => openAuthModal("/")}
           title="My Account"
-          className="flex items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 text-white hover:bg-white/20"
+          className="flex items-center gap-2 bg-white/10 py-1 pl-1 pr-3 text-white hover:bg-white/20"
         >
           <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/15 ring-2 ring-white/25">
             {avatar}
@@ -166,7 +166,7 @@ export function HeaderUserActions() {
           <Button
             asChild
             size="lg"
-            className="rounded-none bg-cta-yellow px-5 font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
+            className="bg-cta-yellow px-5 font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
           >
             <Link href="/sell">
               <Plus className="size-4" />
@@ -177,7 +177,7 @@ export function HeaderUserActions() {
           <Button
             type="button"
             size="lg"
-            className="rounded-none bg-cta-yellow px-5 font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
+            className="bg-cta-yellow px-5 font-bold text-black shadow-sm hover:bg-cta-yellow-hover"
             onClick={() => openAuthModal("/sell")}
           >
             <Plus className="size-4" />

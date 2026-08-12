@@ -62,7 +62,7 @@ export default async function DashboardFeedbackPage({
         <CopyLinkButton path={`/u/${user.id}`} />
       </div>
 
-      <div className="flex items-center gap-6 rounded-2xl bg-white p-5 shadow-md">
+      <div className="flex items-center gap-6 bg-white p-5 shadow-md">
         <span className="flex items-center gap-1.5 text-sm font-semibold text-green-600">
           <Smile className="size-4" /> {counts.positive} Positive
         </span>
@@ -93,13 +93,13 @@ export default async function DashboardFeedbackPage({
       {tab === "received" ? (
         <FeedbackList entries={receivedEntries} isOwner profileId={user.id} />
       ) : sentEntries.length === 0 ? (
-        <div className="rounded-2xl bg-white p-8 text-center text-sm text-neutral-500 shadow-md">
+        <div className="bg-white p-8 text-center text-sm text-neutral-500 shadow-md">
           You haven&apos;t left feedback for anyone yet.
         </div>
       ) : (
         <div className="space-y-3">
           {sentEntries.map((entry) => (
-            <div key={entry.id} className="rounded-2xl bg-white p-5 shadow-md">
+            <div key={entry.id} className="bg-white p-5 shadow-md">
               <div className="flex items-center gap-2">
                 {entry.sentiment === "positive" && <Smile className="size-4 text-green-600" />}
                 {entry.sentiment === "neutral" && <Meh className="size-4 text-neutral-500" />}

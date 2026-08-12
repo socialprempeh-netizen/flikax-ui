@@ -52,7 +52,7 @@ export function DashboardSidebar({
 
   return (
     <div className="flex w-full shrink-0 flex-col gap-4 sm:w-72">
-      <div className="flex flex-col items-center gap-2 rounded-xl border-t-4 border-brand bg-white p-5 text-center shadow-lg">
+      <div className="flex flex-col items-center gap-2 border-t-4 border-brand bg-white p-5 text-center shadow-lg">
         <span className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-brand-dark text-xl font-bold text-white ring-4 ring-brand-light">
           {avatarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -66,7 +66,7 @@ export function DashboardSidebar({
       </div>
 
       {declinedCount > 0 && (
-        <div className="rounded-xl bg-amber-500 p-4 shadow-lg">
+        <div className="bg-amber-500 p-4 shadow-lg">
           <p className="text-sm font-semibold text-white">
             {declinedCount} of your ad{declinedCount > 1 ? "s were" : " was"} declined
           </p>
@@ -79,14 +79,14 @@ export function DashboardSidebar({
         </div>
       )}
 
-      <nav className="grid grid-cols-2 gap-2 sm:flex sm:flex-col sm:gap-0 sm:overflow-hidden sm:rounded-xl sm:bg-white sm:shadow-lg">
+      <nav className="grid grid-cols-2 gap-2 sm:flex sm:flex-col sm:gap-0 sm:overflow-hidden sm:bg-white sm:shadow-lg">
         {MENU_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
               key={item.label}
               href={item.href}
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium shadow-sm sm:rounded-none sm:border-b sm:border-neutral-50 sm:shadow-none sm:last:border-b-0 ${
+              className={`flex items-center gap-3 px-4 py-3 text-sm font-medium shadow-sm sm:border-b sm:border-neutral-50 sm:shadow-none sm:last:border-b-0 ${
                 isActive
                   ? "bg-brand-dark text-white"
                   : "bg-white text-neutral-700 hover:bg-brand-light hover:text-brand-dark"

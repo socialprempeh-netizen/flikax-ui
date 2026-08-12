@@ -73,7 +73,7 @@ export function SellerStoreListings({
           <button
             type="button"
             onClick={() => setActiveCategory(null)}
-            className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+            className={`shrink-0 px-3.5 py-1.5 text-sm font-semibold transition-colors ${
               activeCategory === null ? "bg-brand-dark text-white" : "border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
             }`}
           >
@@ -87,7 +87,7 @@ export function SellerStoreListings({
                 key={cat.slug}
                 type="button"
                 onClick={() => setActiveCategory(cat.slug)}
-                className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+                className={`shrink-0 px-3.5 py-1.5 text-sm font-semibold transition-colors ${
                   isActive ? "bg-brand-dark text-white" : "border border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
                 }`}
               >
@@ -106,7 +106,7 @@ export function SellerStoreListings({
         <div className="flex shrink-0 items-center gap-2">
           {/* Grid/list toggle -- purely a client-side rendering choice, same
               data either way, so it doesn't need a query param. */}
-          <div className="flex items-center overflow-hidden rounded-full border border-neutral-200">
+          <div className="flex items-center overflow-hidden border border-neutral-200">
             <button
               type="button"
               onClick={() => setView("grid")}
@@ -135,7 +135,7 @@ export function SellerStoreListings({
             <button
               type="button"
               onClick={() => setSortOpen((v) => !v)}
-              className="flex items-center gap-1.5 rounded-full border border-neutral-300 bg-white px-3.5 py-1.5 text-sm font-medium text-neutral-600 hover:bg-neutral-50"
+              className="flex items-center gap-1.5 border border-neutral-300 bg-white px-3.5 py-1.5 text-sm font-medium text-neutral-600 hover:bg-neutral-50"
             >
               {activeSort.label}
               <ChevronDown className={`size-3.5 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
@@ -144,7 +144,7 @@ export function SellerStoreListings({
             {sortOpen && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} aria-hidden="true" />
-                <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 shadow-xl">
+                <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden border border-neutral-200 bg-white py-1 shadow-xl">
                   {SORT_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
@@ -169,16 +169,16 @@ export function SellerStoreListings({
       </div>
 
       {visible.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-neutral-300 bg-white py-16 text-center">
+        <div className="flex flex-col items-center justify-center gap-1 border border-dashed border-neutral-300 bg-white py-16 text-center">
           <p className="text-sm font-medium text-neutral-600">No listings in this category.</p>
         </div>
       ) : view === "grid" ? (
         <ListingGrid listings={visible} />
       ) : (
-        <div className="-mx-4 divide-y divide-neutral-100 overflow-hidden rounded-none border-y border-neutral-100 bg-white sm:mx-0 sm:rounded-xl sm:border">
+        <div className="-mx-4 divide-y divide-neutral-300 overflow-hidden border-y border-neutral-300 bg-white sm:mx-0 sm:border">
           {visible.map((listing) => (
             <Link key={listing.id} href={listing.href} className="flex items-center gap-3 p-3 hover:bg-neutral-50">
-              <div className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-cream text-brand-dark/40">
+              <div className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden bg-cream text-brand-dark/40">
                 {listing.imageUrl ? (
                   <Image src={listing.imageUrl} alt={listing.title} fill sizes="80px" quality={82} className="object-cover" />
                 ) : (

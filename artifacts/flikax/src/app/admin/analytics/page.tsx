@@ -71,7 +71,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           <Link
             key={w}
             href={buildAdminAnalyticsHref({ ...filters, window: w })}
-            className={`rounded-lg border px-3 py-1.5 text-sm font-medium ${
+            className={`border px-3 py-1.5 text-sm font-medium ${
               String(windowDays) === w
                 ? "border-brand bg-brand-light text-brand-dark"
                 : "border-slate-200 text-slate-600 hover:bg-slate-50"
@@ -82,7 +82,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
         ))}
       </div>
 
-      <Card className="mt-4 gap-2 rounded-2xl p-4 shadow-sm">
+      <Card className="mt-4 gap-2 p-4 shadow-sm">
         <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
           Revenue ({WINDOW_LABELS[String(windowDays)]})
         </span>
@@ -103,7 +103,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+        <Card className="gap-2 p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total views (all time)</span>
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
@@ -112,7 +112,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           </div>
           <p className="text-2xl font-extrabold text-slate-800">{totalViews}</p>
         </Card>
-        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+        <Card className="gap-2 p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total saves</span>
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">

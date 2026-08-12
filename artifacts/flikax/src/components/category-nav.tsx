@@ -98,7 +98,7 @@ export function CategoryNav({
   }, [hoveredId]);
 
   return (
-    <nav className="relative w-full shrink-0 divide-y divide-neutral-200 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm sm:w-72">
+    <nav className="relative w-full shrink-0 divide-y divide-neutral-300 overflow-hidden border border-slate-200/80 bg-white shadow-sm sm:w-72">
       {parents.map((cat) => {
         const children = categories.filter((c) => c.parent_id === cat.id);
         const isHovered = hoveredId === cat.id;
@@ -115,7 +115,7 @@ export function CategoryNav({
           >
             <Link
               href={buildListingsHref({ ...filters, category: cat.slug })}
-              className={`group flex items-center gap-2.5 px-4 py-2 transition-colors duration-150 hover:bg-neutral-200 ${
+              className={`group flex items-center gap-2.5 px-4 py-3 transition-colors duration-150 hover:bg-neutral-200 ${
                 isHovered ? "bg-neutral-200" : ""
               }`}
             >
@@ -149,15 +149,15 @@ export function CategoryNav({
                 }}
                 onMouseEnter={() => handleEnter(cat.id)}
                 onMouseLeave={handleLeave}
-                className="z-40 overflow-y-auto rounded-2xl border border-slate-200/80 bg-white p-2 shadow-lg no-scrollbar"
+                className="z-40 overflow-y-auto border border-slate-200/80 bg-white p-2 shadow-lg no-scrollbar"
               >
-                <div className="flex flex-col divide-y divide-neutral-200">
+                <div className="flex flex-col divide-y divide-neutral-300">
                   {children.map((child) => {
                     return (
                       <Link
                         key={child.id}
                         href={`/${child.slug}`}
-                        className="group flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors hover:bg-neutral-200"
+                        className="group flex items-center gap-2.5 px-2 py-2.5 transition-colors hover:bg-neutral-200"
                       >
                         <CategoryThumb
                           category={child}

@@ -37,14 +37,14 @@ export default async function PerformanceInsightsPage() {
       </p>
 
       {rows.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-neutral-200 bg-white py-16 text-center">
+        <div className="border border-dashed border-neutral-200 bg-white py-16 text-center">
           <p className="text-sm font-medium text-neutral-600">No listings yet.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-neutral-100 bg-white shadow-md">
+        <div className="overflow-x-auto border border-neutral-300 bg-white shadow-md">
           <table className="w-full min-w-[640px] border-collapse text-left text-sm">
             <thead>
-              <tr className="border-b border-neutral-100 text-xs uppercase tracking-wide text-neutral-400 [&>th]:border-r [&>th]:border-neutral-100 [&>th:last-child]:border-r-0">
+              <tr className="border-b border-neutral-300 text-xs uppercase tracking-wide text-neutral-400 [&>th]:border-r [&>th]:border-neutral-300 [&>th:last-child]:border-r-0">
                 <th className="px-4 py-3 font-semibold">Listing</th>
                 <th className="px-4 py-3 font-semibold">Status</th>
                 <th className="px-4 py-3 font-semibold">Views</th>
@@ -53,7 +53,7 @@ export default async function PerformanceInsightsPage() {
                 <th className="px-4 py-3 font-semibold">Rank in category</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100 [&_tr>td]:border-r [&_tr>td]:border-neutral-100 [&_tr>td:last-child]:border-r-0">
+            <tbody className="divide-y divide-neutral-300 [&_tr>td]:border-r [&_tr>td]:border-neutral-300 [&_tr>td:last-child]:border-r-0">
               {rows.map((row) => {
                 const href = getListingPath({
                   title: row.title,
@@ -69,7 +69,7 @@ export default async function PerformanceInsightsPage() {
                   <tr key={row.id} className="hover:bg-brand-light/20">
                     <td className="px-4 py-3">
                       <Link href={href} className="flex items-center gap-3">
-                        <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-light text-brand-dark/40">
+                        <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden bg-brand-light text-brand-dark/40">
                           {imageUrl ? (
                             <Image src={imageUrl} alt={row.title} fill sizes="48px" quality={82} className="object-cover" />
                           ) : (

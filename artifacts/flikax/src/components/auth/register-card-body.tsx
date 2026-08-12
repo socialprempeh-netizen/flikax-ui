@@ -25,7 +25,7 @@ export function RegisterCardBody({
       </div>
 
       {error && (
-        <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-600" role="alert">
+        <p className="bg-red-50 px-3 py-2 text-sm text-red-600" role="alert">
           {error}
         </p>
       )}

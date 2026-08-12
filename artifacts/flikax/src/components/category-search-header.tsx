@@ -30,7 +30,7 @@ export function CategorySearchHeader({
           name="q"
           defaultValue={query}
           placeholder={`Search in ${categoryName}`}
-          className="w-full rounded-full border border-neutral-200 px-4 py-1.5 text-sm text-neutral-800 outline-none focus:border-brand"
+          className="w-full border border-neutral-200 px-4 py-1.5 text-sm text-neutral-800 outline-none focus:border-brand"
         />
       </form>
       <Link

@@ -57,7 +57,7 @@ export function ListingPlanActions({
   }
 
   return (
-    <div className="relative z-10 mt-2 space-y-2 rounded-lg border border-dashed border-neutral-200 p-3">
+    <div className="relative z-10 mt-2 space-y-2 border border-dashed border-neutral-200 p-3">
       {availablePlans.map((plan) => (
         <div key={plan.id} className="flex items-center justify-between gap-2">
           <p className="text-xs text-neutral-600">

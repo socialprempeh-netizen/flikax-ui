@@ -22,7 +22,7 @@ const CATEGORICAL = ["#1868db", "#1baf7a", "#eda100", "#124f9e", "#4a3aa7"];
 
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <Card className="gap-0 rounded-2xl p-5 shadow-sm">
+    <Card className="gap-0 p-5 shadow-sm">
       <h3 className="text-sm font-bold text-slate-800">{title}</h3>
       <div className="mt-4 h-64">{children}</div>
     </Card>
@@ -42,7 +42,7 @@ function TrendTooltip({
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs shadow-md">
+    <div className="border border-slate-200 bg-white px-3 py-2 text-xs shadow-md">
       <p className="font-semibold text-slate-800">{label}</p>
       <p className="text-slate-500">
         {payload[0].value} {valueLabel}
@@ -109,7 +109,7 @@ function RankTooltip({
   if (!active || !payload?.length) return null;
   const { name, count } = payload[0].payload;
   return (
-    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs shadow-md">
+    <div className="border border-slate-200 bg-white px-3 py-2 text-xs shadow-md">
       <p className="font-semibold text-slate-800">{name}</p>
       <p className="text-slate-500">
         {count} {unit}
