@@ -725,9 +725,15 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 {specs.length > 0 && (
                   <div>
                     <h2 className="mb-3 text-lg font-bold tracking-tight text-neutral-900">Specifications</h2>
-                    <div className="grid grid-cols-3 divide-y divide-neutral-200">
+                    {/* Bordered tiles rather than Tailwind's divide-x/divide-y --
+                        divide-x's `> * + *` selector only draws a line between
+                        DOM siblings, so on a 3-col grid it puts a left border on
+                        the first item of every row too (a ladder, not real
+                        column gridlines). A border on every tile sidesteps that
+                        and stays correct at every breakpoint/column count. */}
+                    <div className="grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-neutral-200 bg-neutral-200">
                       {specs.map((spec) => (
-                        <div key={spec.key} className="py-2.5 pr-2">
+                        <div key={spec.key} className="bg-white px-3 py-2.5">
                           <p className="text-sm font-semibold text-neutral-800 sm:text-base">{spec.value}</p>
                           <p className="text-2xs font-medium text-neutral-400 sm:text-xs">{spec.label}</p>
                         </div>

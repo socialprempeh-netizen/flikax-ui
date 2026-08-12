@@ -42,9 +42,9 @@ export default async function PerformanceInsightsPage() {
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-neutral-100 bg-white shadow-md">
-          <table className="w-full min-w-[640px] text-left text-sm">
+          <table className="w-full min-w-[640px] border-collapse text-left text-sm">
             <thead>
-              <tr className="border-b border-neutral-100 text-xs uppercase tracking-wide text-neutral-400">
+              <tr className="border-b border-neutral-100 text-xs uppercase tracking-wide text-neutral-400 [&>th]:border-r [&>th]:border-neutral-100 [&>th:last-child]:border-r-0">
                 <th className="px-4 py-3 font-semibold">Listing</th>
                 <th className="px-4 py-3 font-semibold">Status</th>
                 <th className="px-4 py-3 font-semibold">Views</th>
@@ -53,7 +53,7 @@ export default async function PerformanceInsightsPage() {
                 <th className="px-4 py-3 font-semibold">Rank in category</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100">
+            <tbody className="divide-y divide-neutral-100 [&_tr>td]:border-r [&_tr>td]:border-neutral-100 [&_tr>td:last-child]:border-r-0">
               {rows.map((row) => {
                 const href = getListingPath({
                   title: row.title,

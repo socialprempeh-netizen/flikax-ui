@@ -138,9 +138,9 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
             )}
 
             {specs.length > 0 && (
-              <div className="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-slate-200 bg-slate-200 sm:grid-cols-3">
                 {specs.map((spec) => (
-                  <div key={spec.key}>
+                  <div key={spec.key} className="bg-white px-3 py-2.5">
                     <p className="text-sm font-semibold text-slate-800">{spec.value}</p>
                     <p className="text-xs uppercase tracking-wide text-slate-400">{spec.label}</p>
                   </div>
