@@ -163,7 +163,7 @@ export function LocationPickerModal({
 
         <div className="overflow-y-auto p-4">
           {searchResults ? (
-            <div className="flex flex-col divide-y divide-neutral-100">
+            <div className="flex flex-col divide-y divide-neutral-200">
               {searchResults.length === 0 && (
                 <p className="py-6 text-center text-base text-neutral-400">No matches found.</p>
               )}
@@ -173,9 +173,9 @@ export function LocationPickerModal({
                     key={`region-${result.region.slug}`}
                     type="button"
                     onClick={() => openRegion(result.region.slug)}
-                    className="flex cursor-pointer items-center justify-between px-2 py-2 text-left transition-colors hover:bg-neutral-50"
+                    className="flex cursor-pointer items-center justify-between px-2 py-2.5 text-left transition-colors hover:bg-neutral-50"
                   >
-                    <span className="text-base font-medium text-brand-dark">{result.region.name}</span>
+                    <span className="text-base font-medium text-location-link">{result.region.name}</span>
                     <ChevronRight className="size-4 text-neutral-400" />
                   </button>
                 ) : result.kind === "district" ? (
@@ -183,10 +183,10 @@ export function LocationPickerModal({
                     key={`district-${result.district.slug}`}
                     type="button"
                     onClick={() => selectLocation(result.district.name)}
-                    className="flex cursor-pointer items-center justify-between px-2 py-2 text-left transition-colors hover:bg-neutral-50"
+                    className="flex cursor-pointer items-center justify-between px-2 py-2.5 text-left transition-colors hover:bg-neutral-50"
                   >
                     <span>
-                      <div className="text-base font-medium text-brand-dark">{result.district.name}</div>
+                      <div className="text-base font-medium text-location-link">{result.district.name}</div>
                       <div className="text-sm text-neutral-400">{result.region.name}</div>
                     </span>
                     <ChevronRight className="size-4 shrink-0 text-neutral-400" />
@@ -196,10 +196,10 @@ export function LocationPickerModal({
                     key={`suburb-${result.district.slug}-${result.suburb.slug}`}
                     type="button"
                     onClick={() => selectLocation(result.suburb.name)}
-                    className="flex cursor-pointer items-center justify-between px-2 py-2 text-left transition-colors hover:bg-neutral-50"
+                    className="flex cursor-pointer items-center justify-between px-2 py-2.5 text-left transition-colors hover:bg-neutral-50"
                   >
                     <span>
-                      <div className="text-base font-medium text-brand-dark">{result.suburb.name}</div>
+                      <div className="text-base font-medium text-location-link">{result.suburb.name}</div>
                       <div className="text-sm text-neutral-400">
                         {result.district.name}, {result.region.name}
                       </div>
@@ -221,16 +221,16 @@ export function LocationPickerModal({
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 {suburbColumns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-100">
+                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-200">
                     {column.map((suburb) => (
                       <button
                         key={suburb.slug}
                         type="button"
                         onClick={() => selectLocation(suburb.name)}
-                        className="flex w-full cursor-pointer items-center justify-between gap-1 px-2 py-1 text-left leading-tight transition-colors hover:bg-neutral-50"
+                        className="flex w-full cursor-pointer items-center justify-between gap-1 px-2 py-2.5 text-left leading-tight transition-colors hover:bg-neutral-50"
                       >
                         <span>
-                          <div className="text-sm leading-tight font-medium text-brand-dark">{suburb.name}</div>
+                          <div className="text-sm leading-tight font-medium text-location-link">{suburb.name}</div>
                           <div className="text-xs text-neutral-400">{activeDistrict.name}</div>
                         </span>
                         <ChevronRight className="size-3.5 shrink-0 text-neutral-400" />
@@ -254,17 +254,17 @@ export function LocationPickerModal({
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 {districtColumns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-100">
+                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-200">
                     {column.map((district) =>
                       district.suburbs?.length ? (
                         <button
                           key={district.slug}
                           type="button"
                           onClick={() => openDistrict(district.slug)}
-                          className="flex w-full cursor-pointer items-center justify-between gap-1 px-2 py-1 text-left leading-tight transition-colors hover:bg-neutral-50"
+                          className="flex w-full cursor-pointer items-center justify-between gap-1 px-2 py-2.5 text-left leading-tight transition-colors hover:bg-neutral-50"
                         >
                           <span>
-                            <div className="text-sm leading-tight font-medium text-brand-dark">{district.name}</div>
+                            <div className="text-sm leading-tight font-medium text-location-link">{district.name}</div>
                             <div className="text-xs text-neutral-400">{activeRegion.name}</div>
                           </span>
                           <ChevronRight className="size-3.5 shrink-0 text-neutral-400" />
@@ -274,10 +274,10 @@ export function LocationPickerModal({
                           key={district.slug}
                           type="button"
                           onClick={() => selectLocation(district.name)}
-                          className="flex w-full cursor-pointer items-center justify-between gap-1 px-2 py-1 text-left leading-tight transition-colors hover:bg-neutral-50"
+                          className="flex w-full cursor-pointer items-center justify-between gap-1 px-2 py-2.5 text-left leading-tight transition-colors hover:bg-neutral-50"
                         >
                           <span>
-                            <div className="text-sm leading-tight font-medium text-brand-dark">{district.name}</div>
+                            <div className="text-sm leading-tight font-medium text-location-link">{district.name}</div>
                             <div className="text-xs text-neutral-400">{activeRegion.name}</div>
                           </span>
                           <ChevronRight className="size-3.5 shrink-0 text-neutral-400" />
@@ -302,15 +302,15 @@ export function LocationPickerModal({
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 {regionColumns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-100">
+                  <div key={columnIndex} className="flex flex-1 flex-col divide-y divide-neutral-200">
                     {column.map((region) => (
                       <button
                         key={region.slug}
                         type="button"
                         onClick={() => openRegion(region.slug)}
-                        className="flex w-full cursor-pointer items-center justify-between px-2 py-1 text-left transition-colors hover:bg-neutral-50"
+                        className="flex w-full cursor-pointer items-center justify-between px-2 py-2.5 text-left transition-colors hover:bg-neutral-50"
                       >
-                        <span className="text-base font-medium text-brand-dark">{region.name}</span>
+                        <span className="text-base font-medium text-location-link">{region.name}</span>
                         <ChevronRight className="size-3.5 shrink-0 text-neutral-400" />
                       </button>
                     ))}

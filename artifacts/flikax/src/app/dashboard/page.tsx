@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ChevronDown } from "lucide-react";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { resolveListingImageUrl } from "@/lib/images";
 import { getListingPath } from "@/lib/listing-url";
@@ -141,18 +141,21 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
         <form action="/dashboard" method="get" className="flex items-center gap-2 px-4 py-3">
           <input type="hidden" name="tab" value={tab} />
-          <select
-            name="category"
-            defaultValue={category ?? ""}
-            className="flex-1 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-sm text-neutral-700 outline-none focus:border-brand sm:flex-none"
-          >
-            <option value="">All categories</option>
-            {parentCategories.map((cat) => (
-              <option key={cat.id} value={cat.slug}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+          <div className="relative flex-1 sm:flex-none">
+            <select
+              name="category"
+              defaultValue={category ?? ""}
+              className="w-full appearance-none rounded-lg border border-neutral-200 bg-white py-1.5 pl-3 pr-8 text-sm text-neutral-700 outline-none focus:border-brand"
+            >
+              <option value="">All categories</option>
+              {parentCategories.map((cat) => (
+                <option key={cat.id} value={cat.slug}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+          </div>
           <Button type="submit" size="sm">
             Filter
           </Button>

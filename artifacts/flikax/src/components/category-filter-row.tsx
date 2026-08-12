@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import type { CategorySort, DatePosted } from "@/lib/category-listings";
 
 const PRICE_BUCKETS: { label: string; minPrice?: string; maxPrice?: string }[] = [
@@ -79,31 +80,37 @@ export function CategoryFilterRow({
         </span>
 
         <div className="flex items-center gap-2">
-          <select
-            aria-label="Date posted"
-            value={datePosted ?? ""}
-            onChange={(e) => router.push(hrefWith(searchParams, { posted: e.target.value || undefined }))}
-            className="rounded-lg border border-neutral-200 bg-white px-2 py-1.5 text-sm text-neutral-700 outline-none focus:border-brand"
-          >
-            {DATE_POSTED_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              aria-label="Date posted"
+              value={datePosted ?? ""}
+              onChange={(e) => router.push(hrefWith(searchParams, { posted: e.target.value || undefined }))}
+              className="appearance-none rounded-lg border border-neutral-200 bg-white py-1.5 pl-2 pr-7 text-sm text-neutral-700 outline-none focus:border-brand"
+            >
+              {DATE_POSTED_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 size-3.5 -translate-y-1/2 text-neutral-400" />
+          </div>
 
-          <select
-            aria-label="Sort by"
-            value={sort}
-            onChange={(e) => router.push(hrefWith(searchParams, { sort: e.target.value }))}
-            className="rounded-lg border border-neutral-200 bg-white px-2 py-1.5 text-sm text-neutral-700 outline-none focus:border-brand"
-          >
-            {SORT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              aria-label="Sort by"
+              value={sort}
+              onChange={(e) => router.push(hrefWith(searchParams, { sort: e.target.value }))}
+              className="appearance-none rounded-lg border border-neutral-200 bg-white py-1.5 pl-2 pr-7 text-sm text-neutral-700 outline-none focus:border-brand"
+            >
+              {SORT_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 size-3.5 -translate-y-1/2 text-neutral-400" />
+          </div>
         </div>
       </div>
     </div>

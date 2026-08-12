@@ -50,6 +50,18 @@
   --cta-yellow: #ffc800;
   --cta-yellow-hover: #e6b400;
   --hero-search-btn: var(--cta-yellow);
+  /* Second deliberate non-brand exception, alongside --cta-yellow: the
+     region/district/suburb list in LocationPickerModal (used everywhere a
+     location picker appears -- homepage/category search, category-sidebar
+     filters, the post-ad form) matches a specific reference's blue link
+     color instead of --brand-dark. IMPORTANT CAVEAT: this hex was
+     estimated by eye from a pasted screenshot, not sampled with a color
+     picker -- no tool in this environment has pixel-level access to a
+     pasted image. If you have the exact value (e.g. from the source
+     site's own CSS/devtools), replace it here; every location list
+     updates from this one place. */
+  --location-link: #1a73e8;
+  --location-link-hover: #0f5bc4;
   /* Light cream tint used behind product photos in listing cards and behind
      the mobile category icon strip (Temu-style) -- kept warm enough to read
      as a deliberate tint, not just an off-white. */
@@ -129,6 +141,8 @@
   --color-hero-search-btn: var(--hero-search-btn);
   --color-cta-yellow: var(--cta-yellow);
   --color-cta-yellow-hover: var(--cta-yellow-hover);
+  --color-location-link: var(--location-link);
+  --color-location-link-hover: var(--location-link-hover);
   --color-cream: var(--cream);
   --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif;

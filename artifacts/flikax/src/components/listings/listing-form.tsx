@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   ChevronRight,
+  ChevronDown,
   X,
   ImagePlus,
   Loader2,
@@ -114,7 +115,11 @@ const NEGOTIABLE_OPTIONS = [
 // spelled out here or they render as borderless, flat-looking boxes.
 const INPUT =
   "h-auto w-full rounded-lg border border-slate-400 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-800 outline-none transition-colors focus-visible:border-brand focus-visible:bg-white focus-visible:ring-brand/10 disabled:opacity-50";
-const SELECT = INPUT + " appearance-none";
+// appearance-none strips the native dropdown arrow, but on its own that
+// leaves the select with *no* visible affordance that it's a dropdown at
+// all -- worse than the native default. pr-9 makes room for the
+// ChevronDown each usage below pairs it with (wrapped in a relative div).
+const SELECT = INPUT + " appearance-none pr-9";
 
 // â”€â”€â”€ Section header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SectionHeader({ icon, label }: { icon: React.ReactNode; label: string }) {
@@ -584,40 +589,46 @@ export function ListingForm({
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Main category <span className="text-red-500">*</span>
                   </label>
-                  <select
-                    required
-                    value={parentId}
-                    onChange={(e) => {
-                      setParentId(e.target.value);
-                      setCategoryId("");
-                      setAttributes({});
-                    }}
-                    className={SELECT}
-                  >
-                    <option value="" disabled>Select categoryâ€¦</option>
-                    {parentCategories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      required
+                      value={parentId}
+                      onChange={(e) => {
+                        setParentId(e.target.value);
+                        setCategoryId("");
+                        setAttributes({});
+                      }}
+                      className={SELECT}
+                    >
+                      <option value="" disabled>Select categoryâ€¦</option>
+                      {parentCategories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+                  </div>
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold text-neutral-500">
                     Subcategory <span className="text-red-500">*</span>
                   </label>
-                  <select
-                    required
-                    disabled={!parentId}
-                    value={categoryId}
-                    onChange={(e) => setCategoryId(e.target.value)}
-                    className={SELECT}
-                  >
-                    <option value="" disabled>
-                      {parentId ? "Select subcategoryâ€¦" : "Choose category first"}
-                    </option>
-                    {childCategories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      required
+                      disabled={!parentId}
+                      value={categoryId}
+                      onChange={(e) => setCategoryId(e.target.value)}
+                      className={SELECT}
+                    >
+                      <option value="" disabled>
+                        {parentId ? "Select subcategoryâ€¦" : "Choose category first"}
+                      </option>
+                      {childCategories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+                  </div>
                 </div>
               </div>
             </section>
@@ -677,17 +688,20 @@ export function ListingForm({
                           />
                         )}
                         {field.type === "select" && (
-                          <select
-                            required={field.required}
-                            value={scalarValue}
-                            onChange={(e) => setAttribute(field.key, e.target.value)}
-                            className={SELECT}
-                          >
-                            <option value="" disabled>Select {field.label.toLowerCase()}â€¦</option>
-                            {field.options?.map((opt) => (
-                              <option key={opt} value={opt}>{opt}</option>
-                            ))}
-                          </select>
+                          <div className="relative">
+                            <select
+                              required={field.required}
+                              value={scalarValue}
+                              onChange={(e) => setAttribute(field.key, e.target.value)}
+                              className={SELECT}
+                            >
+                              <option value="" disabled>Select {field.label.toLowerCase()}â€¦</option>
+                              {field.options?.map((opt) => (
+                                <option key={opt} value={opt}>{opt}</option>
+                              ))}
+                            </select>
+                            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+                          </div>
                         )}
                         {field.type === "boolean" && (
                           <>

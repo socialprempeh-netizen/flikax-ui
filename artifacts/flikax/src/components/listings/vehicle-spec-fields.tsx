@@ -6,6 +6,7 @@
 // CATEGORY_FIELDS/getFieldsForCategory would otherwise render as plain text
 // inputs) with cascading, data-backed selects.
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { CAR_MAKES_MODELS } from "@/lib/car-data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,8 +16,18 @@ const MAKES = Object.keys(CAR_MAKES_MODELS).sort((a, b) => a.localeCompare(b));
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: CURRENT_YEAR - 1980 + 2 }, (_, i) => String(CURRENT_YEAR + 1 - i));
 
+// `border` (width) is load-bearing here, not decor: Tailwind's preflight
+// zeroes every element's border-width, so bare `border-slate-300` (color
+// only) is invisible on its own. Input supplies its own border-width from
+// its shadcn base classes, so this is redundant-but-harmless there -- for
+// the raw <select> elements below (which have no such base), it's the only
+// thing giving them a visible border at all.
 const FIELD_CLASS =
-  "h-auto w-full rounded-lg border-slate-300 px-3 py-2 text-sm text-neutral-800 outline-none focus-visible:border-brand disabled:bg-neutral-50";
+  "h-auto w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-neutral-800 outline-none focus-visible:border-brand disabled:bg-neutral-50";
+// appearance-none strips the native dropdown arrow; pr-9 makes room for the
+// ChevronDown each select below pairs it with (wrapped in a relative div) --
+// same pattern as listing-form.tsx's SELECT constant.
+const SELECT_CLASS = FIELD_CLASS + " appearance-none pr-9";
 
 // Vehicles-only: cascading Make -> Model dropdowns sourced from the bundled
 // NHTSA car-data set, with a free-text "Other / Not listed" escape hatch for
@@ -49,31 +60,34 @@ export function VehicleSpecFields({
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">Make*</span>
         {makeMode === "select" ? (
-          <select
-            required
-            value={currentMake}
-            onChange={(e) => {
-              if (e.target.value === OTHER_VALUE) {
-                setMakeMode("other");
-                setAttribute("make", "");
-              } else {
-                setAttribute("make", e.target.value);
-              }
-              setAttribute("model", "");
-              setModelMode("select");
-            }}
-            className={FIELD_CLASS}
-          >
-            <option value="" disabled>
-              Select make
-            </option>
-            {MAKES.map((make) => (
-              <option key={make} value={make}>
-                {make}
+          <div className="relative">
+            <select
+              required
+              value={currentMake}
+              onChange={(e) => {
+                if (e.target.value === OTHER_VALUE) {
+                  setMakeMode("other");
+                  setAttribute("make", "");
+                } else {
+                  setAttribute("make", e.target.value);
+                }
+                setAttribute("model", "");
+                setModelMode("select");
+              }}
+              className={SELECT_CLASS}
+            >
+              <option value="" disabled>
+                Select make
               </option>
-            ))}
-            <option value={OTHER_VALUE}>Other / Not listed</option>
-          </select>
+              {MAKES.map((make) => (
+                <option key={make} value={make}>
+                  {make}
+                </option>
+              ))}
+              <option value={OTHER_VALUE}>Other / Not listed</option>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+          </div>
         ) : (
           <div className="space-y-1">
             <Input
@@ -104,30 +118,33 @@ export function VehicleSpecFields({
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">Model*</span>
         {modelMode === "select" && modelsForMake.length > 0 ? (
-          <select
-            required
-            value={currentModel}
-            disabled={!currentMake}
-            onChange={(e) => {
-              if (e.target.value === OTHER_VALUE) {
-                setModelMode("other");
-                setAttribute("model", "");
-              } else {
-                setAttribute("model", e.target.value);
-              }
-            }}
-            className={FIELD_CLASS}
-          >
-            <option value="" disabled>
-              {currentMake ? "Select model" : "Choose make first"}
-            </option>
-            {modelsForMake.map((model) => (
-              <option key={model} value={model}>
-                {model}
+          <div className="relative">
+            <select
+              required
+              value={currentModel}
+              disabled={!currentMake}
+              onChange={(e) => {
+                if (e.target.value === OTHER_VALUE) {
+                  setModelMode("other");
+                  setAttribute("model", "");
+                } else {
+                  setAttribute("model", e.target.value);
+                }
+              }}
+              className={SELECT_CLASS}
+            >
+              <option value="" disabled>
+                {currentMake ? "Select model" : "Choose make first"}
               </option>
-            ))}
-            <option value={OTHER_VALUE}>Other / Not listed</option>
-          </select>
+              {modelsForMake.map((model) => (
+                <option key={model} value={model}>
+                  {model}
+                </option>
+              ))}
+              <option value={OTHER_VALUE}>Other / Not listed</option>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+          </div>
         ) : (
           <div className="space-y-1">
             <Input
@@ -158,21 +175,24 @@ export function VehicleSpecFields({
 
       <label className="block">
         <span className="mb-1 block text-sm font-medium text-neutral-700">Year of Manufacture*</span>
-        <select
-          required
-          value={(attributes.year as string | undefined) ?? ""}
-          onChange={(e) => setAttribute("year", e.target.value)}
-          className={FIELD_CLASS}
-        >
-          <option value="" disabled>
-            Select year
-          </option>
-          {YEARS.map((year) => (
-            <option key={year} value={year}>
-              {year}
+        <div className="relative">
+          <select
+            required
+            value={(attributes.year as string | undefined) ?? ""}
+            onChange={(e) => setAttribute("year", e.target.value)}
+            className={SELECT_CLASS}
+          >
+            <option value="" disabled>
+              Select year
             </option>
-          ))}
-        </select>
+            {YEARS.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+        </div>
       </label>
 
       <label className="block">
