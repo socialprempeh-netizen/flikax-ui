@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { PencilLine } from "lucide-react";
 import { FlikaxLogo } from "@/components/flikax-logo";
-import { FaInstagram, FaLinkedinIn, FaApple, FaGooglePlay } from "react-icons/fa6";
-import { FacebookIcon, XIcon, TikTokIcon } from "@/components/icons/social-icons";
+import { FaApple, FaGooglePlay } from "react-icons/fa6";
+import { FacebookIcon, XIcon, TikTokIcon, InstagramIcon, LinkedInIcon } from "@/components/icons/social-icons";
 import { SellCta } from "@/components/cta/sell-cta";
 import { JsonLd } from "@/components/seo/json-ld";
-import { cn } from "@/lib/utils";
 import { getSiteUrl } from "@/lib/site-url";
 
 const SITE_URL = getSiteUrl();
@@ -39,17 +38,16 @@ const legalLinks = [
 ];
 
 // No real social accounts exist yet -- these render as plain icons (not
-// links to profiles that don't exist). X, Facebook, and TikTok render as
-// self-contained colored circle badges (own solid bg, unaffected by the
-// footer's own background); Instagram/LinkedIn have no brand badge yet and
-// keep their monotone react-icons glyphs inside a dark-tinted pill so they
-// stay visible against the light footer.
+// links to profiles that don't exist). Every icon is a self-contained
+// colored circle badge (own solid/gradient bg per brand, unaffected by the
+// footer's own background), so all five stay clearly recognizable by their
+// real brand colors instead of blending into a uniform monotone treatment.
 const socialIcons = [
-  { label: "X", icon: XIcon, badge: true },
-  { label: "Facebook", icon: FacebookIcon, badge: true },
-  { label: "Instagram", icon: FaInstagram, badge: false },
-  { label: "TikTok", icon: TikTokIcon, badge: true },
-  { label: "LinkedIn", icon: FaLinkedinIn, badge: false },
+  { label: "X", icon: XIcon },
+  { label: "Facebook", icon: FacebookIcon },
+  { label: "Instagram", icon: InstagramIcon },
+  { label: "TikTok", icon: TikTokIcon },
+  { label: "LinkedIn", icon: LinkedInIcon },
 ];
 
 export function SiteFooter() {
@@ -58,7 +56,7 @@ export function SiteFooter() {
       <JsonLd data={localBusinessJsonLd} />
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col items-center gap-2 text-center">
-          <FlikaxLogo />
+          <FlikaxLogo wordmarkColor="text-black" />
           <div>
             <p className="text-sm text-neutral-700">Your Trusted Classifieds Marketplace.</p>
             <p className="text-xs text-neutral-600">
@@ -67,18 +65,15 @@ export function SiteFooter() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            {socialIcons.map(({ label, icon: Icon, badge }) => (
+            {socialIcons.map(({ label, icon: Icon }) => (
               <span
                 key={label}
                 role="img"
                 title={label}
                 aria-label={label}
-                className={cn(
-                  "flex size-8 items-center justify-center rounded-full transition-transform duration-200 hover:scale-110",
-                  !badge && "bg-black/10 text-neutral-700 hover:bg-black/15",
-                )}
+                className="flex items-center justify-center transition-transform duration-200 hover:scale-110"
               >
-                <Icon className={badge ? "size-8" : "size-4"} />
+                <Icon className="size-8" />
               </span>
             ))}
           </div>

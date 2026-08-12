@@ -1,4 +1,4 @@
-import { FaFacebookF, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
+import { FaFacebookF, FaWhatsapp, FaXTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 
 // Official TikTok "musical note" glyph outline (simple-icons, CC0).
@@ -40,10 +40,15 @@ type BrandIconProps = {
 function CircleBadge({
   className,
   bgClassName,
+  style,
   children,
 }: {
   className?: string;
-  bgClassName: string;
+  /** Omit when the badge needs a gradient (set via `style` instead) --
+   * Tailwind's arbitrary-value classes don't cleanly express a multi-stop
+   * radial gradient like Instagram's. */
+  bgClassName?: string;
+  style?: React.CSSProperties;
   children: React.ReactNode;
 }) {
   return (
@@ -53,6 +58,7 @@ function CircleBadge({
         bgClassName,
         className,
       )}
+      style={style}
     >
       {children}
     </span>
@@ -95,6 +101,31 @@ export function TikTokIcon({ className }: BrandIconProps) {
         <path d={TIKTOK_NOTE_PATH} fill="#FE2C55" transform="translate(0.9,0.6)" />
         <path d={TIKTOK_NOTE_PATH} fill="#FFFFFF" />
       </svg>
+    </CircleBadge>
+  );
+}
+
+export function InstagramIcon({ className }: BrandIconProps) {
+  return (
+    // Official Instagram gradient (yellow -> orange -> pink/magenta -> purple,
+    // sweeping from the bottom-left) -- a radial gradient, not a linear one,
+    // which is why this needs `style` rather than a Tailwind bg-* class.
+    <CircleBadge
+      className={className}
+      style={{
+        backgroundImage:
+          "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)",
+      }}
+    >
+      <FaInstagram className="size-[58%] text-white" aria-hidden="true" />
+    </CircleBadge>
+  );
+}
+
+export function LinkedInIcon({ className }: BrandIconProps) {
+  return (
+    <CircleBadge className={className} bgClassName="bg-[#0A66C2]">
+      <FaLinkedinIn className="size-[52%] text-white" aria-hidden="true" />
     </CircleBadge>
   );
 }
