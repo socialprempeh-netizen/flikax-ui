@@ -173,9 +173,17 @@ authenticated.
   Environment Variable, no dashboard config needed, self-updates if the
   production domain ever changes) → `http://localhost:3000`. Every
   canonical URL/OG tag/JSON-LD/sitemap entry in the app goes through this.
-- `next.config.ts`'s image config relies on Vercel's built-in image
-  optimizer (no extra infrastructure needed on this platform) — see
-  DESIGN_SYSTEM.md / the Lighthouse-driven fix that enabled it.
+- **Image optimization is deliberately OFF** (`images.unoptimized: true`
+  in `next.config.ts`). It was briefly enabled to fix a Lighthouse LCP
+  finding (raw-resolution images being served regardless of display size)
+  but broke every image sitewide in production within hours — not a
+  `remotePatterns`/config problem, but every `/_next/image` request coming
+  back `402 Payment Required` /
+  `OPTIMIZED_IMAGE_REQUEST_PAYMENT_REQUIRED`: the current Vercel plan
+  doesn't cover the optimization request volume this triggered. **Don't
+  re-enable this without first checking Vercel dashboard → Usage → Image
+  Optimization** (and likely upgrading the plan) — otherwise it *will*
+  silently blank out every listing photo in production again.
 - No `vercel.json`/`vercel.ts` exists in this package — deployment
   configuration is Vercel's Next.js zero-config auto-detection, nothing
   custom.
@@ -191,9 +199,9 @@ Reviewed every dependency; only the ones above call out to a real external
 API. Notably:
 - **`sharp`** — local image processing only (watermarking in
   `src/lib/watermark.ts`, perceptual hashing in `src/lib/image-hash.ts`).
-  No network calls. Also what Vercel's/Next's own image optimizer uses
-  under the hood, which is why enabling `images.unoptimized: false`
-  doesn't require adding a new dependency.
+  No network calls. Also what Next's own image optimizer would use under
+  the hood *if* it were enabled — see the Vercel section above for why
+  it currently isn't.
 - **`zod`** — validation only (payment webhook/request schemas), not a
   service.
 - `recharts`, `framer-motion`, `lucide-react`, `react-icons`, `radix-ui`,

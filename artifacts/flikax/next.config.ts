@@ -12,15 +12,20 @@ function getSupabaseHostname(): string {
 
 const nextConfig: NextConfig = {
   images: {
-    // Next's built-in image optimizer was off (a Replit-era default from
-    // this repo's initial commit) despite `sharp` already being a real
-    // dependency and `qualities` already being configured -- both signals
-    // this was meant to be on. With it off, every listing photo/hero image
-    // was served at its raw uploaded resolution regardless of its actual
-    // display size (a Lighthouse-measured example: a 960x959 source image
-    // rendered at 350x467, ~137KB heavier than it needed to be) -- a real
-    // contributor to the site's LCP failure. Vercel's deployment runs this
-    // optimizer natively, no extra infra needed.
+    // REVERTED (see git history for the brief window this was enabled):
+    // turning Next's built-in image optimizer on broke every image
+    // sitewide in production -- not a remotePatterns/config problem (the
+    // generated /_next/image URLs were correct, right hostname/path) but
+    // Vercel's own image-optimization request quota: every request came
+    // back `402 Payment Required` / `OPTIMIZED_IMAGE_REQUEST_PAYMENT_REQUIRED`,
+    // meaning the current Vercel plan doesn't cover the optimization volume
+    // this triggered. `unoptimized: true` serves each image's raw uploaded
+    // bytes directly from Supabase Storage again -- worse for LCP/payload
+    // size (see the bulk-image-cache-fix and Lighthouse-audit work for that
+    // tradeoff), but actually loads, which raw correctness beats. Don't
+    // flip this back on without first confirming the Vercel plan/usage
+    // supports it (Vercel dashboard -> Usage -> Image Optimization).
+    unoptimized: true,
     qualities: [75, 82],
     remotePatterns: [
       {
