@@ -872,7 +872,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
 
             <Card className="gap-1 border-dashed border-brand/30 bg-brand-light p-4 text-center shadow-none sm:p-5">
               <h3 className="text-sm font-bold text-neutral-800">Post an Ad Similar to This</h3>
-              <p className="mt-1 text-xs text-neutral-500">Reach thousands of buyers across Ghana.</p>
+              <p className="mt-1 text-13 text-neutral-500">Reach thousands of buyers across Ghana.</p>
               <SellCta className="mt-3 w-full" />
             </Card>
 
@@ -880,7 +880,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
               <h3 className="mb-3 text-sm font-bold text-neutral-800">Safety First - Read This Before Proceeding</h3>
               <ul className="list-disc space-y-2 pl-4 marker:text-brand-dark">
                 {SAFETY_TIPS.map((tip) => (
-                  <li key={tip} className="text-xs font-bold text-neutral-700">
+                  <li key={tip} className="text-13 font-bold text-neutral-700">
                     {tip}
                   </li>
                 ))}

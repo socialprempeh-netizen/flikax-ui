@@ -141,13 +141,15 @@
   --color-location-link: var(--location-link);
   --color-location-link-hover: var(--location-link-hover);
   --color-cream: var(--cream);
-  /* Roboto, matching Jiji's body font exactly (confirmed via their DevTools
-     computed styles). Loaded through next/font/google as --font-roboto (see
-     layout.tsx) -- self-hosted, no runtime Google Fonts request, display:
-     swap so text shows in the fallback stack immediately and swaps to
-     Roboto once it's in, rather than staying invisible. system-ui/Arial
-     after it are real fallbacks for the (rare) case the webfont fails to
-     load at all, not just decoration.
+  /* Roboto, sans-serif -- matching Jiji's computed font-family exactly
+     (confirmed via their DevTools). var(--font-roboto) (see layout.tsx) is
+     next/font/google's generated variable, which already carries Roboto
+     plus next/font's own metrics-adjusted "Roboto Fallback" -- that part
+     stays (it's what avoids layout shift while the webfont loads, not an
+     extra fallback we chose), so this reads as "Roboto, sans-serif" the
+     same way Jiji's does, not "Roboto, system-ui, Arial, sans-serif" (a
+     longer manual fallback chain previously here, since replaced with just
+     the trailing generic per this exact spec).
      This *replaces* Arial/Helvetica as the previous deliberate choice here
      -- worth recording why that previous choice existed, since the same
      risk applies to Roboto: Inter's font file didn't ship the Cedi Sign
@@ -160,7 +162,7 @@
      same bug, different font. Fixed the same way: --font-currency below
      stays on Arial/Helvetica and is applied specifically to GH₵ price text
      everywhere it renders, instead of inheriting --font-sans. */
-  --font-sans: var(--font-roboto), system-ui, Arial, sans-serif;
+  --font-sans: var(--font-roboto), sans-serif;
   /* Deliberately Arial/Helvetica, not --font-sans -- see the note above.
      Apply via font-currency to any element whose text includes a GH₵
      price/Cedi Sign, so the symbol never mismatches the digits around it. */
@@ -243,7 +245,16 @@ html {
 body {
   background: var(--background);
   color: rgb(49, 49, 49);
-  font-size: 16px;
+  /* Matches Jiji's computed body font-size exactly (confirmed via their
+     DevTools: font-size: 13px). This only sets the *inherited default* for
+     text with no explicit Tailwind text-* class of its own -- every
+     element that already carries text-sm/text-base/text-13/etc. keeps
+     rendering at that explicit size regardless, since those utilities set
+     font-size directly rather than relying on inheriting this value.
+     html's rem base is untouched (still the standard 16px), so this does
+     not rescale Tailwind's rem-based type scale (text-sm/text-lg/...) --
+     only this one inherited default moved. */
+  font-size: 13px;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

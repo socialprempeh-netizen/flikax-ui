@@ -176,7 +176,7 @@ export function ChatThread({
             {isRevealing ? "Sharing..." : "Share my phone number"}
           </Button>
         ) : (
-          <p className="text-center text-xs text-neutral-400">
+          <p className="text-center text-13 text-neutral-400">
             Add a phone number in Settings to share contact info in chat.
           </p>
         )}

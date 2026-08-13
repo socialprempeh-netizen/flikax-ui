@@ -49,7 +49,7 @@ export function SearchQueryField({ defaultQuery }: { defaultQuery?: string }) {
                     <ImageOff className="size-5" />
                   )}
                 </div>
-                <p className="mt-1 truncate text-xs font-medium text-neutral-700">{item.title}</p>
+                <p className="mt-1 truncate text-13 font-medium text-neutral-700">{item.title}</p>
                 <p className="font-currency text-xs font-bold text-brand-dark">{item.priceLabel}</p>
               </Link>
             ))}

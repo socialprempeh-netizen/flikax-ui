@@ -54,7 +54,7 @@ export function LoginCardBody({
           {view === "options" ? "Sign in" : "Sign in via email or phone"}
         </h1>
         {view === "options" && (
-          <p className="mt-0.5 text-xs text-neutral-600 sm:text-sm">Buy and sell anything, anywhere in Ghana.</p>
+          <p className="mt-0.5 text-13 text-neutral-600 sm:text-sm">Buy and sell anything, anywhere in Ghana.</p>
         )}
       </div>
 

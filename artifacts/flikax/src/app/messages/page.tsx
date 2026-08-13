@@ -114,7 +114,7 @@ export default async function MessagesPage() {
                         </span>
                       )}
                     </div>
-                    <p className="truncate text-xs font-medium text-neutral-400">
+                    <p className="truncate text-13 font-medium text-neutral-400">
                       {conversation.listing?.title}
                     </p>
                     <p

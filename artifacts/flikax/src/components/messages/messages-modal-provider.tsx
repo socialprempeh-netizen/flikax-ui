@@ -258,7 +258,7 @@ function MessagesPanelBody() {
           <MessageSquare className="size-5" />
         </span>
         <p className="text-sm font-medium text-neutral-600">No messages yet</p>
-        <p className="text-xs text-neutral-400">Message a seller from a listing to start a conversation.</p>
+        <p className="text-13 text-neutral-400">Message a seller from a listing to start a conversation.</p>
       </div>
     );
   }
@@ -301,7 +301,7 @@ function MessagesPanelBody() {
                     {formatRelativeTime(new Date(conversation.last_message_at))}
                   </span>
                 </div>
-                <p className="truncate text-xs font-medium text-neutral-400">{conversation.listing?.title}</p>
+                <p className="truncate text-13 font-medium text-neutral-400">{conversation.listing?.title}</p>
               </div>
               {unread && <span className="size-2 shrink-0 rounded-full bg-brand" />}
             </button>
