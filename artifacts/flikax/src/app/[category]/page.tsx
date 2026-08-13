@@ -18,7 +18,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
 import { InfiniteListingGrid } from "@/components/infinite-listing-grid";
 import { JsonLd } from "@/components/seo/json-ld";
-import { CategorySearchHeader } from "@/components/category-search-header";
 import { CategoryFilterRow } from "@/components/category-filter-row";
 import { CategorySidebarFilters } from "@/components/category-sidebar-filters";
 import { CategoryQuickFilters } from "@/components/category-quick-filters";
@@ -191,8 +190,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   return (
     <div className="flex flex-1 flex-col bg-background pb-16 lg:pb-0">
       <JsonLd data={breadcrumbJsonLd} />
-      <SiteHeader />
-      <CategorySearchHeader categoryName={category.name} categorySlug={category.slug} query={q} />
+      <SiteHeader categorySearch={{ categoryName: category.name, categorySlug: category.slug, query: q }} />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 hidden flex-wrap items-center gap-1 text-sm text-neutral-500 lg:flex">
           <Link href="/" className="hover:text-brand-dark">

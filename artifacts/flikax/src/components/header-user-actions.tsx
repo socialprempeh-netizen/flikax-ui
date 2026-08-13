@@ -100,10 +100,12 @@ export function HeaderUserActions() {
         )}
       </div>
 
-      {/* sm:order-3 -- SiteHeader's search bar takes sm:order-2 to sit
-          between the logo and this row; without an explicit order here,
-          this row's DOM position (before the search bar) would keep it
-          visually stuck in the middle instead of pinned to the right. */}
+      {/* sm:order-3 -- on category pages, SiteHeader's categorySearch field
+          takes sm:order-2 to sit between the logo and this row; without an
+          explicit order here, this row's DOM position (before that field)
+          would keep it visually stuck in the middle instead of pinned to
+          the right. No-op on pages without categorySearch (homepage etc.)
+          since there's nothing else to compete with for ordering. */}
       <div className="hidden items-center gap-1.5 sm:order-3 sm:flex sm:gap-3">
         <button
           type="button"
