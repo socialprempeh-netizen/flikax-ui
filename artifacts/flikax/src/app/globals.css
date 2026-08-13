@@ -38,8 +38,8 @@
      it, instead of disappearing into a flat identical fill. */
   --header-bg: var(--brand-dark);
   /* The site's one deliberate non-brand accent -- Post Ad (see
-     header-user-actions.tsx) and the hero search button (see
-     search-bar.tsx) both use this exact requested yellow instead of
+     header-user-actions.tsx) and the header search button (see
+     header-search-bar.tsx) both use this exact requested yellow instead of
      --brand, so they keep reading as the primary conversion action.
      Single source of truth: previously this hex (and its hover shade) was
      copy-pasted directly into 5 separate class names across those two
@@ -49,7 +49,6 @@
      floor even for icons; black clears it at 11.54:1. */
   --cta-yellow: #ffc800;
   --cta-yellow-hover: #e6b400;
-  --hero-search-btn: var(--cta-yellow);
   /* Second deliberate non-brand exception, alongside --cta-yellow: the
      region/district/suburb list in LocationPickerModal (used everywhere a
      location picker appears -- homepage/category search, category-sidebar
@@ -137,7 +136,6 @@
   --color-brand-dark: var(--brand-dark);
   --color-brand-light: var(--brand-light);
   --color-header-bg: var(--header-bg);
-  --color-hero-search-btn: var(--hero-search-btn);
   --color-cta-yellow: var(--cta-yellow);
   --color-cta-yellow-hover: var(--cta-yellow-hover);
   --color-location-link: var(--location-link);

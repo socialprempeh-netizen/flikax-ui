@@ -17,7 +17,12 @@ export function CategorySearchHeader({
   query?: string;
 }) {
   return (
-    <div className="sticky top-[60px] z-30 border-b border-neutral-100 bg-white sm:top-[76px]">
+    // top-[110px]: SiteHeader wraps onto two lines below `sm` now that its
+    // own search bar lives in the header row (see site-header.tsx), so this
+    // sub-header's offset has to clear that taller two-line height instead
+    // of the old single-line one -- sm:top-[76px] is unchanged since
+    // SiteHeader stays single-line from `sm` up.
+    <div className="sticky top-[110px] z-30 border-b border-neutral-100 bg-white sm:top-[76px]">
       <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2 sm:px-6">
         {/* before:-inset-3 expands the tap target to 44x44 without growing the
             icon itself or the bar's own height -- this bar stacks under the

@@ -100,7 +100,11 @@ export function HeaderUserActions() {
         )}
       </div>
 
-      <div className="hidden items-center gap-1.5 sm:flex sm:gap-3">
+      {/* sm:order-3 -- SiteHeader's search bar takes sm:order-2 to sit
+          between the logo and this row; without an explicit order here,
+          this row's DOM position (before the search bar) would keep it
+          visually stuck in the middle instead of pinned to the right. */}
+      <div className="hidden items-center gap-1.5 sm:order-3 sm:flex sm:gap-3">
         <button
           type="button"
           onClick={() => (isLoggedIn ? openMessages() : openAuthModal("/messages"))}
