@@ -186,7 +186,7 @@ export function SellerStoreListings({
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-base font-extrabold tracking-tight text-brand-dark">{currency.format(listing.price)}</p>
+                <p className="font-currency text-base font-extrabold tracking-tight text-brand-dark">{currency.format(listing.price)}</p>
                 <p className="line-clamp-1 text-sm font-bold text-neutral-900">{listing.title}</p>
                 <div className="mt-0.5 flex items-center gap-1 text-xs text-neutral-500">
                   <MapPin className="size-3 shrink-0" />

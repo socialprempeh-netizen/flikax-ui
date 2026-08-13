@@ -114,7 +114,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                       {listing.title}
                     </Link>
                     <div className="flex shrink-0 items-center gap-2">
-                      <span className="text-sm text-slate-500">{currency.format(listing.price)}</span>
+                      <span className="font-currency text-sm text-slate-500">{currency.format(listing.price)}</span>
                       <Badge className={ADMIN_STATUS_STYLES[listing.status] ?? "bg-slate-100 text-slate-600"}>
                         {ADMIN_STATUS_LABELS[listing.status] ?? listing.status}
                       </Badge>

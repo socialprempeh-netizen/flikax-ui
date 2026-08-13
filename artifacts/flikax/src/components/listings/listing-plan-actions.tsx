@@ -61,7 +61,7 @@ export function ListingPlanActions({
       {availablePlans.map((plan) => (
         <div key={plan.id} className="flex items-center justify-between gap-2">
           <p className="text-xs text-neutral-600">
-            {plan.name} — GH₵{plan.price}
+            {plan.name} — <span className="font-currency">GH₵{plan.price}</span>
             {plan.duration_days ? ` (${plan.duration_days}d)` : ""}
           </p>
           <div className="flex shrink-0 gap-1">

@@ -50,7 +50,7 @@ export function SearchQueryField({ defaultQuery }: { defaultQuery?: string }) {
                   )}
                 </div>
                 <p className="mt-1 truncate text-xs font-medium text-neutral-700">{item.title}</p>
-                <p className="text-xs font-bold text-brand-dark">{item.priceLabel}</p>
+                <p className="font-currency text-xs font-bold text-brand-dark">{item.priceLabel}</p>
               </Link>
             ))}
           </div>

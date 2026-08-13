@@ -62,7 +62,7 @@ export function CategoryFilterRow({
               href={hrefWith(searchParams, { minPrice: bucket.minPrice, maxPrice: bucket.maxPrice })}
               // relative + before:-inset expands the real hit area to 44px tall
               // (30px visual pill + 7px above/below) without growing the chip.
-              className={`relative shrink-0 border px-3 py-1.5 text-xs font-medium whitespace-nowrap before:absolute before:-inset-[7px] before:content-[''] ${
+              className={`font-currency relative shrink-0 border px-3 py-1.5 text-xs font-medium whitespace-nowrap before:absolute before:-inset-[7px] before:content-[''] ${
                 isActive
                   ? "border-brand bg-brand-light text-brand-dark"
                   : "border-neutral-300 text-neutral-600 hover:bg-neutral-50"

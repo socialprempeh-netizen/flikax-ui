@@ -91,7 +91,7 @@ export default async function PremiumPage() {
                     <p className="font-bold text-neutral-800">{plan.name}</p>
                     {plan.description && <p className="mt-1 text-sm text-neutral-500">{plan.description}</p>}
                     <p className="mt-3 text-2xl font-extrabold text-brand-dark">
-                      {currency.format(plan.price)}
+                      <span className="font-currency">{currency.format(plan.price)}</span>
                       {plan.duration && (
                         <span className="text-sm font-medium text-neutral-400"> / {plan.duration}</span>
                       )}

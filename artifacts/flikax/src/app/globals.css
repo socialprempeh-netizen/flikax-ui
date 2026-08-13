@@ -141,17 +141,30 @@
   --color-location-link: var(--location-link);
   --color-location-link-hover: var(--location-link-hover);
   --color-cream: var(--cream);
-  /* Short system-font stack, not a webfont -- deliberately replaces the
-     previous Inter + long fallback chain (var(--font-inter), system-ui,
-     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-     Arial, "Noto Sans", sans-serif). Inter's font file didn't ship the Cedi
-     Sign glyph (U+20B5, "₵"), so every GH₵ price fell through to whatever
-     came next in the stack instead of rendering in Inter -- visually
+  /* Roboto, matching Jiji's body font exactly (confirmed via their DevTools
+     computed styles). Loaded through next/font/google as --font-roboto (see
+     layout.tsx) -- self-hosted, no runtime Google Fonts request, display:
+     swap so text shows in the fallback stack immediately and swaps to
+     Roboto once it's in, rather than staying invisible. system-ui/Arial
+     after it are real fallbacks for the (rare) case the webfont fails to
+     load at all, not just decoration.
+     This *replaces* Arial/Helvetica as the previous deliberate choice here
+     -- worth recording why that previous choice existed, since the same
+     risk applies to Roboto: Inter's font file didn't ship the Cedi Sign
+     glyph (U+20B5, "₵"), so every GH₵ price fell through to whatever came
+     next in the stack instead of rendering in Inter -- visually
      inconsistent, and the actual bug behind the seller pricing table
-     screenshot. Arial/Helvetica are installed system fonts with full Cedi
-     Sign coverage, so this stack now renders it correctly everywhere,
-     site-wide, with no webfont download needed. */
-  --font-sans: Arial, Helvetica, sans-serif;
+     screenshot. Verified (rendered + measured) Roboto has that exact same
+     gap: no Cedi Sign glyph, and at the bold weights prices use, the
+     fallback renders visibly thinner than the surrounding Roboto digits --
+     same bug, different font. Fixed the same way: --font-currency below
+     stays on Arial/Helvetica and is applied specifically to GH₵ price text
+     everywhere it renders, instead of inheriting --font-sans. */
+  --font-sans: var(--font-roboto), system-ui, Arial, sans-serif;
+  /* Deliberately Arial/Helvetica, not --font-sans -- see the note above.
+     Apply via font-currency to any element whose text includes a GH₵
+     price/Cedi Sign, so the symbol never mismatches the digits around it. */
+  --font-currency: Arial, Helvetica, sans-serif;
   --font-logo: var(--font-baloo-2);
   /* Classic bold serif for the literal "Flikax" wordmark specifically (per
      brand reference: bold Times/Georgia-style serif, not the rounded

@@ -212,7 +212,8 @@ export function ListingsTable({ listings }: { listings: AdminListingRow[] }) {
                 )}
               </div>
               <p className="mt-0.5 text-sm text-slate-500">
-                {currency.format(listing.price)} · {listing.location} · {listing.categoryName ?? "Uncategorized"}
+                <span className="font-currency">{currency.format(listing.price)}</span> · {listing.location} ·{" "}
+                {listing.categoryName ?? "Uncategorized"}
                 {listing.sellerName ? ` · ${listing.sellerName}` : ""}
               </p>
             </div>

@@ -212,7 +212,7 @@ export function ChatThread({
         {offerOpen ? (
           <form onSubmit={handleOfferSubmit} className="mb-2 flex items-center gap-2">
             <span className="flex flex-1 items-center gap-1 border border-brand/40 bg-brand-light px-4 py-2 text-sm font-semibold text-neutral-700 focus-within:border-brand">
-              GH₵
+              <span className="font-currency">GH₵</span>
               <input
                 autoFocus
                 type="number"

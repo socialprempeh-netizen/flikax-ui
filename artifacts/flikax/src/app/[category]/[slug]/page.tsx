@@ -786,12 +786,12 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
                 column. */}
             <Card className="gap-0 border-slate-200/80 p-4 shadow-sm sm:p-5">
               <div className="flex flex-wrap items-baseline gap-2">
-                <p className="text-2xl font-bold tracking-tight text-brand-dark">
+                <p className="font-currency text-2xl font-bold tracking-tight text-brand-dark">
                   {currency.format(listing.price)}
                 </p>
                 {listing.is_discounted && listing.original_price != null && (
                   <>
-                    <span className="text-sm font-medium text-neutral-400 line-through">
+                    <span className="font-currency text-sm font-medium text-neutral-400 line-through">
                       {currency.format(listing.original_price)}
                     </span>
                     <span className="flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">

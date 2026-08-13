@@ -70,7 +70,7 @@ export function PremiumPlanRow({
           <Badge className={PLAN_TYPE_STYLES[plan.plan_type]}>{PLAN_TYPE_LABELS[plan.plan_type]}</Badge>
         </div>
         <p className="mt-0.5 text-sm text-slate-500">
-          {currency.format(plan.price)}
+          <span className="font-currency">{currency.format(plan.price)}</span>
           {plan.duration ? ` / ${plan.duration}` : ""}
           {plan.duration_days ? ` · active ${plan.duration_days}d` : ""}
         </p>

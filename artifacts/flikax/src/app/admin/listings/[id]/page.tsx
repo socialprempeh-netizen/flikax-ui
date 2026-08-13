@@ -119,7 +119,7 @@ export default async function AdminListingDetailPage({ params }: { params: Promi
               )}
             </div>
 
-            <p className="mt-3 text-3xl font-extrabold text-brand-dark">{currency.format(listing.price)}</p>
+            <p className="font-currency mt-3 text-3xl font-extrabold text-brand-dark">{currency.format(listing.price)}</p>
 
             {listing.declined_reason && (
               <p className="mt-3 bg-red-50 px-3 py-2 text-sm text-red-700">

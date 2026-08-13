@@ -196,7 +196,9 @@ export function CategorySidebarFilters({
       </button>
 
       <div className="border-[1.5px] border-neutral-300 bg-white p-3">
-        <p className="mb-2 text-sm font-semibold text-neutral-700">Price, GH₵</p>
+        <p className="mb-2 text-sm font-semibold text-neutral-700">
+          Price, <span className="font-currency">GH₵</span>
+        </p>
         <div className="flex items-center gap-2">
           <Input
             type="number"

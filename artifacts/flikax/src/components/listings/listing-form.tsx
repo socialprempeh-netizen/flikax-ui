@@ -760,7 +760,7 @@ export function ListingForm({
                     Price (GHS) <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-sm font-bold text-neutral-400">
+                    <span className="font-currency pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-sm font-bold text-neutral-400">
                       GH₵
                     </span>
                     <Input

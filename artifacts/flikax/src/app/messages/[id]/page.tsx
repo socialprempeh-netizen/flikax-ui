@@ -118,7 +118,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-bold text-neutral-800">{conversation.listing.title}</p>
-              <p className="text-sm font-extrabold text-brand-dark">{currency.format(conversation.listing.price)}</p>
+              <p className="font-currency text-sm font-extrabold text-brand-dark">{currency.format(conversation.listing.price)}</p>
               {conversation.listing.status !== "active" && (
                 <p className="text-xs font-medium text-neutral-400">This listing is no longer active.</p>
               )}

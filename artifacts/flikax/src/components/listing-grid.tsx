@@ -178,11 +178,11 @@ export function ListingGrid({
                   </div>
                   <CardContent className="space-y-1 p-3.5">
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-lg font-extrabold tracking-tight text-brand-dark">
+                      <span className="font-currency text-lg font-extrabold tracking-tight text-brand-dark">
                         {currency.format(listing.price)}
                       </span>
                       {listing.originalPrice != null && (
-                        <span className="text-2xs font-medium text-neutral-400 line-through">
+                        <span className="font-currency text-2xs font-medium text-neutral-400 line-through">
                           {currency.format(listing.originalPrice)}
                         </span>
                       )}
@@ -200,7 +200,7 @@ export function ListingGrid({
                         one to three, so card heights differ card-to-card instead
                         of every card being the same fixed height. */}
                     {listing.description?.trim() && (
-                      <p className="line-clamp-3 text-2xs leading-snug text-neutral-500">{listing.description}</p>
+                      <p className="line-clamp-3 text-xs leading-snug text-neutral-500">{listing.description}</p>
                     )}
                     <div className="flex items-center gap-1 pt-0.5 text-2xs text-neutral-500">
                       <MapPin className="size-3 shrink-0" />

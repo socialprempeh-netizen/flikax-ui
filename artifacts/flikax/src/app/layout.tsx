@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Baloo_2 } from "next/font/google";
+import { Baloo_2, Roboto } from "next/font/google";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthModalProvider } from "@/components/auth/auth-modal-provider";
@@ -10,6 +10,26 @@ import "./globals.css";
 const baloo2 = Baloo_2({
   variable: "--font-baloo-2",
   subsets: ["latin"],
+});
+
+// Site body font, matching Jiji's Roboto (confirmed via their DevTools
+// computed styles). next/font/google self-hosts the files (no runtime
+// Google Fonts request, no render-blocking <link>) and sets display: "swap"
+// explicitly so text renders immediately in the --font-sans fallback stack
+// (see globals.css) and swaps to Roboto once it loads, rather than staying
+// invisible on a slow connection. 400/500/700/900 cover normal/medium/bold
+// weights exactly; Tailwind's font-semibold(600) and font-extrabold(800)
+// have no exact Roboto file (it doesn't ship 600/800 statically) and match
+// to the nearest loaded weight instead -- a non-issue visually, but see the
+// --font-currency note in globals.css for the one case where that same
+// "nearest available weight" fallback becomes visible: Roboto has no glyph
+// at all for the Cedi Sign (₵), so GH₵ prices deliberately stay off this
+// font.
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+  weight: ["400", "500", "700", "900"],
+  display: "swap",
 });
 
 const SITE_URL = getSiteUrl();
@@ -60,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${baloo2.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${baloo2.variable} ${roboto.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider>
           <JsonLd data={organizationJsonLd} />

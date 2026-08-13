@@ -77,7 +77,7 @@ export function DashboardListingsList({
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-xl font-extrabold text-brand-dark">{currency.format(listing.price)}</p>
+              <p className="font-currency text-xl font-extrabold text-brand-dark">{currency.format(listing.price)}</p>
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-bold ${
                   STATUS_STYLES[listing.status] ?? "bg-neutral-100 text-neutral-600"
