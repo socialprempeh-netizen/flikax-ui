@@ -37,20 +37,23 @@ const currency = new Intl.NumberFormat("en-GH", {
   maximumFractionDigits: 0,
 });
 
-// CSS Grid, not CSS multi-column masonry (`columns-*`) -- multi-column lays
-// items out column-by-column (fills column 1 top-to-bottom, then column 2,
-// ...), which packs variable-height cards tightly, but it also means the
-// *visual* reading order no longer matches the DOM/query order: with 5
-// columns, a human scanning left-to-right across the top row sees items
-// 1, N+1, 2N+1, ... instead of 1, 2, 3, ... -- exactly backwards from what
-// "recommended"/"newest" sort implies, and it desyncs keyboard tab order
-// from visual position too. Grid keeps DOM order == visual reading order
-// (row by row, left to right) at the cost of some unused space under
-// shorter cards within the same row -- a small visual tradeoff. Cards
-// still vary in height card-to-card (fixed square image + line-clamp'd
-// title, but an optional line-clamp'd description excerpt below it -- see
-// CardContent below), which is what gives the grid a masonry-like look
-// despite being plain rows under the hood.
+// CSS multi-column (`columns-*`), matching Jiji's actual masonry -- each
+// column fills top-to-bottom independently (item 2 stacks under item 1 in
+// column 1 until that column's next item would overflow, then continues in
+// column 2), which is what lets cards of genuinely different heights
+// (variable-aspect images below, plus the optional description excerpt)
+// pack tightly with no dead space under short cards, instead of every card
+// in a row being stretched/padded to match its tallest neighbor.
+//
+// Previously this was CSS Grid specifically to keep visual reading order
+// row-by-row == DOM/query order == keyboard tab order -- multi-column's
+// column-major fill breaks that (a 5-column top row reads item 1, then
+// whatever landed after column 1 filled, not item 2). Switched anyway,
+// deliberately, to match the reference: that's an inherent, unavoidable
+// property of *any* real masonry layout (a JS packing library reorders
+// visually the same way -- shortest-column-next -- since preserving strict
+// row-major order is what a uniform grid guarantees and masonry, by
+// definition, does not), not a bug specific to this implementation.
 export function ListingGrid({
   listings,
   variant = "default",
@@ -76,15 +79,29 @@ export function ListingGrid({
       {/* -mx-4 cancels the page's own px-4 edge padding below sm, so listing
           images run flush to the screen edges (Jiji-style) on mobile; sm:mx-0
           hands padding back to the page container once it's no longer just
-          a hairline gap. */}
+          a hairline gap. gap-x-2 is column-gap only -- multi-column's
+          row-gap-between-stacked-items support is newer (Chrome 84+/Safari
+          14.1+) and this codebase would rather not depend on it for
+          something as basic as card spacing, so vertical spacing between
+          stacked cards in the same column comes from mb-2 on each card
+          instead (below), which every browser handles identically. */}
       <div
-        className={`grid -mx-4 gap-2 sm:mx-0 ${
-          isHome ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+        className={`columns-2 -mx-4 gap-x-2 sm:mx-0 ${
+          isHome ? "sm:columns-3 lg:columns-4 xl:columns-5" : "sm:columns-2 lg:columns-3"
         }`}
       >
         {listings.map((listing, index) => {
+          // Real stored aspect ratio when known (falls back to square for
+          // images uploaded before dimensions were tracked), clamped to a
+          // sane portrait/landscape range so one unusually extreme photo
+          // (a panorama, a screenshot) can't produce a grotesquely
+          // tall/short card -- Jiji's own masonry has natural, bounded
+          // variation, not extremes.
+          const rawRatio =
+            listing.imageWidth && listing.imageHeight ? listing.imageWidth / listing.imageHeight : 1;
+          const aspectRatio = Math.min(Math.max(rawRatio, 0.65), 1.6);
           return (
-            <ListingCardHover key={listing.id}>
+            <ListingCardHover key={listing.id} className="mb-2 break-inside-avoid">
               {/* relative: anchors CompactSaveButton, which needs to be a
                   sibling of the Link (not a descendant) -- a <button>
                   nested inside an <a> is invalid HTML (interactive content
@@ -113,11 +130,14 @@ export function ListingGrid({
                         : "border-neutral-300"
                   }`}
                 >
-                  {/* Square, not the image's natural aspect ratio -- keeps every
-                      card in the grid the same shape (Jiji-style), even though
-                      imageWidth/imageHeight are still tracked for other uses
-                      (e.g. the detail page gallery). */}
-                  <div className="relative aspect-square w-full overflow-hidden bg-cream text-brand-dark/40">
+                  {/* Real stored aspect ratio (clamped above), not a forced
+                      square -- this is what actually varies card heights for
+                      the masonry effect (Jiji-style); falls back to a square
+                      for pre-dimension-tracking images. */}
+                  <div
+                    className="relative w-full overflow-hidden bg-cream text-brand-dark/40"
+                    style={{ aspectRatio }}
+                  >
                     {listing.imageUrl ? (
                       <Image
                         src={listing.imageUrl}
