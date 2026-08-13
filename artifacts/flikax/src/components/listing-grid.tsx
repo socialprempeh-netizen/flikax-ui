@@ -46,8 +46,11 @@ const currency = new Intl.NumberFormat("en-GH", {
 // "recommended"/"newest" sort implies, and it desyncs keyboard tab order
 // from visual position too. Grid keeps DOM order == visual reading order
 // (row by row, left to right) at the cost of some unused space under
-// shorter cards in a row -- a small visual tradeoff, since card height here
-// is already fairly bounded (fixed square image + line-clamp'd title).
+// shorter cards within the same row -- a small visual tradeoff. Cards
+// still vary in height card-to-card (fixed square image + line-clamp'd
+// title, but an optional line-clamp'd description excerpt below it -- see
+// CardContent below), which is what gives the grid a masonry-like look
+// despite being plain rows under the hood.
 export function ListingGrid({
   listings,
   variant = "default",
@@ -190,6 +193,15 @@ export function ListingGrid({
                     <p className="line-clamp-2 text-13 font-bold leading-snug text-neutral-900">
                       {listing.title}
                     </p>
+                    {/* Optional excerpt -- only when the seller actually wrote a
+                        description (~15% of listings have none). This, not the
+                        grid CSS, is what gives the layout real masonry variation:
+                        a bare 1-3 word description clamps to one line, a longer
+                        one to three, so card heights differ card-to-card instead
+                        of every card being the same fixed height. */}
+                    {listing.description?.trim() && (
+                      <p className="line-clamp-3 text-2xs leading-snug text-neutral-500">{listing.description}</p>
+                    )}
                     <div className="flex items-center gap-1 pt-0.5 text-2xs text-neutral-500">
                       <MapPin className="size-3 shrink-0" />
                       <span className="min-w-0 truncate">{listing.location}</span>

@@ -483,7 +483,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
     supabase
       .from("listings")
       .select(
-        "id, title, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
+        "id, title, description, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
       )
       .eq("category_id", listing.category_id)
       .eq("status", "active")
@@ -542,7 +542,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
     const { data: similarAnyLocation } = await supabase
       .from("listings")
       .select(
-        "id, title, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
+        "id, title, description, price, original_price, is_discounted, seller_verified, location, is_featured, featured_until, bumped_at, listing_images(storage_path, position, width, height), categories(slug), short_id"
       )
       .eq("category_id", listing.category_id)
       .eq("status", "active")
@@ -559,6 +559,7 @@ async function ListingDetail({ listing }: { listing: ListingRow }) {
       id: row.id,
       href: listingPath(row),
       title: row.title,
+      description: row.description,
       price: row.price,
       originalPrice: row.is_discounted ? row.original_price : null,
       location: row.location,
