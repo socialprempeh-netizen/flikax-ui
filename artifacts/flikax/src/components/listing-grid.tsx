@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ImageOff, Star, TrendingUp, MapPin, Clock, BadgePercent, ShieldCheck } from "lucide-react";
+import { ImageOff, Star, TrendingUp, MapPin, Clock, BadgePercent, ShieldCheck, Award } from "lucide-react";
 import { formatRelativeTime } from "@/lib/format-time";
 import { CompactSaveButton } from "@/components/listings/compact-save-button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,6 +29,12 @@ export type ListingCard = {
   // means "not on sale", not "unknown", so callers can render on presence alone.
   originalPrice?: number | null;
   isVerifiedSeller?: boolean;
+  // Pre-launch scaffolding: no fetcher populates this yet (there's no
+  // meaningful "years on Flikax" for any seller at launch), but the badge
+  // below is wired up and gracefully renders nothing when it's absent --
+  // ready to light up once there's real seller-tenure data to pass in,
+  // with no card-layout changes needed at that point.
+  yearsOnFlikax?: number | null;
 };
 
 const currency = new Intl.NumberFormat("en-GH", {
@@ -36,6 +42,20 @@ const currency = new Intl.NumberFormat("en-GH", {
   currency: "GHS",
   maximumFractionDigits: 0,
 });
+
+// Sellers sometimes type titles with caps-lock on ("2023 MERCEDES-BENZ GLS
+// MERCEDES-MAYBACH GLS600 4M") -- reads as shouting and is the one case
+// genuinely worth normalizing for card display. Anything already mixed-case
+// is left exactly as typed: a title-casing pass would just as easily mangle
+// real uppercase abbreviations (AWD, CR-V, SUV, VIN) as it would fix
+// genuine all-caps typing, so this only touches strings with letters and
+// zero lowercase ones -- a reliable signal the whole thing was typed
+// shouting, not a deliberately-cased title with some acronyms in it.
+function toReadableTitle(title: string): string {
+  const isShouting = title !== title.toLowerCase() && title === title.toUpperCase();
+  if (!isShouting) return title;
+  return title.toLowerCase().replace(/(^|[\s-])([a-z])/g, (_, sep: string, ch: string) => sep + ch.toUpperCase());
+}
 
 // CSS multi-column (`columns-*`), matching Jiji's actual masonry -- each
 // column fills top-to-bottom independently (item 2 stacks under item 1 in
@@ -173,7 +193,7 @@ export function ListingGrid({
                         <ImageOff className="size-8" />
                       </div>
                     )}
-                    {(listing.isFeatured || listing.isBumped) && (
+                    {(listing.isFeatured || listing.isBumped || listing.yearsOnFlikax) && (
                       <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
                         {listing.isFeatured && (
                           <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-3xs font-bold text-amber-700 shadow-sm ring-1 ring-inset ring-amber-300">
@@ -187,13 +207,37 @@ export function ListingGrid({
                             Bumped
                           </span>
                         )}
+                        {/* Pre-launch scaffolding -- see yearsOnFlikax's own
+                            comment on the type above. */}
+                        {listing.yearsOnFlikax != null && listing.yearsOnFlikax > 0 && (
+                          <span className="flex items-center gap-1 rounded-full bg-neutral-900/75 px-2 py-0.5 text-3xs font-bold text-white shadow-sm">
+                            <Award className="size-3 text-amber-300" />
+                            {listing.yearsOnFlikax}+ Years on Flikax
+                          </span>
+                        )}
                       </div>
                     )}
-                    {listing.originalPrice != null && (
-                      <span className="absolute right-2 top-2 flex items-center gap-0.5 rounded-full bg-rose-600 px-2 py-0.5 text-3xs font-bold text-white shadow-sm">
-                        <BadgePercent className="size-3" />
-                        {Math.round((1 - listing.price / listing.originalPrice) * 100)}% OFF
-                      </span>
+                    {(listing.originalPrice != null || listing.isVerifiedSeller) && (
+                      // top-14, not top-2 -- CompactSaveButton (the heart) is a
+                      // size-11 circle at top-1 on this same corner (rendered
+                      // as a sibling outside this image container, but visually
+                      // the same corner since the image sits flush with zero
+                      // padding above it), so top-2 would sit the badge right
+                      // underneath/behind that glass button instead of below it.
+                      <div className="absolute right-2 top-14 flex flex-col items-end gap-1">
+                        {listing.originalPrice != null && (
+                          <span className="flex items-center gap-0.5 rounded-full bg-rose-600 px-2 py-0.5 text-3xs font-bold text-white shadow-sm">
+                            <BadgePercent className="size-3" />
+                            {Math.round((1 - listing.price / listing.originalPrice) * 100)}% OFF
+                          </span>
+                        )}
+                        {listing.isVerifiedSeller && (
+                          <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-3xs font-bold text-blue-700 shadow-sm ring-1 ring-inset ring-blue-300">
+                            <ShieldCheck className="size-3 fill-blue-200 text-blue-600" />
+                            Verified
+                          </span>
+                        )}
+                      </div>
                     )}
                   </div>
                   <CardContent className="space-y-1 p-3.5">
@@ -210,24 +254,38 @@ export function ListingGrid({
                         <span className="text-2xs font-medium text-neutral-400">Neg.</span>
                       )}
                     </div>
-                    <p className="line-clamp-2 text-13 font-bold leading-snug text-neutral-900">
-                      {listing.title}
+                    {/* text-sm (14px), a size step above the 13px description --
+                        together with font-bold + near-black vs. the
+                        description's regular weight + neutral-500, this is
+                        what actually separates "title" from "body copy" at a
+                        glance instead of the two reading as the same tier of
+                        text with only a color difference. toReadableTitle
+                        fixes seller-typed ALL-CAPS titles (see its own
+                        comment) without touching already-fine mixed-case
+                        ones. */}
+                    <p className="line-clamp-2 text-sm font-bold leading-snug text-neutral-900">
+                      {toReadableTitle(listing.title)}
                     </p>
                     {/* Optional excerpt -- only when the seller actually wrote a
                         description (~15% of listings have none). This, not the
                         grid CSS, is what gives the layout real masonry variation:
                         a bare 1-3 word description clamps to one line, a longer
                         one to three, so card heights differ card-to-card instead
-                        of every card being the same fixed height. */}
+                        of every card being the same fixed height. line-clamp-3
+                        is the literal -webkit-line-clamp: 3 truncation (plus
+                        -webkit-box-orient/overflow) that keeps the excerpt at a
+                        strict 3-line max with a trailing ellipsis on overflow. */}
                     {listing.description?.trim() && (
                       <p className="line-clamp-3 text-13 leading-snug text-neutral-500">{listing.description}</p>
                     )}
+                    {/* isVerifiedSeller now also renders as its own corner
+                        badge above (top-right, alongside %OFF) -- dropped the
+                        second inline ShieldCheck that used to sit here too,
+                        since showing the same signal twice on one card was
+                        redundant rather than reinforcing. */}
                     <div className="flex items-center gap-1 pt-0.5 text-2xs text-neutral-500">
-                      <MapPin className="size-3 shrink-0" />
+                      <MapPin className="size-3.5 shrink-0 text-neutral-400" />
                       <span className="min-w-0 truncate">{listing.location}</span>
-                      {listing.isVerifiedSeller && (
-                        <ShieldCheck className="size-3 shrink-0 fill-blue-100 text-blue-600" aria-label="Verified seller" />
-                      )}
                       {listing.createdAt && (
                         <>
                           <span className="shrink-0 text-neutral-300">•</span>
