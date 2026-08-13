@@ -43,18 +43,59 @@ const currency = new Intl.NumberFormat("en-GH", {
   maximumFractionDigits: 0,
 });
 
-// Sellers sometimes type titles with caps-lock on ("2023 MERCEDES-BENZ GLS
-// MERCEDES-MAYBACH GLS600 4M") -- reads as shouting and is the one case
-// genuinely worth normalizing for card display. Anything already mixed-case
-// is left exactly as typed: a title-casing pass would just as easily mangle
-// real uppercase abbreviations (AWD, CR-V, SUV, VIN) as it would fix
-// genuine all-caps typing, so this only touches strings with letters and
-// zero lowercase ones -- a reliable signal the whole thing was typed
-// shouting, not a deliberately-cased title with some acronyms in it.
+// Known acronyms/abbreviations that should stay fully uppercase in a
+// title-cased card title instead of getting mangled into "Suv"/"Awd"/"Cr-V".
+// Matched whole-word and case-insensitively (so a seller typing "cr-v" or
+// "Cr-V" still comes out "CR-V"), not as a substring -- "GLS600" doesn't
+// match "GLS" here, it just falls through to normal title-casing as
+// "Gls600", since partial matching would risk false-positiving on
+// unrelated words that happen to contain one of these as a prefix.
+// Car listings are the bulk of this site's inventory, hence the heavy lean
+// toward vehicle spec terms -- extend as new ones show up in real listings
+// rather than trying to enumerate every possible one up front.
+const KNOWN_ACRONYMS = new Set([
+  "SUV",
+  "AWD",
+  "FWD",
+  "RWD",
+  "4WD",
+  "4X4",
+  "CR-V",
+  "GLS",
+  "GLE",
+  "GLC",
+  "GLA",
+  "AMG",
+  "ABS",
+  "V4",
+  "V6",
+  "V8",
+  "4CYL",
+  "6CYL",
+  "API",
+  "HTML",
+  "GPS",
+  "LED",
+  "USB",
+  "TV",
+  "AC",
+  "AI",
+]);
+
+// Applied to every title unconditionally (not just ones typed fully in
+// caps) so every card reads with the same uniform, initial-caps Title Case
+// regardless of how the seller originally typed it -- all caps, all
+// lowercase, or spotty capitalization -- while KNOWN_ACRONYMS above keeps
+// the specific terms that are supposed to stay uppercase from getting
+// lowercased along with everything else.
 function toReadableTitle(title: string): string {
-  const isShouting = title !== title.toLowerCase() && title === title.toUpperCase();
-  if (!isShouting) return title;
-  return title.toLowerCase().replace(/(^|[\s-])([a-z])/g, (_, sep: string, ch: string) => sep + ch.toUpperCase());
+  return title
+    .split(" ")
+    .map((word) => {
+      if (KNOWN_ACRONYMS.has(word.toUpperCase())) return word.toUpperCase();
+      return word.toLowerCase().replace(/(^|-)([a-z])/g, (_, sep: string, ch: string) => sep + ch.toUpperCase());
+    })
+    .join(" ");
 }
 
 // CSS multi-column (`columns-*`), matching Jiji's actual masonry -- each
