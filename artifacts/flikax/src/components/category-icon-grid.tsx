@@ -13,7 +13,8 @@ import { resolveCategoryIcon } from "@/lib/category-icons";
 // rows of 4). Desktop always shows every category, uncollapsed.
 const MOBILE_VISIBLE_COUNT = 7;
 
-const CIRCLE_CLASSES = "flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#d1f4e5] md:h-[60px] md:w-[60px]";
+const CIRCLE_CLASSES =
+  "flex h-[54px] w-[54px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#d1f4e5] md:h-[60px] md:w-[60px]";
 const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[100px] text-center text-[11px] font-bold leading-tight md:text-[13px]";
 const SUBTEXT_CLASSES = "mt-0.5 text-center text-[10px] font-normal text-gray-400 md:text-[11px]";
 
@@ -81,9 +82,9 @@ export function CategoryIconGrid({
   const showUtilityTile = !mobileExpanded && parents.length > MOBILE_VISIBLE_COUNT;
 
   return (
-    <div className="w-full bg-white">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-4 gap-x-2 gap-y-4 px-3 py-4 md:hidden">
+    <div className="w-full bg-background">
+      <div className="mx-auto max-w-4xl">
+        <div className="grid grid-cols-4 items-start justify-center gap-x-1 gap-y-4 px-4 py-5 md:hidden">
           {mobileParents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
@@ -98,7 +99,7 @@ export function CategoryIconGrid({
           )}
         </div>
 
-        <div className="hidden px-6 py-6 md:grid md:grid-cols-8 md:gap-x-3 md:gap-y-6">
+        <div className="hidden items-start justify-center gap-x-2 gap-y-5 px-4 py-5 md:grid md:grid-cols-8">
           {parents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
