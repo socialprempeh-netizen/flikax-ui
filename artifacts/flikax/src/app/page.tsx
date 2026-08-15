@@ -11,6 +11,8 @@ import { BottomTabBar } from "@/components/bottom-tab-bar";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getCategories } from "@/lib/categories";
 import { fetchHomeListings } from "@/lib/home-listings";
+import { getTopLevelCategoryCounts } from "@/lib/category-listings";
+import { createPublicClient } from "@/lib/supabase/public";
 import type { ListingFilters } from "@/lib/filters";
 import { loadMoreHomeListingsAction } from "@/app/actions";
 import { getSiteUrl } from "@/lib/site-url";
@@ -92,9 +94,11 @@ export default async function Home({ searchParams }: PageProps) {
     sort: VALID_SORTS.includes(params.sort ?? "") ? params.sort : undefined,
   };
 
-  const [categories, { listings, totalCount }] = await Promise.all([
-    getCategories(),
+  const categories = await getCategories();
+  const supabase = createPublicClient();
+  const [{ listings, totalCount }, categoryCounts] = await Promise.all([
     getHomeSearchResults(filters),
+    getTopLevelCategoryCounts(supabase, categories ?? []),
   ]);
 
   return (
@@ -105,9 +109,11 @@ export default async function Home({ searchParams }: PageProps) {
       {/* 1. Static hero band — full width, no container constraint */}
       <HeroBanner />
 
-      {/* 2. Category icon grid — replaces the old sidebar; sits full-width below the hero */}
-      <div className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-        <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} />
+      {/* 2. Category icon grid — replaces the old sidebar; sits full-width below the hero.
+          Owns its own bg/padding (Tonaton-style full-bleed section), so no container
+          padding wrapper here. */}
+      <div className="mx-auto w-full max-w-7xl">
+        <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} counts={categoryCounts} />
       </div>
 
       {/* A hairline divider between each macro section (categories/listings/top

@@ -291,6 +291,25 @@ export async function getChildCategoryIds(supabase: SupabaseClient<Database>, pa
   return (data ?? []).map((c) => c.id);
 }
 
+/** Total active-listing count per top-level category, aggregated across its own id
+ * and every child leaf under it -- same aggregation a top-level category PAGE does
+ * (see categoryIds in [category]/page.tsx), just for every top-level category at once
+ * instead of one. One head-only count query per top-level category, run in parallel --
+ * there are only a couple dozen of these at most, cheap either way. */
+export async function getTopLevelCategoryCounts(
+  supabase: SupabaseClient<Database>,
+  categories: { id: string; parent_id: string | null }[]
+): Promise<Map<string, number>> {
+  const parents = categories.filter((c) => c.parent_id === null);
+  const counts = await Promise.all(
+    parents.map((parent) => {
+      const childIds = categories.filter((c) => c.parent_id === parent.id).map((c) => c.id);
+      return countCategoryListings(supabase, [parent.id, ...childIds]);
+    })
+  );
+  return new Map(parents.map((parent, i) => [parent.id, counts[i]]));
+}
+
 export type SubcategoryWithCount = { id: string; name: string; slug: string; icon: string | null; count: number };
 
 /** A top-level category's direct children (leaves) with their real active-listing
