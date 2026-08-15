@@ -13,6 +13,10 @@ import { resolveCategoryIcon } from "@/lib/category-icons";
 // rows of 4). Desktop always shows every category, uncollapsed.
 const MOBILE_VISIBLE_COUNT = 7;
 
+const CIRCLE_CLASSES = "flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#d1f4e5] md:h-[60px] md:w-[60px]";
+const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[100px] text-center text-[11px] font-bold leading-tight md:text-[13px]";
+const SUBTEXT_CLASSES = "mt-0.5 text-center text-[10px] font-normal text-gray-400 md:text-[11px]";
+
 function formatAdCount(count: number): string {
   return `${count.toLocaleString("en-US").replace(/,/g, " ")} ads`;
 }
@@ -32,28 +36,20 @@ function CategoryTile({
   return (
     <Link href={`/${category.slug}`} title={category.name} className="flex flex-col items-center">
       <span
-        className={`mx-auto flex size-16 items-center justify-center rounded-full bg-[#d1f4e5] shadow-none transition-transform hover:scale-105 md:size-20 ${
+        className={`${CIRCLE_CLASSES} mx-auto shadow-none transition-transform hover:scale-105 ${
           isActive ? "ring-2 ring-brand" : ""
         }`}
       >
         {imagePath ? (
-          <span className="relative size-10 shrink-0 md:size-12">
-            <Image src={imagePath} alt={category.name} fill sizes="48px" className="object-contain" />
+          <span className="relative h-9 w-9 shrink-0 md:h-10 md:w-10">
+            <Image src={imagePath} alt={category.name} fill sizes="40px" className="object-contain" />
           </span>
         ) : (
-          <Icon className="size-10 text-neutral-700 md:size-12" />
+          <Icon className="h-9 w-9 text-neutral-700 md:h-10 md:w-10" />
         )}
       </span>
-      <span
-        className={`mt-2 line-clamp-2 text-center text-[12px] font-bold leading-tight md:text-sm ${
-          isActive ? "text-brand-dark" : "text-gray-900"
-        }`}
-      >
-        {category.name}
-      </span>
-      <span className="mt-0.5 text-center text-[10px] font-normal text-gray-400 md:text-xs">
-        {formatAdCount(count)}
-      </span>
+      <span className={`${TITLE_CLASSES} ${isActive ? "text-brand-dark" : "text-gray-900"}`}>{category.name}</span>
+      <span className={SUBTEXT_CLASSES}>{formatAdCount(count)}</span>
     </Link>
   );
 }
@@ -79,29 +75,27 @@ export function CategoryIconGrid({
   const showUtilityTile = !mobileExpanded && parents.length > MOBILE_VISIBLE_COUNT;
 
   return (
-    <>
-      <div className="grid grid-cols-4 gap-x-2 gap-y-6 bg-white px-4 py-6 md:hidden">
+    <div className="mx-auto max-w-6xl">
+      <div className="grid grid-cols-4 gap-x-2 gap-y-4 bg-white px-3 py-4 md:hidden">
         {mobileParents.map((cat) => (
           <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
         ))}
         {showUtilityTile && (
           <button type="button" onClick={() => setMobileExpanded(true)} className="flex flex-col items-center">
-            <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-[#d1f4e5] shadow-none transition-transform hover:scale-105">
-              <List className="size-6 text-neutral-700" />
+            <span className={`${CIRCLE_CLASSES} mx-auto shadow-none transition-transform hover:scale-105`}>
+              <List className="h-6 w-6 text-neutral-700" />
             </span>
-            <span className="mt-2 line-clamp-2 text-center text-[12px] font-bold leading-tight text-gray-900">
-              All categories
-            </span>
-            <span className="mt-0.5 text-center text-[10px] font-normal text-gray-400">{formatAdCount(totalCount)}</span>
+            <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
+            <span className={SUBTEXT_CLASSES}>{formatAdCount(totalCount)}</span>
           </button>
         )}
       </div>
 
-      <div className="hidden bg-white px-8 py-6 md:grid md:grid-cols-8 md:gap-x-4 md:gap-y-8">
+      <div className="hidden bg-white px-6 py-6 md:grid md:grid-cols-8 md:gap-x-3 md:gap-y-6">
         {parents.map((cat) => (
           <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
         ))}
       </div>
-    </>
+    </div>
   );
 }

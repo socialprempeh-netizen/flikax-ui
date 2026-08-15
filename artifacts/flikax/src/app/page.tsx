@@ -110,11 +110,9 @@ export default async function Home({ searchParams }: PageProps) {
       <HeroBanner />
 
       {/* 2. Category icon grid — replaces the old sidebar; sits full-width below the hero.
-          Owns its own bg/padding (Tonaton-style full-bleed section), so no container
-          padding wrapper here. */}
-      <div className="mx-auto w-full max-w-7xl">
-        <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} counts={categoryCounts} />
-      </div>
+          Owns its own max-width/bg/padding (Tonaton-style section), so no container
+          wrapper here. */}
+      <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} counts={categoryCounts} />
 
       {/* A hairline divider between each macro section (categories/listings/top
           sellers) gives the page visible structure instead of everything
