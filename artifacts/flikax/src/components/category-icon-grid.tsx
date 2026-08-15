@@ -42,7 +42,13 @@ function CategoryTile({
       >
         {imagePath ? (
           <span className="relative h-9 w-9 shrink-0 md:h-10 md:w-10">
-            <Image src={imagePath} alt={category.name} fill sizes="40px" className="object-contain" />
+            <Image
+              src={imagePath}
+              alt={category.name}
+              fill
+              sizes="40px"
+              className="object-contain mix-blend-multiply"
+            />
           </span>
         ) : (
           <Icon className="h-9 w-9 text-neutral-700 md:h-10 md:w-10" />
@@ -75,26 +81,28 @@ export function CategoryIconGrid({
   const showUtilityTile = !mobileExpanded && parents.length > MOBILE_VISIBLE_COUNT;
 
   return (
-    <div className="mx-auto max-w-6xl">
-      <div className="grid grid-cols-4 gap-x-2 gap-y-4 bg-white px-3 py-4 md:hidden">
-        {mobileParents.map((cat) => (
-          <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
-        ))}
-        {showUtilityTile && (
-          <button type="button" onClick={() => setMobileExpanded(true)} className="flex flex-col items-center">
-            <span className={`${CIRCLE_CLASSES} mx-auto shadow-none transition-transform hover:scale-105`}>
-              <List className="h-6 w-6 text-neutral-700" />
-            </span>
-            <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
-            <span className={SUBTEXT_CLASSES}>{formatAdCount(totalCount)}</span>
-          </button>
-        )}
-      </div>
+    <div className="w-full bg-white">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid grid-cols-4 gap-x-2 gap-y-4 px-3 py-4 md:hidden">
+          {mobileParents.map((cat) => (
+            <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
+          ))}
+          {showUtilityTile && (
+            <button type="button" onClick={() => setMobileExpanded(true)} className="flex flex-col items-center">
+              <span className={`${CIRCLE_CLASSES} mx-auto shadow-none transition-transform hover:scale-105`}>
+                <List className="h-6 w-6 text-neutral-700" />
+              </span>
+              <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
+              <span className={SUBTEXT_CLASSES}>{formatAdCount(totalCount)}</span>
+            </button>
+          )}
+        </div>
 
-      <div className="hidden bg-white px-6 py-6 md:grid md:grid-cols-8 md:gap-x-3 md:gap-y-6">
-        {parents.map((cat) => (
-          <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
-        ))}
+        <div className="hidden px-6 py-6 md:grid md:grid-cols-8 md:gap-x-3 md:gap-y-6">
+          {parents.map((cat) => (
+            <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
+          ))}
+        </div>
       </div>
     </div>
   );
