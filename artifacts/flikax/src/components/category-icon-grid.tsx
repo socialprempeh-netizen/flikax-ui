@@ -39,10 +39,10 @@ const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 const TILE_CLASSES =
   "group flex cursor-pointer flex-col items-center justify-start rounded-lg p-1.5 text-center transition-colors duration-150 hover:bg-[#AFC8B2]";
 const CARD_BASE_CLASSES =
-  "mx-auto flex h-[84px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#CEFFEE] md:h-[102px] md:w-[88px] md:rounded-2xl";
-const IMAGE_CLASSES = "h-9 w-9 shrink-0 transition-transform duration-150 group-hover:scale-105 md:h-12 md:w-12";
-const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[11px] font-bold leading-tight md:text-[12px]";
-const SUBTEXT_CLASSES = "mt-0.5 text-center text-[10px] font-normal text-gray-400 md:text-[11px]";
+  "mx-auto flex h-16 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#CEFFEE] shadow-[0_4px_14px_rgba(0,0,0,0.10)] md:h-[78px] md:w-[68px]";
+const IMAGE_CLASSES = "h-7 w-7 shrink-0 transition-transform duration-150 group-hover:scale-105 md:h-8 md:w-8";
+const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[14px] font-bold leading-tight";
+const SUBTEXT_CLASSES = "mt-0.5 text-center text-[12px] font-normal text-gray-500";
 
 function formatAdCount(count: number): string {
   return `${count.toLocaleString("en-US").replace(/,/g, " ")} ads`;
@@ -70,8 +70,8 @@ function CategoryTile({
               src={imagePath}
               alt={category.name}
               fill
-              sizes="48px"
-              className="object-contain mix-blend-multiply"
+              sizes="32px"
+              className="object-contain opacity-100 brightness-[1.15] contrast-[1.1] saturate-[1.2]"
             />
           </span>
         ) : (
@@ -107,7 +107,7 @@ export function CategoryIconGrid({
   return (
     <div className="w-full bg-white md:bg-transparent">
       <div className="mx-auto max-w-5xl px-4 py-3 md:py-4">
-        <div className="grid grid-cols-4 items-start justify-center gap-x-2 gap-y-3 md:hidden">
+        <div className="grid grid-cols-4 items-start justify-center gap-4 md:hidden">
           {mobileParents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
@@ -122,7 +122,7 @@ export function CategoryIconGrid({
           )}
         </div>
 
-        <div className="hidden items-start justify-center gap-x-3 gap-y-4 md:grid md:grid-cols-8">
+        <div className="hidden items-start justify-center gap-6 md:grid md:grid-cols-8">
           {parents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
