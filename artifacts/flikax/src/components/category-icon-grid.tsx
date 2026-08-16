@@ -13,12 +13,35 @@ import { resolveCategoryIcon } from "@/lib/category-icons";
 // rows of 4). Desktop always shows every category, uncollapsed.
 const MOBILE_VISIBLE_COUNT = 7;
 
+// Tailwind's compiler scans source for literal class strings, so these have
+// to be spelled out in full rather than built with template interpolation,
+// which it can't statically detect (same convention as category-colors.ts).
+// Desktop-only -- mobile cards stay a uniform bg-[#CEFFEE] regardless of
+// category, this per-category fill only kicks in at md:.
+const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
+  vehicles: "md:bg-[#56B78C]",
+  "phones-tablets": "md:bg-[#2EB8A0]",
+  property: "md:bg-[#7EC89B]",
+  electronics: "md:bg-[#124E40]",
+  fashion: "md:bg-[#A8D8B8]",
+  "animals-pets": "md:bg-[#6FCB8B]",
+  "babies-kids": "md:bg-[#D2E8D0]",
+  "beauty-personal-care": "md:bg-[#55C59D]",
+  "commercial-equipment-tools": "md:bg-[#0E3D32]",
+  "food-agriculture-farming": "md:bg-[#9AB26E]",
+  "home-furniture-appliances": "md:bg-[#2EB89E]",
+  "leisure-activities": "md:bg-[#6FC97A]",
+  "repair-construction": "md:bg-[#8CCB84]",
+  services: "md:bg-[#B6E2B8]",
+};
+const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
+
 const TILE_CLASSES =
-  "group flex cursor-pointer flex-col items-center justify-start rounded-lg p-2.5 text-center transition-colors duration-150 hover:bg-[#d1f4e5]/60";
-const CIRCLE_CLASSES =
-  "mx-auto flex h-[64px] w-[64px] shrink-0 items-center justify-center overflow-hidden rounded-full border border-gray-200/60 bg-slate-100/90 shadow-sm md:h-[72px] md:w-[72px]";
-const IMAGE_CLASSES = "h-11 w-11 shrink-0 transition-transform duration-150 group-hover:scale-105 md:h-13 md:w-13";
-const TITLE_CLASSES = "mx-auto mt-2 max-w-[100px] text-center text-[11px] font-bold leading-tight md:text-[12px]";
+  "group flex cursor-pointer flex-col items-center justify-start rounded-lg p-1.5 text-center transition-colors duration-150 hover:bg-[#AFC8B2]";
+const CARD_BASE_CLASSES =
+  "mx-auto flex h-[84px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#CEFFEE] md:h-[102px] md:w-[88px] md:rounded-2xl";
+const IMAGE_CLASSES = "h-9 w-9 shrink-0 transition-transform duration-150 group-hover:scale-105 md:h-12 md:w-12";
+const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[11px] font-bold leading-tight md:text-[12px]";
 const SUBTEXT_CLASSES = "mt-0.5 text-center text-[10px] font-normal text-gray-400 md:text-[11px]";
 
 function formatAdCount(count: number): string {
@@ -36,17 +59,18 @@ function CategoryTile({
 }) {
   const imagePath = resolveCategoryImage(category);
   const Icon = resolveCategoryIcon(category);
+  const cardColorClass = DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR;
 
   return (
     <Link href={`/${category.slug}`} title={category.name} className={TILE_CLASSES}>
-      <span className={`${CIRCLE_CLASSES} ${isActive ? "ring-2 ring-brand" : ""}`}>
+      <span className={`${CARD_BASE_CLASSES} ${cardColorClass} ${isActive ? "ring-2 ring-brand" : ""}`}>
         {imagePath ? (
           <span className={`relative ${IMAGE_CLASSES}`}>
             <Image
               src={imagePath}
               alt={category.name}
               fill
-              sizes="52px"
+              sizes="48px"
               className="object-contain mix-blend-multiply"
             />
           </span>
@@ -60,11 +84,11 @@ function CategoryTile({
   );
 }
 
-/** Homepage category browser, styled to match Tonaton/AliExpress: circular
- * icon badges on a light grey background with a square mint hover card,
- * 4-column grid on mobile, 8-column on desktop. Mobile collapses to 7
- * categories + an "All categories" tile (expands in-place on tap, nothing
- * ever truly hidden); desktop always shows every top-level category. */
+/** Homepage category browser, styled to match Tonaton/Flikax reference:
+ * fixed-size portrait cards (uniform mint on mobile, per-category color on
+ * desktop), 4-column grid on mobile, 8-column on desktop. Mobile collapses
+ * to 7 categories + an "All categories" tile (expands in-place on tap,
+ * nothing ever truly hidden); desktop always shows every top-level category. */
 export function CategoryIconGrid({
   categories,
   selectedSlug,
@@ -82,14 +106,14 @@ export function CategoryIconGrid({
 
   return (
     <div className="w-full bg-white md:bg-transparent">
-      <div className="mx-auto max-w-5xl px-4 py-5 md:py-6">
-        <div className="grid grid-cols-4 items-start justify-center gap-x-2 gap-y-5 md:hidden">
+      <div className="mx-auto max-w-5xl px-4 py-3 md:py-4">
+        <div className="grid grid-cols-4 items-start justify-center gap-x-2 gap-y-3 md:hidden">
           {mobileParents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
           {showUtilityTile && (
             <button type="button" onClick={() => setMobileExpanded(true)} className={TILE_CLASSES}>
-              <span className={CIRCLE_CLASSES}>
+              <span className={CARD_BASE_CLASSES}>
                 <List className="h-6 w-6 text-neutral-700" />
               </span>
               <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
@@ -98,7 +122,7 @@ export function CategoryIconGrid({
           )}
         </div>
 
-        <div className="hidden items-start justify-center gap-x-4 gap-y-6 md:grid md:grid-cols-8">
+        <div className="hidden items-start justify-center gap-x-3 gap-y-4 md:grid md:grid-cols-8">
           {parents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
