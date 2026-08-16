@@ -116,13 +116,16 @@ export default async function Home({ searchParams }: PageProps) {
 
       {/* A hairline divider between each macro section (categories/listings/top
           sellers) gives the page visible structure instead of everything
-          just floating on the same flat background. */}
-      <div className="mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          just floating on the same flat background. No margin-top of its
+          own -- the category grid's own bottom padding is the gap above it,
+          keeping the total space before "Fresh listings" tight (Tonaton-style)
+          instead of stacking three separate margins/paddings on top of it. */}
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="border-t border-neutral-200" />
       </div>
 
       {/* 3. Main content: filter bar + listing grid, full width now the sidebar is gone */}
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 px-4 pb-10 pt-4 sm:px-6 lg:px-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 px-4 pb-10 pt-2 sm:px-6 lg:px-8">
         <HomeFilterBar filters={filters} />
 
         <InfiniteListingGrid

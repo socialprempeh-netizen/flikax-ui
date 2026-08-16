@@ -22,12 +22,16 @@ const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
   vehicles: "md:bg-[#56B78C]",
   "phones-tablets": "md:bg-[#2EB8A0]",
   property: "md:bg-[#7EC89B]",
-  electronics: "md:bg-[#124E40]",
+  // Was near-black (#124E40) -- unreadable against the light card text and
+  // out of step with every other category's mid-tone green. Matches
+  // Animals & Pets per product decision rather than getting its own shade.
+  electronics: "md:bg-[#6FCB8B]",
   fashion: "md:bg-[#A8D8B8]",
   "animals-pets": "md:bg-[#6FCB8B]",
   "babies-kids": "md:bg-[#D2E8D0]",
   "beauty-personal-care": "md:bg-[#55C59D]",
-  "commercial-equipment-tools": "md:bg-[#0E3D32]",
+  // Was near-black (#0E3D32) -- same fix as Electronics above.
+  "commercial-equipment-tools": "md:bg-[#6FCB8B]",
   "food-agriculture-farming": "md:bg-[#9AB26E]",
   "home-furniture-appliances": "md:bg-[#2EB89E]",
   "leisure-activities": "md:bg-[#6FC97A]",
@@ -39,10 +43,10 @@ const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 const TILE_CLASSES =
   "group flex cursor-pointer flex-col items-center justify-start rounded-lg p-1.5 text-center transition-colors duration-150 hover:bg-[#AFC8B2]";
 const CARD_BASE_CLASSES =
-  "mx-auto flex h-16 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#CEFFEE] shadow-[0_4px_14px_rgba(0,0,0,0.10)] md:h-[78px] md:w-[68px]";
-const IMAGE_CLASSES = "h-7 w-7 shrink-0 transition-transform duration-150 group-hover:scale-105 md:h-8 md:w-8";
-const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[14px] font-bold leading-tight";
-const SUBTEXT_CLASSES = "mt-0.5 text-center text-[12px] font-normal text-gray-500";
+  "mx-auto flex h-[70px] w-[62px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#CEFFEE] shadow-[0_4px_14px_rgba(0,0,0,0.10)]";
+const IMAGE_CLASSES = "h-12 w-12 shrink-0 transition-transform duration-150 group-hover:scale-105";
+const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[12px] font-bold leading-tight";
+const SUBTEXT_CLASSES = "mt-0.5 text-center text-[11px] font-normal text-gray-500";
 
 function formatAdCount(count: number): string {
   return `${count.toLocaleString("en-US").replace(/,/g, " ")} ads`;
@@ -70,7 +74,7 @@ function CategoryTile({
               src={imagePath}
               alt={category.name}
               fill
-              sizes="32px"
+              sizes="48px"
               className="object-contain opacity-100 brightness-[1.15] contrast-[1.1] saturate-[1.2]"
             />
           </span>
@@ -106,15 +110,15 @@ export function CategoryIconGrid({
 
   return (
     <div className="w-full bg-white md:bg-transparent">
-      <div className="mx-auto max-w-5xl px-4 py-3 md:py-4">
-        <div className="grid grid-cols-4 items-start justify-center gap-4 md:hidden">
+      <div className="mx-auto max-w-5xl px-4 py-4">
+        <div className="grid grid-cols-4 items-start justify-center gap-x-5 gap-y-[14px] md:hidden">
           {mobileParents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
           {showUtilityTile && (
             <button type="button" onClick={() => setMobileExpanded(true)} className={TILE_CLASSES}>
               <span className={CARD_BASE_CLASSES}>
-                <List className="h-6 w-6 text-neutral-700" />
+                <List className="h-8 w-8 text-neutral-700" />
               </span>
               <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
               <span className={SUBTEXT_CLASSES}>{formatAdCount(totalCount)}</span>
@@ -122,7 +126,7 @@ export function CategoryIconGrid({
           )}
         </div>
 
-        <div className="hidden items-start justify-center gap-6 md:grid md:grid-cols-8">
+        <div className="hidden items-start justify-center gap-x-5 gap-y-[14px] md:grid md:grid-cols-8">
           {parents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
