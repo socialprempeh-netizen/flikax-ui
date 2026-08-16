@@ -40,10 +40,20 @@ const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
 };
 const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 
+// Categories backed by a real product photo (not the flat clipart-style
+// images the rest of the set uses) -- these skip the bold per-category
+// desktop fill in favor of a plain, consistent mint card so the photo does
+// the visual work, and get a gentler filter since a real photo doesn't need
+// the same saturation/contrast boost a flat icon does.
+const REAL_PHOTO_SLUGS = new Set(["vehicles", "electronics", "commercial-equipment-tools"]);
+const REAL_PHOTO_BG_CLASSES = "bg-[#D9F1E6] md:bg-[#D9F1E6]";
+const REAL_PHOTO_FILTER_CLASSES = "brightness-[1.1]";
+const DEFAULT_FILTER_CLASSES = "brightness-[1.15] contrast-[1.1] saturate-[1.2]";
+
 const TILE_CLASSES =
   "group flex cursor-pointer flex-col items-center justify-start rounded-lg p-1.5 text-center transition-colors duration-150 hover:bg-[#AFC8B2]";
 const CARD_BASE_CLASSES =
-  "mx-auto flex h-[70px] w-[62px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#CEFFEE] shadow-[0_4px_14px_rgba(0,0,0,0.10)]";
+  "mx-auto flex h-[70px] w-[62px] shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-[0_4px_14px_rgba(0,0,0,0.10)]";
 const IMAGE_CLASSES = "h-12 w-12 shrink-0 transition-transform duration-150 group-hover:scale-105";
 const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[12px] font-bold leading-tight";
 const SUBTEXT_CLASSES = "mt-0.5 text-center text-[11px] font-normal text-gray-500";
@@ -63,7 +73,11 @@ function CategoryTile({
 }) {
   const imagePath = resolveCategoryImage(category);
   const Icon = resolveCategoryIcon(category);
-  const cardColorClass = DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR;
+  const isRealPhoto = REAL_PHOTO_SLUGS.has(category.slug);
+  const cardColorClass = isRealPhoto
+    ? REAL_PHOTO_BG_CLASSES
+    : `bg-[#CEFFEE] ${DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR}`;
+  const filterClass = isRealPhoto ? REAL_PHOTO_FILTER_CLASSES : DEFAULT_FILTER_CLASSES;
 
   return (
     <Link href={`/${category.slug}`} title={category.name} className={TILE_CLASSES}>
@@ -75,7 +89,7 @@ function CategoryTile({
               alt={category.name}
               fill
               sizes="48px"
-              className="object-contain opacity-100 brightness-[1.15] contrast-[1.1] saturate-[1.2]"
+              className={`object-contain opacity-100 ${filterClass}`}
             />
           </span>
         ) : (
@@ -117,7 +131,7 @@ export function CategoryIconGrid({
           ))}
           {showUtilityTile && (
             <button type="button" onClick={() => setMobileExpanded(true)} className={TILE_CLASSES}>
-              <span className={CARD_BASE_CLASSES}>
+              <span className={`${CARD_BASE_CLASSES} bg-[#CEFFEE]`}>
                 <List className="h-8 w-8 text-neutral-700" />
               </span>
               <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
