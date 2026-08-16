@@ -13,9 +13,12 @@ import { resolveCategoryIcon } from "@/lib/category-icons";
 // rows of 4). Desktop always shows every category, uncollapsed.
 const MOBILE_VISIBLE_COUNT = 7;
 
+const TILE_CLASSES =
+  "group flex cursor-pointer flex-col items-center justify-start rounded-lg p-2.5 text-center transition-colors duration-150 hover:bg-[#d1f4e5]/60";
 const CIRCLE_CLASSES =
-  "flex h-[54px] w-[54px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#d1f4e5] md:h-[60px] md:w-[60px]";
-const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[100px] text-center text-[11px] font-bold leading-tight md:text-[13px]";
+  "mx-auto flex h-[64px] w-[64px] shrink-0 items-center justify-center overflow-hidden rounded-full border border-gray-200/60 bg-slate-100/90 shadow-sm md:h-[72px] md:w-[72px]";
+const IMAGE_CLASSES = "h-11 w-11 shrink-0 transition-transform duration-150 group-hover:scale-105 md:h-13 md:w-13";
+const TITLE_CLASSES = "mx-auto mt-2 max-w-[100px] text-center text-[11px] font-bold leading-tight md:text-[12px]";
 const SUBTEXT_CLASSES = "mt-0.5 text-center text-[10px] font-normal text-gray-400 md:text-[11px]";
 
 function formatAdCount(count: number): string {
@@ -35,24 +38,20 @@ function CategoryTile({
   const Icon = resolveCategoryIcon(category);
 
   return (
-    <Link href={`/${category.slug}`} title={category.name} className="flex flex-col items-center">
-      <span
-        className={`${CIRCLE_CLASSES} mx-auto shadow-none transition-transform hover:scale-105 ${
-          isActive ? "ring-2 ring-brand" : ""
-        }`}
-      >
+    <Link href={`/${category.slug}`} title={category.name} className={TILE_CLASSES}>
+      <span className={`${CIRCLE_CLASSES} ${isActive ? "ring-2 ring-brand" : ""}`}>
         {imagePath ? (
-          <span className="relative h-9 w-9 shrink-0 md:h-10 md:w-10">
+          <span className={`relative ${IMAGE_CLASSES}`}>
             <Image
               src={imagePath}
               alt={category.name}
               fill
-              sizes="40px"
+              sizes="52px"
               className="object-contain mix-blend-multiply"
             />
           </span>
         ) : (
-          <Icon className="h-9 w-9 text-neutral-700 md:h-10 md:w-10" />
+          <Icon className={`${IMAGE_CLASSES} text-neutral-700`} />
         )}
       </span>
       <span className={`${TITLE_CLASSES} ${isActive ? "text-brand-dark" : "text-gray-900"}`}>{category.name}</span>
@@ -61,11 +60,11 @@ function CategoryTile({
   );
 }
 
-/** Homepage category browser, styled to match Tonaton: circular icon badges
- * on a light-green background, 4-column grid on mobile, 8-column on desktop.
- * Mobile collapses to 7 categories + an "All categories" tile (expands
- * in-place on tap, nothing ever truly hidden); desktop always shows every
- * top-level category. */
+/** Homepage category browser, styled to match Tonaton/AliExpress: circular
+ * icon badges on a light grey background with a square mint hover card,
+ * 4-column grid on mobile, 8-column on desktop. Mobile collapses to 7
+ * categories + an "All categories" tile (expands in-place on tap, nothing
+ * ever truly hidden); desktop always shows every top-level category. */
 export function CategoryIconGrid({
   categories,
   selectedSlug,
@@ -82,15 +81,15 @@ export function CategoryIconGrid({
   const showUtilityTile = !mobileExpanded && parents.length > MOBILE_VISIBLE_COUNT;
 
   return (
-    <div className="w-full bg-background">
-      <div className="mx-auto max-w-4xl">
-        <div className="grid grid-cols-4 items-start justify-center gap-x-1 gap-y-4 px-4 py-5 md:hidden">
+    <div className="w-full bg-white md:bg-transparent">
+      <div className="mx-auto max-w-5xl px-4 py-5 md:py-6">
+        <div className="grid grid-cols-4 items-start justify-center gap-x-2 gap-y-5 md:hidden">
           {mobileParents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
           {showUtilityTile && (
-            <button type="button" onClick={() => setMobileExpanded(true)} className="flex flex-col items-center">
-              <span className={`${CIRCLE_CLASSES} mx-auto shadow-none transition-transform hover:scale-105`}>
+            <button type="button" onClick={() => setMobileExpanded(true)} className={TILE_CLASSES}>
+              <span className={CIRCLE_CLASSES}>
                 <List className="h-6 w-6 text-neutral-700" />
               </span>
               <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
@@ -99,7 +98,7 @@ export function CategoryIconGrid({
           )}
         </div>
 
-        <div className="hidden items-start justify-center gap-x-2 gap-y-5 px-4 py-5 md:grid md:grid-cols-8">
+        <div className="hidden items-start justify-center gap-x-4 gap-y-6 md:grid md:grid-cols-8">
           {parents.map((cat) => (
             <CategoryTile key={cat.id} category={cat} count={counts.get(cat.id) ?? 0} isActive={cat.slug === selectedSlug} />
           ))}
