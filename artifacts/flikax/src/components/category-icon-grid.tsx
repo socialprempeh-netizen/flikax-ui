@@ -18,36 +18,51 @@ const MOBILE_VISIBLE_COUNT = 7;
 // which it can't statically detect (same convention as category-colors.ts).
 // Desktop-only -- mobile cards stay a uniform bg-[#CEFFEE] regardless of
 // category, this per-category fill only kicks in at md:.
+// Vehicles, Electronics, Babies & Kids, Commercial Equipment & Tools,
+// Services, and Repair & Construction reuse the two shades already
+// established on Phones & Tablets (#2EB8A0) and Beauty & Personal Care
+// (#55C59D), split 3/3 and arranged so no two horizontally-adjacent tiles
+// land on the same shade.
 const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
-  vehicles: "md:bg-[#56B78C]",
+  vehicles: "md:bg-[#55C59D]",
   "phones-tablets": "md:bg-[#2EB8A0]",
   property: "md:bg-[#7EC89B]",
-  // Was near-black (#124E40) -- unreadable against the light card text and
-  // out of step with every other category's mid-tone green. Matches
-  // Animals & Pets per product decision rather than getting its own shade.
-  electronics: "md:bg-[#6FCB8B]",
+  electronics: "md:bg-[#55C59D]",
   fashion: "md:bg-[#A8D8B8]",
   "animals-pets": "md:bg-[#6FCB8B]",
-  "babies-kids": "md:bg-[#D2E8D0]",
+  "babies-kids": "md:bg-[#2EB8A0]",
   "beauty-personal-care": "md:bg-[#55C59D]",
-  // Was near-black (#0E3D32) -- same fix as Electronics above.
-  "commercial-equipment-tools": "md:bg-[#6FCB8B]",
+  "commercial-equipment-tools": "md:bg-[#2EB8A0]",
   "food-agriculture-farming": "md:bg-[#9AB26E]",
   "home-furniture-appliances": "md:bg-[#2EB89E]",
   "leisure-activities": "md:bg-[#6FC97A]",
-  "repair-construction": "md:bg-[#8CCB84]",
-  services: "md:bg-[#B6E2B8]",
+  "repair-construction": "md:bg-[#2EB8A0]",
+  services: "md:bg-[#55C59D]",
 };
 const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 
 // Categories backed by a real product photo (not the flat clipart-style
-// images the rest of the set uses) -- these skip the bold per-category
-// desktop fill in favor of a plain, consistent mint card so the photo does
-// the visual work, and get a gentler filter since a real photo doesn't need
-// the same saturation/contrast boost a flat icon does.
+// images the rest of the set uses) -- these still take their card color
+// from DESKTOP_CARD_COLOR_BY_SLUG like every other category, they just
+// render the image full-bleed (see REAL_PHOTO_IMAGE_CLASSES) instead of a
+// small centered icon, and get a gentler filter since a real photo doesn't
+// need the same saturation/contrast boost a flat icon does.
 const REAL_PHOTO_SLUGS = new Set(["vehicles", "electronics", "commercial-equipment-tools"]);
-const REAL_PHOTO_BG_CLASSES = "bg-[#D9F1E6] md:bg-[#D9F1E6]";
-const REAL_PHOTO_FILTER_CLASSES = "brightness-[1.1]";
+// Fills the entire card (not just a centered small icon) -- object-cover
+// crops to the card's aspect ratio instead of letterboxing, and
+// mix-blend-multiply melts the photo's near-white studio background into
+// whatever card color sits behind it (multiplying by a light/white pixel
+// mostly just darkens the underlying fill slightly) so there's no visible
+// seam/white square. The source photos are studio product shots with
+// generous negative space around the subject, so a plain cover-fit reads
+// as a small subject
+// floating in a lot of mint -- scale-[1.25] zooms past that padding (card
+// keeps overflow-hidden, so the excess just crops off) to make the subject
+// itself fill the tile.
+const REAL_PHOTO_IMAGE_WRAPPER_CLASSES =
+  "relative h-full w-full shrink-0 transition-transform duration-150 group-hover:scale-105";
+const REAL_PHOTO_IMAGE_CLASSES =
+  "scale-[1.25] object-cover mix-blend-multiply bg-transparent opacity-100 brightness-[1.15]";
 const DEFAULT_FILTER_CLASSES = "brightness-[1.15] contrast-[1.1] saturate-[1.2]";
 
 const TILE_CLASSES =
@@ -74,24 +89,27 @@ function CategoryTile({
   const imagePath = resolveCategoryImage(category);
   const Icon = resolveCategoryIcon(category);
   const isRealPhoto = REAL_PHOTO_SLUGS.has(category.slug);
-  const cardColorClass = isRealPhoto
-    ? REAL_PHOTO_BG_CLASSES
-    : `bg-[#CEFFEE] ${DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR}`;
-  const filterClass = isRealPhoto ? REAL_PHOTO_FILTER_CLASSES : DEFAULT_FILTER_CLASSES;
+  const cardColorClass = `bg-[#CEFFEE] ${DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR}`;
 
   return (
     <Link href={`/${category.slug}`} title={category.name} className={TILE_CLASSES}>
       <span className={`${CARD_BASE_CLASSES} ${cardColorClass} ${isActive ? "ring-2 ring-brand" : ""}`}>
         {imagePath ? (
-          <span className={`relative ${IMAGE_CLASSES}`}>
-            <Image
-              src={imagePath}
-              alt={category.name}
-              fill
-              sizes="48px"
-              className={`object-contain opacity-100 ${filterClass}`}
-            />
-          </span>
+          isRealPhoto ? (
+            <span className={REAL_PHOTO_IMAGE_WRAPPER_CLASSES}>
+              <Image src={imagePath} alt={category.name} fill sizes="70px" className={REAL_PHOTO_IMAGE_CLASSES} />
+            </span>
+          ) : (
+            <span className={`relative ${IMAGE_CLASSES}`}>
+              <Image
+                src={imagePath}
+                alt={category.name}
+                fill
+                sizes="48px"
+                className={`object-contain opacity-100 ${DEFAULT_FILTER_CLASSES}`}
+              />
+            </span>
+          )
         ) : (
           <Icon className={`${IMAGE_CLASSES} text-neutral-700`} />
         )}
