@@ -42,11 +42,13 @@ const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
 const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 
 // Categories whose source photo (public/categories/top-<slug>.webp) is a
-// real product/stock shot with a white or pale studio margin baked into
-// the pixels, instead of the tightly-cropped flat icon style the rest of
-// the set uses. Rendered at the old small centered size, that margin reads
-// as a mismatched white/mint box floating inside the card's accent color.
-// These get the full-bleed treatment below instead of the small icon path.
+// real product/stock shot rather than the tightly-cropped flat icon style
+// the rest of the set uses. They render through the exact same centered,
+// object-contain icon path as every other category (see IMAGE_CLASSES) --
+// object-cover/scale/mix-blend-multiply were tried here to crop out the
+// photo's own studio margin, but at this card size that cropped in too far
+// (icon read as oversized) and the multiply blend tinted the whole card a
+// muddy dark green. A calmer, un-blended filter avoids both.
 const REAL_PHOTO_SLUGS = new Set([
   "vehicles",
   "electronics",
@@ -55,20 +57,7 @@ const REAL_PHOTO_SLUGS = new Set([
   "services",
   "repair-construction",
 ]);
-// Fills the entire card (not just a centered small icon) -- object-cover
-// crops to the card's aspect ratio instead of letterboxing, and
-// mix-blend-multiply melts the photo's near-white studio margin into
-// whatever card color sits behind it (multiplying a light/white pixel by
-// the card color mostly just returns the card color, close to fully
-// hiding the seam). scale-[1.3]/[1.35] zooms in past the source photo's
-// own padding (card keeps overflow-hidden, so the excess just crops off)
-// so the subject itself fills the tile at roughly the same visual size as
-// the other categories' icons. No hover-only transform or filter here --
-// unlike the small-icon path, these should render at full, constant color
-// and size regardless of hover state.
-const REAL_PHOTO_IMAGE_WRAPPER_CLASSES = "relative h-full w-full shrink-0";
-const REAL_PHOTO_IMAGE_CLASSES =
-  "scale-[1.3] md:scale-[1.35] object-cover object-center mix-blend-multiply !bg-transparent !opacity-100 !filter-none";
+const REAL_PHOTO_FILTER_CLASSES = "mix-blend-normal !bg-transparent !opacity-100 brightness-[1.1] drop-shadow-none";
 const DEFAULT_FILTER_CLASSES = "brightness-[1.15] contrast-[1.1] saturate-[1.2]";
 
 const TILE_CLASSES =
@@ -96,26 +85,21 @@ function CategoryTile({
   const Icon = resolveCategoryIcon(category);
   const isRealPhoto = REAL_PHOTO_SLUGS.has(category.slug);
   const cardColorClass = `bg-[#CEFFEE] ${DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR}`;
+  const filterClass = isRealPhoto ? REAL_PHOTO_FILTER_CLASSES : DEFAULT_FILTER_CLASSES;
 
   return (
     <Link href={`/${category.slug}`} title={category.name} className={TILE_CLASSES}>
       <span className={`${CARD_BASE_CLASSES} ${cardColorClass} ${isActive ? "ring-2 ring-brand" : ""}`}>
         {imagePath ? (
-          isRealPhoto ? (
-            <span className={REAL_PHOTO_IMAGE_WRAPPER_CLASSES}>
-              <Image src={imagePath} alt={category.name} fill sizes="70px" className={REAL_PHOTO_IMAGE_CLASSES} />
-            </span>
-          ) : (
-            <span className={`relative ${IMAGE_CLASSES}`}>
-              <Image
-                src={imagePath}
-                alt={category.name}
-                fill
-                sizes="48px"
-                className={`object-contain opacity-100 ${DEFAULT_FILTER_CLASSES}`}
-              />
-            </span>
-          )
+          <span className={`relative ${IMAGE_CLASSES}`}>
+            <Image
+              src={imagePath}
+              alt={category.name}
+              fill
+              sizes="48px"
+              className={`object-contain opacity-100 ${filterClass}`}
+            />
+          </span>
         ) : (
           <Icon className={`${IMAGE_CLASSES} text-neutral-700`} />
         )}
