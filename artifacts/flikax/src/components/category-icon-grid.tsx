@@ -41,14 +41,16 @@ const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
 };
 const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 
-// Categories whose source photo (public/categories/top-<slug>.webp) is a
-// real product/stock shot rather than the tightly-cropped flat icon style
-// the rest of the set uses. They render through the exact same centered,
-// object-contain icon path as every other category (see IMAGE_CLASSES) --
-// object-cover/scale/mix-blend-multiply were tried here to crop out the
-// photo's own studio margin, but at this card size that cropped in too far
-// (icon read as oversized) and the multiply blend tinted the whole card a
-// muddy dark green. A calmer, un-blended filter avoids both.
+// Categories that previously used a real product/stock photo (baked-in
+// white/pale studio margin) instead of the tightly-cropped, transparent-bg
+// icon style the rest of the set uses. Five of the six now have a
+// transparent-background PNG (see TOP_LEVEL_IMAGE_BY_SLUG in
+// category-images.ts) so there's no margin left to fight -- they render
+// through the exact same centered, object-contain icon path as every other
+// category (see IMAGE_CLASSES), just with no filter/blend applied so the
+// artwork's own color always shows through unaltered. Repair & Construction
+// still has no transparent replacement yet, so it still carries the old
+// studio photo's margin at this card size.
 const REAL_PHOTO_SLUGS = new Set([
   "vehicles",
   "electronics",
@@ -57,7 +59,7 @@ const REAL_PHOTO_SLUGS = new Set([
   "services",
   "repair-construction",
 ]);
-const REAL_PHOTO_FILTER_CLASSES = "mix-blend-normal !bg-transparent !opacity-100 brightness-[1.1] drop-shadow-none";
+const REAL_PHOTO_FILTER_CLASSES = "bg-transparent filter-none mix-blend-normal";
 const DEFAULT_FILTER_CLASSES = "brightness-[1.15] contrast-[1.1] saturate-[1.2]";
 
 const TILE_CLASSES =

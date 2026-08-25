@@ -138,19 +138,22 @@ export const SUBCATEGORY_IMAGE_BY_SLUG: Record<string, string> = {
 
 export const TOP_LEVEL_IMAGE_BY_SLUG: Record<string, string> = {
   "phones-tablets": "/categories/top-phones-tablets.webp",
-  "services": "/categories/top-services.webp",
+  // These five moved to hand-cleaned transparent PNGs (no baked-in studio
+  // margin) to fix the white-box-in-a-colored-card artifact the old .webp
+  // photos caused -- see REAL_PHOTO_SLUGS in category-icon-grid.tsx.
+  "services": "/categories/top-services.png",
   "animals-pets": "/categories/top-animals-pets.webp",
-  "babies-kids": "/categories/top-babies-kids.webp",
+  "babies-kids": "/categories/top-babies-kids.png",
   "beauty-personal-care": "/categories/top-beauty-personal-care.webp",
-  "commercial-equipment-tools": "/categories/top-commercial-equipment-tools.webp",
-  "electronics": "/categories/top-electronics.webp",
+  "commercial-equipment-tools": "/categories/top-commercial-equipment-tools.png",
+  "electronics": "/categories/top-electronics.png",
   "fashion": "/categories/top-fashion.webp",
   "food-agriculture-farming": "/categories/top-food-agriculture-farming.webp",
   "home-furniture-appliances": "/categories/top-home-furniture-appliances.webp",
   "leisure-activities": "/categories/top-leisure-activities.webp",
   "property": "/categories/top-property.webp",
   "repair-construction": "/categories/top-repair-construction.webp",
-  "vehicles": "/categories/top-vehicles.webp",
+  "vehicles": "/categories/top-vehicles.png",
 };
 /** Real photo for a category/subcategory, or null if none exists yet (caller falls back to the icon+color chip). */
 export function resolveCategoryImage(cat: { slug: string; parent_id: string | null }): string | null {
