@@ -43,14 +43,12 @@ const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 
 // Categories that previously used a real product/stock photo (baked-in
 // white/pale studio margin) instead of the tightly-cropped, transparent-bg
-// icon style the rest of the set uses. Five of the six now have a
+// icon style the rest of the set uses. All six now have a
 // transparent-background PNG (see TOP_LEVEL_IMAGE_BY_SLUG in
 // category-images.ts) so there's no margin left to fight -- they render
 // through the exact same centered, object-contain icon path as every other
 // category (see IMAGE_CLASSES), just with no filter/blend applied so the
-// artwork's own color always shows through unaltered. Repair & Construction
-// still has no transparent replacement yet, so it still carries the old
-// studio photo's margin at this card size.
+// artwork's own color always shows through unaltered.
 const REAL_PHOTO_SLUGS = new Set([
   "vehicles",
   "electronics",
