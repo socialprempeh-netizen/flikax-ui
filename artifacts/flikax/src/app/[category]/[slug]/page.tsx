@@ -55,8 +55,7 @@ import { ContactSellerActions } from "@/components/listings/contact-seller-actio
 import { ListingOwnerActions } from "@/components/listings/listing-owner-actions";
 import { ShareButtons } from "@/components/listings/share-buttons";
 import { ListingGrid, type ListingCard } from "@/components/listing-grid";
-import { InfiniteListingGrid } from "@/components/infinite-listing-grid";
-import { CategoryFilterRow } from "@/components/category-filter-row";
+import { CategoryResults } from "@/components/category-results";
 import { CategorySidebarFilters } from "@/components/category-sidebar-filters";
 import { CategoryQuickFilters } from "@/components/category-quick-filters";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -413,14 +412,12 @@ async function CategoryLocationPage({
                 />
               )}
 
-              <div className="mb-4">
-                <CategoryFilterRow sort={sort} datePosted={datePosted} totalCount={totalCount} />
-              </div>
-
-              <InfiniteListingGrid
+              <CategoryResults
                 initialListings={listings}
                 initialTotalCount={totalCount}
                 loadMore={loadMoreCategoryListingsAction.bind(null, listingsFilter)}
+                sort={sort}
+                datePosted={datePosted}
               />
             </div>
           </div>

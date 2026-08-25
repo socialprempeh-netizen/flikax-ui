@@ -118,9 +118,14 @@ function toReadableTitle(title: string): string {
 export function ListingGrid({
   listings,
   variant = "default",
+  layout = "grid",
 }: {
   listings: ListingCard[];
   variant?: "default" | "home";
+  /** "list" is the category-page view switcher's other mode -- same cards,
+   * forced to a single full-width column instead of the masonry columns
+   * below, regardless of breakpoint. */
+  layout?: "grid" | "list";
 }) {
   if (listings.length === 0) {
     return (
@@ -147,8 +152,8 @@ export function ListingGrid({
           stacked cards in the same column comes from mb-2 on each card
           instead (below), which every browser handles identically. */}
       <div
-        className={`columns-2 -mx-4 gap-x-2 sm:mx-0 ${
-          isHome ? "sm:columns-3 lg:columns-4 xl:columns-5" : "sm:columns-2 lg:columns-3"
+        className={`-mx-4 gap-x-2 sm:mx-0 ${
+          layout === "list" ? "columns-1" : `columns-2 ${isHome ? "sm:columns-3 lg:columns-4 xl:columns-5" : "sm:columns-2 lg:columns-3"}`
         }`}
       >
         {listings.map((listing, index) => {

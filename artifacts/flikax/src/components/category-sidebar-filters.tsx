@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronRight, ChevronDown, Search, X, SlidersHorizontal } from "lucide-react";
+import { ChevronRight, Search, X, SlidersHorizontal } from "lucide-react";
 import { LocationPickerModal } from "@/components/location-picker-modal";
 import { useRegions } from "@/lib/use-regions";
 import type { SidebarFilterField } from "@/lib/category-filters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FilterFolder } from "@/components/filter-folder";
 
 const FIELD_CLASS = "h-auto w-full min-w-0 border-neutral-200 px-2 py-1.5 text-sm focus-visible:border-brand";
 
@@ -94,7 +95,6 @@ export function CategorySidebarFilters({
   });
 
   const [checklistSearch, setChecklistSearch] = useState<Record<string, string>>({});
-  const [collapsedKeys, setCollapsedKeys] = useState<Record<string, boolean>>({});
 
   function toggleChecklistValue(key: string, value: string) {
     setChecklistValues((prev) => {
@@ -102,6 +102,10 @@ export function CategorySidebarFilters({
       const next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];
       return { ...prev, [key]: next };
     });
+  }
+
+  function clearChecklistValue(key: string) {
+    setChecklistValues((prev) => ({ ...prev, [key]: [] }));
   }
 
   const activeCount =
@@ -195,123 +199,98 @@ export function CategorySidebarFilters({
         </span>
       </button>
 
-      <div className="border-[1.5px] border-neutral-300 bg-white p-3">
-        <p className="mb-2 text-sm font-semibold text-neutral-700">
-          Price, <span className="font-currency">GH₵</span>
-        </p>
+      <FilterFolder title="Price Range">
         <div className="flex items-center gap-2">
           <Input
             type="number"
-            placeholder="min"
+            placeholder="From"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
             className={FIELD_CLASS}
           />
-          <span className="shrink-0 text-neutral-400">–</span>
           <Input
             type="number"
-            placeholder="max"
+            placeholder="To"
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
             className={FIELD_CLASS}
           />
+          {/* Same applyFilters() as the sidebar's own Apply button below --
+              this doesn't stage just the price fields, it submits whatever's
+              currently pending across every field, matching the one-apply
+              model the rest of the sidebar already uses. Brand-colored
+              rather than the reference design's blue, to stay consistent
+              with this app's own accent instead of introducing a second,
+              unrelated one. */}
+          <Button type="button" size="icon" onClick={applyFilters} aria-label="Apply price filter" className="shrink-0">
+            <Search className="size-4" />
+          </Button>
         </div>
-      </div>
+      </FilterFolder>
 
-      {fields.map((field) => {
-        const isCollapsed = collapsedKeys[field.key] ?? false;
-        return (
-          <div key={field.key} className="overflow-hidden border-[1.5px] border-neutral-300 bg-white">
-            <button
-              type="button"
-              onClick={() => setCollapsedKeys((prev) => ({ ...prev, [field.key]: !isCollapsed }))}
-              className="flex w-full items-center justify-between px-3 py-2.5 text-left transition-colors hover:bg-neutral-50"
-            >
-              <span className="text-sm font-semibold text-neutral-700">{field.label}</span>
-              <ChevronDown
-                className={`size-4 text-neutral-400 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
+      {fields.map((field) => (
+        <FilterFolder key={field.key} title={field.label}>
+          {field.type === "range" && (
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                placeholder="min"
+                value={rangeValues[`${field.key}_min`] ?? ""}
+                onChange={(e) => setRangeValues((v) => ({ ...v, [`${field.key}_min`]: e.target.value }))}
+                className={FIELD_CLASS}
               />
-            </button>
+              <span className="shrink-0 text-neutral-400">–</span>
+              <Input
+                type="number"
+                placeholder="max"
+                value={rangeValues[`${field.key}_max`] ?? ""}
+                onChange={(e) => setRangeValues((v) => ({ ...v, [`${field.key}_max`]: e.target.value }))}
+                className={FIELD_CLASS}
+              />
+            </div>
+          )}
 
-            <AnimatePresence initial={false}>
-              {!isCollapsed && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.18 }}
-                  className="overflow-hidden"
+          {field.type === "text" && (
+            <Input
+              type="text"
+              placeholder={`Find ${field.label.toLowerCase()}`}
+              value={textValues[field.key] ?? ""}
+              onChange={(e) => setTextValues((v) => ({ ...v, [field.key]: e.target.value }))}
+              className={FIELD_CLASS}
+            />
+          )}
+
+          {field.type === "toggle" && (
+            <div className="flex gap-1.5">
+              {(["", "yes", "no"] as ToggleValue[]).map((opt) => (
+                <button
+                  key={opt || "any"}
+                  type="button"
+                  onClick={() => setToggleValues((v) => ({ ...v, [field.key]: opt }))}
+                  className={`flex-1 border px-2 py-1.5 text-xs font-semibold transition-colors ${
+                    (toggleValues[field.key] ?? "") === opt
+                      ? "border-brand bg-brand-dark text-white"
+                      : "border-neutral-200 text-neutral-600 hover:border-brand/40"
+                  }`}
                 >
-                  <div className="border-t border-neutral-300 px-3 pb-3 pt-2.5">
-                    {field.type === "range" && (
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="number"
-                          placeholder="min"
-                          value={rangeValues[`${field.key}_min`] ?? ""}
-                          onChange={(e) =>
-                            setRangeValues((v) => ({ ...v, [`${field.key}_min`]: e.target.value }))
-                          }
-                          className={FIELD_CLASS}
-                        />
-                        <span className="shrink-0 text-neutral-400">–</span>
-                        <Input
-                          type="number"
-                          placeholder="max"
-                          value={rangeValues[`${field.key}_max`] ?? ""}
-                          onChange={(e) =>
-                            setRangeValues((v) => ({ ...v, [`${field.key}_max`]: e.target.value }))
-                          }
-                          className={FIELD_CLASS}
-                        />
-                      </div>
-                    )}
+                  {opt === "" ? "Any" : opt === "yes" ? "Yes" : "No"}
+                </button>
+              ))}
+            </div>
+          )}
 
-                    {field.type === "text" && (
-                      <Input
-                        type="text"
-                        placeholder={`Find ${field.label.toLowerCase()}`}
-                        value={textValues[field.key] ?? ""}
-                        onChange={(e) => setTextValues((v) => ({ ...v, [field.key]: e.target.value }))}
-                        className={FIELD_CLASS}
-                      />
-                    )}
-
-                    {field.type === "toggle" && (
-                      <div className="flex gap-1.5">
-                        {(["", "yes", "no"] as ToggleValue[]).map((opt) => (
-                          <button
-                            key={opt || "any"}
-                            type="button"
-                            onClick={() => setToggleValues((v) => ({ ...v, [field.key]: opt }))}
-                            className={`flex-1 border px-2 py-1.5 text-xs font-semibold transition-colors ${
-                              (toggleValues[field.key] ?? "") === opt
-                                ? "border-brand bg-brand-dark text-white"
-                                : "border-neutral-200 text-neutral-600 hover:border-brand/40"
-                            }`}
-                          >
-                            {opt === "" ? "Any" : opt === "yes" ? "Yes" : "No"}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-
-                    {field.type === "checklist" && (
-                      <ChecklistOptions
-                        field={field}
-                        selected={checklistValues[field.key] ?? []}
-                        searchValue={checklistSearch[field.key] ?? ""}
-                        onSearchChange={(value) => setChecklistSearch((s) => ({ ...s, [field.key]: value }))}
-                        onToggle={(value) => toggleChecklistValue(field.key, value)}
-                      />
-                    )}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        );
-      })}
+          {field.type === "checklist" && (
+            <ChecklistOptions
+              field={field}
+              selected={checklistValues[field.key] ?? []}
+              searchValue={checklistSearch[field.key] ?? ""}
+              onSearchChange={(value) => setChecklistSearch((s) => ({ ...s, [field.key]: value }))}
+              onToggle={(value) => toggleChecklistValue(field.key, value)}
+              onClearAll={() => clearChecklistValue(field.key)}
+            />
+          )}
+        </FilterFolder>
+      ))}
     </div>
   );
 
@@ -398,12 +377,14 @@ function ChecklistOptions({
   searchValue,
   onSearchChange,
   onToggle,
+  onClearAll,
 }: {
   field: SidebarFilterField;
   selected: string[];
   searchValue: string;
   onSearchChange: (value: string) => void;
   onToggle: (value: string) => void;
+  onClearAll: () => void;
 }) {
   const options = field.options ?? [];
   const showSearch = options.length > CHECKLIST_SEARCH_THRESHOLD;
@@ -427,6 +408,17 @@ function ChecklistOptions({
         </div>
       )}
       <div className={showSearch ? "thin-scrollbar max-h-48 space-y-0.5 overflow-y-auto pr-1" : "space-y-0.5"}>
+        {/* Not filtered by searchValue -- "clear the selection" should stay
+            reachable even while a search narrows the list below it. */}
+        <label className="flex cursor-pointer items-center gap-2 px-1.5 py-1.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50">
+          <input
+            type="checkbox"
+            checked={selected.length === 0}
+            onChange={onClearAll}
+            className="size-4 accent-brand"
+          />
+          <span className="truncate">All {field.label}</span>
+        </label>
         {visible.length === 0 && <p className="py-2 text-xs text-neutral-400">No matches.</p>}
         {visible.map((option) => {
           const checked = selected.includes(option);

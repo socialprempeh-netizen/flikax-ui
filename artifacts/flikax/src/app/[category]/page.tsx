@@ -16,9 +16,8 @@ import { getSidebarFields, getTopLevelDisplayFields, getQuickFilterKey } from "@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
-import { InfiniteListingGrid } from "@/components/infinite-listing-grid";
 import { JsonLd } from "@/components/seo/json-ld";
-import { CategoryFilterRow } from "@/components/category-filter-row";
+import { CategoryResults } from "@/components/category-results";
 import { CategorySidebarFilters } from "@/components/category-sidebar-filters";
 import { CategoryQuickFilters } from "@/components/category-quick-filters";
 import { SiblingCategoryRow } from "@/components/sibling-category-row";
@@ -237,14 +236,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
               />
             )}
 
-            <div className="mb-4">
-              <CategoryFilterRow sort={sort} datePosted={datePosted} totalCount={totalCount} />
-            </div>
-
-            <InfiniteListingGrid
+            <CategoryResults
               initialListings={listings}
               initialTotalCount={totalCount}
               loadMore={loadMoreCategoryListingsAction.bind(null, listingsFilter)}
+              sort={sort}
+              datePosted={datePosted}
             />
           </div>
         </div>

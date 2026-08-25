@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, List, LayoutGrid } from "lucide-react";
 import type { CategorySort, DatePosted } from "@/lib/category-listings";
 
 const PRICE_BUCKETS: { label: string; minPrice?: string; maxPrice?: string }[] = [
@@ -41,10 +41,18 @@ export function CategoryFilterRow({
   sort,
   datePosted,
   totalCount,
+  photosOnly,
+  onPhotosOnlyChange,
+  viewMode,
+  onViewModeChange,
 }: {
   sort: CategorySort;
   datePosted?: DatePosted;
   totalCount: number;
+  photosOnly: boolean;
+  onPhotosOnlyChange: (value: boolean) => void;
+  viewMode: "grid" | "list";
+  onViewModeChange: (value: "grid" | "list") => void;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -74,12 +82,66 @@ export function CategoryFilterRow({
         })}
       </div>
 
-      <div className="mt-2 flex items-center justify-between gap-3 border-b border-neutral-200 pb-3 text-sm lg:mt-0 lg:border-none lg:pb-0">
-        <span className="font-medium text-neutral-500">
-          {totalCount.toLocaleString()} {totalCount === 1 ? "result" : "results"}
-        </span>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 pb-3 text-sm lg:mt-0 lg:border-none lg:pb-0">
+        <div className="flex items-center gap-3">
+          <label className="flex cursor-pointer items-center gap-2 select-none">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={photosOnly}
+              aria-label="Ads with photos"
+              onClick={() => onPhotosOnlyChange(!photosOnly)}
+              className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
+                photosOnly ? "bg-[#2EB8A0]" : "bg-neutral-300"
+              }`}
+            >
+              {/* left-0.5 pins the untransformed position to the track's
+                  left edge -- translate-x then moves a fixed 18px from
+                  that anchor instead of from an unset (and unpredictable)
+                  static position, which was overshooting the track and
+                  overlapping the label text to its right. */}
+              <span
+                className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow-sm transition-transform ${
+                  photosOnly ? "translate-x-[18px]" : "translate-x-0"
+                }`}
+              />
+            </button>
+            <span className="font-medium text-neutral-600">Ads with photos</span>
+          </label>
+          <span className="hidden font-medium text-neutral-500 sm:inline">
+            {totalCount.toLocaleString()} {totalCount === 1 ? "result" : "results"}
+          </span>
+        </div>
 
         <div className="flex items-center gap-2">
+          {/* Grid/list view switcher -- active button fills with the same
+              accent as the "Ads with photos" toggle above, inactive stays a
+              plain bordered white button. */}
+          <div className="flex overflow-hidden rounded-md border border-neutral-200">
+            <button
+              type="button"
+              aria-label="List view"
+              aria-pressed={viewMode === "list"}
+              onClick={() => onViewModeChange("list")}
+              className={`flex items-center justify-center p-1.5 ${
+                viewMode === "list" ? "bg-[#2EB8A0] text-white" : "bg-white text-neutral-500 hover:bg-neutral-50"
+              }`}
+            >
+              <List className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Grid view"
+              aria-pressed={viewMode === "grid"}
+              onClick={() => onViewModeChange("grid")}
+              className={`flex items-center justify-center border-l border-neutral-200 p-1.5 ${
+                viewMode === "grid" ? "bg-[#2EB8A0] text-white" : "bg-white text-neutral-500 hover:bg-neutral-50"
+              }`}
+            >
+              <LayoutGrid className="size-4" />
+            </button>
+          </div>
+
           <div className="relative">
             <select
               aria-label="Date posted"

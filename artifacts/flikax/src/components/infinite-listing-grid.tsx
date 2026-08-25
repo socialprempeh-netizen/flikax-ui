@@ -12,6 +12,8 @@ export function InfiniteListingGrid({
   variant,
   loadMore,
   maxItems,
+  layout = "grid",
+  photosOnly = false,
 }: {
   initialListings: ListingCard[];
   initialTotalCount: number;
@@ -22,6 +24,13 @@ export function InfiniteListingGrid({
    * rather than scrolling through the entire catalog. Omit for the
    * uncapped category-page behavior. */
   maxItems?: number;
+  /** Category page's grid/list view switcher -- passed straight through to
+   * ListingGrid. */
+  layout?: "grid" | "list";
+  /** Category page's "Ads with photos" toggle -- a client-side filter over
+   * whatever's already loaded (not a server-side refetch), so toggling it
+   * doesn't reset scroll position or pagination state. */
+  photosOnly?: boolean;
 }) {
   const [listings, setListings] = useState(initialListings);
   const [totalCount, setTotalCount] = useState(initialTotalCount);
@@ -106,12 +115,14 @@ export function InfiniteListingGrid({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMore, maxItems]);
 
+  const visibleListings = photosOnly ? listings.filter((l) => l.imageUrl) : listings;
+
   return (
     <>
       <div role="status" aria-live="polite" className="sr-only">
         {liveMessage}
       </div>
-      <ListingGrid listings={listings} variant={variant} />
+      <ListingGrid listings={visibleListings} variant={variant} layout={layout} />
       {hasMore && (
         <div ref={sentinelRef} className="flex items-center justify-center py-8">
           {errored ? (
