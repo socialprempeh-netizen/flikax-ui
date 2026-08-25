@@ -19,15 +19,15 @@ const MOBILE_VISIBLE_COUNT = 7;
 // Desktop-only -- mobile cards stay a uniform bg-[#CEFFEE] regardless of
 // category, this per-category fill only kicks in at md:.
 // Vehicles, Electronics, Babies & Kids, Commercial Equipment & Tools,
-// Services, and Repair & Construction reuse the two shades already
-// established on Phones & Tablets (#2EB8A0) and Beauty & Personal Care
-// (#55C59D), split 3/3 and arranged so no two horizontally-adjacent tiles
-// land on the same shade.
+// Services, and Repair & Construction all pin to Phones & Tablets' shade
+// (#2EB8A0) rather than each other's -- see REAL_PHOTO_SLUGS below, their
+// source images carry a baked-in white/pale margin that a second accent
+// color would only make more obvious as a mismatched box.
 const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
-  vehicles: "md:bg-[#55C59D]",
+  vehicles: "md:bg-[#2EB8A0]",
   "phones-tablets": "md:bg-[#2EB8A0]",
   property: "md:bg-[#7EC89B]",
-  electronics: "md:bg-[#55C59D]",
+  electronics: "md:bg-[#2EB8A0]",
   fashion: "md:bg-[#A8D8B8]",
   "animals-pets": "md:bg-[#6FCB8B]",
   "babies-kids": "md:bg-[#2EB8A0]",
@@ -37,32 +37,38 @@ const DESKTOP_CARD_COLOR_BY_SLUG: Record<string, string> = {
   "home-furniture-appliances": "md:bg-[#2EB89E]",
   "leisure-activities": "md:bg-[#6FC97A]",
   "repair-construction": "md:bg-[#2EB8A0]",
-  services: "md:bg-[#55C59D]",
+  services: "md:bg-[#2EB8A0]",
 };
 const DEFAULT_DESKTOP_CARD_COLOR = "md:bg-[#CEFFEE]";
 
-// Categories backed by a real product photo (not the flat clipart-style
-// images the rest of the set uses) -- these still take their card color
-// from DESKTOP_CARD_COLOR_BY_SLUG like every other category, they just
-// render the image full-bleed (see REAL_PHOTO_IMAGE_CLASSES) instead of a
-// small centered icon, and get a gentler filter since a real photo doesn't
-// need the same saturation/contrast boost a flat icon does.
-const REAL_PHOTO_SLUGS = new Set(["vehicles", "electronics", "commercial-equipment-tools"]);
+// Categories whose source photo (public/categories/top-<slug>.webp) is a
+// real product/stock shot with a white or pale studio margin baked into
+// the pixels, instead of the tightly-cropped flat icon style the rest of
+// the set uses. Rendered at the old small centered size, that margin reads
+// as a mismatched white/mint box floating inside the card's accent color.
+// These get the full-bleed treatment below instead of the small icon path.
+const REAL_PHOTO_SLUGS = new Set([
+  "vehicles",
+  "electronics",
+  "commercial-equipment-tools",
+  "babies-kids",
+  "services",
+  "repair-construction",
+]);
 // Fills the entire card (not just a centered small icon) -- object-cover
 // crops to the card's aspect ratio instead of letterboxing, and
-// mix-blend-multiply melts the photo's near-white studio background into
-// whatever card color sits behind it (multiplying by a light/white pixel
-// mostly just darkens the underlying fill slightly) so there's no visible
-// seam/white square. The source photos are studio product shots with
-// generous negative space around the subject, so a plain cover-fit reads
-// as a small subject
-// floating in a lot of mint -- scale-[1.25] zooms past that padding (card
-// keeps overflow-hidden, so the excess just crops off) to make the subject
-// itself fill the tile.
-const REAL_PHOTO_IMAGE_WRAPPER_CLASSES =
-  "relative h-full w-full shrink-0 transition-transform duration-150 group-hover:scale-105";
+// mix-blend-multiply melts the photo's near-white studio margin into
+// whatever card color sits behind it (multiplying a light/white pixel by
+// the card color mostly just returns the card color, close to fully
+// hiding the seam). scale-[1.3]/[1.35] zooms in past the source photo's
+// own padding (card keeps overflow-hidden, so the excess just crops off)
+// so the subject itself fills the tile at roughly the same visual size as
+// the other categories' icons. No hover-only transform or filter here --
+// unlike the small-icon path, these should render at full, constant color
+// and size regardless of hover state.
+const REAL_PHOTO_IMAGE_WRAPPER_CLASSES = "relative h-full w-full shrink-0";
 const REAL_PHOTO_IMAGE_CLASSES =
-  "scale-[1.25] object-cover mix-blend-multiply bg-transparent opacity-100 brightness-[1.15]";
+  "scale-[1.3] md:scale-[1.35] object-cover object-center mix-blend-multiply !bg-transparent !opacity-100 !filter-none";
 const DEFAULT_FILTER_CLASSES = "brightness-[1.15] contrast-[1.1] saturate-[1.2]";
 
 const TILE_CLASSES =
