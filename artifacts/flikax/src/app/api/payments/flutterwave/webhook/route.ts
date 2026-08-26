@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { PAYMENTS_ENABLED } from "@/lib/payments/config";
 import { verifyFlutterwaveSignature } from "@/lib/payments/flutterwave";
 import { markPaymentSuccess } from "@/lib/payments/mark-payment-success";
+import { flutterwaveWebhookEventSchema } from "@/lib/payments/schemas";
 
 // Purchase flow step 3: Flutterwave calls this server-to-server after a
 // checkout completes (independent of whether the user's browser ever makes
@@ -22,9 +23,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature." }, { status: 401 });
   }
 
-  const event = await request.json();
+  // Parsed only after the signature check above -- this schema is a shape
+  // guard against our own assumptions, not a trust boundary, since
+  // verifyFlutterwaveSignature() is what actually proves the request came
+  // from Flutterwave.
+  const parsedEvent = flutterwaveWebhookEventSchema.safeParse(await request.json().catch(() => null));
+  if (!parsedEvent.success) {
+    return NextResponse.json({ error: "Unrecognized event payload." }, { status: 400 });
+  }
+  const event = parsedEvent.data;
 
-  if (event.event === "charge.completed" && event.data?.status === "successful") {
+  if (event.event === "charge.completed" && event.data?.status === "successful" && event.data.tx_ref) {
     await markPaymentSuccess(event.data.tx_ref);
   }
 

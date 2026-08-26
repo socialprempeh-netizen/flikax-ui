@@ -3,6 +3,7 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { PAYMENTS_ENABLED } from "@/lib/payments/config";
 import { createPendingPurchase } from "@/lib/payments/create-pending-purchase";
 import { initializeFlutterwavePayment } from "@/lib/payments/flutterwave";
+import { purchaseInitializeSchema } from "@/lib/payments/schemas";
 
 // Purchase flow step 2: hit by PlanPurchaseButton's "Pay with Flutterwave"
 // click. Mirrors the Paystack initialize route -- authenticates the caller,
@@ -24,16 +25,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Not signed in." }, { status: 401 });
   }
 
-  const { planId, listingId } = await request.json();
-  if (typeof planId !== "string") {
-    return NextResponse.json({ error: "Missing planId." }, { status: 400 });
+  const parsedBody = purchaseInitializeSchema.safeParse(await request.json().catch(() => null));
+  if (!parsedBody.success) {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
+  const { planId, listingId } = parsedBody.data;
 
   const pending = await createPendingPurchase({
     supabase,
     userId: user.id,
     planId,
-    listingId: typeof listingId === "string" ? listingId : undefined,
+    listingId,
     provider: "flutterwave",
   });
 

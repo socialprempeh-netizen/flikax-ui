@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { PAYMENTS_ENABLED } from "@/lib/payments/config";
 import { verifyPaystackSignature } from "@/lib/payments/paystack";
 import { markPaymentSuccess } from "@/lib/payments/mark-payment-success";
+import { paystackWebhookEventSchema } from "@/lib/payments/schemas";
 
 // Purchase flow step 3: Paystack calls this server-to-server after a
 // checkout completes (independent of whether the user's browser ever makes
@@ -28,9 +29,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature." }, { status: 401 });
   }
 
-  const event = JSON.parse(rawBody);
+  // Parsed only after the signature check above -- this schema is a shape
+  // guard against our own assumptions (event.data.reference existing), not
+  // a trust boundary, since verifyPaystackSignature() is what actually
+  // proves the request came from Paystack.
+  const parsedEvent = paystackWebhookEventSchema.safeParse(JSON.parse(rawBody));
+  if (!parsedEvent.success) {
+    return NextResponse.json({ error: "Unrecognized event payload." }, { status: 400 });
+  }
+  const event = parsedEvent.data;
 
-  if (event.event === "charge.success") {
+  if (event.event === "charge.success" && event.data?.reference) {
     await markPaymentSuccess(event.data.reference);
   }
 

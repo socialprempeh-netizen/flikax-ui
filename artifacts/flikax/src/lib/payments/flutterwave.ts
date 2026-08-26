@@ -1,3 +1,5 @@
+import { timingSafeEqual } from "node:crypto";
+
 // Purchase flow: thin Flutterwave API wrapper used by two call sites --
 // initializeFlutterwavePayment() from the /initialize route (step 2, kicks
 // off the redirect to Flutterwave's hosted checkout) and
@@ -55,5 +57,14 @@ export function verifyFlutterwaveSignature(signature: string | null): boolean {
   // check but serves the same purpose: reject any webhook call that
   // doesn't prove knowledge of a value only Flutterwave (and us) has.
   // Must run before the webhook route trusts event.data.
-  return signature === secretHash;
+  //
+  // Plain `===` leaks a timing side-channel proportional to how many
+  // leading characters match, which would let an attacker brute-force the
+  // secret hash one character at a time. timingSafeEqual compares in
+  // constant time; it requires equal-length buffers, so the length check
+  // is a length leak only, not a content leak.
+  const secretBuf = Buffer.from(secretHash);
+  const signatureBuf = Buffer.from(signature);
+  if (secretBuf.length !== signatureBuf.length) return false;
+  return timingSafeEqual(secretBuf, signatureBuf);
 }

@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 // Purchase flow: thin Paystack API wrapper used by two call sites --
 // initializePaystackTransaction() from the /initialize route (step 2, kicks
@@ -59,5 +59,17 @@ export function verifyPaystackSignature(rawBody: string, signature: string | nul
   // attacker without that key cannot produce a matching signature. The
   // webhook route must call this BEFORE parsing/trusting the body.
   const expected = createHmac("sha512", secretKey).update(rawBody).digest("hex");
-  return expected === signature;
+
+  // Plain `===` short-circuits on the first mismatched byte, so how long
+  // the comparison takes leaks how many leading hex characters an attacker
+  // guessed correctly -- a timing side-channel that can be used to forge a
+  // valid signature byte-by-byte without the secret key. timingSafeEqual
+  // always compares in constant time regardless of where the mismatch is.
+  // It requires equal-length buffers, so a length check comes first --
+  // that's a length leak, not a content leak, and both values here are
+  // fixed-length hex digests so length never varies with secret data.
+  const expectedBuf = Buffer.from(expected, "hex");
+  const signatureBuf = Buffer.from(signature, "hex");
+  if (expectedBuf.length !== signatureBuf.length) return false;
+  return timingSafeEqual(expectedBuf, signatureBuf);
 }
