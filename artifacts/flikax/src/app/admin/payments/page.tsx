@@ -142,7 +142,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
       </p>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+        <Card className="gap-2 p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total revenue</span>
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
@@ -151,7 +151,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
           </div>
           <p className="text-2xl font-extrabold text-slate-800">GHS {totalRevenue.toFixed(2)}</p>
         </Card>
-        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+        <Card className="gap-2 p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">This month</span>
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
@@ -160,7 +160,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
           </div>
           <p className="text-2xl font-extrabold text-slate-800">GHS {monthRevenue.toFixed(2)}</p>
         </Card>
-        <Card className="gap-2 rounded-2xl p-4 shadow-sm">
+        <Card className="gap-2 p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Today</span>
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand-dark">
@@ -172,7 +172,7 @@ export default async function AdminPaymentsPage({ searchParams }: PageProps) {
       </div>
 
       {Object.keys(byPlanType).length > 0 && (
-        <Card className="mt-3 flex-row flex-wrap gap-2 rounded-2xl p-4 text-sm text-slate-600 shadow-sm">
+        <Card className="mt-3 flex-row flex-wrap gap-2 p-4 text-sm text-slate-600 shadow-sm">
           {Object.entries(byPlanType).map(([planType, amount]) => (
             <Badge key={planType} className="bg-slate-100 px-3 py-1 text-slate-600">
               {ADMIN_PLAN_TYPE_LABELS[planType] ?? planType}: GHS {amount.toFixed(2)}
