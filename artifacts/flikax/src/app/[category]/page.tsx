@@ -130,6 +130,17 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
   const displayFields = leafSlug ? sidebarFields : getTopLevelDisplayFields(topLevelSlug);
   const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
+  // "Type"-style quick filters (vehicle_type, property_type, ...) have a fixed,
+  // known option list from listing-fields.ts -- unlike "brand"-style (Make has no
+  // enum, it's free text), so for these the quick-filter row should always show
+  // every known option (with a real, possibly-zero count) rather than only
+  // whichever ones already happen to have 2+ matching listings. See the
+  // fixedQuickFilterOptions fetch-skip/merge below.
+  const quickFilterField = quickFilterKey ? sidebarFields.find((f) => f.key === quickFilterKey) : undefined;
+  const fixedQuickFilterOptions =
+    quickFilterField?.type === "checklist" && quickFilterField.options && quickFilterField.options.length > 0
+      ? quickFilterField.options
+      : undefined;
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
@@ -169,7 +180,11 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     await Promise.all([
       siblingsQuery,
       getCachedCategoryListings({ ...listingsFilter, page: 1 }),
-      quickFilterKey ? getTopAttributeValues(supabase, categoryIds, quickFilterKey) : Promise.resolve([]),
+      // Skipped (and merged from fieldCounts instead, below) when
+      // fixedQuickFilterOptions applies -- see that variable's own comment.
+      quickFilterKey && !fixedQuickFilterOptions
+        ? getTopAttributeValues(supabase, categoryIds, quickFilterKey)
+        : Promise.resolve([]),
       // Real per-checkbox ad counts (Make/Type/Condition/...) and the sidebar's
       // quartile price-bucket quick-picks -- see both functions' own comments in
       // category-listings.ts for why these aren't unstable_cache-wrapped like the
@@ -193,6 +208,19 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       .map(([value]) => value);
     return { ...field, options };
   });
+
+  // See fixedQuickFilterOptions's own comment above: for a "type"-style quick
+  // filter, show every known option (real count, 0 if this category has no
+  // matching listings yet) instead of only ones getTopAttributeValues already
+  // found -- otherwise a thin-inventory category's entire quick-filter row
+  // silently disappears (CategoryQuickFilters returns null under 2 items) even
+  // though its full taxonomy is known and fixed.
+  const resolvedQuickFilterValues = fixedQuickFilterOptions
+    ? fixedQuickFilterOptions.map((value) => ({
+        value,
+        count: fieldCounts[quickFilterKey!]?.[value] ?? 0,
+      }))
+    : quickFilterValues;
 
   const carryParams = new URLSearchParams();
   for (const [key, value] of Object.entries(rawParams)) {
@@ -237,7 +265,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         </h1>
 
         <div className="flex gap-4">
-          <div className="flex flex-col gap-4 lg:w-[280px] lg:shrink-0">
+          <div className="flex flex-col gap-4 lg:w-[285px] lg:shrink-0">
             <CategorySubcategoryListDesktop parentId={category.id} subcategories={subcategories} />
             <CategorySidebarFilters
               categorySlug={category.slug}
@@ -256,7 +284,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
             {quickFilterKey && (
               <CategoryQuickFilters
-                items={quickFilterValues}
+                items={resolvedQuickFilterValues}
                 topLevelSlug={topLevelSlug}
                 leafSlug={leafSlug}
                 attributeKey={quickFilterKey}

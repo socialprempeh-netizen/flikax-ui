@@ -311,6 +311,15 @@ async function CategoryLocationPage({
   const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
   const displayFields = leafSlug ? sidebarFields : getTopLevelDisplayFields(topLevelSlug);
   const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
+  // See the matching comment in [category]/page.tsx -- "type"-style quick filters
+  // have a fixed known option list, so the row should always show every option
+  // (real, possibly-zero count) instead of only ones a thin-inventory location
+  // already has 2+ listings for.
+  const quickFilterField = quickFilterKey ? sidebarFields.find((f) => f.key === quickFilterKey) : undefined;
+  const fixedQuickFilterOptions =
+    quickFilterField?.type === "checklist" && quickFilterField.options && quickFilterField.options.length > 0
+      ? quickFilterField.options
+      : undefined;
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
@@ -332,10 +341,16 @@ async function CategoryLocationPage({
 
   const [{ listings, totalCount }, quickFilterValues, fieldCounts, priceBuckets] = await Promise.all([
     fetchCategoryListings(supabase, { ...listingsFilter, page: 1 }),
-    quickFilterKey ? getTopAttributeValues(supabase, categoryIds, quickFilterKey) : Promise.resolve([]),
+    quickFilterKey && !fixedQuickFilterOptions
+      ? getTopAttributeValues(supabase, categoryIds, quickFilterKey)
+      : Promise.resolve([]),
     getChecklistFieldCounts(supabase, categoryIds, displayFields),
     getPriceBuckets(supabase, categoryIds),
   ]);
+
+  const resolvedQuickFilterValues = fixedQuickFilterOptions
+    ? fixedQuickFilterOptions.map((value) => ({ value, count: fieldCounts[quickFilterKey!]?.[value] ?? 0 }))
+    : quickFilterValues;
 
   // See the matching comment in [category]/page.tsx -- Make/Brand are checklist type
   // but ship with no static option list, so fieldCounts (just fetched) doubles as
@@ -420,7 +435,7 @@ async function CategoryLocationPage({
             <div className="min-w-0 flex-1">
               {quickFilterKey && (
                 <CategoryQuickFilters
-                  items={quickFilterValues}
+                  items={resolvedQuickFilterValues}
                   topLevelSlug={topLevelSlug}
                   leafSlug={leafSlug}
                   attributeKey={quickFilterKey}
