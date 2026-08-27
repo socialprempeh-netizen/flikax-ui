@@ -117,6 +117,21 @@ unique `listings_short_id_idx`, partial `listings_featured_idx`
 `idx_listings_status_category_price`, `idx_listings_status_location`,
 `idx_listings_expires_at` (partial, `WHERE expires_at IS NOT NULL`).
 
+**Category-page filtering** (`src/lib/category-listings.ts`, called with
+the anon `createPublicClient()` — see ARCHITECTURE.md's Supabase client
+layer) filters/counts on `price`, `location`, `seller_verified`,
+`is_discounted`, and `attributes->>'<fieldKey>'` (make/type/condition/...,
+per `listing-fields.ts`) — all public-`SELECT`able columns already, so
+this doesn't introduce a new RLS/column-grant surface. Worth remembering
+if a *new* listings column is added specifically to support a sidebar
+filter later: unlike RLS (row-level, `using (true)` here), Postgres
+column-level `GRANT SELECT` is separate and doesn't inherit automatically
+— a new column with no explicit grant to `anon`/`authenticated` makes the
+category page's queries silently return fewer/no rows instead of erroring
+(this data layer doesn't check Supabase's `error` field on these calls),
+which reads exactly like "no listings match this filter" rather than a
+permissions bug.
+
 ### `listing_images`
 | Column | Type | Notes |
 |---|---|---|

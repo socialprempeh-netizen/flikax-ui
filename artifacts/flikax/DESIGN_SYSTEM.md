@@ -143,6 +143,28 @@ gridline at every column count and breakpoint with no special-casing.
   (e.g. `CategoryPickerModal`/`LocationPickerModal` rows use `py-4`) — don't
   default to a cramped `py-1`/`py-1.5` on a genuinely tappable list row.
 
+## Category page layout measurements
+
+The `/[category]` page's subcategory/quick-filter tile row
+(`category-quick-filters.tsx`) and sidebar (`category-sidebar-filters.tsx`,
+`category-subcategory-list.tsx`) use a few hardcoded arbitrary-value
+measurements rather than named tokens, deliberately matched to a reference
+Ghanaian marketplace's own CSS so the page reads as a familiar,
+professionally-dense filtering UI rather than one designed from scratch:
+
+| Measurement | Value | Where |
+|---|---|---|
+| Quick-filter tile (desktop) | `110px` wide, `124px` min-height, `10px 4px 8px` padding | `CategoryQuickFilters`, `sm:grid` row |
+| Quick-filter tile (mobile) | `75px` wide, height auto | `CategoryQuickFilters`, `sm:hidden` scroll row |
+| Quick-filter grid gap | `10px` columns / `16px` rows | `CategoryQuickFilters` desktop grid |
+| Sidebar column width | `280px` | `CategorySidebarFilters`, `CategorySubcategoryListDesktop`, and the `[category]/page.tsx` flex wrapper — keep all three in sync if this changes |
+| Price/search input height | `44px` (`h-11`) | Sidebar's Price Range inputs + inline Apply-search icon button |
+
+These are layout-only. **Color and corner radius on this page still follow
+this file's own rules above** — `--brand`/`--brand-dark` (not the reference
+site's own green) and square corners (not the reference's `border-radius`)
+— matching a reference site's measurements doesn't mean matching its brand.
+
 ## Icons
 
 - **Lucide React** (`lucide-react`) for all generic UI icons.

@@ -33,6 +33,8 @@ import { getListingPath, extractShortIdFromSlug } from "@/lib/listing-url";
 import {
   fetchCategoryListings,
   getTopAttributeValues,
+  getChecklistFieldCounts,
+  getPriceBuckets,
   countCategoryListings,
   getChildCategoryIds,
   parseAttributeFilters,
@@ -328,10 +330,24 @@ async function CategoryLocationPage({
     attributeFilters,
   };
 
-  const [{ listings, totalCount }, quickFilterValues] = await Promise.all([
+  const [{ listings, totalCount }, quickFilterValues, fieldCounts, priceBuckets] = await Promise.all([
     fetchCategoryListings(supabase, { ...listingsFilter, page: 1 }),
     quickFilterKey ? getTopAttributeValues(supabase, categoryIds, quickFilterKey) : Promise.resolve([]),
+    getChecklistFieldCounts(supabase, categoryIds, displayFields),
+    getPriceBuckets(supabase, categoryIds),
   ]);
+
+  // See the matching comment in [category]/page.tsx -- Make/Brand are checklist type
+  // but ship with no static option list, so fieldCounts (just fetched) doubles as
+  // their top-N option list too.
+  const resolvedDisplayFields = displayFields.map((field) => {
+    if (field.type !== "checklist" || (field.options && field.options.length > 0)) return field;
+    const options = Object.entries(fieldCounts[field.key] ?? {})
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12)
+      .map(([value]) => value);
+    return { ...field, options };
+  });
 
   const belowThreshold = totalCount < MIN_INDEXABLE_LISTINGS;
 
@@ -395,8 +411,10 @@ async function CategoryLocationPage({
           <div className="flex gap-4">
             <CategorySidebarFilters
               categorySlug={category.slug}
-              fields={displayFields}
+              fields={resolvedDisplayFields}
               activeLocationSlug={location.district_slug}
+              fieldCounts={fieldCounts}
+              priceBuckets={priceBuckets}
             />
 
             <div className="min-w-0 flex-1">

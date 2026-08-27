@@ -34,6 +34,16 @@ export type SidebarFilterField = {
   arrayField?: boolean;
 };
 
+// Make/Brand are free-text in the post-ad *form* (sellers type "Toyota", not pick it
+// from a dropdown -- see CATEGORY_FIELDS in listing-fields.ts), so there's no fixed
+// option list to render as sidebar checkboxes the way Condition/Type have. Tonaton's
+// own sidebar still shows Make as a checklist ("Toyota · 29,551 ads", ...), just built
+// from whatever values sellers actually typed rather than a hardcoded enum -- these
+// two keys get "checklist" here with options left empty, a signal to the [category]
+// page to fill them in from getTopAttributeValues (real data) before rendering,
+// instead of from this file.
+const DYNAMIC_CHECKLIST_FIELDS = new Set(["make", "brand"]);
+
 /** Curated, per-top-level-category subset of CATEGORY_FIELDS used to parse/filter a
  * top-level category's own listing page (e.g. /vehicles) -- deliberately narrow
  * (Location + Price are handled separately, always shown) rather than dumping every
@@ -119,10 +129,11 @@ export const DISCOUNT_FIELD: SidebarFilterField = {
 // whether the stored value is a single string or an array (see arrayField above) --
 // "text" (substring search) for everything else (free-typed fields like Make/Model,
 // which have no fixed option list to check against).
-function resolveFieldType(formType: string): SidebarFieldType {
+function resolveFieldType(formType: string, key: string): SidebarFieldType {
   if (formType === "number") return "range";
   if (formType === "boolean") return "toggle";
   if (formType === "select" || formType === "tags") return "checklist";
+  if (DYNAMIC_CHECKLIST_FIELDS.has(key)) return "checklist";
   return "text";
 }
 
@@ -138,7 +149,7 @@ function resolveFieldsFromKeys(
     .map((f): SidebarFilterField => ({
       key: f.key,
       label: f.label,
-      type: resolveFieldType(f.type),
+      type: resolveFieldType(f.type, f.key),
       options: f.options,
       arrayField: f.type === "tags",
     }));

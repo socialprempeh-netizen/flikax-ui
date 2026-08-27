@@ -267,6 +267,98 @@ export async function getTopAttributeValues(
     .map(([value, count]) => ({ value, count }));
 }
 
+/** Real ad counts per checklist-field option (Make, Type, Condition, ...), for the
+ * "Toyota · 1,234 ads" style count Tonaton shows next to every sidebar checkbox. One
+ * shared fetch of `attributes` for every checklist field on the page (not one
+ * getTopAttributeValues call per field) so a leaf with 3+ checklist fields still only
+ * hits the DB once. Counted in JS for the same reason as getTopAttributeValues above
+ * (no bespoke RPC for a per-category row count in the hundreds). */
+export async function getChecklistFieldCounts(
+  supabase: SupabaseClient<Database>,
+  categoryId: CategoryIdFilter,
+  fields: SidebarFilterField[]
+): Promise<Record<string, Record<string, number>>> {
+  const checklistFields = fields.filter((f) => f.type === "checklist");
+  if (checklistFields.length === 0) return {};
+
+  let query = supabase.from("listings").select("attributes").eq("status", "active").limit(500);
+  query = Array.isArray(categoryId) ? query.in("category_id", categoryId) : query.eq("category_id", categoryId);
+  const { data } = await query;
+
+  const result: Record<string, Record<string, number>> = {};
+  for (const field of checklistFields) {
+    const counts = new Map<string, number>();
+    for (const row of data ?? []) {
+      const raw = (row.attributes as Record<string, unknown> | null)?.[field.key];
+      // arrayField (e.g. Key Features) stores a JSON array on `attributes`; every other
+      // checklist field (Make, Type, Condition, ...) stores a single scalar string.
+      const values = field.arrayField
+        ? Array.isArray(raw)
+          ? raw.filter((v): v is string => typeof v === "string")
+          : []
+        : typeof raw === "string" && raw.trim()
+          ? [raw]
+          : [];
+      for (const value of values) {
+        const normalized = formatAttributeValue(value);
+        counts.set(normalized, (counts.get(normalized) ?? 0) + 1);
+      }
+    }
+    result[field.key] = Object.fromEntries(counts);
+  }
+  return result;
+}
+
+export type PriceBucket = { min?: number; max?: number; label: string; count: number };
+
+/** Four price buckets derived from this category's own real price distribution
+ * (quartile breakpoints, rounded to a "nice" round figure) -- the sidebar's
+ * click-to-fill-Min/Max equivalent of Tonaton's price-bucket checkboxes ("Under
+ * GH₵230 · 8,845 ads", ...). Tonaton's own breakpoints are computed server-side from
+ * data this schema doesn't expose, so these are our own quartiles over the category's
+ * real prices rather than a copy of their exact numbers. Returns [] under 8 listings,
+ * where quartiles collapse into near-duplicate boundaries and just add noise. */
+export async function getPriceBuckets(
+  supabase: SupabaseClient<Database>,
+  categoryId: CategoryIdFilter
+): Promise<PriceBucket[]> {
+  let query = supabase.from("listings").select("price").eq("status", "active").limit(1000);
+  query = Array.isArray(categoryId) ? query.in("category_id", categoryId) : query.eq("category_id", categoryId);
+  const { data } = await query;
+
+  const prices = (data ?? [])
+    .map((row) => row.price)
+    .filter((p): p is number => typeof p === "number")
+    .sort((a, b) => a - b);
+  if (prices.length < 8) return [];
+
+  const quantile = (q: number) => prices[Math.floor(q * (prices.length - 1))];
+  const roundNice = (n: number) => {
+    if (n <= 0) return 0;
+    const magnitude = 10 ** Math.floor(Math.log10(n));
+    return Math.round(n / magnitude) * magnitude;
+  };
+
+  const q1 = roundNice(quantile(0.25));
+  const q2 = roundNice(quantile(0.5));
+  const q3 = roundNice(quantile(0.75));
+  // A degenerate distribution (most listings clustered at ~one price) rounds two
+  // quartiles to the same "nice" figure -- skip the whole row rather than show
+  // buckets with identical labels.
+  if (q1 >= q2 || q2 >= q3) return [];
+
+  const currency = (n: number) => `GH₵${n.toLocaleString()}`;
+  const countBetween = (min?: number, max?: number) =>
+    prices.filter((p) => (min === undefined || p >= min) && (max === undefined || p < max)).length;
+
+  return [
+    { max: q1, label: `Under ${currency(q1)}`, count: countBetween(undefined, q1) },
+    { min: q1, max: q2, label: `${currency(q1)} – ${currency(q2)}`, count: countBetween(q1, q2) },
+    { min: q2, max: q3, label: `${currency(q2)} – ${currency(q3)}`, count: countBetween(q2, q3) },
+    { min: q3, label: `Over ${currency(q3)}`, count: countBetween(q3, undefined) },
+  ];
+}
+
 /** Cheap head-only count, for generateMetadata's noindex decision — doesn't need row data. */
 export async function countCategoryListings(
   supabase: SupabaseClient<Database>,

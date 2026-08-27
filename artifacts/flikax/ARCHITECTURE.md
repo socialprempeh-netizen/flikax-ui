@@ -150,6 +150,38 @@ of its own; this invariant is relied on throughout the app (e.g.
   real photo, resolved through `CategoryThumb` everywhere a category
   renders as a small badge/thumbnail.
 
+### `/[category]` page component structure
+
+`src/app/[category]/page.tsx` (and the location-scoped branch of
+`src/app/[category]/[slug]/page.tsx`) composes the same set of
+components for both a top-level category and a leaf:
+
+- `CategoryQuickFilters` (`src/components/category-quick-filters.tsx`) —
+  the icon tile row just above the results (e.g. Vehicle Parts &
+  Accessories' Type row: Exterior Accessories, Engine & Drivetrain, ...).
+  Driven by `getQuickFilterKey`/`getQuickFilterStyle`
+  (`category-filters.ts`) and populated with real values + counts from
+  `getTopAttributeValues`. Fixed tile sizing (110×124px desktop, 75px
+  mobile) matches the reference marketplace layout this was built
+  against; brand color and square corners stay Flikax's own.
+- `CategorySidebarFilters` (`src/components/category-sidebar-filters.tsx`)
+  — the left filter column: Location, a "Price Range" `FilterFolder` (plain
+  Min/Max + an optional quartile price-bucket quick-pick list from
+  `getPriceBuckets`), then one `FilterFolder` per `SidebarFilterField`
+  (`category-filters.ts`) — range/checklist/toggle/text depending on the
+  field's underlying `listing-fields.ts` type. Checklist options show a
+  real per-option ad count when `fieldCounts` (from
+  `getChecklistFieldCounts`) has one. Desktop renders as a sticky
+  256px→280px card; mobile is the same `body` JSX reused inside a
+  full-screen sheet behind a floating "Filters" button.
+- `ListingGrid`/`InfiniteListingGrid` (`src/components/listing-grid.tsx`,
+  `infinite-listing-grid.tsx`) — the results themselves. Deliberately a
+  Jiji-style CSS-multi-column masonry grid (variable card height off each
+  image's real aspect ratio), shared with the homepage — see that file's
+  own comments for why a fixed-aspect 2-column list layout was
+  intentionally *not* adopted here despite it being a common competitor
+  pattern.
+
 ## Listings: attributes and images
 
 A listing's category-specific data (make/model/year for a car, bedroom

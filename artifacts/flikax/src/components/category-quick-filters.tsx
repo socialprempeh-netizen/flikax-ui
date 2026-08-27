@@ -121,6 +121,10 @@ function QuickFilterTile({
       >
         {item.value}
       </span>
+      {/* Real ad count per tile, matching the reference's "Exterior Accessories ·
+          19,300 ads" -- getTopAttributeValues (the same call that produces `items`)
+          already counts these, so this is free once threaded through. */}
+      <span className="w-full truncate text-3xs text-neutral-400">{item.count.toLocaleString()} ads</span>
     </Link>
   );
 }

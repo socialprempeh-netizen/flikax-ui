@@ -132,7 +132,9 @@ Deeper reference docs live alongside the app in `artifacts/flikax/`:
 - **[ARCHITECTURE.md](artifacts/flikax/ARCHITECTURE.md)** — how the app is
   put together: rendering model, the Supabase client layer (which of the
   five client factories to use where), root middleware, the category
-  system, and other cross-cutting patterns.
+  system (including the `/[category]` page's sidebar filters/quick-filter
+  tiles/results-grid component breakdown), and other cross-cutting
+  patterns.
 - **[DATABASE.md](artifacts/flikax/DATABASE.md)** — every table, column,
   index, RPC, and Storage bucket, reconstructed from migrations +
   generated types (with an important caveat about what isn't committed to

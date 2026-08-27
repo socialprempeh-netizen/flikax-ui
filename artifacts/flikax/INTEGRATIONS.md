@@ -43,7 +43,14 @@ for the full breakdown. Summary:
   full list — `search_listings`, `get_listing_contact_phone`,
   `get_top_sellers`, `increment_listing_views`, `reveal_phone`,
   `mark_conversation_read`, `get_seller_listing_stats`, `category_counts`,
-  `get_public_seller_profile`).
+  `get_public_seller_profile`). The `/[category]` sidebar's checkbox/
+  price-bucket ad counts (`getChecklistFieldCounts`/`getPriceBuckets` in
+  `src/lib/category-listings.ts`) are the one exception — plain REST
+  queries counted in application JS rather than a `GROUP BY` RPC, same
+  approach as the pre-existing `getTopAttributeValues`; fine at this
+  traffic/row-count level, but if a category's active-listing count grows
+  into the tens of thousands this is the place that'd need to move server-
+  side.
 - **Storage** — three buckets: `listing-images`, `homepage-slides`,
   `avatars` (see DATABASE.md for what's in each and their write policies).
   Also whitelisted as a Next.js remote image pattern in `next.config.ts`

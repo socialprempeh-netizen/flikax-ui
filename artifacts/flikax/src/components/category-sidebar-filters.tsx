@@ -7,6 +7,7 @@ import { ChevronRight, Search, X, SlidersHorizontal } from "lucide-react";
 import { LocationPickerModal } from "@/components/location-picker-modal";
 import { useRegions } from "@/lib/use-regions";
 import type { SidebarFilterField } from "@/lib/category-filters";
+import type { PriceBucket } from "@/lib/category-listings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FilterFolder } from "@/components/filter-folder";
@@ -37,10 +38,21 @@ export function CategorySidebarFilters({
   categorySlug,
   fields,
   activeLocationSlug,
+  priceBuckets = [],
+  fieldCounts = {},
 }: {
   categorySlug: string;
   fields: SidebarFilterField[];
   activeLocationSlug?: string;
+  /** Quartile-derived "Under GH₵X / GH₵X – Y / Over GH₵Z" quick-picks, mirroring
+   * Tonaton's price-bucket checkboxes -- see getPriceBuckets. Empty on a thin category
+   * (too few listings for quartiles to mean anything), in which case only the plain
+   * Min/Max inputs render. */
+  priceBuckets?: PriceBucket[];
+  /** Real ad count per checklist option (field key -> option value -> count), from
+   * getChecklistFieldCounts -- e.g. fieldCounts.make.Toyota. Missing entries (an
+   * option no active listing currently has) render with no count rather than "0". */
+  fieldCounts?: Record<string, Record<string, number>>;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -232,6 +244,37 @@ export function CategorySidebarFilters({
             <Search className="size-4" />
           </Button>
         </div>
+
+        {/* Quartile quick-picks -- clicking one just fills Min/Max above (staged,
+            same as typing them directly) rather than applying immediately, so it
+            stays inside this sidebar's one-Apply-button model instead of adding a
+            second, inconsistent submit behavior next to it. */}
+        {priceBuckets.length > 0 && (
+          <div className="mt-2 space-y-0.5">
+            {priceBuckets.map((bucket) => {
+              const isSelected =
+                minPrice === (bucket.min?.toString() ?? "") && maxPrice === (bucket.max?.toString() ?? "");
+              return (
+                <label
+                  key={bucket.label}
+                  className="flex cursor-pointer items-center gap-2 px-1.5 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => {
+                      setMinPrice(isSelected ? "" : (bucket.min?.toString() ?? ""));
+                      setMaxPrice(isSelected ? "" : (bucket.max?.toString() ?? ""));
+                    }}
+                    className="size-4 accent-brand"
+                  />
+                  <span className="min-w-0 flex-1 truncate">{bucket.label}</span>
+                  <span className="shrink-0 text-xs text-neutral-400">{bucket.count.toLocaleString()} ads</span>
+                </label>
+              );
+            })}
+          </div>
+        )}
       </FilterFolder>
 
       {fields.map((field) => (
@@ -289,6 +332,7 @@ export function CategorySidebarFilters({
             <ChecklistOptions
               field={field}
               selected={checklistValues[field.key] ?? []}
+              counts={fieldCounts[field.key]}
               searchValue={checklistSearch[field.key] ?? ""}
               onSearchChange={(value) => setChecklistSearch((s) => ({ ...s, [field.key]: value }))}
               onToggle={(value) => toggleChecklistValue(field.key, value)}
@@ -380,6 +424,7 @@ export function CategorySidebarFilters({
 function ChecklistOptions({
   field,
   selected,
+  counts,
   searchValue,
   onSearchChange,
   onToggle,
@@ -387,6 +432,10 @@ function ChecklistOptions({
 }: {
   field: SidebarFilterField;
   selected: string[];
+  /** Real ad count per option value, from getChecklistFieldCounts -- undefined (not
+   * just an empty object) for a field with no counts wired up yet, same as an option
+   * missing from it: both just render without a count rather than "0". */
+  counts?: Record<string, number>;
   searchValue: string;
   onSearchChange: (value: string) => void;
   onToggle: (value: string) => void;
@@ -428,6 +477,7 @@ function ChecklistOptions({
         {visible.length === 0 && <p className="py-2 text-xs text-neutral-400">No matches.</p>}
         {visible.map((option) => {
           const checked = selected.includes(option);
+          const count = counts?.[option];
           return (
             <label
               key={option}
@@ -439,7 +489,10 @@ function ChecklistOptions({
                 onChange={() => onToggle(option)}
                 className="size-4 accent-brand"
               />
-              <span className="truncate">{option}</span>
+              <span className="min-w-0 flex-1 truncate">{option}</span>
+              {count !== undefined && (
+                <span className="shrink-0 text-xs text-neutral-400">{count.toLocaleString()} ads</span>
+              )}
             </label>
           );
         })}

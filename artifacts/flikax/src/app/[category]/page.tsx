@@ -7,6 +7,8 @@ import {
   fetchCategoryListings,
   getTopAttributeValues,
   getSubcategoriesWithCounts,
+  getChecklistFieldCounts,
+  getPriceBuckets,
   parseAttributeFilters,
   type CategoryIdFilter,
   type CategorySort,
@@ -163,11 +165,34 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     ? supabase.from("categories").select("id, name, slug, icon").eq("parent_id", category.parent_id).order("name")
     : Promise.resolve({ data: [] as { id: string; name: string; slug: string; icon: string | null }[] });
 
-  const [{ data: siblings }, { listings, totalCount }, quickFilterValues] = await Promise.all([
-    siblingsQuery,
-    getCachedCategoryListings({ ...listingsFilter, page: 1 }),
-    quickFilterKey ? getTopAttributeValues(supabase, categoryIds, quickFilterKey) : Promise.resolve([]),
-  ]);
+  const [{ data: siblings }, { listings, totalCount }, quickFilterValues, fieldCounts, priceBuckets] =
+    await Promise.all([
+      siblingsQuery,
+      getCachedCategoryListings({ ...listingsFilter, page: 1 }),
+      quickFilterKey ? getTopAttributeValues(supabase, categoryIds, quickFilterKey) : Promise.resolve([]),
+      // Real per-checkbox ad counts (Make/Type/Condition/...) and the sidebar's
+      // quartile price-bucket quick-picks -- see both functions' own comments in
+      // category-listings.ts for why these aren't unstable_cache-wrapped like the
+      // listings query above (same reasoning as quickFilterValues: live client,
+      // cheap enough uncached at this traffic level).
+      getChecklistFieldCounts(supabase, categoryIds, displayFields),
+      getPriceBuckets(supabase, categoryIds),
+    ]);
+
+  // Make/Brand are checklist type (see DYNAMIC_CHECKLIST_FIELDS in category-filters.ts)
+  // but ship with no static option list -- fieldCounts, just fetched above, already
+  // has every real raw value's count for these, so it doubles as the top-N option list
+  // too (sorted by count) instead of a second query. Every other checklist field
+  // (Condition, Type, ...) already has its options from listing-fields.ts and passes
+  // through unchanged.
+  const resolvedDisplayFields = displayFields.map((field) => {
+    if (field.type !== "checklist" || (field.options && field.options.length > 0)) return field;
+    const options = Object.entries(fieldCounts[field.key] ?? {})
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12)
+      .map(([value]) => value);
+    return { ...field, options };
+  });
 
   const carryParams = new URLSearchParams();
   for (const [key, value] of Object.entries(rawParams)) {
@@ -214,7 +239,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         <div className="flex gap-4">
           <div className="flex flex-col gap-4 lg:w-[280px] lg:shrink-0">
             <CategorySubcategoryListDesktop parentId={category.id} subcategories={subcategories} />
-            <CategorySidebarFilters categorySlug={category.slug} fields={displayFields} />
+            <CategorySidebarFilters
+              categorySlug={category.slug}
+              fields={resolvedDisplayFields}
+              fieldCounts={fieldCounts}
+              priceBuckets={priceBuckets}
+            />
           </div>
 
           <div className="min-w-0 flex-1">

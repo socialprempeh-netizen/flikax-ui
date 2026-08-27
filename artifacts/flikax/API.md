@@ -119,6 +119,33 @@ The only server-side touchpoints in that whole flow are the per-photo
 every mutation in this app goes through a server action — this one
 deliberately doesn't.
 
+## Category page filter query params (`src/app/[category]/page.tsx`)
+
+Not a Route Handler — `/[category]` reads these directly off `searchParams`
+(see `parseAttributeFilters` in `src/lib/category-listings.ts`), but
+they're the closest thing this app has to a public filtering "API" and
+worth documenting alongside the routes above:
+
+| Param | Values | Notes |
+|---|---|---|
+| `q` | free text | Title `ilike` search within the category. |
+| `location` | district/suburb name | Exact match against `listings.location`. |
+| `minPrice` / `maxPrice` | number | Plain price range, independent of the category-specific fields below. |
+| `sort` | `recommended` \| `newest` \| `price_asc` \| `price_desc` | Default `recommended`. |
+| `posted` | `24h` \| `7d` \| `30d` | Omit for any time. |
+| `page` | number | 1-based; stripped from the URL whenever any other filter changes. |
+| `verified` | `yes` \| `no` | Sidebar's "Verified sellers" toggle — real `listings.seller_verified` column, not a per-category attribute (see `PSEUDO_FIELD_PARAM`). |
+| `discount` | `yes` \| `no` | Sidebar's "Discount" toggle — real `listings.is_discounted` column, same pseudo-field pattern as `verified`. |
+| `attr_<fieldKey>` | checklist: comma-joined values; text: one value | `<fieldKey>` is per-category (see `getSidebarFields`/`getTopLevelDisplayFields` in `src/lib/category-filters.ts`) — e.g. `attr_condition=New,Foreign%20Used`, `attr_make=Toyota`. Matches `attributes->><fieldKey>` (or a `cs` contains-check per value for an array field like Key Features). |
+| `attr_<fieldKey>_min` / `attr_<fieldKey>_max` | number | Range fields (Year, Mileage, ...) — numeric-cast comparison against `attributes->><fieldKey>`. |
+
+`make`/`brand` are checklist-type fields with no fixed option list (sellers
+free-type them) — their checkbox options and per-option ad counts come from
+`getChecklistFieldCounts` (real distinct values found in the category's
+active listings), not from `listing-fields.ts`. The sidebar's price-bucket
+quick-picks (`getPriceBuckets`) are a display/UX convenience only — clicking
+one just fills `minPrice`/`maxPrice` client-side, no separate param.
+
 ## Server Actions
 
 Grouped by area. Every `src/app/admin/**/actions.ts` file gates on
