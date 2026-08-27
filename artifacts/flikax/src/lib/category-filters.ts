@@ -7,7 +7,6 @@ import {
   Scooter,
   Truck,
   Caravan,
-  HardHat,
   Forklift,
   Tractor,
   Ship,
@@ -15,7 +14,28 @@ import {
   Package,
   Wrench,
   Cog,
+  Settings,
   Settings2,
+  Route,
+  Flag,
+  Mountain,
+  Gauge,
+  Zap,
+  Container,
+  ShoppingBag,
+  Warehouse,
+  Shovel,
+  Drill,
+  Waves,
+  Anchor,
+  ShipWheel,
+  PlugZap,
+  Disc,
+  CarFront,
+  Lightbulb,
+  CircleDot,
+  Armchair,
+  Speaker,
   type LucideIcon,
 } from "lucide-react";
 import { getFieldsForCategory } from "@/lib/listing-fields";
@@ -310,62 +330,71 @@ const TYPE_ICON_BY_CATEGORY: Record<string, Record<string, LucideIcon>> = {
 
 /** Icon per "Type" value for the 7 vehicle leaves that use the vehicle_type field as
  * their quick filter (see LEAF_TYPE_FIELD in listing-fields.ts for the option lists
- * these keys must match). Keyed by leaf slug, checked before TYPE_ICON_BY_CATEGORY. */
+ * these keys must match). Keyed by leaf slug, checked before TYPE_ICON_BY_CATEGORY.
+ *
+ * Every value within a leaf gets its own distinct icon -- these used to mostly repeat
+ * one generic icon per leaf (5 of 7 vehicle-parts-accessories values all rendered the
+ * same Wrench, 6 of 7 motorcycle types all rendered the same Bike, etc.), which read as
+ * a set of identical tiles differentiated only by their label. Lucide has no literal
+ * "motocross bike"/"backhoe loader"/etc. glyph, so these are the closest reasonable
+ * generic icon per value rather than a literal depiction -- picked for visual/thematic
+ * distinctness within each leaf, not scraped from a reference site (see the "don't
+ * scrape reference icons" note in DESIGN_SYSTEM.md). */
 const TYPE_ICON_BY_LEAF: Record<string, Record<string, LucideIcon>> = {
   "motorcycles-scooters": {
     Scooter: Scooter,
     Cruiser: Bike,
-    "Dual Sport": Bike,
-    Motocross: Bike,
-    "Quad (ATV)": Bike,
-    "Sport Bike": Bike,
-    Standard: Bike,
+    "Dual Sport": Route,
+    Motocross: Flag,
+    "Quad (ATV)": Mountain,
+    "Sport Bike": Zap,
+    Standard: Gauge,
   },
   "trucks-trailers": {
     "Mini Truck": Truck,
-    "Dump Truck": Truck,
-    "Food Truck": Truck,
-    "Heavy-Duty Truck": Truck,
+    "Dump Truck": Container,
+    "Food Truck": ShoppingBag,
+    "Heavy-Duty Truck": Warehouse,
     Trailer: Caravan,
   },
   "construction-heavy-machinery": {
     Forklift: Forklift,
     Tractor: Tractor,
-    Excavator: HardHat,
-    "Wheel Loader": HardHat,
-    Grader: HardHat,
-    "Backhoe Loader": HardHat,
-    Bulldozer: HardHat,
+    Excavator: Shovel,
+    "Wheel Loader": Container,
+    Grader: Route,
+    "Backhoe Loader": Drill,
+    Bulldozer: Mountain,
   },
   "watercraft-boats": {
     Canoe: Sailboat,
     "Bow Rider Boat": Ship,
-    "Banana Boat": Ship,
-    "Barge & Pontoon": Ship,
-    "Bass Boat": Ship,
-    "Cabin Cruiser Boat": Ship,
+    "Banana Boat": Waves,
+    "Barge & Pontoon": Container,
+    "Bass Boat": Anchor,
+    "Cabin Cruiser Boat": ShipWheel,
   },
   "personal-mobility": {
     Bicycle: Bike,
-    "Electric Bicycle": Bike,
+    "Electric Bicycle": PlugZap,
     "Electric Scooter": Scooter,
-    Hoverboard: Scooter,
+    Hoverboard: Disc,
     Accessories: Package,
   },
   "vehicle-parts-accessories": {
     "Wheels & Parts": Cog,
-    "Engine & Drivetrain": Cog,
-    "Exterior Accessories": Wrench,
-    "Headlights & Lighting": Wrench,
-    "Brakes, Suspension & Steering": Wrench,
-    "Interior Accessories": Wrench,
-    "Audio Parts": Wrench,
+    "Engine & Drivetrain": Settings2,
+    "Exterior Accessories": CarFront,
+    "Headlights & Lighting": Lightbulb,
+    "Brakes, Suspension & Steering": CircleDot,
+    "Interior Accessories": Armchair,
+    "Audio Parts": Speaker,
   },
   "vehicle-car-services": {
     "Tuning Services": Settings2,
-    "Detailing Services": Wrench,
+    "Detailing Services": Waves,
     "Car Repair": Wrench,
-    Other: Wrench,
+    Other: Settings,
   },
 };
 

@@ -2,12 +2,15 @@
 @import "tw-animate-css";
 
 :root {
-  /* Site-wide page background -- a deeper, muted blue-grey (Jiji-tone)
-     rather than the near-white f7f8fa this was before, so white cards read
-     as clearly sitting on a surface instead of nearly blending into the
-     page. Single source of truth: every page-root wrapper uses
-     bg-background instead of hardcoding a neutral-* shade. */
-  --background: #e4e7eb;
+  /* Site-wide page background -- a light neutral grey matching the reference
+     marketplace's own page tone (its closest literal value found in its CSS
+     is #eef2f4, used there for icon-tile fills; #f0f2f4 here per explicit
+     request is a couple hex digits off that but the same intent -- neither
+     the prior #e4e7eb "Jiji-tone" blue-grey nor the near-white #f7f8fa
+     before that). Still deliberately not pure white, so white cards read as
+     sitting on a surface. Single source of truth: every page-root wrapper
+     uses bg-background instead of hardcoding a neutral-* shade. */
+  --background: #f0f2f4;
   --foreground: #171717;
   /* Single-brand-color system: one green drives every interactive element
      site-wide (buttons, links, active states, highlights, focus rings) via

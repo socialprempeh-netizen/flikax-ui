@@ -16,8 +16,9 @@ const MOBILE_VISIBLE_COUNT = 7;
 // Tailwind's compiler scans source for literal class strings, so these have
 // to be spelled out in full rather than built with template interpolation,
 // which it can't statically detect (same convention as category-colors.ts).
-// Desktop-only -- mobile cards stay a uniform bg-[#CEFFEE] regardless of
-// category, this per-category fill only kicks in at md:.
+// Desktop-only -- mobile cards stay a uniform #eef2f4 (see CategoryTile's
+// cardColorClass) regardless of category, this per-category fill only
+// kicks in at md:.
 // Vehicles, Electronics, Babies & Kids, Commercial Equipment & Tools,
 // Services, and Repair & Construction all pin to Phones & Tablets' shade
 // (#2EB8A0) rather than each other's -- see REAL_PHOTO_SLUGS below, their
@@ -62,10 +63,14 @@ const DEFAULT_FILTER_CLASSES = "brightness-[1.15] contrast-[1.1] saturate-[1.2]"
 
 const TILE_CLASSES =
   "group flex cursor-pointer flex-col items-center justify-start rounded-lg p-1.5 text-center transition-colors duration-150 hover:bg-[#AFC8B2]";
+// Mobile: 56px (w-14/h-14), rounded-xl (12px) box, #eef2f4 fill. Desktop
+// (md:): 60px circle, #ceffee base fill (per-category overrides below) --
+// two genuinely different container shapes/sizes at the two breakpoints,
+// not just a scaled-up version of the same one.
 const CARD_BASE_CLASSES =
-  "mx-auto flex h-[70px] w-[62px] shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-[0_4px_14px_rgba(0,0,0,0.10)]";
-const IMAGE_CLASSES = "h-12 w-12 shrink-0 transition-transform duration-150 group-hover:scale-105";
-const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[12px] font-bold leading-tight";
+  "mx-auto flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-[0_4px_14px_rgba(0,0,0,0.10)] md:h-[60px] md:w-[60px] md:rounded-full";
+const IMAGE_CLASSES = "h-9 w-9 shrink-0 transition-transform duration-150 group-hover:scale-105 md:h-12 md:w-12";
+const TITLE_CLASSES = "mx-auto mt-1.5 max-w-[85px] text-center text-[12px] leading-[14px] font-medium";
 const SUBTEXT_CLASSES = "mt-0.5 text-center text-[11px] font-normal text-gray-500";
 
 function formatAdCount(count: number): string {
@@ -84,7 +89,10 @@ function CategoryTile({
   const imagePath = resolveCategoryImage(category);
   const Icon = resolveCategoryIcon(category);
   const isRealPhoto = REAL_PHOTO_SLUGS.has(category.slug);
-  const cardColorClass = `bg-[#CEFFEE] ${DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR}`;
+  // Mobile base #eef2f4 (unprefixed, matches the reference's own icon-tile
+  // fill); desktop's own #ceffee base + per-category tint comes from
+  // DEFAULT_DESKTOP_CARD_COLOR/DESKTOP_CARD_COLOR_BY_SLUG's md: overrides.
+  const cardColorClass = `bg-[#eef2f4] ${DESKTOP_CARD_COLOR_BY_SLUG[category.slug] ?? DEFAULT_DESKTOP_CARD_COLOR}`;
   const filterClass = isRealPhoto ? REAL_PHOTO_FILTER_CLASSES : DEFAULT_FILTER_CLASSES;
 
   return (
@@ -96,12 +104,12 @@ function CategoryTile({
               src={imagePath}
               alt={category.name}
               fill
-              sizes="48px"
+              sizes="(min-width: 768px) 48px, 36px"
               className={`object-contain opacity-100 ${filterClass}`}
             />
           </span>
         ) : (
-          <Icon className={`${IMAGE_CLASSES} text-neutral-700`} />
+          <Icon className={`${IMAGE_CLASSES} text-neutral-700`} strokeWidth={2.5} />
         )}
       </span>
       <span className={`${TITLE_CLASSES} ${isActive ? "text-brand-dark" : "text-gray-900"}`}>{category.name}</span>
@@ -131,7 +139,10 @@ export function CategoryIconGrid({
   const showUtilityTile = !mobileExpanded && parents.length > MOBILE_VISIBLE_COUNT;
 
   return (
-    <div className="w-full bg-white md:bg-transparent">
+    // Transparent at every breakpoint -- tiles sit directly on the page's own
+    // background (--background, now #f0f2f4) rather than a separate opaque
+    // wrapper card behind them.
+    <div className="w-full bg-transparent">
       <div className="mx-auto max-w-5xl px-4 py-4">
         <div className="grid grid-cols-4 items-start justify-center gap-x-5 gap-y-[14px] md:hidden">
           {mobileParents.map((cat) => (
@@ -139,8 +150,8 @@ export function CategoryIconGrid({
           ))}
           {showUtilityTile && (
             <button type="button" onClick={() => setMobileExpanded(true)} className={TILE_CLASSES}>
-              <span className={`${CARD_BASE_CLASSES} bg-[#CEFFEE]`}>
-                <List className="h-8 w-8 text-neutral-700" />
+              <span className={`${CARD_BASE_CLASSES} bg-[#eef2f4]`}>
+                <List className="h-9 w-9 text-neutral-700" strokeWidth={2.5} />
               </span>
               <span className={`${TITLE_CLASSES} text-gray-900`}>All categories</span>
               <span className={SUBTEXT_CLASSES}>{formatAdCount(totalCount)}</span>

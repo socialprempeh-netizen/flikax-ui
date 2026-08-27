@@ -34,7 +34,7 @@ narrowly-scoped exceptions below).
 | `--brand` | `#149777` | Borders, rings, icon fills, hover backgrounds — anywhere only WCAG's 3:1 (non-text/large-text) contrast floor applies |
 | `--brand-dark` | `#0d7058` | **All brand-colored text.** White-on-`--brand` is 3.67:1, which fails the 4.5:1 floor for normal body/link text — `--brand-dark` clears 6.04:1. Also `--header-bg` and shadcn's `--primary`. |
 | `--brand-light` | `#eaf6f3` | Light tint backgrounds (selected states, icon-bubble fills) |
-| `--background` | `#e4e7eb` | Page background (a muted blue-grey, not near-white, so white cards read as sitting on a surface) |
+| `--background` | `#f0f2f4` | Page background — a light neutral grey (not pure white, so white cards still read as sitting on a surface). Matched to the reference marketplace's own page tone (its own CSS's closest literal value is `#eef2f4`, used there for icon-tile fills). |
 | `--cta-yellow` / `--cta-yellow-hover` | `#ffc800` / `#e6b400` | **The one deliberate non-brand accent.** "Post Ad" and the hero search button only — text/icon on it is black (white fails 3:1 badly). Don't reach for this color elsewhere. |
 | `--location-link` / `--location-link-hover` | `#0074ba` / `#005d95` | **Second deliberate non-brand exception**, scoped to `LocationPickerModal`'s region/district/suburb list wherever it appears (search, sidebar filters, post-ad form) |
 | `--cream` | `#f7ecd6` | Warm tint behind product photos in listing cards / mobile category strip |
@@ -113,12 +113,17 @@ square is the safer default — it's the norm, `rounded-full` is the
 exception that has to earn its place.
 
 **One more named exception, not `rounded-full`:** `CategoryMobileFilterPills`
-(`src/components/category-mobile-filter-pills.tsx`) uses `rounded-[20px]` —
-text-labeled buttons that would otherwise be square by the rule above. A
-deliberate, explicit product carve-out for this one component specifically
-(the mobile category-page pill row), not a precedent — don't reach for
-`rounded-[20px]` (or any other partial radius) elsewhere without the same
-explicit sign-off.
+(`src/components/category-mobile-filter-pills.tsx`) and the price-bucket
+chips in `CategoryFilterRow` (`src/components/category-filter-row.tsx`) use
+`rounded-[20px]` — text-labeled buttons that would otherwise be square by
+the rule above. A deliberate, explicit product carve-out for these two
+components specifically (both category-page pill rows), not a precedent —
+don't reach for `rounded-[20px]` (or any other partial radius) elsewhere
+without the same explicit sign-off. Both pills' own visual height (32-36px)
+is intentionally under this file's 44px touch-target minimum (see "Spacing /
+touch targets" below) — each keeps the real tap target at 44px via an
+invisible `before:-inset-*` expansion instead, the same technique already
+used elsewhere for a small visual chip with a full-size tap target.
 
 ## Divider / gridline visibility
 
@@ -169,12 +174,21 @@ professionally-dense filtering UI rather than one designed from scratch:
 | Sidebar column width | `285px` | `CategorySidebarFilters`, `CategorySubcategoryListDesktop`, and the `[category]/page.tsx` flex wrapper — keep all three in sync if this changes |
 | Price/range input height | `48px` (`h-12`), `110px` max-width | Sidebar's Price/range `FilterFolder` inputs + inline Apply-search icon button |
 | Filter accordion header | `50px` min-height, `24px` (`size-6`) chevron | `FilterFolder` |
-| Mobile filter pill | `36px` (`h-9`) tall, `1px solid #d0dadd`, `20px` radius (see the square-corners exception above), `8px 16px` padding | `CategoryMobileFilterPills` |
+| Mobile filter pill | `36px` (`h-9`) tall, `1px solid #d0dadd`, `20px` radius, `16px` horizontal padding | `CategoryMobileFilterPills` |
+| Price-bucket pill | `32px` (`h-8`) tall, `1px solid #d0dadd`, `20px` radius, `6px`/`14px` padding, `13px`/`500` type | `CategoryFilterRow`'s mobile price chips |
+
+The **homepage's** category grid (`CategoryIconGrid`, `src/components/category-icon-grid.tsx`) uses its own, different tile sizing — not the same tokens as the category-page tile row above, despite looking similar:
+
+| Measurement | Value |
+|---|---|
+| Icon container (mobile) | `56px` square (`size-14`), `12px` radius (`rounded-xl`), `#eef2f4` fill |
+| Icon container (desktop, `md:`) | `60px` circle (`rounded-full`), `#ceffee` base fill (per-category tint overrides on top — a separate, deliberate multi-color feature, not part of the reference's own spec) |
+| Icon image | `36px` (`size-9`) mobile → `48px` (`size-12`) desktop, `2.5` stroke-width |
 
 These are layout-only. **Color and corner radius on this page still follow
 this file's own rules above** — `--brand`/`--brand-dark` (not the reference
 site's own green) and square corners (not the reference's `border-radius`,
-with the one pill exception noted above) — matching a reference site's
+with the pill exceptions noted above) — matching a reference site's
 measurements doesn't mean matching its brand.
 
 `ListingGrid`'s results grid (shared with the homepage) switches its whole

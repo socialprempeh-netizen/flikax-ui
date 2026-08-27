@@ -61,19 +61,23 @@ export function CategoryFilterRow({
 
   return (
     <div>
-      <div className="lg:hidden -mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+      {/* Pill styling (h-8/32px, border #d0dadd, rounded-[20px], 6px/14px
+          padding, 13px/500 type) is a named exception to the sitewide
+          square-corners rule -- see DESIGN_SYSTEM.md's pill exceptions.
+          gap-2 flex-wrap (not overflow-x-auto) so pills that don't fit one
+          row wrap instead of requiring a horizontal scroll. relative +
+          before:-inset-1.5 keeps the real tap target at this app's own
+          44px touch-target minimum (DESIGN_SYSTEM.md) despite the pill's
+          own visual height being a smaller 32px. */}
+      <div className="lg:hidden mb-3 flex flex-wrap gap-2">
         {PRICE_BUCKETS.map((bucket) => {
           const isActive = activeMin === bucket.minPrice && activeMax === bucket.maxPrice;
           return (
             <Link
               key={bucket.label}
               href={hrefWith(searchParams, { minPrice: bucket.minPrice, maxPrice: bucket.maxPrice })}
-              // relative + before:-inset expands the real hit area to 44px tall
-              // (30px visual pill + 7px above/below) without growing the chip.
-              className={`font-currency relative shrink-0 border px-3 py-1.5 text-xs font-medium whitespace-nowrap before:absolute before:-inset-[7px] before:content-[''] ${
-                isActive
-                  ? "border-brand bg-brand-light text-brand-dark"
-                  : "border-neutral-300 text-neutral-600 hover:bg-neutral-50"
+              className={`font-currency relative flex h-8 shrink-0 items-center whitespace-nowrap rounded-[20px] border px-3.5 py-1.5 text-[13px] font-medium before:absolute before:-inset-1.5 before:content-[''] ${
+                isActive ? "border-brand bg-brand-light text-brand-dark" : "border-[#d0dadd] bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
             >
               {bucket.label}

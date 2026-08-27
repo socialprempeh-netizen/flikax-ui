@@ -13,8 +13,11 @@ import { useRegions } from "@/lib/use-regions";
  * border-radius:20px, and border-radius:100px all came back empty or matched an
  * unrelated element) -- built from the spec given directly rather than a verified
  * extraction, unlike the rest of this component family. */
+// relative + before:-inset-1 keeps the real tap target at this app's own
+// 44px touch-target minimum (DESIGN_SYSTEM.md) despite the pill's own
+// visual height being a smaller 36px (h-9).
 const PILL_BASE =
-  "flex h-9 shrink-0 items-center gap-1 whitespace-nowrap rounded-[20px] border px-4 text-sm leading-5 font-medium tracking-[0.1px] transition-colors";
+  "relative flex h-9 shrink-0 items-center gap-1 whitespace-nowrap rounded-[20px] border px-4 text-sm leading-5 font-medium tracking-[0.1px] transition-colors before:absolute before:-inset-1 before:content-['']";
 const PILL_INACTIVE = "border-[#d0dadd] bg-white text-black hover:bg-[#eef2f4]";
 // Selected state keeps Flikax's own brand color (not the reference's #2da57c/#ceffee)
 // per this app's single-brand-color rule -- brand-light tint + brand border, text
