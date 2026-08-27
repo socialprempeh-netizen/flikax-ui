@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight, Search, X, SlidersHorizontal } from "lucide-react";
@@ -63,6 +63,18 @@ export function CategorySidebarFilters({
   const regions = useRegions();
   const [locationOpen, setLocationOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Lets MobileFilterPills (a sibling client component, not a parent/child of this
+  // one -- [category]/page.tsx that renders both is a Server Component, so there's
+  // no shared React state to lift this into without a bigger refactor) open this
+  // same sheet instead of duplicating a second one. A plain window CustomEvent
+  // rather than prop-drilling through the server boundary or a DOM id + .click()
+  // simulation.
+  useEffect(() => {
+    const openSheet = () => setMobileOpen(true);
+    window.addEventListener("flikax:open-category-filters", openSheet);
+    return () => window.removeEventListener("flikax:open-category-filters", openSheet);
+  }, []);
 
   const allDistricts = regions.flatMap((r) => r.districts);
   const activeDistrict = allDistricts.find((d) => d.slug === activeLocationSlug);

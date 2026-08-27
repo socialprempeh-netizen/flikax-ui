@@ -146,6 +146,19 @@ active listings), not from `listing-fields.ts`. The sidebar's price-bucket
 quick-picks (`getPriceBuckets`) are a display/UX convenience only — clicking
 one just fills `minPrice`/`maxPrice` client-side, no separate param.
 
+A handful of `make`-quick-filter leaves (currently `buses-microbuses` — see
+`getCuratedMakes` in `category-filters.ts`) get a curated top-N `attr_make`
+tile row instead of whatever `getTopAttributeValues` finds live, with an
+"Other" tile whose `attr_make=Other` link doesn't actually match anything —
+clicking it currently 0-results rather than matching "every make not in the
+curated list." Add a real catch-all query mode if this needs to be clickable
+later (`attr_make=Other` is display-only for now).
+
+On a top-level category page (e.g. `/vehicles`), the same top tile row
+instead links straight to each subcategory (`/cars`, `/buses-microbuses`,
+...) rather than filtering the current page — no `attr_` param involved
+there at all.
+
 ## Server Actions
 
 Grouped by area. Every `src/app/admin/**/actions.ts` file gates on

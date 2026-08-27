@@ -205,6 +205,22 @@ export function getQuickFilterKey(topLevelSlug: string | undefined, leafSlug?: s
   return QUICK_FILTER_KEY[topLevelSlug];
 }
 
+/** Curated top makes for a leaf whose quick filter is "make" (a free-text field, no
+ * fixed enum -- see DYNAMIC_CHECKLIST_FIELDS above). Unlike Type, Make is genuinely
+ * open-ended real-world data, so this isn't "the only makes that exist" -- it's the
+ * handful worth a dedicated tile, with an "Other" tile absorbing every make not
+ * listed here, mirroring the reference's own curated tile row (verified against a
+ * real screenshot of that leaf, not guessed). A leaf with no entry here just falls
+ * back to whatever getTopAttributeValues finds in live data -- add an entry only
+ * when there's a real source for the list, not a placeholder guess. */
+const LEAF_CURATED_MAKES: Record<string, string[]> = {
+  "buses-microbuses": ["Hyundai", "Toyota", "Mercedes-Benz", "Nissan", "Ford", "Volkswagen", "Kia"],
+};
+
+export function getCuratedMakes(leafSlug: string | undefined): string[] | undefined {
+  return leafSlug ? LEAF_CURATED_MAKES[leafSlug] : undefined;
+}
+
 export type QuickFilterStyle = "brand" | "type";
 
 /** "brand" categories render each value as a colored brand monogram (see BRAND_COLORS

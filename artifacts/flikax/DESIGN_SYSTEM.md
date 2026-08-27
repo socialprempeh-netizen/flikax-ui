@@ -112,6 +112,14 @@ icon-only button, toggle, badge)? → `rounded-full` is fine. When in doubt,
 square is the safer default — it's the norm, `rounded-full` is the
 exception that has to earn its place.
 
+**One more named exception, not `rounded-full`:** `CategoryMobileFilterPills`
+(`src/components/category-mobile-filter-pills.tsx`) uses `rounded-[20px]` —
+text-labeled buttons that would otherwise be square by the rule above. A
+deliberate, explicit product carve-out for this one component specifically
+(the mobile category-page pill row), not a precedent — don't reach for
+`rounded-[20px]` (or any other partial radius) elsewhere without the same
+explicit sign-off.
+
 ## Divider / gridline visibility
 
 Use `neutral-300` (or `slate-300` in the few places that already use the
@@ -155,15 +163,27 @@ professionally-dense filtering UI rather than one designed from scratch:
 | Measurement | Value | Where |
 |---|---|---|
 | Quick-filter tile (desktop) | `110px` wide, `124px` min-height, `10px 4px 8px` padding | `CategoryQuickFilters`, `sm:grid` row |
-| Quick-filter tile (mobile) | `75px` wide, height auto | `CategoryQuickFilters`, `sm:hidden` scroll row |
-| Quick-filter grid gap | `10px` columns / `16px` rows | `CategoryQuickFilters` desktop grid |
-| Sidebar column width | `280px` | `CategorySidebarFilters`, `CategorySubcategoryListDesktop`, and the `[category]/page.tsx` flex wrapper — keep all three in sync if this changes |
-| Price/search input height | `44px` (`h-11`) | Sidebar's Price Range inputs + inline Apply-search icon button |
+| Quick-filter tile (mobile) | `75px` wide, height auto, zero-gap `flex-wrap` (not a scroller) | `CategoryQuickFilters`, `sm:hidden` row |
+| Quick-filter grid gap | `10px` columns / `16px` rows (desktop) | `CategoryQuickFilters` desktop grid |
+| Quick-filter icon | `60px` circle container, `48px` (`size-12`) icon inside, `2.5` stroke-width | `CategoryQuickFilters`'s `QuickFilterTile` |
+| Sidebar column width | `285px` | `CategorySidebarFilters`, `CategorySubcategoryListDesktop`, and the `[category]/page.tsx` flex wrapper — keep all three in sync if this changes |
+| Price/range input height | `48px` (`h-12`), `110px` max-width | Sidebar's Price/range `FilterFolder` inputs + inline Apply-search icon button |
+| Filter accordion header | `50px` min-height, `24px` (`size-6`) chevron | `FilterFolder` |
+| Mobile filter pill | `36px` (`h-9`) tall, `1px solid #d0dadd`, `20px` radius (see the square-corners exception above), `8px 16px` padding | `CategoryMobileFilterPills` |
 
 These are layout-only. **Color and corner radius on this page still follow
 this file's own rules above** — `--brand`/`--brand-dark` (not the reference
-site's own green) and square corners (not the reference's `border-radius`)
-— matching a reference site's measurements doesn't mean matching its brand.
+site's own green) and square corners (not the reference's `border-radius`,
+with the one pill exception noted above) — matching a reference site's
+measurements doesn't mean matching its brand.
+
+`ListingGrid`'s results grid (shared with the homepage) switches its whole
+layout model at the `sm:` breakpoint, not just its column count: a plain
+`grid grid-cols-2` below `sm:` (fixed `280px` card min-height, `4:3` image
+aspect), CSS multi-column masonry (`columns-2`/`3`/etc., variable image
+aspect) from `sm:` up. See that file's own comment for why — multi-column's
+column-major fill can leave the second mobile column visibly empty with few
+items, which a real grid can't do.
 
 ## Icons
 
@@ -185,7 +205,19 @@ site's own green) and square corners (not the reference's `border-radius`)
   everywhere a category needs a small badge/thumbnail — this also falls
   back to a real photo (`resolveCategoryImage()`) when one exists for that
   category, so always go through `CategoryThumb` rather than rendering an
-  icon directly.
+  icon directly. `CategoryQuickFilters`' tile row uses `resolveCategoryIcon`
+  the same way for a top-level page's subcategory tiles, and `getTypeIcon`
+  (`category-filters.ts`) for a leaf page's Type tiles.
+- **Don't scrape/embed a reference site's own icon assets.** When matching a
+  competitor reference site's category-page layout, real icon `<img>` src
+  values captured in a SingleFile/devtools snapshot are frequently just a
+  blurred lazy-load placeholder, not the final asset (checked by decoding
+  one: 96×96, clearly blurred) -- and even where they aren't, downloading
+  and shipping another company's actual icon artwork in this repo is the
+  same trademark/licensing concern already called out for `BRAND_COLORS`
+  (`category-filters.ts`) monogram colors standing in for real logos. Use
+  Lucide (sized up, e.g. `size-12`/`strokeWidth={2.5}`, if the reference's
+  icons read as bold/large) instead, or ask for real source files.
 
 ## Component conventions worth knowing
 

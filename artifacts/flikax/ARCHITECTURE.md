@@ -157,30 +157,62 @@ of its own; this invariant is relied on throughout the app (e.g.
 components for both a top-level category and a leaf:
 
 - `CategoryQuickFilters` (`src/components/category-quick-filters.tsx`) —
-  the icon tile row just above the results (e.g. Vehicle Parts &
-  Accessories' Type row: Exterior Accessories, Engine & Drivetrain, ...).
-  Driven by `getQuickFilterKey`/`getQuickFilterStyle`
-  (`category-filters.ts`) and populated with real values + counts from
-  `getTopAttributeValues`. Fixed tile sizing (110×124px desktop, 75px
-  mobile) matches the reference marketplace layout this was built
-  against; brand color and square corners stay Flikax's own.
+  the single top "sub-menus" tile row, rendered once per page regardless of
+  breakpoint (110×124px tiles desktop, 75px flex-wrap on mobile — no
+  horizontal scroller, no scroll-snap; the reference's own mobile behavior
+  is a zero-gap wrap, verified against its CSS directly). Purely
+  presentational: takes a pre-built `QuickFilterTileItem[]` and knows
+  nothing about where those items came from. `[category]/page.tsx` (and the
+  location-scoped branch of `[category]/[slug]/page.tsx`) builds that list
+  two different ways depending on page level, in `topBarItems`:
+  - **Top-level page** (e.g. `/vehicles`): one tile per subcategory, from
+    `getSubcategoriesWithCounts` — same data `CategorySubcategoryListDesktop`
+    (below) renders in the sidebar, just tile-styled instead of a list row.
+    This used to be a *second*, separately-styled component
+    (`CategorySubcategoryListMobile`, since removed) rendered alongside
+    `CategoryQuickFilters` in the same spot on a top-level page's mobile
+    view — a visible duplicate bar. One data source, one render, now.
+  - **Leaf page** (e.g. `/buses-microbuses`): one tile per quick-filter
+    attribute value (Make or Type, via `getQuickFilterKey`/
+    `getQuickFilterStyle` in `category-filters.ts`), filtering *this* page.
+    A "type"-style field (a fixed enum from `listing-fields.ts`) always
+    shows every known option with a real, possibly-zero count; a
+    "make"-style field (free text, no enum) does the same only where
+    `getCuratedMakes` has a curated top-N + "Other" catch-all for that leaf,
+    else falls back to whichever values `getTopAttributeValues` actually
+    finds in live data. Either way, the row no longer silently disappears
+    just because a thin-inventory category hasn't accumulated 2+ matching
+    listings yet.
+- `CategoryMobileFilterPills` (`src/components/category-mobile-filter-pills.tsx`)
+  — a `lg:hidden` horizontal-scroll pill row (Location / Price / Make /
+  Condition / Verified sellers / Discount / All filters) rendered above the
+  sidebar+results row. Verified sellers/Discount toggle straight through a
+  query param; every other pill opens `CategorySidebarFilters`'s mobile
+  sheet via a `window` CustomEvent (`flikax:open-category-filters`) rather
+  than a lifted prop, since the Server Component rendering both has no
+  shared React state to lift into.
 - `CategorySidebarFilters` (`src/components/category-sidebar-filters.tsx`)
-  — the left filter column: Location, a "Price Range" `FilterFolder` (plain
+  — the left filter column: Location, a "Price, GH₵" `FilterFolder` (plain
   Min/Max + an optional quartile price-bucket quick-pick list from
   `getPriceBuckets`), then one `FilterFolder` per `SidebarFilterField`
   (`category-filters.ts`) — range/checklist/toggle/text depending on the
   field's underlying `listing-fields.ts` type. Checklist options show a
   real per-option ad count when `fieldCounts` (from
-  `getChecklistFieldCounts`) has one. Desktop renders as a sticky
-  256px→280px card; mobile is the same `body` JSX reused inside a
-  full-screen sheet behind a floating "Filters" button.
+  `getChecklistFieldCounts`) has one; Make/Brand (no fixed enum) get their
+  option list from the same `fieldCounts` data instead of `listing-fields.ts`
+  (see `resolvedDisplayFields` in the page). Desktop renders as a sticky
+  285px card; mobile is the same `body` JSX reused inside a full-screen
+  sheet, openable either from its own floating "Filters" button or from
+  `CategoryMobileFilterPills` above.
 - `ListingGrid`/`InfiniteListingGrid` (`src/components/listing-grid.tsx`,
-  `infinite-listing-grid.tsx`) — the results themselves. Deliberately a
-  Jiji-style CSS-multi-column masonry grid (variable card height off each
-  image's real aspect ratio), shared with the homepage — see that file's
-  own comments for why a fixed-aspect 2-column list layout was
-  intentionally *not* adopted here despite it being a common competitor
-  pattern.
+  `infinite-listing-grid.tsx`) — the results themselves. A Jiji-style CSS
+  multi-column masonry grid (variable card height off each image's real
+  aspect ratio) from `sm:` up, shared with the homepage. Below `sm:`, a
+  plain `grid grid-cols-2` (fixed 4:3 image aspect, 280px card min-height)
+  instead of multi-column — CSS multi-column is inherently column-major
+  (fills column 1 completely before column 2 starts), and with only 1-3
+  listings the browser's column-balancing can leave column 2 visibly empty
+  at the top; a real grid is row-major and can't produce that gap.
 
 ## Listings: attributes and images
 

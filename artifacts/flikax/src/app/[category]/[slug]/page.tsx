@@ -37,13 +37,23 @@ import {
   getPriceBuckets,
   countCategoryListings,
   getChildCategoryIds,
+  getSubcategoriesWithCounts,
   parseAttributeFilters,
   MIN_INDEXABLE_LISTINGS,
   type CategoryIdFilter,
   type CategorySort,
   type DatePosted,
 } from "@/lib/category-listings";
-import { getSidebarFields, getTopLevelDisplayFields, getQuickFilterKey } from "@/lib/category-filters";
+import {
+  getSidebarFields,
+  getTopLevelDisplayFields,
+  getQuickFilterKey,
+  getQuickFilterStyle,
+  getCuratedMakes,
+  getTypeIcon,
+  getBrandColor,
+} from "@/lib/category-filters";
+import { resolveCategoryIcon } from "@/lib/category-icons";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
@@ -59,7 +69,8 @@ import { ShareButtons } from "@/components/listings/share-buttons";
 import { ListingGrid, type ListingCard } from "@/components/listing-grid";
 import { CategoryResults } from "@/components/category-results";
 import { CategorySidebarFilters } from "@/components/category-sidebar-filters";
-import { CategoryQuickFilters } from "@/components/category-quick-filters";
+import { CategoryMobileFilterPills } from "@/components/category-mobile-filter-pills";
+import { CategoryQuickFilters, type QuickFilterTileItem } from "@/components/category-quick-filters";
 import { JsonLd } from "@/components/seo/json-ld";
 import { TrackRecentlyViewed } from "@/components/track-recently-viewed";
 import { AvatarContent } from "@/components/avatar-content";
@@ -311,23 +322,31 @@ async function CategoryLocationPage({
   const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
   const displayFields = leafSlug ? sidebarFields : getTopLevelDisplayFields(topLevelSlug);
   const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
-  // See the matching comment in [category]/page.tsx -- "type"-style quick filters
-  // have a fixed known option list, so the row should always show every option
-  // (real, possibly-zero count) instead of only ones a thin-inventory location
-  // already has 2+ listings for.
-  const quickFilterField = quickFilterKey ? sidebarFields.find((f) => f.key === quickFilterKey) : undefined;
+  // See the matching comments in [category]/page.tsx -- the top bar only shows an
+  // attribute quick-filter row on a leaf page (top-level shows subcategories
+  // instead, below), and "type"/"make" quick filters should always show every
+  // known/curated option (real, possibly-zero count) rather than only ones a
+  // thin-inventory location already has 2+ listings for.
+  const showAttributeQuickFilter = Boolean(leafSlug && quickFilterKey);
+  const quickFilterField =
+    showAttributeQuickFilter && quickFilterKey ? sidebarFields.find((f) => f.key === quickFilterKey) : undefined;
+  const curatedMakes = showAttributeQuickFilter && quickFilterKey === "make" ? getCuratedMakes(leafSlug) : undefined;
   const fixedQuickFilterOptions =
-    quickFilterField?.type === "checklist" && quickFilterField.options && quickFilterField.options.length > 0
+    curatedMakes ??
+    (quickFilterField?.type === "checklist" && quickFilterField.options && quickFilterField.options.length > 0
       ? quickFilterField.options
-      : undefined;
+      : undefined);
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
 
   // Same aggregation as [category]/page.tsx -- a top-level category + location (e.g.
-  // /vehicles/accra) shows listings from every leaf under it too.
-  const childIds = category.parent_id ? [] : await getChildCategoryIds(supabase, category.id);
-  const categoryIds: CategoryIdFilter = childIds.length > 0 ? [category.id, ...childIds] : category.id;
+  // /vehicles/accra) shows listings from every leaf under it too. Fetches full
+  // subcategory rows (not just getChildCategoryIds' bare ids) since a top-level +
+  // location page's top bar shows these same subcategories as tiles, below.
+  const subcategories = category.parent_id ? [] : await getSubcategoriesWithCounts(supabase, category.id);
+  const categoryIds: CategoryIdFilter =
+    subcategories.length > 0 ? [category.id, ...subcategories.map((s) => s.id)] : category.id;
 
   const listingsFilter = {
     categoryId: categoryIds,
@@ -341,16 +360,12 @@ async function CategoryLocationPage({
 
   const [{ listings, totalCount }, quickFilterValues, fieldCounts, priceBuckets] = await Promise.all([
     fetchCategoryListings(supabase, { ...listingsFilter, page: 1 }),
-    quickFilterKey && !fixedQuickFilterOptions
+    showAttributeQuickFilter && quickFilterKey && !fixedQuickFilterOptions
       ? getTopAttributeValues(supabase, categoryIds, quickFilterKey)
       : Promise.resolve([]),
     getChecklistFieldCounts(supabase, categoryIds, displayFields),
     getPriceBuckets(supabase, categoryIds),
   ]);
-
-  const resolvedQuickFilterValues = fixedQuickFilterOptions
-    ? fixedQuickFilterOptions.map((value) => ({ value, count: fieldCounts[quickFilterKey!]?.[value] ?? 0 }))
-    : quickFilterValues;
 
   // See the matching comment in [category]/page.tsx -- Make/Brand are checklist type
   // but ship with no static option list, so fieldCounts (just fetched) doubles as
@@ -370,6 +385,52 @@ async function CategoryLocationPage({
   for (const [key, value] of Object.entries(rawParams)) {
     if (key === "page" || !value) continue;
     carryParams.set(key, value);
+  }
+
+  // See the matching comment in [category]/page.tsx for topBarItems.
+  const locationBaseHref = `/${category.slug}/${location.district_slug}`;
+  let topBarItems: QuickFilterTileItem[] = [];
+  if (!leafSlug) {
+    topBarItems = subcategories.map((sub) => ({
+      key: sub.id,
+      label: sub.name,
+      count: sub.count,
+      href: `/${sub.slug}`,
+      icon: resolveCategoryIcon({ slug: sub.slug, icon: sub.icon }),
+    }));
+  } else if (showAttributeQuickFilter && quickFilterKey) {
+    const style = getQuickFilterStyle(topLevelSlug, leafSlug);
+    let values: { value: string; count: number }[];
+    if (curatedMakes) {
+      const makeCounts = fieldCounts[quickFilterKey] ?? {};
+      const curatedSet = new Set(curatedMakes);
+      const otherCount = Object.entries(makeCounts)
+        .filter(([value]) => !curatedSet.has(value))
+        .reduce((sum, [, count]) => sum + count, 0);
+      values = [...curatedMakes.map((value) => ({ value, count: makeCounts[value] ?? 0 })), { value: "Other", count: otherCount }];
+    } else if (fixedQuickFilterOptions) {
+      values = fixedQuickFilterOptions.map((value) => ({ value, count: fieldCounts[quickFilterKey]?.[value] ?? 0 }));
+    } else {
+      values = quickFilterValues;
+    }
+
+    topBarItems = values.map((item) => {
+      const isActive = activeQuickFilterValue === item.value;
+      const params = new URLSearchParams(carryParams);
+      params.delete("page");
+      if (isActive) params.delete(`attr_${quickFilterKey}`);
+      else params.set(`attr_${quickFilterKey}`, item.value);
+      const qs = params.toString();
+      return {
+        key: item.value,
+        label: item.value,
+        count: item.count,
+        href: qs ? `${locationBaseHref}?${qs}` : locationBaseHref,
+        icon: style === "type" ? getTypeIcon(topLevelSlug, item.value, leafSlug) : null,
+        monogramColor: style === "brand" ? getBrandColor(item.value) : null,
+        isActive,
+      };
+    });
   }
 
   const breadcrumbItems = [
@@ -413,6 +474,8 @@ async function CategoryLocationPage({
           {category.name} for Sale in {location.district_name}
         </h1>
 
+        {!belowThreshold && <CategoryMobileFilterPills categorySlug={category.slug} />}
+
         {belowThreshold ? (
           <div className="flex flex-col items-center justify-center gap-2 border border-dashed border-neutral-200 bg-white py-16 text-center">
             <p className="text-sm font-medium text-neutral-600">
@@ -433,17 +496,7 @@ async function CategoryLocationPage({
             />
 
             <div className="min-w-0 flex-1">
-              {quickFilterKey && (
-                <CategoryQuickFilters
-                  items={resolvedQuickFilterValues}
-                  topLevelSlug={topLevelSlug}
-                  leafSlug={leafSlug}
-                  attributeKey={quickFilterKey}
-                  activeValue={activeQuickFilterValue}
-                  baseHref={`/${category.slug}/${location.district_slug}`}
-                  currentQuery={carryParams}
-                />
-              )}
+              <CategoryQuickFilters items={topBarItems} />
 
               <CategoryResults
                 initialListings={listings}

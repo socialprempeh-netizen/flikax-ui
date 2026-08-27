@@ -14,16 +14,26 @@ import {
   type CategorySort,
   type DatePosted,
 } from "@/lib/category-listings";
-import { getSidebarFields, getTopLevelDisplayFields, getQuickFilterKey } from "@/lib/category-filters";
+import {
+  getSidebarFields,
+  getTopLevelDisplayFields,
+  getQuickFilterKey,
+  getQuickFilterStyle,
+  getCuratedMakes,
+  getTypeIcon,
+  getBrandColor,
+} from "@/lib/category-filters";
+import { resolveCategoryIcon } from "@/lib/category-icons";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BottomTabBar } from "@/components/bottom-tab-bar";
 import { JsonLd } from "@/components/seo/json-ld";
 import { CategoryResults } from "@/components/category-results";
 import { CategorySidebarFilters } from "@/components/category-sidebar-filters";
-import { CategoryQuickFilters } from "@/components/category-quick-filters";
+import { CategoryMobileFilterPills } from "@/components/category-mobile-filter-pills";
+import { CategoryQuickFilters, type QuickFilterTileItem } from "@/components/category-quick-filters";
 import { SiblingCategoryRow } from "@/components/sibling-category-row";
-import { CategorySubcategoryListDesktop, CategorySubcategoryListMobile } from "@/components/category-subcategory-list";
+import { CategorySubcategoryListDesktop } from "@/components/category-subcategory-list";
 import { loadMoreCategoryListingsAction } from "@/app/[category]/actions";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -107,6 +117,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     ? (posted as DatePosted)
     : undefined;
 
+  // Moved up (was previously computed right before the JSX return) so the
+  // top-bar tile hrefs below can use it -- only depends on rawParams, so there's
+  // no ordering reason for it to sit any later.
+  const carryParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(rawParams)) {
+    if (key === "page" || !value) continue;
+    carryParams.set(key, value);
+  }
+
   // The top-level slug (e.g. "vehicles") drives which sidebar fields and quick-filter
   // icon row this category gets. For a leaf (parent_id set) that's the parent's own
   // slug, with the leaf's own slug as the second, more specific key -- needs the
@@ -130,17 +149,27 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const sidebarFields = getSidebarFields(topLevelSlug, leafSlug);
   const displayFields = leafSlug ? sidebarFields : getTopLevelDisplayFields(topLevelSlug);
   const quickFilterKey = getQuickFilterKey(topLevelSlug, leafSlug);
+  // The top bar only renders an attribute quick-filter row (Make/Type tiles) on a
+  // leaf page -- a top-level page's top bar shows its own subcategories instead
+  // (see topBarItems below), which used to render as a *second*, separately-styled
+  // strip in the same spot on mobile (CategorySubcategoryListMobile) -- a visible
+  // duplicate. One bar, one data source per page level, fixes that.
+  const showAttributeQuickFilter = Boolean(leafSlug && quickFilterKey);
   // "Type"-style quick filters (vehicle_type, property_type, ...) have a fixed,
-  // known option list from listing-fields.ts -- unlike "brand"-style (Make has no
-  // enum, it's free text), so for these the quick-filter row should always show
-  // every known option (with a real, possibly-zero count) rather than only
-  // whichever ones already happen to have 2+ matching listings. See the
-  // fixedQuickFilterOptions fetch-skip/merge below.
-  const quickFilterField = quickFilterKey ? sidebarFields.find((f) => f.key === quickFilterKey) : undefined;
+  // known option list from listing-fields.ts; "make" has none (free text) but gets
+  // a curated top-N + "Other" fallback instead where one's defined (see
+  // getCuratedMakes) -- either way, the tile row should always show every known/
+  // curated option (real, possibly-zero count) rather than only whichever ones
+  // already happen to have 2+ matching listings. See the fixedQuickFilterOptions
+  // fetch-skip/merge below.
+  const quickFilterField =
+    showAttributeQuickFilter && quickFilterKey ? sidebarFields.find((f) => f.key === quickFilterKey) : undefined;
+  const curatedMakes = showAttributeQuickFilter && quickFilterKey === "make" ? getCuratedMakes(leafSlug) : undefined;
   const fixedQuickFilterOptions =
-    quickFilterField?.type === "checklist" && quickFilterField.options && quickFilterField.options.length > 0
+    curatedMakes ??
+    (quickFilterField?.type === "checklist" && quickFilterField.options && quickFilterField.options.length > 0
       ? quickFilterField.options
-      : undefined;
+      : undefined);
 
   const { attributeFilters, verifiedOnly, discountOnly } = parseAttributeFilters(sidebarFields, rawParams);
   const activeQuickFilterValue = quickFilterKey ? rawParams[`attr_${quickFilterKey}`] : undefined;
@@ -181,8 +210,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       siblingsQuery,
       getCachedCategoryListings({ ...listingsFilter, page: 1 }),
       // Skipped (and merged from fieldCounts instead, below) when
-      // fixedQuickFilterOptions applies -- see that variable's own comment.
-      quickFilterKey && !fixedQuickFilterOptions
+      // fixedQuickFilterOptions applies, or entirely unused on a top-level page --
+      // see showAttributeQuickFilter/fixedQuickFilterOptions's own comments.
+      showAttributeQuickFilter && quickFilterKey && !fixedQuickFilterOptions
         ? getTopAttributeValues(supabase, categoryIds, quickFilterKey)
         : Promise.resolve([]),
       // Real per-checkbox ad counts (Make/Type/Condition/...) and the sidebar's
@@ -209,23 +239,60 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     return { ...field, options };
   });
 
-  // See fixedQuickFilterOptions's own comment above: for a "type"-style quick
-  // filter, show every known option (real count, 0 if this category has no
-  // matching listings yet) instead of only ones getTopAttributeValues already
-  // found -- otherwise a thin-inventory category's entire quick-filter row
-  // silently disappears (CategoryQuickFilters returns null under 2 items) even
-  // though its full taxonomy is known and fixed.
-  const resolvedQuickFilterValues = fixedQuickFilterOptions
-    ? fixedQuickFilterOptions.map((value) => ({
-        value,
-        count: fieldCounts[quickFilterKey!]?.[value] ?? 0,
-      }))
-    : quickFilterValues;
+  // Unified top "sub-menus" bar data -- a top-level page shows its own
+  // subcategories (Cars, Buses & Microbuses, ...) as tiles linking straight to
+  // each; a leaf page shows its quick-filter attribute (Make/Type) as tiles that
+  // filter *this* page. Building both into one QuickFilterTileItem[] here (rather
+  // than inside CategoryQuickFilters) keeps that component a single,
+  // presentational implementation instead of two different query-building code
+  // paths bolted together -- see its own doc comment for the mobile duplicate
+  // this replaced.
+  let topBarItems: QuickFilterTileItem[] = [];
+  if (!leafSlug) {
+    // Subcategories always render (real, possibly-zero counts) -- getSubcategoriesWithCounts
+    // already fetches every child regardless of whether it has listings yet.
+    topBarItems = subcategories.map((sub) => ({
+      key: sub.id,
+      label: sub.name,
+      count: sub.count,
+      href: `/${sub.slug}`,
+      icon: resolveCategoryIcon({ slug: sub.slug, icon: sub.icon }),
+    }));
+  } else if (showAttributeQuickFilter && quickFilterKey) {
+    const style = getQuickFilterStyle(topLevelSlug, leafSlug);
+    let values: { value: string; count: number }[];
+    if (curatedMakes) {
+      // Curated top-N makes + an "Other" catch-all summing every make not in the
+      // curated list -- see getCuratedMakes's own comment.
+      const makeCounts = fieldCounts[quickFilterKey] ?? {};
+      const curatedSet = new Set(curatedMakes);
+      const otherCount = Object.entries(makeCounts)
+        .filter(([value]) => !curatedSet.has(value))
+        .reduce((sum, [, count]) => sum + count, 0);
+      values = [...curatedMakes.map((value) => ({ value, count: makeCounts[value] ?? 0 })), { value: "Other", count: otherCount }];
+    } else if (fixedQuickFilterOptions) {
+      values = fixedQuickFilterOptions.map((value) => ({ value, count: fieldCounts[quickFilterKey]?.[value] ?? 0 }));
+    } else {
+      values = quickFilterValues;
+    }
 
-  const carryParams = new URLSearchParams();
-  for (const [key, value] of Object.entries(rawParams)) {
-    if (key === "page" || !value) continue;
-    carryParams.set(key, value);
+    topBarItems = values.map((item) => {
+      const isActive = activeQuickFilterValue === item.value;
+      const params = new URLSearchParams(carryParams);
+      params.delete("page");
+      if (isActive) params.delete(`attr_${quickFilterKey}`);
+      else params.set(`attr_${quickFilterKey}`, item.value);
+      const qs = params.toString();
+      return {
+        key: item.value,
+        label: item.value,
+        count: item.count,
+        href: qs ? `/${category.slug}?${qs}` : `/${category.slug}`,
+        icon: style === "type" ? getTypeIcon(topLevelSlug, item.value, leafSlug) : null,
+        monogramColor: style === "brand" ? getBrandColor(item.value) : null,
+        isActive,
+      };
+    });
   }
 
   const breadcrumbItems = [
@@ -264,6 +331,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           {category.name} for Sale in Ghana
         </h1>
 
+        <CategoryMobileFilterPills categorySlug={category.slug} />
+
         <div className="flex gap-4">
           <div className="flex flex-col gap-4 lg:w-[285px] lg:shrink-0">
             <CategorySubcategoryListDesktop parentId={category.id} subcategories={subcategories} />
@@ -276,23 +345,16 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           </div>
 
           <div className="min-w-0 flex-1">
-            {leafSlug ? (
+            {leafSlug && (
               <SiblingCategoryRow siblings={siblings ?? []} activeSlug={category.slug} parentId={category.parent_id} />
-            ) : (
-              <CategorySubcategoryListMobile parentId={category.id} subcategories={subcategories} />
             )}
 
-            {quickFilterKey && (
-              <CategoryQuickFilters
-                items={resolvedQuickFilterValues}
-                topLevelSlug={topLevelSlug}
-                leafSlug={leafSlug}
-                attributeKey={quickFilterKey}
-                activeValue={activeQuickFilterValue}
-                baseHref={`/${category.slug}`}
-                currentQuery={carryParams}
-              />
-            )}
+            {/* Single top "sub-menus" bar, single render -- see topBarItems's own
+                comment for why this replaced the old top-level-only
+                CategorySubcategoryListMobile (previously rendered *alongside*
+                CategoryQuickFilters on a top-level page's mobile view, a visible
+                duplicate). CategoryQuickFilters itself no-ops under 2 items. */}
+            <CategoryQuickFilters items={topBarItems} />
 
             <CategoryResults
               initialListings={listings}

@@ -13,16 +13,17 @@ type Props = {
   subcategories: SubcategoryWithCount[];
 };
 
-/** The "Categories" list Tonaton shows prominently on a top-level category's own page
- * (e.g. /vehicles) -- its direct children (leaves) with a real ad count each, so a
- * visitor can jump straight to Cars/Motorcycles & Scooters/etc. and get that leaf's
+/** The "Categories" list Tonaton shows in the sidebar on a top-level category's own
+ * page (e.g. /vehicles) -- its direct children (leaves) with a real ad count each, so
+ * a visitor can jump straight to Cars/Motorcycles & Scooters/etc. and get that leaf's
  * own full detailed filter set (this page's own sidebar stays short -- see
- * getTopLevelDisplayFields). Split into two exports (not one responsive component)
- * because they render in different DOM positions: the desktop card stacks above the
- * Filters card in the sidebar column, while the mobile strip sits in the main content
- * column above the listings -- same slot SiblingCategoryRow uses on a leaf page (which
- * this replaces on a top-level page; "other top-level categories" is less useful here
- * than "this category's own subcategories"). */
+ * getTopLevelDisplayFields). Desktop-only: a mobile equivalent used to render
+ * separately (CategorySubcategoryListMobile, since removed) directly above this same
+ * data rendered again by CategoryQuickFilters as the page's top tile bar -- a visible
+ * duplicate on mobile. CategoryQuickFilters (in [category]/page.tsx's topBarItems) is
+ * now the single source for a top-level page's subcategories on every breakpoint; this
+ * component is purely the *additional*, differently-styled sidebar list, same as
+ * Tonaton's own aside "Categories" list existing alongside its top filter-grid bar. */
 
 export function CategorySubcategoryListDesktop({ parentId, subcategories }: Props) {
   const [expanded, setExpanded] = useState(false);
@@ -67,29 +68,6 @@ export function CategorySubcategoryListDesktop({ parentId, subcategories }: Prop
           </button>
         )}
       </div>
-    </div>
-  );
-}
-
-export function CategorySubcategoryListMobile({ parentId, subcategories }: Props) {
-  if (subcategories.length === 0) return null;
-
-  return (
-    <div className="lg:hidden -mx-4 mb-4 flex gap-3 overflow-x-auto px-4 pb-1">
-      {subcategories.map((sub) => (
-        <Link key={sub.id} href={`/${sub.slug}`} className="flex w-16 shrink-0 flex-col items-center gap-1">
-          <CategoryThumb
-            category={{ ...sub, parent_id: parentId }}
-            size="size-12"
-            iconSize="size-5"
-            rounded="rounded-full"
-            sizes="48px"
-          />
-          <span className="line-clamp-2 text-center text-2xs font-medium leading-tight text-neutral-600">
-            {sub.name}
-          </span>
-        </Link>
-      ))}
     </div>
   );
 }

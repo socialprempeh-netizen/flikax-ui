@@ -1,27 +1,28 @@
 import Link from "next/link";
-import { getQuickFilterStyle, getBrandColor, getTypeIcon } from "@/lib/category-filters";
+import type { LucideIcon } from "lucide-react";
 
-export function CategoryQuickFilters({
-  items,
-  topLevelSlug,
-  leafSlug,
-  attributeKey,
-  activeValue,
-  baseHref,
-  currentQuery,
-}: {
-  items: { value: string; count: number }[];
-  topLevelSlug: string | undefined;
-  leafSlug?: string;
-  attributeKey: string;
-  activeValue?: string;
-  baseHref: string;
-  currentQuery: URLSearchParams;
-}) {
-  // Not worth a filter row for a single (or no) distinct value in this category.
+/** One tile in the top "sub-menus" bar -- fully resolved by the caller (page.tsx)
+ * rather than built here, so this component stays a single, presentational
+ * implementation shared by both of its call sites: a top-level category's own
+ * subcategories (Cars, Buses & Microbuses, ...) and a leaf category's quick-filter
+ * (Make/Type) row. Previously these were two separate components
+ * (CategoryQuickFilters + CategorySubcategoryListMobile) both rendering in the same
+ * spot on a top-level page's mobile view -- a real, visible duplicate bar. */
+export type QuickFilterTileItem = {
+  key: string;
+  label: string;
+  count: number;
+  href: string;
+  icon?: LucideIcon | null;
+  /** Brand-monogram tiles (Toyota/Honda/... on a vehicle leaf) render a colored
+   * circle with the first letter instead of an icon. */
+  monogramColor?: string | null;
+  isActive?: boolean;
+};
+
+export function CategoryQuickFilters({ items }: { items: QuickFilterTileItem[] }) {
+  // Not worth a filter row for a single (or no) tile.
   if (items.length < 2) return null;
-
-  const style = getQuickFilterStyle(topLevelSlug, leafSlug);
 
   return (
     // Card wrapper measurements read verbatim off the reference's .filter-grid-bg
@@ -33,26 +34,18 @@ export function CategoryQuickFilters({
     <div className="mb-6 border border-neutral-300 bg-white px-2 max-sm:border-none max-sm:px-0">
       {/* Mobile (reference @media (max-width:767px)): the reference wraps tiles in
           a zero-gap flex-wrap row (column-gap:0, row-gap:0, flex-wrap:wrap), not a
-          horizontal scroller -- there is no overflow-x/scroll-snap anywhere in the
-          reference stylesheet for this element, verified by full-text search.
-          Desktop: an auto-fit grid of 110px tiles (grid-template-columns:
+          horizontal scroller -- there is no overflow-x/scroll-snap anywhere in
+          either reference stylesheet for this element, verified by full-text
+          search of both. One render of the row, shown only below sm: the desktop
+          grid below is the *other* breakpoint of the same data, not a second copy
+          of it -- see the component doc comment above for the duplicate this
+          replaced. Desktop: an auto-fit grid of 110px tiles (grid-template-columns:
           repeat(auto-fit,minmax(110px,1fr)), gap 10px/16px), so the row wraps at a
           fixed tile size instead of stretching tiles edge to edge when there are
           only 2-3 values. */}
       <div className="flex flex-wrap sm:hidden">
         {items.map((item) => (
-          <QuickFilterTile
-            key={item.value}
-            item={item}
-            style={style}
-            topLevelSlug={topLevelSlug}
-            leafSlug={leafSlug}
-            attributeKey={attributeKey}
-            activeValue={activeValue}
-            baseHref={baseHref}
-            currentQuery={currentQuery}
-            className="h-auto w-[75px]"
-          />
+          <QuickFilterTile key={item.key} item={item} className="h-auto w-[75px]" />
         ))}
       </div>
       <div
@@ -60,58 +53,19 @@ export function CategoryQuickFilters({
         style={{ gridTemplateColumns: `repeat(auto-fit, minmax(110px, 1fr))` }}
       >
         {items.map((item) => (
-          <QuickFilterTile
-            key={item.value}
-            item={item}
-            style={style}
-            topLevelSlug={topLevelSlug}
-            leafSlug={leafSlug}
-            attributeKey={attributeKey}
-            activeValue={activeValue}
-            baseHref={baseHref}
-            currentQuery={currentQuery}
-            className="w-[110px] min-h-[124px]"
-          />
+          <QuickFilterTile key={item.key} item={item} className="w-[110px] min-h-[124px]" />
         ))}
       </div>
     </div>
   );
 }
 
-function QuickFilterTile({
-  item,
-  style,
-  topLevelSlug,
-  leafSlug,
-  attributeKey,
-  activeValue,
-  baseHref,
-  currentQuery,
-  className = "",
-}: {
-  item: { value: string; count: number };
-  style: "brand" | "type";
-  topLevelSlug: string | undefined;
-  leafSlug?: string;
-  attributeKey: string;
-  activeValue?: string;
-  baseHref: string;
-  currentQuery: URLSearchParams;
-  className?: string;
-}) {
-  const isActive = activeValue === item.value;
-  const params = new URLSearchParams(currentQuery);
-  params.delete("page");
-  if (isActive) params.delete(`attr_${attributeKey}`);
-  else params.set(`attr_${attributeKey}`, item.value);
-  const qs = params.toString();
-
-  const Icon = style === "type" ? getTypeIcon(topLevelSlug, item.value, leafSlug) : null;
-  const brandColor = style === "brand" ? getBrandColor(item.value) : null;
+function QuickFilterTile({ item, className = "" }: { item: QuickFilterTileItem; className?: string }) {
+  const Icon = item.icon;
 
   return (
     <Link
-      href={qs ? `${baseHref}?${qs}` : baseHref}
+      href={item.href}
       // The reference's .filter-grid__item has no per-tile border at all -- only
       // the card wrapper above does -- and its only interactive state is a
       // background tint on hover (background:#2da47c33, a ~20% alpha of their
@@ -120,25 +74,27 @@ function QuickFilterTile({
       // duty as the "selected" state too, since the reference snapshot has no
       // active tile to verify a distinct selected treatment from.
       className={`flex flex-col items-center justify-center gap-2 p-[10px_4px_8px] text-center transition-colors ${
-        isActive ? "bg-brand-light" : "hover:bg-brand-light/60"
+        item.isActive ? "bg-brand-light" : "hover:bg-brand-light/60"
       } ${className}`}
     >
-      {style === "brand" ? (
+      {item.monogramColor ? (
         <span
           className="flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-extrabold text-white"
-          style={{ backgroundColor: brandColor ?? undefined }}
+          style={{ backgroundColor: item.monogramColor }}
         >
-          {item.value[0]?.toUpperCase()}
+          {item.label[0]?.toUpperCase()}
         </span>
       ) : (
-        // 60px circle (reference .filter-grid__img-home-top: height/width 60px)
-        // with a tinted circle behind the icon (reference's own :after pseudo-
-        // element is #ceffee -- brand-light stands in here, same reasoning as the
-        // hover tint above) and the icon itself at 48px (size-12) so it reads as
-        // "clear and big," not the previous 28px (size-7).
+        // 60px circle (reference .filter-grid__img-home / .filter-grid__img-home-top,
+        // both height/width 60px -- confirmed identical across the homepage's own
+        // main category grid and a category page's subcategory/type row) with a
+        // tinted circle behind the icon (reference's own :after pseudo-element is
+        // #ceffee -- brand-light stands in here, same reasoning as the hover tint
+        // above) and the icon itself at 48px (size-12), 80% of the container, so
+        // it reads as "clear and big," not a small icon lost in a big circle.
         Icon && (
           <span className="flex size-[60px] shrink-0 items-center justify-center rounded-full bg-brand-light">
-            <Icon className={`size-12 ${isActive ? "text-brand-dark" : "text-neutral-700"}`} />
+            <Icon className={`size-12 ${item.isActive ? "text-brand-dark" : "text-neutral-700"}`} strokeWidth={2.5} />
           </span>
         )
       )}
@@ -150,10 +106,10 @@ function QuickFilterTile({
           text-black keep the other two values exact. */}
       <span
         className={`w-full truncate text-2xs leading-[14px] font-semibold ${
-          isActive ? "text-brand-dark" : "text-black"
+          item.isActive ? "text-brand-dark" : "text-black"
         }`}
       >
-        {item.value}
+        {item.label}
       </span>
       {/* Reference .filter-grid__content p: font-size 10px, color #889399,
           line-height 12px -- text-3xs is this codebase's 10px named size;

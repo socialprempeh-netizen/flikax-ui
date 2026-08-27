@@ -152,8 +152,22 @@ export function ListingGrid({
           stacked cards in the same column comes from mb-2 on each card
           instead (below), which every browser handles identically. */}
       <div
-        className={`-mx-4 gap-x-2 sm:mx-0 ${
-          layout === "list" ? "columns-1" : `columns-2 ${isHome ? "sm:columns-3 lg:columns-4 xl:columns-5" : "sm:columns-2 lg:columns-3"}`
+        className={`-mx-4 sm:mx-0 ${
+          layout === "list"
+            ? "columns-1 gap-x-2"
+            : // Mobile: a real 2-col CSS Grid (grid-cols-2), not CSS multi-column
+              // (columns-2) -- multi-column masonry fills column 1 top-to-bottom
+              // before column 2 starts, and with only 1-3 listings (a thin category,
+              // or the homepage's first paint before more load) the browser's
+              // column-balancing can put everything in column 1 and leave column 2
+              // visibly empty at the top. grid-cols-2 is inherently row-major
+              // (item 1 top-left, item 2 top-right, item 3 next row, ...), which
+              // can't produce that gap. sm: and up switches to the existing
+              // multi-column masonry (gap-x-2 sm: re-applied there, since the base
+              // grid mode uses gap-3 instead) -- at those widths there are reliably
+              // enough items for column-balancing to behave, and the variable-height
+              // masonry effect is worth keeping there.
+              `grid grid-cols-2 gap-3 sm:block sm:columns-2 sm:gap-x-2 sm:gap-y-0 ${isHome ? "sm:columns-3 lg:columns-4 xl:columns-5" : "lg:columns-3"}`
         }`}
       >
         {listings.map((listing, index) => {
@@ -167,7 +181,15 @@ export function ListingGrid({
             listing.imageWidth && listing.imageHeight ? listing.imageWidth / listing.imageHeight : 1;
           const aspectRatio = Math.min(Math.max(rawRatio, 0.65), 1.6);
           return (
-            <ListingCardHover key={listing.id} className="mb-2 break-inside-avoid">
+            // "list" layout stays a plain single-column masonry stack at every
+            // breakpoint (mb-2 always applies there); the default grid layout's
+            // mobile view is the new grid-cols-2 (see the container's own
+            // comment), which gets its row spacing from that grid's gap-3
+            // instead -- mb-2 there would double it up, so it's sm:-only.
+            <ListingCardHover
+              key={listing.id}
+              className={layout === "list" ? "mb-2 break-inside-avoid" : "break-inside-avoid sm:mb-2"}
+            >
               {/* relative: anchors CompactSaveButton, which needs to be a
                   sibling of the Link (not a descendant) -- a <button>
                   nested inside an <a> is invalid HTML (interactive content
@@ -189,6 +211,8 @@ export function ListingGrid({
                     reads as a clearly separate surface instead. */}
                 <Card
                   className={`gap-0 overflow-hidden bg-white p-0 shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-shadow duration-200 group-hover:shadow-lg ${
+                    layout === "list" ? "" : "min-h-[280px] sm:min-h-0"
+                  } ${
                     listing.isFeatured
                       ? "border-amber-300"
                       : listing.isBumped
@@ -196,13 +220,22 @@ export function ListingGrid({
                         : "border-neutral-300"
                   }`}
                 >
-                  {/* Real stored aspect ratio (clamped above), not a forced
-                      square -- this is what actually varies card heights for
-                      the masonry effect (Jiji-style); falls back to a square
-                      for pre-dimension-tracking images. */}
+                  {/* Below sm:, the new grid-cols-2 mobile layout (see the
+                      container's own comment) uses a fixed 4:3 aspect --
+                      uniform card sizing is what a real 2-up grid needs. At sm:
+                      and up, the real stored aspect ratio (clamped above, read
+                      off the --card-aspect custom property) takes over and is
+                      what actually varies card heights for the masonry effect
+                      (Jiji-style); falls back to a square for pre-dimension-
+                      tracking images. Both live as plain Tailwind classes
+                      (aspect-[4/3] then its sm: override) rather than one being
+                      an inline style, specifically so the sm: variant's normal
+                      mobile-first cascade order is what decides which one wins
+                      at a given width -- an inline style would always beat
+                      aspect-[4/3] regardless of breakpoint. */}
                   <div
-                    className="relative w-full overflow-hidden bg-cream text-brand-dark/40"
-                    style={{ aspectRatio }}
+                    className="relative aspect-[4/3] w-full overflow-hidden bg-cream text-brand-dark/40 sm:aspect-(--card-aspect)"
+                    style={{ "--card-aspect": aspectRatio } as React.CSSProperties}
                   >
                     {listing.imageUrl ? (
                       <Image
