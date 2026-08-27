@@ -212,7 +212,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         </h1>
 
         <div className="flex gap-4">
-          <div className="flex flex-col gap-4 lg:w-64 lg:shrink-0">
+          <div className="flex flex-col gap-4 lg:w-[280px] lg:shrink-0">
             <CategorySubcategoryListDesktop parentId={category.id} subcategories={subcategories} />
             <CategorySidebarFilters categorySlug={category.slug} fields={displayFields} />
           </div>

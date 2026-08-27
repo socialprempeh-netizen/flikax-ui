@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FilterFolder } from "@/components/filter-folder";
 
-const FIELD_CLASS = "h-auto w-full min-w-0 border-neutral-200 px-2 py-1.5 text-sm focus-visible:border-brand";
+const FIELD_CLASS = "h-11 w-full min-w-0 border-neutral-300 px-2.5 py-1.5 text-sm focus-visible:border-brand";
 
 // The "Verified sellers"/"Discount" toggle fields (see VERIFIED_SELLERS_FIELD/
 // DISCOUNT_FIELD in category-filters.ts) are backed by real listings columns, not a
@@ -222,7 +222,13 @@ export function CategorySidebarFilters({
               rather than the reference design's blue, to stay consistent
               with this app's own accent instead of introducing a second,
               unrelated one. */}
-          <Button type="button" size="icon" onClick={applyFilters} aria-label="Apply price filter" className="shrink-0">
+          <Button
+            type="button"
+            size="icon"
+            onClick={applyFilters}
+            aria-label="Apply price filter"
+            className="h-11 w-11 shrink-0"
+          >
             <Search className="size-4" />
           </Button>
         </div>
@@ -300,7 +306,7 @@ export function CategorySidebarFilters({
           layout as before -- sticky/self-start is new, so a long field list (Cars
           now has a dozen) scrolls with the page instead of being outrun by the
           results grid. */}
-      <div className="hidden w-64 shrink-0 lg:sticky lg:top-20 lg:block lg:self-start">
+      <div className="hidden w-[280px] shrink-0 lg:sticky lg:top-20 lg:block lg:self-start">
         <div className="thin-scrollbar max-h-[calc(100vh-6rem)] overflow-y-auto border border-neutral-300 bg-neutral-50 p-3 shadow-md">
           <div className="mb-2.5 flex items-center justify-between">
             <h3 className="text-sm font-bold text-neutral-800">Filters</h3>

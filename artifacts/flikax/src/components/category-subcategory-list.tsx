@@ -33,7 +33,7 @@ export function CategorySubcategoryListDesktop({ parentId, subcategories }: Prop
   const hasMore = subcategories.length > INITIAL_VISIBLE;
 
   return (
-    <div className="hidden w-64 shrink-0 lg:block">
+    <div className="hidden w-[280px] shrink-0 lg:block">
       <div className="border-[1.5px] border-neutral-300 bg-white p-3">
         <p className="mb-2 text-sm font-semibold text-neutral-700">Categories</p>
         <div className="divide-y divide-neutral-300">

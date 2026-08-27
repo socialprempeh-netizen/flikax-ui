@@ -25,10 +25,11 @@ export function CategoryQuickFilters({
 
   return (
     <div className="mb-4">
-      {/* Mobile: horizontal scroll, fixed-size chips (7 columns would be too cramped
-          under ~400px). Desktop: a real grid sized to the item count so the row always
-          fills the full width edge to edge, whether there are 2 values or 7. */}
-      <div className="flex gap-3 overflow-x-auto pb-1 sm:hidden">
+      {/* Mobile: horizontal scroll, fixed-size chips (75px, matching the reference
+          grid's own sub-767px tile size). Desktop: an auto-fit grid of 110px tiles
+          (also matching the reference) so the row wraps at a fixed tile size instead
+          of stretching tiles edge to edge when there are only 2-3 values. */}
+      <div className="flex gap-2.5 overflow-x-auto pb-1 sm:hidden">
         {items.map((item) => (
           <QuickFilterTile
             key={item.value}
@@ -40,13 +41,13 @@ export function CategoryQuickFilters({
             activeValue={activeValue}
             baseHref={baseHref}
             currentQuery={currentQuery}
-            className="w-24 shrink-0"
+            className="h-auto w-[75px] shrink-0"
           />
         ))}
       </div>
       <div
-        className="hidden gap-3 sm:grid"
-        style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}
+        className="hidden gap-x-2.5 gap-y-4 sm:grid"
+        style={{ gridTemplateColumns: `repeat(auto-fit, minmax(110px, 1fr))` }}
       >
         {items.map((item) => (
           <QuickFilterTile
@@ -59,6 +60,7 @@ export function CategoryQuickFilters({
             activeValue={activeValue}
             baseHref={baseHref}
             currentQuery={currentQuery}
+            className="w-[110px] min-h-[124px]"
           />
         ))}
       </div>
@@ -100,7 +102,7 @@ function QuickFilterTile({
   return (
     <Link
       href={qs ? `${baseHref}?${qs}` : baseHref}
-      className={`flex h-24 flex-col items-center justify-center gap-2 border-2 bg-white px-2 py-3 text-center transition-colors ${
+      className={`flex flex-col items-center justify-center gap-2 border-2 bg-white p-[10px_4px_8px] text-center transition-colors ${
         isActive ? "border-brand bg-brand-light" : "border-neutral-300 hover:border-neutral-400"
       } ${className}`}
     >
