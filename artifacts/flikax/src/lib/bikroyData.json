@@ -1,0 +1,41 @@
+{
+  "vehicles": {
+    "name": "Vehicles",
+    "subs": [
+      { "slug": "vehicle-parts-accessories", "name": "Vehicle Parts & Accessories", "count": 2738, "icon": "🔧" },
+      { "slug": "cars", "name": "Cars", "count": 12633, "icon": "🚗" },
+      { "slug": "motorcycles-scooters", "name": "Motorcycles & Scooters", "count": 11862, "icon": "🏍️" },
+      { "slug": "buses-microbuses", "name": "Buses & Microbuses", "count": 559, "icon": "🚌" },
+      { "slug": "trucks-trailers", "name": "Trucks & Trailers", "count": 380, "icon": "🚚" },
+      { "slug": "construction-heavy-machinery", "name": "Construction & Heavy Machinery", "count": 71, "icon": "🚜" },
+      { "slug": "watercraft-boats", "name": "Watercraft & Boats", "count": 81, "icon": "🛥️" },
+      { "slug": "personal-mobility", "name": "Personal Mobility", "count": 4263, "icon": "🛴" },
+      { "slug": "car-services", "name": "Car Services", "count": 92, "icon": "🛠️" }
+    ],
+    "children": {
+      "vehicle-parts-accessories": [
+        { "slug": "motorcycle-parts", "name": "Motorcycle Parts", "count": 1240 },
+        { "slug": "safety-security", "name": "Safety & Security", "count": 890 },
+        { "slug": "headlights", "name": "Headlights", "count": 650 },
+        { "slug": "wheels-parts", "name": "Wheels & Parts", "count": 1100 },
+        { "slug": "car-care", "name": "Car Care", "count": 320 },
+        { "slug": "exterior-accessories", "name": "Exterior Accessories", "count": 540 },
+        { "slug": "brakes-suspension", "name": "Brakes, Suspension", "count": 410 },
+        { "slug": "other-parts", "name": "Other", "count": 200 }
+      ]
+    }
+  },
+  "property": { "name": "Property", "subs": [{ "slug": "houses", "name": "Houses", "count": 3200, "icon": "🏠" }] },
+  "phones-tablets": { "name": "Phones & Tablets", "subs": [{ "slug": "mobile-phones", "name": "Mobile Phones", "count": 8900, "icon": "📱" }] },
+  "electronics": { "name": "Electronics", "subs": [{ "slug": "computers", "name": "Computers", "count": 3400, "icon": "💻" }] },
+  "home-furniture": { "name": "Home & Furniture", "subs": [{ "slug": "furniture", "name": "Furniture", "count": 2200, "icon": "🛋️" }] },
+  "fashion": { "name": "Fashion", "subs": [{ "slug": "mens-fashion", "name": "Men's Fashion", "count": 3100, "icon": "👔" }] },
+  "beauty": { "name": "Beauty", "subs": [{ "slug": "makeup", "name": "Makeup", "count": 800, "icon": "💄" }] },
+  "services": { "name": "Services", "subs": [{ "slug": "it-services", "name": "IT Services", "count": 600, "icon": "💻" }] },
+  "repair-construction": { "name": "Repair", "subs": [{ "slug": "building-materials", "name": "Building Materials", "count": 400, "icon": "🏗️" }] },
+  "commercial": { "name": "Commercial", "subs": [{ "slug": "machinery", "name": "Machinery", "count": 300, "icon": "⚙️" }] },
+  "animals-pets": { "name": "Animals", "subs": [{ "slug": "dogs", "name": "Dogs", "count": 900, "icon": "🐶" }] },
+  "babies-kids": { "name": "Babies & Kids", "subs": [{ "slug": "baby-clothes", "name": "Baby Clothes", "count": 700, "icon": "🧸" }] },
+  "jobs": { "name": "Jobs", "subs": [{ "slug": "it-jobs", "name": "IT Jobs", "count": 1200, "icon": "💼" }] },
+  "agriculture": { "name": "Agriculture", "subs": [{ "slug": "farm-machinery", "name": "Farm Machinery", "count": 500, "icon": "🌾" }] }
+}
