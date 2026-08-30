@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { SiteHeader } from "@/components/site-header";
 import { CategoryIconGrid } from "@/components/category-icon-grid";
+import BikroyMobileCategories from "@/components/home/BikroyMobileCategories";
 import { HomeFilterBar } from "@/components/home-filter-bar";
 import { InfiniteListingGrid } from "@/components/infinite-listing-grid";
 import { HeroBanner } from "@/components/hero-banner";
@@ -112,7 +113,15 @@ export default async function Home({ searchParams }: PageProps) {
       {/* 2. Category icon grid — replaces the old sidebar; sits full-width below the hero.
           Owns its own max-width/bg/padding (Tonaton-style section), so no container
           wrapper here. */}
-      <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} counts={categoryCounts} />
+            {/* DESKTOP - old pale grid, hidden on mobile */}
+      <div className="hidden md:block">
+        <CategoryIconGrid categories={categories ?? []} selectedSlug={filters.category} counts={categoryCounts} />
+      </div>
+
+      {/* MOBILE - new bold Bikroy exact 60px #ebf2f7 */}
+      <div className="block md:hidden">
+        <BikroyMobileCategories />
+      </div>
 
       {/* A hairline divider between each macro section (categories/listings/top
           sellers) gives the page visible structure instead of everything
